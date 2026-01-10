@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/kanaya/jobwatch/cli/internal/config"
 	"github.com/kanaya/jobwatch/cli/internal/runner"
 	"github.com/spf13/cobra"
 )
@@ -17,7 +18,13 @@ var runCmd = &cobra.Command{
 		commandArgs := args[1:]
 		tailN := 10
 
-		result := runner.Run(command, commandArgs, tailN)
+		cfg, err := config.Load(config.DefaultFilename)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		result := runner.Run(command, commandArgs, cfg.Run.LogTail)
 
 		if result.Err != nil {
 			fmt.Printf("Command failed: %v\n", result.Err)

@@ -2,7 +2,7 @@ package config
 
 const DefaultFilename = "jobwatch.yaml"
 
-const DefaultTemplate = `projects:
+const DefaultTemplate = `project:
   name: my_project
   tags:
     - monitoring
@@ -14,6 +14,7 @@ notify:
   on_success: true
   on_failure: true
   channels:
-    - type: slack
-      webhook_url: ${JOBWATCH_SLACK_WEBHOOK_URL}
+    - kind: slack
+      settings:
+        webhook_url: ${JOBWATCH_SLACK_WEBHOOK_URL}
 `
