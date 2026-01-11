@@ -16,7 +16,6 @@ var runCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		command := args[0]
 		commandArgs := args[1:]
-		tailN := 10
 
 		cfg, err := config.Load(config.DefaultFilename)
 		if err != nil {
@@ -28,7 +27,7 @@ var runCmd = &cobra.Command{
 
 		if result.Err != nil {
 			fmt.Printf("Command failed: %v\n", result.Err)
-			fmt.Printf("Last %d lines of output:\n", tailN)
+			fmt.Printf("Last %d lines of output:\n", cfg.Run.LogTail)
 			for _, line := range result.TailLines {
 				fmt.Println(line)
 			}
