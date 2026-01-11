@@ -4,14 +4,19 @@ import (
 	"os"
 	"os/exec"
 	"sync"
+	"time"
 )
 
 type Result struct {
-	Err       error
-	TailLines []string
+	Err        error
+	TailLines  []string
+	StartedAt  time.Time
+	FinishedAt time.Time
 }
 
 func Run(command string, args []string, tailN int) Result {
+	start := time.Now()
+
 	cmd := exec.Command(command, args...)
 
 	stdout, err := cmd.StdoutPipe()
@@ -47,7 +52,9 @@ func Run(command string, args []string, tailN int) Result {
 	wg.Wait()
 
 	return Result{
-		Err:       err,
-		TailLines: tail.Lines(),
+		Err:        err,
+		TailLines:  tail.Lines(),
+		StartedAt:  start,
+		FinishedAt: time.Now(),
 	}
 }
