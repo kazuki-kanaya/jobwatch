@@ -7,7 +7,7 @@ import (
 
 type Notification struct {
 	Project string
-	Tags    map[string]string
+	Tags    []string
 
 	Success bool
 

@@ -51,24 +51,29 @@ func Format(n notifier.Notification) string {
 			)
 		}
 		if !n.StartedAt.IsZero() && !n.FinishedAt.IsZero() {
-			d := n.FinishedAt.Sub(n.StartedAt).
-				Truncate(time.Millisecond)
-			lines = append(lines,
-				fmt.Sprintf("Duration: %s", d),
-			)
+			d := n.FinishedAt.Sub(n.StartedAt)
+
+			var dur string
+			if d < time.Second {
+				dur = "<1s"
+			} else {
+				d = d.Round(time.Second)
+				h := int(d / time.Hour)
+				m := int((d % time.Hour) / time.Minute)
+				s := int((d % time.Minute) / time.Second)
+				dur = fmt.Sprintf("%dh %02dm %02ds", h, m, s)
+			}
+
+			lines = append(lines, fmt.Sprintf("Duration  : %s", dur))
 		}
 	}
 
 	// ===== Tags =====
 	if len(n.Tags) > 0 {
-		var kv []string
-		for k, v := range n.Tags {
-			kv = append(kv, fmt.Sprintf("%s=%s", k, v))
-		}
 		lines = append(lines,
 			"",
 			"🏷 *Tags*",
-			strings.Join(kv, ", "),
+			strings.Join(n.Tags, ", "),
 		)
 	}
 

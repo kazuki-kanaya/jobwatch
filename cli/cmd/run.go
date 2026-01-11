@@ -5,9 +5,12 @@ import (
 	"os"
 
 	"github.com/kanaya/jobwatch/cli/internal/config"
+	"github.com/kanaya/jobwatch/cli/internal/dispatch"
 	"github.com/kanaya/jobwatch/cli/internal/runner"
 	"github.com/spf13/cobra"
 )
+
+var configPath string
 
 var runCmd = &cobra.Command{
 	Use:   "run -- <command...>",
@@ -17,13 +20,32 @@ var runCmd = &cobra.Command{
 		command := args[0]
 		commandArgs := args[1:]
 
-		cfg, err := config.Load(config.DefaultFilename)
+		path := configPath
+		if path == "" {
+			path = config.DefaultFilename
+		}
+
+		cfg, err := config.Load(path)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
 
+		dispatcher, err := dispatch.New(cfg)
+		if err != nil {
+			fmt.Println("Dispatcher setup failed:", err)
+			os.Exit(1)
+		}
+
 		result := runner.Run(command, commandArgs, cfg.Run.LogTail)
+
+		notification := dispatcher.BuildNotification(command, commandArgs, result)
+
+		err = dispatcher.FanOut(cmd.Context(), notification)
+		if err != nil {
+			fmt.Println("Notification failed:", err)
+			os.Exit(1)
+		}
 
 		if result.Err != nil {
 			fmt.Printf("Command failed: %v\n", result.Err)
@@ -38,4 +60,5 @@ var runCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(runCmd)
+	runCmd.Flags().StringVarP(&configPath, "config", "c", "", "config file path")
 }
