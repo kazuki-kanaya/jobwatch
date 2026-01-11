@@ -26,12 +26,14 @@ jobs:
       - name: Govulncheck
         run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
     
-    gitleaks:
-      runs-on: ubuntu-latest
+  gitleaks:
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v6
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-        - name: Gitleaks
-          uses: gitleaks/gitleaks-action@v2.3.9
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v1.6.0
