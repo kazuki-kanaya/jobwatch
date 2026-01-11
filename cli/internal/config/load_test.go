@@ -26,7 +26,7 @@ notify:
       settings:
         webhook_url: ${JOBWATCH_SLACK_WEBHOOK_URL}
 `
-	if err := Generate(path, yamlText); err != nil {
+	if err := Generate(path, yamlText, false); err != nil {
 		t.Fatalf("WriteFile failed: %v", err)
 	}
 
@@ -64,7 +64,7 @@ notify:
       settings:
         webhook_url: ${JOBWATCH_SLACK_WEBHOOK_URL}
 `
-	if err := Generate(path, yamlText); err != nil {
+	if err := Generate(path, yamlText, false); err != nil {
 		t.Fatalf("WriteFile failed: %v", err)
 	}
 
