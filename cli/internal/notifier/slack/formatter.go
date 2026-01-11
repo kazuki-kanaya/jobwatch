@@ -1,0 +1,94 @@
+package slack
+
+import (
+	"fmt"
+	"strings"
+	"time"
+
+	"github.com/kanaya/jobwatch/cli/internal/notifier"
+)
+
+func Format(n notifier.Notification) string {
+	// ===== Status =====
+	icon := "✅"
+	status := "SUCCESS"
+	if !n.Success {
+		icon = "❌"
+		status = "FAILED"
+	}
+
+	// ===== Command =====
+	cmd := strings.TrimSpace(
+		strings.Join(append([]string{n.Command}, n.Args...), " "),
+	)
+
+	lines := []string{
+		"━━━━━━━━━━━━━━━━━━━━",
+		fmt.Sprintf("🚀 *%s* — %s *%s*", n.Project, icon, status),
+		"━━━━━━━━━━━━━━━━━━━━",
+	}
+
+	// ===== Command block =====
+	if cmd != "" {
+		lines = append(lines,
+			"🧾 *Command*",
+			fmt.Sprintf("`%s`", cmd),
+		)
+	}
+
+	// ===== Timing =====
+	if !n.StartedAt.IsZero() || !n.FinishedAt.IsZero() {
+		lines = append(lines, "", "⏱ *Timing*")
+
+		if !n.StartedAt.IsZero() {
+			lines = append(lines,
+				fmt.Sprintf("Start   : %s", n.StartedAt.Format("2006-01-02 15:04:05")),
+			)
+		}
+		if !n.FinishedAt.IsZero() {
+			lines = append(lines,
+				fmt.Sprintf("Finish  : %s", n.FinishedAt.Format("2006-01-02 15:04:05")),
+			)
+		}
+		if !n.StartedAt.IsZero() && !n.FinishedAt.IsZero() {
+			d := n.FinishedAt.Sub(n.StartedAt).
+				Truncate(time.Millisecond)
+			lines = append(lines,
+				fmt.Sprintf("Duration: %s", d),
+			)
+		}
+	}
+
+	// ===== Tags =====
+	if len(n.Tags) > 0 {
+		var kv []string
+		for k, v := range n.Tags {
+			kv = append(kv, fmt.Sprintf("%s=%s", k, v))
+		}
+		lines = append(lines,
+			"",
+			"🏷 *Tags*",
+			strings.Join(kv, ", "),
+		)
+	}
+
+	// ===== Error =====
+	if n.Err != nil {
+		lines = append(lines,
+			"",
+			"🔥 *Error*",
+			fmt.Sprintf("```%v```", n.Err),
+		)
+	}
+
+	// ===== Tail logs =====
+	if len(n.TailLines) > 0 {
+		lines = append(lines,
+			"",
+			"📄 *Last logs*",
+			fmt.Sprintf("```%s```", strings.Join(n.TailLines, "\n")),
+		)
+	}
+
+	return strings.Join(lines, "\n")
+}
