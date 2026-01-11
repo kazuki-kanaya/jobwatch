@@ -1,0 +1,24 @@
+version: "3"
+
+tasks:
+  api:fmt:
+    desc: Format Python code (Ruff)
+    dir: api
+    cmds:
+      - uv run ruff format .
+
+  api:lint:
+    desc: Lint Python code (Ruff)
+    dir: api
+    cmds:
+      - uv run ruff check . --fix
+
+  api:check:
+    desc: Run format + lint (and later tests)
+    deps: [api:fmt, api:lint]
+
+  api:test:
+    desc: Run tests
+    dir: api
+    cmds:
+      - uv run pytest
