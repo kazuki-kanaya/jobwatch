@@ -30,15 +30,34 @@ tasks:
     cmds:
       - uv run ruff check . --fix
 
-  api:check:
+  api:ci:
     deps: [api:fmt, api:lint]
-
-  api:test:
-    dir: api
-    cmds:
-      - uv run pytest
 
   api:dev:
     dir: api
     cmds:
       - uv run uvicorn app.main:app --reload --reload-dir app
+
+  cli:fmt:
+    dir: cli
+    cmds:
+      - go fmt ./...
+      - git diff --exit-code
+
+  cli:vet:
+    dir: cli
+    cmds:
+      - go vet ./...
+
+  cli:test:
+    dir: cli
+    cmds:
+      - go test ./...
+
+  cli:build:
+    dir: cli
+    cmds:
+      - go build .
+
+  cli:ci:
+    deps: [cli:fmt, cli:vet, cli:test, cli:build]

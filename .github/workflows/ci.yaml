@@ -22,17 +22,37 @@ jobs:
         with:
           go-version-file: ./cli/go.mod
           cache: true
-      
-      - name: Go fmt
-        run: |
-          go fmt ./...
-          git diff --exit-code
-      
-      - name: Go vet
-        run: go vet ./...
-      
-      - name: Go test
-        run: go test ./...
 
-      - name: Go build
-        run: go build .
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Task CI
+        run: task -d .. cli:ci
+
+  api:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: python -m pip install --upgrade pip uv
+
+      - name: Install dependencies
+        run: uv sync --frozen --group dev
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Task CI
+        run: task -d .. api:ci
