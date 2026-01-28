@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 
 class Workspace(BaseModel):
-    id: str
+    workspace_id: str
     name: str
 
     created_at: datetime

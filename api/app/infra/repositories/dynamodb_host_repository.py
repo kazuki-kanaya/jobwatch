@@ -12,7 +12,7 @@ class DynamoDBHostRepository:
 
     def create(self, host: Host) -> Host:
         pk = DynamoDBKeys.pk(host.workspace_id)
-        sk = DynamoDBKeys.host_sk(host.id)
+        sk = DynamoDBKeys.host_sk(host.host_id)
         item = DynamoDBMappers.to_item(host, pk, sk)
         self._table.put(item)
         return host
@@ -42,16 +42,16 @@ class DynamoDBHostRepository:
 
     def update(self, host: Host) -> Host:
         pk = DynamoDBKeys.pk(host.workspace_id)
-        sk = DynamoDBKeys.host_sk(host.id)
+        sk = DynamoDBKeys.host_sk(host.host_id)
         item = DynamoDBMappers.to_item(host, pk, sk)
         self._table.put(item)
         return host
 
-    def delete(self, workspace_id: str, host_id: str) -> None:
-        pk = DynamoDBKeys.pk(workspace_id)
-        sk_prefix = DynamoDBKeys.job_host_prefix(host_id)
+    def delete(self, host: Host) -> None:
+        pk = DynamoDBKeys.pk(host.workspace_id)
+        sk_prefix = DynamoDBKeys.job_host_prefix(host.host_id)
         job_items = list(self._table.query_begins_with(pk, sk_prefix))
         if job_items:
             self._table.batch_delete(job_items)
-        sk = DynamoDBKeys.host_sk(host_id)
+        sk = DynamoDBKeys.host_sk(host.host_id)
         self._table.delete(pk, sk)

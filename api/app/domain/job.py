@@ -11,7 +11,7 @@ class JobStatus(str, Enum):
 
 
 class Job(BaseModel):
-    id: str
+    job_id: str
     workspace_id: str
     host_id: str
 

@@ -12,6 +12,7 @@ aws dynamodb create-table \
         AttributeName=PK,AttributeType=S \
         AttributeName=SK,AttributeType=S \
         AttributeName=token_hash,AttributeType=S \
+        AttributeName=job_id,AttributeType=S \
     --key-schema \
         AttributeName=PK,KeyType=HASH \
         AttributeName=SK,KeyType=RANGE \
@@ -19,6 +20,10 @@ aws dynamodb create-table \
         "[{
             \"IndexName\": \"token_hash-index\",
             \"KeySchema\": [{\"AttributeName\":\"token_hash\",\"KeyType\":\"HASH\"}],
+            \"Projection\": {\"ProjectionType\":\"ALL\"}
+        },{
+            \"IndexName\": \"job_id-index\",
+            \"KeySchema\": [{\"AttributeName\":\"job_id\",\"KeyType\":\"HASH\"}],
             \"Projection\": {\"ProjectionType\":\"ALL\"}
         }]" \
     --billing-mode PAY_PER_REQUEST \

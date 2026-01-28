@@ -11,8 +11,8 @@ class JobService:
     def create(self, job: Job) -> Job:
         return self._job_repository.create(job)
 
-    def get(self, workspace_id: str, host_id: str, job_id: str) -> Job | None:
-        return self._job_repository.get(workspace_id, host_id, job_id)
+    def get(self, job_id: str) -> Job | None:
+        return self._job_repository.get(job_id)
 
     def list_by_host(self, workspace_id: str, host_id: str) -> Iterable[Job]:
         return self._job_repository.list_by_host(workspace_id, host_id)
@@ -23,5 +23,5 @@ class JobService:
     def update(self, job: Job) -> Job:
         return self._job_repository.update(job)
 
-    def delete(self, workspace_id: str, host_id: str, job_id: str) -> None:
-        self._job_repository.delete(workspace_id, host_id, job_id)
+    def delete(self, job: Job) -> None:
+        self._job_repository.delete(job)

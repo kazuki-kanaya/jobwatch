@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 
 class Host(BaseModel):
-    id: str
+    host_id: str
     workspace_id: str
     name: str
     token_hash: str

@@ -7,8 +7,12 @@ class HostCreateRequest(BaseModel):
     name: str
 
 
+class HostUpdateRequest(BaseModel):
+    name: str
+
+
 class HostCreateResponse(BaseModel):
-    id: str
+    host_id: str
     workspace_id: str
     name: str
     token: str
@@ -17,7 +21,7 @@ class HostCreateResponse(BaseModel):
 
 
 class HostResponse(BaseModel):
-    id: str
+    host_id: str
     workspace_id: str
     name: str
     created_at: datetime

@@ -21,7 +21,7 @@ class JobUpdateRequest(BaseModel):
 
 
 class JobResponse(BaseModel):
-    id: str
+    job_id: str
     project: str
     command: str
     args: list[str] = Field(default_factory=list)

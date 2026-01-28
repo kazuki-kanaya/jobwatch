@@ -23,5 +23,5 @@ class HostService:
     def update(self, host: Host) -> Host:
         return self._host_repository.update(host)
 
-    def delete(self, workspace_id: str, host_id: str) -> None:
-        self._host_repository.delete(workspace_id, host_id)
+    def delete(self, host: Host) -> None:
+        self._host_repository.delete(host)

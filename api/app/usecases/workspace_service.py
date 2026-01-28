@@ -15,5 +15,5 @@ class WorkspaceService:
     def update(self, workspace: Workspace) -> Workspace:
         return self._workspace_repository.update(workspace)
 
-    def delete(self, workspace_id: str) -> None:
-        self._workspace_repository.delete(workspace_id)
+    def delete(self, workspace: Workspace) -> None:
+        self._workspace_repository.delete(workspace)
