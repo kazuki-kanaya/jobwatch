@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 from app.domain.job import JobStatus
 
@@ -22,8 +22,6 @@ class JobUpdateRequest(BaseModel):
 
 
 class JobResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     id: str
     project: str
     command: str

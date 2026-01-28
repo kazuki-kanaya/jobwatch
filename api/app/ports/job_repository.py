@@ -1,20 +1,12 @@
 from typing import Iterable, Protocol
 
-from app.domain.job import Job, JobCreate, JobId, JobQuery, JobUpdate
+from app.domain.job import Job
 
 
 class JobRepository(Protocol):
-    def create(self, payload: JobCreate) -> Job:
-        raise NotImplementedError
-
-    def get(self, job_id: JobId) -> Job | None:
-        raise NotImplementedError
-
-    def list(self, query: JobQuery) -> Iterable[Job]:
-        raise NotImplementedError
-
-    def update(self, job_id: JobId, payload: JobUpdate) -> Job | None:
-        raise NotImplementedError
-
-    def delete(self, job_id: JobId) -> None:
-        raise NotImplementedError
+    def create(self, job: Job) -> Job: ...
+    def get(self, workspace_id: str, host_id: str, job_id: str) -> Job | None: ...
+    def list_by_host(self, workspace_id: str, host_id: str) -> Iterable[Job]: ...
+    def list_by_workspace(self, workspace_id: str) -> Iterable[Job]: ...
+    def update(self, job: Job) -> Job: ...
+    def delete(self, workspace_id: str, host_id: str, job_id: str) -> None: ...
