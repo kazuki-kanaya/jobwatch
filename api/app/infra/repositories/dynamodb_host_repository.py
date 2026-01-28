@@ -25,6 +25,14 @@ class DynamoDBHostRepository:
             return None
         return DynamoDBMappers.from_item(item, Host)
 
+    def find_by_token_hash(self, token_hash: str) -> Host | None:
+        items = list(
+            self._table.query_gsi("token_hash-index", "token_hash", token_hash)
+        )
+        if not items:
+            return None
+        return DynamoDBMappers.from_item(items[0], Host)
+
     def list_by_workspace(self, workspace_id: str) -> Iterable[Host]:
         pk = DynamoDBKeys.pk(workspace_id)
         sk_prefix = DynamoDBKeys.host_prefix()

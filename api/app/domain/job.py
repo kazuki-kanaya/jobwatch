@@ -26,5 +26,5 @@ class Job(BaseModel):
     tail_lines: list[str] = Field(default_factory=list)
 
     created_at: datetime
-    started_at: datetime | None = None
+    started_at: datetime
     finished_at: datetime | None = None

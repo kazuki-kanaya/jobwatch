@@ -14,6 +14,9 @@ class HostService:
     def get(self, workspace_id: str, host_id: str) -> Host | None:
         return self._host_repository.get(workspace_id, host_id)
 
+    def find_by_token_hash(self, token_hash: str) -> Host | None:
+        return self._host_repository.find_by_token_hash(token_hash)
+
     def list_by_workspace(self, workspace_id: str) -> Iterable[Host]:
         return self._host_repository.list_by_workspace(workspace_id)
 

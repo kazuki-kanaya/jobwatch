@@ -103,3 +103,32 @@ class DynamoDBTable:
             raise RepositoryException(
                 f"Failed to query items: {error_code} - {e.response['Error']['Message']}"
             ) from e
+
+    def query_gsi(
+        self, index_name: str, key_name: str, key_value: str
+    ) -> Iterable[dict]:
+        """Query a Global Secondary Index by a single key."""
+        try:
+            last_evaluated_key = None
+            while True:
+                query_kwargs = {
+                    "IndexName": index_name,
+                    "KeyConditionExpression": f"{key_name} = :val",
+                    "ExpressionAttributeValues": {":val": key_value},
+                }
+                if last_evaluated_key:
+                    query_kwargs["ExclusiveStartKey"] = last_evaluated_key
+
+                response = self._table.query(**query_kwargs)
+                yield from response.get("Items", [])
+
+                last_evaluated_key = response.get("LastEvaluatedKey")
+                if not last_evaluated_key:
+                    break
+        except ClientError as e:
+            error_code = e.response["Error"]["Code"]
+            if error_code == "ResourceNotFoundException":
+                raise NotFoundException("Index not found") from e
+            raise RepositoryException(
+                f"Failed to query GSI: {error_code} - {e.response['Error']['Message']}"
+            ) from e
