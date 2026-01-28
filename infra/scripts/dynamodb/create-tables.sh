@@ -19,10 +19,8 @@ aws dynamodb create-table \
         "[{
             \"IndexName\": \"token_hash-index\",
             \"KeySchema\": [{\"AttributeName\":\"token_hash\",\"KeyType\":\"HASH\"}],
-            \"Projection\": {\"ProjectionType\":\"ALL\"},
-            \"ProvisionedThroughput\": {\"ReadCapacityUnits\":5,\"WriteCapacityUnits\":5}
+            \"Projection\": {\"ProjectionType\":\"ALL\"}
         }]" \
-    --billing-mode PROVISIONED \
-    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --billing-mode PAY_PER_REQUEST \
     --endpoint-url "$ENDPOINT" \
     --region "$REGION"
