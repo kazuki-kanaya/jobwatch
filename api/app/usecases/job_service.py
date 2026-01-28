@@ -1,30 +1,27 @@
 from typing import Iterable
 
-from app.domain.job import Job, JobCreate, JobId, JobQuery, JobStatus, JobUpdate
+from app.domain.job import Job
 from app.ports.job_repository import JobRepository
 
 
 class JobService:
-    def __init__(self, repo: JobRepository) -> None:
-        self._repo = repo
+    def __init__(self, job_repository: JobRepository):
+        self._job_repository = job_repository
 
-    def create_job(self, payload: JobCreate) -> Job:
-        return self._repo.create(payload)
+    def create(self, job: Job) -> Job:
+        return self._job_repository.create(job)
 
-    def get_job(self, job_id: JobId) -> Job | None:
-        return self._repo.get(job_id)
+    def get(self, workspace_id: str, host_id: str, job_id: str) -> Job | None:
+        return self._job_repository.get(workspace_id, host_id, job_id)
 
-    def list_jobs(
-        self,
-        *,
-        status: JobStatus | None = None,
-        project: str | None = None,
-        tag: str | None = None,
-    ) -> Iterable[Job]:
-        return self._repo.list(JobQuery(status=status, project=project, tag=tag))
+    def list_by_host(self, workspace_id: str, host_id: str) -> Iterable[Job]:
+        return self._job_repository.list_by_host(workspace_id, host_id)
 
-    def update_job(self, job_id: JobId, payload: JobUpdate) -> Job | None:
-        return self._repo.update(job_id, payload)
+    def list_by_workspace(self, workspace_id: str) -> Iterable[Job]:
+        return self._job_repository.list_by_workspace(workspace_id)
 
-    def delete_job(self, job_id: JobId) -> None:
-        self._repo.delete(job_id)
+    def update(self, job: Job) -> Job:
+        return self._job_repository.update(job)
+
+    def delete(self, workspace_id: str, host_id: str, job_id: str) -> None:
+        self._job_repository.delete(workspace_id, host_id, job_id)

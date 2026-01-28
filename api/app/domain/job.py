@@ -1,53 +1,30 @@
 from datetime import datetime
 from enum import Enum
-
-from pydantic import BaseModel, ConfigDict, Field
-
-JobId = str
+from pydantic import BaseModel, Field
 
 
 class JobStatus(str, Enum):
     RUNNING = "RUNNING"
     FINISHED = "FINISHED"
     FAILED = "FAILED"
+    CANCELED = "CANCELED"
 
 
-class JobBase(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+class Job(BaseModel):
+    id: str
+    workspace_id: str
+    host_id: str
+
+    status: JobStatus
 
     project: str
     command: str
-    args: list[str]
+    args: list[str] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)
 
-
-class JobCreate(JobBase):
-    started_at: datetime | None = None
-
-
-class JobUpdate(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    status: JobStatus | None = None
-    success: bool | None = None
-    err: str | None = None
-    tail_lines: list[str] | None = None
-    finished_at: datetime | None = None
-
-
-class JobQuery(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    status: JobStatus | None = None
-    project: str | None = None
-    tag: str | None = None
-
-
-class Job(JobBase):
-    id: JobId
-    status: JobStatus = JobStatus.RUNNING
-    success: bool | None = None
     err: str | None = None
     tail_lines: list[str] = Field(default_factory=list)
+
+    created_at: datetime
     started_at: datetime | None = None
     finished_at: datetime | None = None

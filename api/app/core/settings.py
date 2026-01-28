@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     aws_region: str = "ap-northeast-1"
     aws_access_key: str = "dummy"
     aws_secret_key: str = "dummy"
-    ddb_jobs_table_name: str = "jobwatch-jobs"
+    ddb_table_name: str = "jobwatch-dev"
     log_level: str = "INFO"
 
     def dynamodb_kwargs(self) -> dict[str, object]:
