@@ -8,6 +8,8 @@ import (
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/kanaya/jobwatch/cli/internal/notifier"
 )
 
 type SlackNotifier struct {
@@ -15,14 +17,15 @@ type SlackNotifier struct {
 	Client     *http.Client
 }
 
-func New(webhookURL string) *SlackNotifier {
+func New(tr *http.Transport, webhookURL string) *SlackNotifier {
 	return &SlackNotifier{
 		WebhookURL: webhookURL,
-		Client:     &http.Client{Timeout: 5 * time.Second},
+		Client:     &http.Client{Transport: tr, Timeout: 5 * time.Second},
 	}
 }
 
-func (s *SlackNotifier) Notify(ctx context.Context, msg string) error {
+func (s *SlackNotifier) Notify(ctx context.Context, n notifier.Notification) error {
+	msg := format(n)
 	payload := map[string]any{
 		"text": msg,
 	}

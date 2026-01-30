@@ -15,6 +15,11 @@ func TestLoad_LoadsWithSlackWebhook(t *testing.T) {
   name: my_project
   tags: [monitoring]
 
+api:
+  enabled: false
+  endpoint: http://localhost:8000
+  token: ${JOBWATCH_HOST_TOKEN}
+
 run:
   log_tail: 80
 
@@ -52,6 +57,11 @@ func TestLoad_FailsWhenSlackWebhookEnvMissing(t *testing.T) {
 	yamlText := `project:
   name: my_project
   tags: [monitoring]
+
+api:
+  enabled: false
+  base_url: http://localhost:8000
+  token: ${JOBWATCH_HOST_TOKEN}
 
 run:
   log_tail: 80

@@ -8,7 +8,7 @@ import (
 	"github.com/kanaya/jobwatch/cli/internal/notifier"
 )
 
-func Format(n notifier.Notification) string {
+func format(n notifier.Notification) string {
 	// ===== Status =====
 	icon := "✅"
 	status := "SUCCESS"

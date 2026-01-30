@@ -2,6 +2,7 @@ package config
 
 type Config struct {
 	Project Project `yaml:"project"`
+	API     API     `yaml:"api"`
 	Run     Run     `yaml:"run"`
 	Notify  Notify  `yaml:"notify"`
 }
@@ -9,6 +10,12 @@ type Config struct {
 type Project struct {
 	Name string   `yaml:"name"`
 	Tags []string `yaml:"tags"`
+}
+
+type API struct {
+	Enabled bool   `yaml:"enabled"`
+	BaseURL string `yaml:"base_url"`
+	Token   string `yaml:"token"`
 }
 
 type Run struct {

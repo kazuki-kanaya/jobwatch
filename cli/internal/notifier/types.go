@@ -20,6 +20,7 @@ type Notification struct {
 	FinishedAt time.Time
 }
 
+// Notifier sends notifications about job execution
 type Notifier interface {
-	Notify(ctx context.Context, msg string) error
+	Notify(ctx context.Context, notification Notification) error
 }

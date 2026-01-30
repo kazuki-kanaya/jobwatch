@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"context"
 	"os"
 	"os/exec"
 	"sync"
@@ -14,25 +15,49 @@ type Result struct {
 	FinishedAt time.Time
 }
 
-func Run(command string, args []string, tailN int) Result {
+type Runner interface {
+	Run(ctx context.Context, command string, args []string) Result
+}
+
+type Executor struct {
+	tailN int
+}
+
+func NewExecutor(tailN int) *Executor {
+	return &Executor{tailN: tailN}
+}
+
+func (e *Executor) Run(ctx context.Context, command string, args []string) Result {
 	start := time.Now()
 
-	cmd := exec.Command(command, args...)
+	cmd := exec.CommandContext(ctx, command, args...)
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return Result{Err: err}
+		return Result{
+			Err:        err,
+			StartedAt:  start,
+			FinishedAt: time.Now(),
+		}
 	}
 
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
-		return Result{Err: err}
+		return Result{
+			Err:        err,
+			StartedAt:  start,
+			FinishedAt: time.Now(),
+		}
 	}
 
-	tail := NewTailBuffer(tailN)
+	tail := NewTailBuffer(e.tailN)
 
 	if err := cmd.Start(); err != nil {
-		return Result{Err: err}
+		return Result{
+			Err:        err,
+			StartedAt:  start,
+			FinishedAt: time.Now(),
+		}
 	}
 
 	var wg sync.WaitGroup
