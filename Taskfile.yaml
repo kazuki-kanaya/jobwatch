@@ -29,7 +29,7 @@ tasks:
     dir: api
     cmds:
       - uv run ruff check . --fix
-  
+
   api:fix:
     dir: api
     deps: [api:fmt, api:lint]
@@ -54,7 +54,7 @@ tasks:
     dir: cli
     cmds:
       - go vet ./...
-  
+
   cli:fix:
     dir: cli
     deps: [cli:fmt, cli:vet]
@@ -78,17 +78,17 @@ tasks:
     dir: web
     cmds:
       - pnpm fmt
-  
+
   web:lint:
     dir: web
     cmds:
       - pnpm lint
-  
+
   web:fix:
     dir: web
     cmds:
       - pnpm fix
-  
+
   web:build:
     dir: web
     cmds:
