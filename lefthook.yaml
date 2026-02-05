@@ -1,0 +1,14 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: api lint+fmt
+      glob: "api/**/*.py"
+      run: task api:ci
+
+    - name: cli fmt+vet+test
+      glob: "cli/**/*.go"
+      run: task cli:ci
+
+    - name: web lint+fmt
+      glob: "web/**/*.{ts,tsx,js,jsx}"
+      run: task web:ci
