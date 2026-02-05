@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      
+
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -56,3 +56,37 @@ jobs:
 
       - name: Task CI
         run: task -d .. api:ci
+
+  web:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: web/package.json
+          cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: web/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Task CI
+        run: task -d .. web:ci

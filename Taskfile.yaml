@@ -30,8 +30,14 @@ tasks:
     cmds:
       - uv run ruff check . --fix
 
-  api:ci:
+  api:fix:
+    dir: api
     deps: [api:fmt, api:lint]
+
+  api:ci:
+    deps: [api:fix]
+    cmds:
+      - git diff --exit-code
 
   api:dev:
     dir: api
@@ -49,6 +55,10 @@ tasks:
     cmds:
       - go vet ./...
 
+  cli:fix:
+    dir: cli
+    deps: [cli:fmt, cli:vet]
+
   cli:test:
     dir: cli
     cmds:
@@ -60,4 +70,31 @@ tasks:
       - go build .
 
   cli:ci:
-    deps: [cli:fmt, cli:vet, cli:test, cli:build]
+    deps: [cli:fix, cli:test, cli:build]
+    cmds:
+      - git diff --exit-code
+
+  web:fmt:
+    dir: web
+    cmds:
+      - pnpm fmt
+
+  web:lint:
+    dir: web
+    cmds:
+      - pnpm lint
+
+  web:fix:
+    dir: web
+    cmds:
+      - pnpm fix
+
+  web:build:
+    dir: web
+    cmds:
+      - pnpm build
+
+  web:ci:
+    deps: [web:fix, web:build]
+    cmds:
+      - git diff --exit-code
