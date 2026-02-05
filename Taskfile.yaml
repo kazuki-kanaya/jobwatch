@@ -61,3 +61,26 @@ tasks:
 
   cli:ci:
     deps: [cli:fmt, cli:vet, cli:test, cli:build]
+
+  web:fmt:
+    dir: web
+    cmds:
+      - pnpm fmt
+  
+  web:lint:
+    dir: web
+    cmds:
+      - pnpm lint
+  
+  web:check:
+    dir: web
+    cmds:
+      - pnpm check
+  
+  web:build:
+    dir: web
+    cmds:
+      - pnpm build
+
+  web:ci:
+    deps: [web:fmt, web:lint, web:build]
