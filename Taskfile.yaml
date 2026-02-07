@@ -36,7 +36,7 @@ tasks:
 
   api:ci:
     cmds:
-      - task: api:test
+      - task: api:fix
       - git diff --exit-code
 
   api:dev:
@@ -116,11 +116,16 @@ tasks:
     dir: infra/terraform
     cmds:
       - terraform validate
+  
+  infra:fix:
+    dir: infra/terraform
+    deps: [infra:init]
+    cmds:
+      - task: infra:fmt
+      - task: infra:validate
 
   infra:ci:
     dir: infra/terraform
     cmds:
-      - task: infra:init
-      - task: infra:fmt
-      - task: infra:validate
+      - task: infra:fix
       - git diff --exit-code
