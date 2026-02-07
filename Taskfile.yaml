@@ -98,3 +98,8 @@ tasks:
     deps: [web:fix, web:build]
     cmds:
       - git diff --exit-code
+
+  infra:fmt:
+    dir: infra/terraform
+    cmds:
+      - terraform fmt -recursive
