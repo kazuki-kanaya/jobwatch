@@ -35,8 +35,8 @@ tasks:
     deps: [api:fmt, api:lint]
 
   api:ci:
-    deps: [api:fix]
     cmds:
+      - task: api:test
       - git diff --exit-code
 
   api:dev:
@@ -70,8 +70,10 @@ tasks:
       - go build .
 
   cli:ci:
-    deps: [cli:fix, cli:test, cli:build]
     cmds:
+      - task: cli:fix
+      - task: cli:test
+      - task: cli:build
       - git diff --exit-code
 
   web:fmt:
@@ -95,8 +97,9 @@ tasks:
       - pnpm build
 
   web:ci:
-    deps: [web:fix, web:build]
     cmds:
+      - task: web:fix
+      - task: web:build
       - git diff --exit-code
 
   infra:init:
@@ -115,6 +118,9 @@ tasks:
       - terraform validate
 
   infra:ci:
-    deps: [infra:init, infra:fmt, infra:validate]
+    dir: infra/terraform
     cmds:
+      - task: infra:init
+      - task: infra:fmt
+      - task: infra:validate
       - git diff --exit-code
