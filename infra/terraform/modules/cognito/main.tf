@@ -76,8 +76,16 @@ resource "aws_cognito_user_pool_client" "this" {
 }
 
 resource "aws_cognito_user_pool_domain" "this" {
-  domain       = "${var.domain_prefix}-${random_string.domain_suffix.result}"
+  domain                = "${var.domain_prefix}-${random_string.domain_suffix.result}"
+  user_pool_id          = aws_cognito_user_pool.this.id
+  managed_login_version = 2
+}
+
+resource "aws_cognito_managed_login_branding" "this" {
   user_pool_id = aws_cognito_user_pool.this.id
+  client_id    = aws_cognito_user_pool_client.this.id
+
+  settings = file("${path.module}/assets/cognito-managed-login-branding.json")
 }
 
 data "aws_region" "current" {}
