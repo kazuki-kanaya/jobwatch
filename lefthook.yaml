@@ -16,3 +16,7 @@ pre-commit:
     - name: infra ci
       glob: "infra/terraform/**/*.tf"
       run: task infra:ci
+
+pre-push:
+  jobs:
+    - run: task all:ci

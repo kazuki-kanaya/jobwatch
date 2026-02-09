@@ -7,8 +7,3 @@ output "user_pool_client_id" {
   description = "Cognito User Pool Client ID"
   value       = aws_cognito_user_pool_client.this.id
 }
-
-output "user_pool_domain" {
-  description = "Cognito User Pool Domain"
-  value       = "${aws_cognito_user_pool_domain.this.domain}.auth.${data.aws_region.current.id}.amazoncognito.com"
-}

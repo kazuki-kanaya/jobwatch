@@ -37,7 +37,7 @@ tasks:
   api:ci:
     cmds:
       - task: api:fix
-      - git diff --exit-code
+      - git diff --exit-code -- api
 
   api:dev:
     dir: api
@@ -48,7 +48,6 @@ tasks:
     dir: cli
     cmds:
       - go fmt ./...
-      - git diff --exit-code
 
   cli:vet:
     dir: cli
@@ -74,7 +73,7 @@ tasks:
       - task: cli:fix
       - task: cli:test
       - task: cli:build
-      - git diff --exit-code
+      - git diff --exit-code -- cli
 
   web:fmt:
     dir: web
@@ -100,7 +99,7 @@ tasks:
     cmds:
       - task: web:fix
       - task: web:build
-      - git diff --exit-code
+      - git diff --exit-code -- web
 
   infra:init:
     dir: infra/terraform
@@ -146,4 +145,10 @@ tasks:
     dir: infra/terraform
     cmds:
       - task: infra:fix
-      - git diff --exit-code
+      - git diff --exit-code -- infra/terraform
+  
+  all:ci:
+    deps: [api:ci, cli:ci, web:ci, infra:ci]
+
+  all:fix:
+    deps: [api:fix, cli:fix, web:fix, infra:fix]
