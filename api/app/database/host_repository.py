@@ -9,14 +9,14 @@ class HostRepository:
         self._table = table
 
     def create(self, host: Host) -> Host:
-        pk = DynamoDBKeys.pk(host.workspace_id)
+        pk = DynamoDBKeys.workspace_pk(host.workspace_id)
         sk = DynamoDBKeys.host_sk(host.host_id)
         item = DynamoDBMappers.to_item(host, pk, sk)
         self._table.put(item)
         return host
 
     def get(self, workspace_id: str, host_id: str) -> Host | None:
-        pk = DynamoDBKeys.pk(workspace_id)
+        pk = DynamoDBKeys.workspace_pk(workspace_id)
         sk = DynamoDBKeys.host_sk(host_id)
         item = self._table.get(pk, sk)
         if item is None:
@@ -32,14 +32,14 @@ class HostRepository:
         return DynamoDBMappers.from_item(items[0], Host)
 
     def list_by_workspace(self, workspace_id: str) -> Iterable[Host]:
-        pk = DynamoDBKeys.pk(workspace_id)
+        pk = DynamoDBKeys.workspace_pk(workspace_id)
         sk_prefix = DynamoDBKeys.host_prefix()
         items = self._table.query_begins_with(pk, sk_prefix)
         for item in items:
             yield DynamoDBMappers.from_item(item, Host)
 
     def update(self, host: Host) -> Host:
-        pk = DynamoDBKeys.pk(host.workspace_id)
+        pk = DynamoDBKeys.workspace_pk(host.workspace_id)
         sk = DynamoDBKeys.host_sk(host.host_id)
         item = DynamoDBMappers.to_item(host, pk, sk)
         self._table.put(item)
@@ -47,7 +47,7 @@ class HostRepository:
 
     def delete(self, workspace_id: str, host_id: str) -> None:
         """Delete a host and all its associated jobs."""
-        pk = DynamoDBKeys.pk(workspace_id)
+        pk = DynamoDBKeys.workspace_pk(workspace_id)
         # Delete all jobs associated with this host
         sk_prefix = DynamoDBKeys.job_host_prefix(host_id)
         job_items = list(self._table.query_begins_with(pk, sk_prefix))

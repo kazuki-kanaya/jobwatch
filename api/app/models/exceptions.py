@@ -20,3 +20,9 @@ class AuthenticationError(JobwatchException):
     """Raised when authentication fails."""
 
     pass
+
+
+class PermissionDeniedError(JobwatchException):
+    """Raised when access is denied."""
+
+    pass

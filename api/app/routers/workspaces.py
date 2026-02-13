@@ -1,16 +1,21 @@
-from datetime import datetime, timezone
-from uuid import uuid4
+from fastapi import APIRouter, Depends, status
 
-from fastapi import APIRouter, Depends, HTTPException, status
-
-from app.database.workspace_repository import WorkspaceRepository
-from app.models.workspace import Workspace
+from app.dependencies.security import get_current_user, require_workspace_role
+from app.dependencies.services import get_workspace_service
+from app.models.user import User
+from app.models.workspace_membership import MembershipRole, WorkspaceMembership
 from app.schemas.workspace import (
     WorkspaceCreateRequest,
+    WorkspaceMemberUpsertRequest,
+    WorkspaceMemberResponse,
+    WorkspaceMemberRoleUpdateRequest,
+    WorkspaceOwnerTransferRequest,
+    WorkspaceOwnerTransferResponse,
+    WorkspaceMembersResponse,
     WorkspaceResponse,
     WorkspaceUpdateRequest,
 )
-from app.dependencies import get_workspace_repository
+from app.services.workspace_service import WorkspaceService
 
 router = APIRouter(prefix="/workspaces", tags=["workspaces"])
 
@@ -18,86 +23,105 @@ router = APIRouter(prefix="/workspaces", tags=["workspaces"])
 @router.post("", response_model=WorkspaceResponse, status_code=status.HTTP_201_CREATED)
 def create_workspace(
     request: WorkspaceCreateRequest,
-    repository: WorkspaceRepository = Depends(get_workspace_repository),
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    current_user: User = Depends(get_current_user),
 ) -> WorkspaceResponse:
     """Create a new workspace."""
-    now = datetime.now(timezone.utc)
-    workspace = Workspace(
-        workspace_id=f"workspace-{uuid4().hex[:8]}",
-        name=request.name,
-        created_at=now,
-        updated_at=now,
-    )
-
-    created = repository.create(workspace)
-
-    return WorkspaceResponse(
-        workspace_id=created.workspace_id,
-        name=created.name,
-        created_at=created.created_at,
-        updated_at=created.updated_at,
-    )
+    return workspace_service.create_workspace(request, current_user)
 
 
 @router.get("/{workspace_id}", response_model=WorkspaceResponse)
 def get_workspace(
     workspace_id: str,
-    repository: WorkspaceRepository = Depends(get_workspace_repository),
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.VIEWER)),
 ) -> WorkspaceResponse:
     """Get a single workspace by ID."""
-    workspace = repository.get(workspace_id)
-    if workspace is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Workspace {workspace_id} not found",
-        )
-
-    return WorkspaceResponse(
-        workspace_id=workspace.workspace_id,
-        name=workspace.name,
-        created_at=workspace.created_at,
-        updated_at=workspace.updated_at,
-    )
+    return workspace_service.get_workspace(workspace_id)
 
 
 @router.patch("/{workspace_id}", response_model=WorkspaceResponse)
 def update_workspace(
     workspace_id: str,
     request: WorkspaceUpdateRequest,
-    repository: WorkspaceRepository = Depends(get_workspace_repository),
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
 ) -> WorkspaceResponse:
     """Update a workspace's information."""
-    workspace = repository.get(workspace_id)
-    if workspace is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Workspace {workspace_id} not found",
-        )
-
-    workspace.name = request.name
-    workspace.updated_at = datetime.now(timezone.utc)
-
-    updated = repository.update(workspace)
-
-    return WorkspaceResponse(
-        workspace_id=updated.workspace_id,
-        name=updated.name,
-        created_at=updated.created_at,
-        updated_at=updated.updated_at,
-    )
+    return workspace_service.update_workspace(workspace_id, request)
 
 
 @router.delete("/{workspace_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_workspace(
     workspace_id: str,
-    repository: WorkspaceRepository = Depends(get_workspace_repository),
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
 ) -> None:
     """Delete a workspace and all its associated resources."""
-    workspace = repository.get(workspace_id)
-    if workspace is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Workspace {workspace_id} not found",
-        )
+    workspace_service.delete_workspace(workspace_id)
 
-    repository.delete(workspace)
+
+@router.get("/{workspace_id}/members", response_model=WorkspaceMembersResponse)
+def list_members(
+    workspace_id: str,
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.VIEWER)),
+) -> WorkspaceMembersResponse:
+    """List members in a workspace."""
+    return workspace_service.list_members(workspace_id)
+
+
+@router.put("/{workspace_id}/members/{user_id}", response_model=WorkspaceMemberResponse)
+def add_member(
+    workspace_id: str,
+    user_id: str,
+    request: WorkspaceMemberUpsertRequest,
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
+) -> WorkspaceMemberResponse:
+    """Add a member to a workspace."""
+    return workspace_service.add_member(workspace_id, user_id, request)
+
+
+@router.patch(
+    "/{workspace_id}/members/{user_id}",
+    response_model=WorkspaceMemberResponse,
+)
+def update_member_role(
+    workspace_id: str,
+    user_id: str,
+    request: WorkspaceMemberRoleUpdateRequest,
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    current_user: User = Depends(get_current_user),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
+) -> WorkspaceMemberResponse:
+    """Update a member role in a workspace."""
+    return workspace_service.update_member_role(
+        workspace_id, user_id, request, current_user
+    )
+
+
+@router.delete(
+    "/{workspace_id}/members/{user_id}", status_code=status.HTTP_204_NO_CONTENT
+)
+def remove_member(
+    workspace_id: str,
+    user_id: str,
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    current_user: User = Depends(get_current_user),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
+) -> None:
+    """Remove a member from a workspace."""
+    workspace_service.remove_member(workspace_id, user_id, current_user)
+
+
+@router.post("/{workspace_id}/owner", response_model=WorkspaceOwnerTransferResponse)
+def transfer_owner(
+    workspace_id: str,
+    request: WorkspaceOwnerTransferRequest,
+    workspace_service: WorkspaceService = Depends(get_workspace_service),
+    current_user: User = Depends(get_current_user),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
+) -> WorkspaceOwnerTransferResponse:
+    """Transfer workspace ownership to another member."""
+    return workspace_service.transfer_owner(workspace_id, request, current_user)

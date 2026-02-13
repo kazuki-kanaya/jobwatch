@@ -1,17 +1,14 @@
 import hashlib
 import secrets
-from datetime import datetime
 
-from pydantic import BaseModel
+from app.models.timestamped import TimestampedModel
 
 
-class Host(BaseModel):
+class Host(TimestampedModel):
     host_id: str
     workspace_id: str
     name: str
     token_hash: str
-    created_at: datetime
-    updated_at: datetime
 
     @staticmethod
     def generate_token() -> str:

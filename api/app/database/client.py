@@ -15,7 +15,7 @@ class DynamoDBKeys:
     """DynamoDB key generation utilities."""
 
     @staticmethod
-    def pk(workspace_id: str) -> str:
+    def workspace_pk(workspace_id: str) -> str:
         return f"WORKSPACE#{workspace_id}"
 
     @staticmethod
@@ -41,6 +41,22 @@ class DynamoDBKeys:
     @staticmethod
     def job_host_prefix(host_id: str) -> str:
         return f"META#JOB#HOST#{host_id}#"
+
+    @staticmethod
+    def user_pk(user_id: str) -> str:
+        return f"USER#{user_id}"
+
+    @staticmethod
+    def user_sk() -> str:
+        return "META#USER"
+
+    @staticmethod
+    def workspace_membership_sk(user_id: str) -> str:
+        return f"META#MEMBERSHIP#{user_id}"
+
+    @staticmethod
+    def workspace_membership_prefix() -> str:
+        return "META#MEMBERSHIP#"
 
 
 class DynamoDBMappers:
@@ -105,6 +121,39 @@ class DynamoDBTable:
                 raise NotFoundException("Table not found") from e
             raise RepositoryException(
                 f"Failed to get item: {error_code} - {e.response['Error']['Message']}"
+            ) from e
+
+    def batch_get(self, keys: list[dict[str, str]]) -> list[dict]:
+        """Get multiple items in batch. Keys must have PK and SK keys."""
+        if not keys:
+            return []
+
+        table_name = self._table.name
+        client = self._table.meta.client
+        items: list[dict] = []
+
+        try:
+            logger.debug("Batch getting %d items", len(keys))
+            for i in range(0, len(keys), 100):
+                request_items = {table_name: {"Keys": keys[i : i + 100]}}
+                while request_items:
+                    response = client.batch_get_item(RequestItems=request_items)
+                    items.extend(response.get("Responses", {}).get(table_name, []))
+                    unprocessed = response.get("UnprocessedKeys", {})
+                    request_items = unprocessed if unprocessed else {}
+            logger.debug("Successfully batch got %d items", len(items))
+            return items
+        except ClientError as e:
+            error_code = e.response["Error"]["Code"]
+            logger.error(
+                "Failed to batch get items: %s - %s",
+                error_code,
+                e.response["Error"]["Message"],
+            )
+            if error_code == "ResourceNotFoundException":
+                raise NotFoundException("Table not found") from e
+            raise RepositoryException(
+                f"Failed to batch get items: {error_code} - {e.response['Error']['Message']}"
             ) from e
 
     def delete(self, pk: str, sk: str) -> None:
@@ -262,3 +311,16 @@ class DynamoDBTable:
             raise RepositoryException(
                 f"Failed to query GSI: {error_code} - {e.response['Error']['Message']}"
             ) from e
+
+    def transact_write(self, transact_items: list[dict]) -> None:
+        """Execute a DynamoDB transactional write."""
+        client = self._table.meta.client
+        table_name = self._table.name
+
+        normalized = []
+        for transact_item in transact_items:
+            operation = next(iter(transact_item))
+            body = transact_item[operation]
+            normalized.append({operation: {"TableName": table_name, **body}})
+
+        client.transact_write_items(TransactItems=normalized)
