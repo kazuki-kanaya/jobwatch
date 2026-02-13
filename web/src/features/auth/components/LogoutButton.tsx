@@ -8,8 +8,10 @@ type Props = {
 export default function LogoutButton(props: Props) {
   const { children } = props;
   const auth = useAuth();
+
   const logout = () => {
     void auth.removeUser();
   };
+
   return <Button onClick={logout}>{children}</Button>;
 }

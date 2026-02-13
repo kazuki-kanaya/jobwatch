@@ -1,6 +1,6 @@
 import { useAuth } from "react-oidc-context";
 import { Outlet, useLocation } from "react-router";
-import { storageKeys } from "@/features/auth/constants";
+import { authStorageKeys } from "@/features/auth/auth.config";
 
 export default function AuthGuard() {
   const auth = useAuth();
@@ -8,7 +8,7 @@ export default function AuthGuard() {
 
   if (auth.isLoading) return <div>Loading...</div>;
   if (!auth.isAuthenticated) {
-    sessionStorage.setItem(storageKeys.redirectAfterLoginKey, location.pathname + location.search);
+    sessionStorage.setItem(authStorageKeys.redirectAfterLogin, location.pathname + location.search);
     void auth.signinRedirect();
     return null;
   }

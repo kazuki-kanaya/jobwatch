@@ -13,7 +13,7 @@ def create_app() -> FastAPI:
 
     app = FastAPI(title="Jobwatch API")
     register_routers(app)
-    register_middlewares(app)
+    register_middlewares(app, settings)
     register_exception_handlers(app)
     return app
 
