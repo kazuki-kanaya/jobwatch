@@ -26,3 +26,9 @@ class PermissionDeniedError(JobwatchException):
     """Raised when access is denied."""
 
     pass
+
+
+class ConditionalCheckFailedError(JobwatchException):
+    """Raised when a conditional write check fails."""
+
+    pass

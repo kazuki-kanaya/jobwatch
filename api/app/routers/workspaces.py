@@ -1,9 +1,17 @@
 from fastapi import APIRouter, Depends, status
 
 from app.dependencies.security import get_current_user, require_workspace_role
-from app.dependencies.services import get_workspace_service
+from app.dependencies.services import (
+    get_workspace_invitation_service,
+    get_workspace_service,
+)
 from app.models.user import User
 from app.models.workspace_membership import MembershipRole, WorkspaceMembership
+from app.schemas.invitation import (
+    WorkspaceInvitationCreateRequest,
+    WorkspaceInvitationCreateResponse,
+    WorkspaceInvitationsResponse,
+)
 from app.schemas.workspace import (
     WorkspaceCreateRequest,
     WorkspaceMemberUpsertRequest,
@@ -15,6 +23,7 @@ from app.schemas.workspace import (
     WorkspaceResponse,
     WorkspaceUpdateRequest,
 )
+from app.services.workspace_invitation_service import WorkspaceInvitationService
 from app.services.workspace_service import WorkspaceService
 
 router = APIRouter(prefix="/workspaces", tags=["workspaces"])
@@ -125,3 +134,52 @@ def transfer_owner(
 ) -> WorkspaceOwnerTransferResponse:
     """Transfer workspace ownership to another member."""
     return workspace_service.transfer_owner(workspace_id, request, current_user)
+
+
+@router.post(
+    "/{workspace_id}/invitations",
+    response_model=WorkspaceInvitationCreateResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_invitation(
+    workspace_id: str,
+    request: WorkspaceInvitationCreateRequest,
+    invitation_service: WorkspaceInvitationService = Depends(
+        get_workspace_invitation_service
+    ),
+    current_user: User = Depends(get_current_user),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
+) -> WorkspaceInvitationCreateResponse:
+    """Create invitation token for workspace onboarding."""
+    return invitation_service.create_invitation(workspace_id, request, current_user)
+
+
+@router.get(
+    "/{workspace_id}/invitations",
+    response_model=WorkspaceInvitationsResponse,
+)
+def list_invitations(
+    workspace_id: str,
+    invitation_service: WorkspaceInvitationService = Depends(
+        get_workspace_invitation_service
+    ),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
+) -> WorkspaceInvitationsResponse:
+    """List workspace invitations."""
+    return invitation_service.list_invitations(workspace_id)
+
+
+@router.delete(
+    "/{workspace_id}/invitations/{invitation_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def revoke_invitation(
+    workspace_id: str,
+    invitation_id: str,
+    invitation_service: WorkspaceInvitationService = Depends(
+        get_workspace_invitation_service
+    ),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.OWNER)),
+) -> None:
+    """Revoke a workspace invitation."""
+    invitation_service.revoke_invitation(workspace_id, invitation_id)

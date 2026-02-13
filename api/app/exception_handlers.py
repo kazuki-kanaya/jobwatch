@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 
 from app.models.exceptions import (
     AuthenticationError,
+    ConditionalCheckFailedError,
     NotFoundException,
     PermissionDeniedError,
     RepositoryException,
@@ -39,6 +40,16 @@ def register_exception_handlers(app: FastAPI) -> None:
         """Handle permission denied errors with 403 status."""
         return JSONResponse(
             status_code=http.HTTPStatus.FORBIDDEN,
+            content={"detail": str(exception)},
+        )
+
+    @app.exception_handler(ConditionalCheckFailedError)
+    async def handle_conditional_check_failed_error(
+        request: Request, exception: ConditionalCheckFailedError
+    ) -> JSONResponse:
+        """Handle conditional check failures with 409 status."""
+        return JSONResponse(
+            status_code=http.HTTPStatus.CONFLICT,
             content={"detail": str(exception)},
         )
 

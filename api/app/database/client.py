@@ -4,7 +4,11 @@ from typing import Any, Iterable, Type, TypeVar
 from botocore.exceptions import ClientError
 from pydantic import BaseModel
 
-from app.models.exceptions import NotFoundException, RepositoryException
+from app.models.exceptions import (
+    ConditionalCheckFailedError,
+    NotFoundException,
+    RepositoryException,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -58,13 +62,21 @@ class DynamoDBKeys:
     def workspace_membership_prefix() -> str:
         return "META#MEMBERSHIP#"
 
+    @staticmethod
+    def workspace_invitation_sk(invitation_id: str) -> str:
+        return f"META#INVITATION#{invitation_id}"
+
+    @staticmethod
+    def workspace_invitation_prefix() -> str:
+        return "META#INVITATION#"
+
 
 class DynamoDBMappers:
     """Entity <-> DynamoDB item mappers."""
 
     @staticmethod
     def to_item(entity: BaseModel, pk: str, sk: str) -> dict[str, Any]:
-        dictionary = entity.model_dump(mode="json")
+        dictionary = entity.model_dump(mode="json", exclude_none=True)
         dictionary.update({"PK": pk, "SK": sk})
         return dictionary
 
@@ -170,6 +182,41 @@ class DynamoDBTable:
             )
             raise RepositoryException(
                 f"Failed to delete item: {error_code} - {e.response['Error']['Message']}"
+            ) from e
+
+    def update(
+        self,
+        key: dict[str, str],
+        update_expression: str,
+        expression_attribute_values: dict[str, Any],
+        expression_attribute_names: dict[str, str] | None = None,
+        condition_expression: str | None = None,
+    ) -> dict:
+        try:
+            logger.debug("Updating item: PK=%s, SK=%s", key.get("PK"), key.get("SK"))
+            kwargs: dict[str, Any] = {
+                "Key": key,
+                "UpdateExpression": update_expression,
+                "ExpressionAttributeValues": expression_attribute_values,
+                "ReturnValues": "ALL_NEW",
+            }
+            if expression_attribute_names:
+                kwargs["ExpressionAttributeNames"] = expression_attribute_names
+            if condition_expression:
+                kwargs["ConditionExpression"] = condition_expression
+            response = self._table.update_item(**kwargs)
+            return response.get("Attributes", {})
+        except ClientError as e:
+            error_code = e.response["Error"]["Code"]
+            logger.error(
+                "Failed to update item: %s - %s",
+                error_code,
+                e.response["Error"]["Message"],
+            )
+            if error_code == "ConditionalCheckFailedException":
+                raise ConditionalCheckFailedError("Conditional check failed") from e
+            raise RepositoryException(
+                f"Failed to update item: {error_code} - {e.response['Error']['Message']}"
             ) from e
 
     def batch_delete(self, items: list[dict]) -> None:

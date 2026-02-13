@@ -23,5 +23,5 @@ def get_dynamodb_table() -> DynamoDBTable:
     settings = get_settings()
     kwargs = settings.dynamodb_kwargs
     dynamodb = boto3.resource("dynamodb", **kwargs)
-    table = dynamodb.Table(settings.ddb_table_name)  # type: ignore
+    table = dynamodb.Table(settings.ddb_table_name)
     return DynamoDBTable(table)

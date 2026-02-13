@@ -29,6 +29,7 @@ tasks:
     dir: api
     cmds:
       - uv run ruff check . --fix
+      - uv run ty check .
 
   api:fix:
     dir: api

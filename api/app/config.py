@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     ddb_table_name: str = "jobwatch-dev"
     log_level: str = "INFO"
     app_timezone: str = "Asia/Tokyo"
+    invitation_expiry_hours: int = 168
 
     oidc_jwks_url: str
     oidc_audience: str
