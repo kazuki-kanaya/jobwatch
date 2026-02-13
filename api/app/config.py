@@ -1,5 +1,4 @@
 import logging
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -17,6 +16,7 @@ class Settings(BaseSettings):
     aws_secret_key: str = "dummy"
     ddb_table_name: str = "jobwatch-dev"
     log_level: str = "INFO"
+    app_timezone: str = "Asia/Tokyo"
 
     oidc_jwks_url: str
     oidc_audience: str

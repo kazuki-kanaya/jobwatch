@@ -70,7 +70,7 @@ func (c *APIClient) Start(ctx context.Context, req StartRequest) (string, error)
 	httpReq, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPost,
-		c.baseURL+"/v1/jobs",
+		c.baseURL+"/cli/jobs",
 		bytes.NewReader(body),
 	)
 	if err != nil {
@@ -123,7 +123,7 @@ func (c *APIClient) Finish(ctx context.Context, jobID string, req FinishRequest)
 	httpReq, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPatch,
-		fmt.Sprintf("%s/v1/jobs/%s", c.baseURL, jobID),
+		fmt.Sprintf("%s/cli/jobs/%s", c.baseURL, jobID),
 		bytes.NewReader(body),
 	)
 	if err != nil {

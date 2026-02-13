@@ -1,87 +1,51 @@
-from datetime import datetime, timezone
-from uuid import uuid4
+from fastapi import APIRouter, Depends, status
 
-from fastapi import APIRouter, Depends, HTTPException, status
-
-from app.database.job_repository import JobRepository
+from app.dependencies.security import (
+    get_current_host,
+    require_workspace_role,
+)
+from app.dependencies.services import get_job_service
 from app.models.host import Host
-from app.models.job import Job, JobStatus
+from app.models.workspace_membership import MembershipRole, WorkspaceMembership
 from app.schemas.job import JobCreateRequest, JobResponse, JobUpdateRequest
-from app.dependencies import get_current_host, get_job_repository
+from app.services.job_service import JobService
 
 router = APIRouter(tags=["jobs"])
 
 
 @router.post(
-    "/workspaces/{workspace_id}/jobs",
+    "/cli/jobs",
     response_model=JobResponse,
     status_code=status.HTTP_201_CREATED,
 )
 def create_job(
-    workspace_id: str,
     request: JobCreateRequest,
     current_host: Host = Depends(get_current_host),
-    repository: JobRepository = Depends(get_job_repository),
+    job_service: JobService = Depends(get_job_service),
 ) -> JobResponse:
-    """Create a new job (authenticated by host token)."""
-    if current_host.workspace_id != workspace_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Host does not belong to this workspace",
-        )
+    """Create a new job by CLI (authenticated by host token)."""
+    return job_service.create_job(current_host.workspace_id, request, current_host)
 
-    now = datetime.now(timezone.utc)
-    job = Job(
-        job_id=f"job-{uuid4().hex[:8]}",
-        workspace_id=workspace_id,
-        host_id=current_host.host_id,
-        status=JobStatus.RUNNING,
-        project=request.project,
-        command=request.command,
-        args=request.args,
-        tags=request.tags,
-        created_at=now,
-        started_at=request.started_at,
-    )
 
-    created = repository.create(job)
-
-    return JobResponse(
-        job_id=created.job_id,
-        project=created.project,
-        command=created.command,
-        args=created.args,
-        tags=created.tags,
-        status=created.status,
-        err=created.err,
-        tail_lines=created.tail_lines,
-        started_at=created.started_at,
-        finished_at=created.finished_at,
-    )
+@router.patch("/cli/jobs/{job_id}", response_model=JobResponse)
+def update_job(
+    job_id: str,
+    request: JobUpdateRequest,
+    current_host: Host = Depends(get_current_host),
+    job_service: JobService = Depends(get_job_service),
+) -> JobResponse:
+    """Update a job's status by CLI (authenticated by host token)."""
+    return job_service.update_job(job_id, request, current_host)
 
 
 @router.get("/workspaces/{workspace_id}/jobs", response_model=list[JobResponse])
 def list_jobs_by_workspace(
     workspace_id: str,
-    repository: JobRepository = Depends(get_job_repository),
+    job_service: JobService = Depends(get_job_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.VIEWER)),
 ) -> list[JobResponse]:
     """List all jobs in a workspace."""
-    jobs = repository.list_by_workspace(workspace_id)
-    return [
-        JobResponse(
-            job_id=job.job_id,
-            project=job.project,
-            command=job.command,
-            args=job.args,
-            tags=job.tags,
-            status=job.status,
-            err=job.err,
-            tail_lines=job.tail_lines,
-            started_at=job.started_at,
-            finished_at=job.finished_at,
-        )
-        for job in jobs
-    ]
+    return job_service.list_jobs_by_workspace(workspace_id)
 
 
 @router.get(
@@ -90,118 +54,32 @@ def list_jobs_by_workspace(
 def list_jobs_by_host(
     workspace_id: str,
     host_id: str,
-    repository: JobRepository = Depends(get_job_repository),
+    job_service: JobService = Depends(get_job_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.VIEWER)),
 ) -> list[JobResponse]:
     """List all jobs for a specific host."""
-    jobs = repository.list_by_host(workspace_id, host_id)
-    return [
-        JobResponse(
-            job_id=job.job_id,
-            project=job.project,
-            command=job.command,
-            args=job.args,
-            tags=job.tags,
-            status=job.status,
-            err=job.err,
-            tail_lines=job.tail_lines,
-            started_at=job.started_at,
-            finished_at=job.finished_at,
-        )
-        for job in jobs
-    ]
+    return job_service.list_jobs_by_host(workspace_id, host_id)
 
 
-@router.get("/jobs/{job_id}", response_model=JobResponse)
+@router.get("/workspaces/{workspace_id}/jobs/{job_id}", response_model=JobResponse)
 def get_job(
+    workspace_id: str,
     job_id: str,
-    repository: JobRepository = Depends(get_job_repository),
+    job_service: JobService = Depends(get_job_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.VIEWER)),
 ) -> JobResponse:
     """Get a single job by ID."""
-    job = repository.get(job_id)
-    if job is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Job {job_id} not found",
-        )
-
-    return JobResponse(
-        job_id=job.job_id,
-        project=job.project,
-        command=job.command,
-        args=job.args,
-        tags=job.tags,
-        status=job.status,
-        err=job.err,
-        tail_lines=job.tail_lines,
-        started_at=job.started_at,
-        finished_at=job.finished_at,
-    )
+    return job_service.get_job_in_workspace(workspace_id, job_id)
 
 
-@router.patch("/jobs/{job_id}", response_model=JobResponse)
-def update_job(
-    job_id: str,
-    request: JobUpdateRequest,
-    current_host: Host = Depends(get_current_host),
-    repository: JobRepository = Depends(get_job_repository),
-) -> JobResponse:
-    """Update a job's status (authenticated by host token)."""
-    job = repository.get(job_id)
-    if job is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Job {job_id} not found",
-        )
-
-    if job.host_id != current_host.host_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="This job does not belong to your host",
-        )
-
-    if request.status is not None:
-        job.status = request.status
-    if request.err is not None:
-        job.err = request.err
-    if request.tail_lines:
-        job.tail_lines = request.tail_lines
-    if request.finished_at is not None:
-        job.finished_at = request.finished_at
-
-    updated = repository.update(job)
-
-    return JobResponse(
-        job_id=updated.job_id,
-        project=updated.project,
-        command=updated.command,
-        args=updated.args,
-        tags=updated.tags,
-        status=updated.status,
-        err=updated.err,
-        tail_lines=updated.tail_lines,
-        started_at=updated.started_at,
-        finished_at=updated.finished_at,
-    )
-
-
-@router.delete("/jobs/{job_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/workspaces/{workspace_id}/jobs/{job_id}", status_code=status.HTTP_204_NO_CONTENT
+)
 def delete_job(
+    workspace_id: str,
     job_id: str,
-    current_host: Host = Depends(get_current_host),
-    repository: JobRepository = Depends(get_job_repository),
+    job_service: JobService = Depends(get_job_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.EDITOR)),
 ) -> None:
-    """Delete a job (authenticated by host token)."""
-    job = repository.get(job_id)
-    if job is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Job {job_id} not found",
-        )
-
-    if job.host_id != current_host.host_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="This job does not belong to your host",
-        )
-
-    repository.delete(job)
+    """Delete a job in a workspace."""
+    job_service.delete_job_in_workspace(workspace_id, job_id)

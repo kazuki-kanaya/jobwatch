@@ -1,6 +1,6 @@
 from app.models.timestamped import TimestampedModel
 
 
-class Workspace(TimestampedModel):
-    workspace_id: str
+class User(TimestampedModel):
+    user_id: str
     name: str
