@@ -44,7 +44,7 @@ import {
   WorkspaceOwnerTransferResponse,
   WorkspaceResponse,
   WorkspaceUpdateRequest
-} from './schemas/index.zod';
+} from './models/index.zod';
 
 /**
  * @summary Health

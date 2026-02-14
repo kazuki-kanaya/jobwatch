@@ -48,7 +48,7 @@ tasks:
       - task: api:fix
       - git diff --exit-code -- api
 
-  api:dev:
+  api:up:
     desc: Run API dev server
     dir: api
     cmds:

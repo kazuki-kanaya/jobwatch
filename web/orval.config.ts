@@ -4,11 +4,10 @@ export default defineConfig({
   jobwatch: {
     input: "./openapi.json",
     output: {
-      target: "./src/generated/clients.ts",
+      target: "./src/generated/api.ts",
       client: "react-query",
-      httpClient: "fetch",
       schemas: {
-        path: "./src/generated/schemas",
+        path: "./src/generated/models",
         type: "zod",
       },
     },
