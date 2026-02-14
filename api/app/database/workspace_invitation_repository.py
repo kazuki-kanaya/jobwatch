@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Any, Iterable
 
 from app.database.client import DynamoDBKeys, DynamoDBMappers, DynamoDBTable
 from app.models.exceptions import RepositoryException
@@ -11,9 +11,7 @@ class WorkspaceInvitationRepository:
         self._table = table
 
     def create(self, invitation: WorkspaceInvitation) -> WorkspaceInvitation:
-        pk = DynamoDBKeys.workspace_pk(invitation.workspace_id)
-        sk = DynamoDBKeys.workspace_invitation_sk(invitation.invitation_id)
-        item = DynamoDBMappers.to_item(invitation, pk, sk)
+        item = self._to_item(invitation)
         self._table.put(item)
         return invitation
 
@@ -69,3 +67,9 @@ class WorkspaceInvitationRepository:
         if not attributes:
             raise RepositoryException("failed to mark invitation as used")
         return DynamoDBMappers.from_item(attributes, WorkspaceInvitation)
+
+    @staticmethod
+    def _to_item(invitation: WorkspaceInvitation) -> dict[str, Any]:
+        pk = DynamoDBKeys.workspace_pk(invitation.workspace_id)
+        sk = DynamoDBKeys.workspace_invitation_sk(invitation.invitation_id)
+        return DynamoDBMappers.to_item(invitation, pk, sk)

@@ -1,3 +1,5 @@
+from typing import Any
+
 from app.database.client import DynamoDBKeys, DynamoDBMappers, DynamoDBTable
 from app.models.user import User
 
@@ -7,9 +9,7 @@ class UserRepository:
         self._table = table
 
     def create(self, user: User) -> User:
-        pk = DynamoDBKeys.user_pk(user.user_id)
-        sk = DynamoDBKeys.user_sk()
-        item = DynamoDBMappers.to_item(user, pk, sk)
+        item = self._to_item(user)
         self._table.put(item)
         return user
 
@@ -22,9 +22,7 @@ class UserRepository:
         return DynamoDBMappers.from_item(item, User)
 
     def update(self, user: User) -> User:
-        pk = DynamoDBKeys.user_pk(user.user_id)
-        sk = DynamoDBKeys.user_sk()
-        item = DynamoDBMappers.to_item(user, pk, sk)
+        item = self._to_item(user)
         self._table.put(item)
         return user
 
@@ -40,3 +38,9 @@ class UserRepository:
             return existing_user
 
         return self.create(user)
+
+    @staticmethod
+    def _to_item(user: User) -> dict[str, Any]:
+        pk = DynamoDBKeys.user_pk(user.user_id)
+        sk = DynamoDBKeys.user_sk()
+        return DynamoDBMappers.to_item(user, pk, sk)

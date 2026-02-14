@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Any, Iterable
 
 from app.database.client import DynamoDBKeys, DynamoDBMappers, DynamoDBTable
 from app.models.host import Host
@@ -9,9 +9,7 @@ class HostRepository:
         self._table = table
 
     def create(self, host: Host) -> Host:
-        pk = DynamoDBKeys.workspace_pk(host.workspace_id)
-        sk = DynamoDBKeys.host_sk(host.host_id)
-        item = DynamoDBMappers.to_item(host, pk, sk)
+        item = self._to_item(host)
         self._table.put(item)
         return host
 
@@ -39,9 +37,7 @@ class HostRepository:
             yield DynamoDBMappers.from_item(item, Host)
 
     def update(self, host: Host) -> Host:
-        pk = DynamoDBKeys.workspace_pk(host.workspace_id)
-        sk = DynamoDBKeys.host_sk(host.host_id)
-        item = DynamoDBMappers.to_item(host, pk, sk)
+        item = self._to_item(host)
         self._table.put(item)
         return host
 
@@ -56,3 +52,9 @@ class HostRepository:
         # Delete the host itself
         sk = DynamoDBKeys.host_sk(host_id)
         self._table.delete(pk, sk)
+
+    @staticmethod
+    def _to_item(host: Host) -> dict[str, Any]:
+        pk = DynamoDBKeys.workspace_pk(host.workspace_id)
+        sk = DynamoDBKeys.host_sk(host.host_id)
+        return DynamoDBMappers.to_item(host, pk, sk)
