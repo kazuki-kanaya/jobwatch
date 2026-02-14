@@ -75,4 +75,6 @@ class WorkspaceRepository:
     def _to_membership_item(owner_membership: WorkspaceMembership) -> dict[str, Any]:
         pk = DynamoDBKeys.workspace_pk(owner_membership.workspace_id)
         sk = DynamoDBKeys.workspace_membership_sk(owner_membership.user_id)
-        return DynamoDBMappers.to_item(owner_membership, pk, sk)
+        item = DynamoDBMappers.to_item(owner_membership, pk, sk)
+        item["membership_user_key"] = owner_membership.user_id
+        return item

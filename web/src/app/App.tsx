@@ -1,10 +1,10 @@
-import AuthProvider from "@/app/providers/AuthProvider";
 import AppRouter from "@/app/router";
+import AppProvider from "./providers/AppProvider";
 
 export default function App() {
   return (
-    <AuthProvider>
+    <AppProvider>
       <AppRouter />
-    </AuthProvider>
+    </AppProvider>
   );
 }
