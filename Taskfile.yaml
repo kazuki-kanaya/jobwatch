@@ -2,74 +2,107 @@ version: "3"
 
 tasks:
   ddb:up:
+    desc: Start local DynamoDB services
     cmds:
       - docker compose up -d
 
   ddb:down:
+    desc: Stop and remove local DynamoDB services
     cmds:
       - docker compose down -v
 
   ddb:create-tables:
+    desc: Create DynamoDB tables in LocalStack
     cmds:
       - bash ./infra/scripts/dynamodb/wait.sh
       - bash ./infra/scripts/dynamodb/create-tables.sh
 
   ddb:init:
+    desc: Initialize local DynamoDB environment
     deps:
       - ddb:up
     cmds:
       - task: ddb:create-tables
 
   api:fmt:
+    desc: Format API code
     dir: api
     cmds:
       - uv run ruff format .
 
   api:lint:
+    desc: Lint and type-check API code
     dir: api
     cmds:
       - uv run ruff check . --fix
       - uv run ty check .
 
   api:fix:
+    desc: Run API formatting and lint fixes
     dir: api
     deps: [api:fmt, api:lint]
 
   api:ci:
+    desc: Run API CI checks
     cmds:
       - task: api:fix
       - git diff --exit-code -- api
 
   api:dev:
+    desc: Run API dev server
     dir: api
     cmds:
       - uv run uvicorn app.main:app --reload --reload-dir app
 
+  api:openapi:
+    desc: Export OpenAPI spec to web/openapi.json
+    dir: api
+    cmds:
+      - uv run python -c "import json; from app.main import app; print(json.dumps(app.openapi(), ensure_ascii=False, indent=2))" > ../web/openapi.json
+
+  web:gen-api:
+    desc: Generate web API client from OpenAPI
+    dir: web
+    cmds:
+      - pnpm generate:api
+
+  web:sync-api:
+    desc: Sync OpenAPI and regenerate web client
+    cmds:
+      - task: api:openapi
+      - task: web:gen-api
+
   cli:fmt:
+    desc: Format CLI code
     dir: cli
     cmds:
       - go fmt ./...
 
   cli:vet:
+    desc: Run go vet on CLI code
     dir: cli
     cmds:
       - go vet ./...
 
   cli:fix:
+    desc: Run CLI format and vet
     dir: cli
     deps: [cli:fmt, cli:vet]
 
   cli:test:
+    desc: Run CLI tests
     dir: cli
     cmds:
       - go test ./...
 
   cli:build:
+    desc: Build CLI binary
     dir: cli
     cmds:
       - go build .
 
   cli:ci:
+    desc: Run CLI CI checks
     cmds:
       - task: cli:fix
       - task: cli:test
@@ -77,47 +110,56 @@ tasks:
       - git diff --exit-code -- cli
 
   web:fmt:
+    desc: Format web code
     dir: web
     cmds:
       - pnpm fmt
 
   web:lint:
+    desc: Lint web code
     dir: web
     cmds:
       - pnpm lint
 
   web:fix:
+    desc: Run web formatter and lint fixes
     dir: web
     cmds:
       - pnpm fix
 
   web:build:
+    desc: Build web app
     dir: web
     cmds:
       - pnpm build
 
   web:ci:
+    desc: Run web CI checks
     cmds:
       - task: web:fix
       - task: web:build
       - git diff --exit-code -- web
 
   infra:init:
+    desc: Initialize Terraform
     dir: infra/terraform
     cmds:
       - terraform init
 
   infra:fmt:
+    desc: Format Terraform files
     dir: infra/terraform
     cmds:
       - terraform fmt -recursive
 
   infra:validate:
+    desc: Validate Terraform config
     dir: infra/terraform
     cmds:
       - terraform validate
   
   infra:fix:
+    desc: Run Terraform init, fmt, and validate
     dir: infra/terraform
     deps: [infra:init]
     cmds:
@@ -125,31 +167,37 @@ tasks:
       - task: infra:validate
   
   infra:plan:
-      dir: infra/terraform
-      deps: [infra:fix]
-      cmds:
-        - terraform plan
+    desc: Generate Terraform plan
+    dir: infra/terraform
+    deps: [infra:fix]
+    cmds:
+      - terraform plan
 
   infra:apply:
+    desc: Apply Terraform changes
     dir: infra/terraform
     deps: [infra:fix]
     cmds:
       - terraform apply -auto-approve
   
   infra:destroy:
+    desc: Destroy Terraform resources
     dir: infra/terraform
     deps: [infra:fix]
     cmds:
       - terraform destroy -auto-approve
 
   infra:ci:
+    desc: Run Terraform CI checks
     dir: infra/terraform
     cmds:
       - task: infra:fix
       - git diff --exit-code -- infra/terraform
   
   all:ci:
+    desc: Run CI checks for all modules
     deps: [api:ci, cli:ci, web:ci, infra:ci]
 
   all:fix:
+    desc: Run fix tasks for all modules
     deps: [api:fix, cli:fix, web:fix, infra:fix]

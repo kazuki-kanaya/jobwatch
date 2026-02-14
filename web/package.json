@@ -10,10 +10,12 @@
     "preview": "vite preview",
     "fmt": "biome format --write src",
     "lint": "biome lint --write src",
-    "fix": "biome check --write src"
+    "fix": "biome check --write src",
+    "generate:api": "orval"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
+    "axios": "^1.13.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.563.0",

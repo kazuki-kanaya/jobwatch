@@ -21,6 +21,16 @@ from app.models.workspace_membership import MembershipRole, WorkspaceMembership
 security = HTTPBearer(auto_error=False)
 
 
+def _validate_client_claim(payload: dict, expected_client_id: str) -> None:
+    aud = payload.get("aud")
+    client_id = payload.get("client_id")  # for cognito
+    if aud == expected_client_id or client_id == expected_client_id:
+        return
+    raise AuthenticationError(
+        'Invalid OIDC token: expected "aud" or "client_id" to match configured client id'
+    )
+
+
 def get_current_host(
     credentials: HTTPAuthorizationCredentials | None = Depends(security),
     host_repository: HostRepository = Depends(get_host_repository),
@@ -53,16 +63,22 @@ def get_current_user(
             signing_key,
             algorithms=["RS256"],
             issuer=settings.oidc_issuer,
-            audience=settings.oidc_audience,
+            options={"verify_aud": False},
         )
+        _validate_client_claim(payload, settings.oidc_audience)
         user_id = payload["sub"]
+        token_name = payload.get("name")
         current_user = user_repository.get(user_id)
         if not current_user:
             user = User(
                 user_id=user_id,
-                name=payload.get("name", "no name"),
+                name=token_name or "no name",
             )
             current_user = user_repository.create(user)
+        elif token_name and current_user.name != token_name:
+            current_user.name = token_name
+            current_user.touch()
+            current_user = user_repository.update(current_user)
         return current_user
     except jwt.PyJWTError as e:
         raise AuthenticationError(f"Invalid OIDC token: {e}") from e

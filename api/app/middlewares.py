@@ -2,11 +2,21 @@ import logging
 import time
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from app.config import Settings
 
 logger = logging.getLogger(__name__)
 
 
-def register_middlewares(app: FastAPI) -> None:
+def register_middlewares(app: FastAPI, settings: Settings) -> None:
+    app.add_middleware(
+        CORSMiddleware,  # type: ignore
+        allow_origins=settings.cors_allowed_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     @app.middleware("http")
     async def log_requests(request: Request, call_next):
         """Log incoming requests and their durations."""

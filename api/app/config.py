@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     app_timezone: str = "Asia/Tokyo"
     invitation_expiry_hours: int = 168
+    cors_allowed_origins: list[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
 
     oidc_jwks_url: str
     oidc_audience: str
