@@ -1430,8 +1430,7 @@
           },
           "message": {
             "type": "string",
-            "title": "Message",
-            "default": "Save this token securely. It will not be shown again."
+            "title": "Message"
           }
         },
         "type": "object",
@@ -1441,7 +1440,8 @@
           "name",
           "token",
           "created_at",
-          "updated_at"
+          "updated_at",
+          "message"
         ],
         "title": "HostCreateResponse"
       },

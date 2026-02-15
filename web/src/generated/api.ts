@@ -9,9 +9,14 @@ import {
   useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -97,7 +102,7 @@ export const getHealthHealthGetQueryKey = () => {
     }
 
     
-export const getHealthHealthGetQueryOptions = <TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>, fetch?: RequestInit}
+export const getHealthHealthGetQueryOptions = <TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -112,25 +117,49 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type HealthHealthGetQueryResult = NonNullable<Awaited<ReturnType<typeof healthHealthGet>>>
 export type HealthHealthGetQueryError = unknown
 
 
+export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof healthHealthGet>>,
+          TError,
+          Awaited<ReturnType<typeof healthHealthGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof healthHealthGet>>,
+          TError,
+          Awaited<ReturnType<typeof healthHealthGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Health
  */
 
 export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getHealthHealthGetQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -227,13 +256,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useCreateWorkspaceWorkspacesPost = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>, TError,{data: WorkspaceCreateRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>,
         TError,
         {data: WorkspaceCreateRequest},
         TContext
       > => {
-      return useMutation(getCreateWorkspaceWorkspacesPostMutationOptions(options));
+      return useMutation(getCreateWorkspaceWorkspacesPostMutationOptions(options), queryClient);
     }
     
 /**
@@ -295,7 +324,7 @@ export const getGetWorkspaceWorkspacesWorkspaceIdGetQueryKey = (workspaceId: str
     }
 
     
-export const getGetWorkspaceWorkspacesWorkspaceIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>, fetch?: RequestInit}
+export const getGetWorkspaceWorkspacesWorkspaceIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -310,25 +339,49 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetWorkspaceWorkspacesWorkspaceIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>>
 export type GetWorkspaceWorkspacesWorkspaceIdGetQueryError = HTTPValidationError
 
 
+export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>,
+          TError,
+          Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>,
+          TError,
+          Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Workspace
  */
 
 export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetWorkspaceWorkspacesWorkspaceIdGetQueryOptions(workspaceId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -426,13 +479,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useUpdateWorkspaceWorkspacesWorkspaceIdPatch = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>, TError,{workspaceId: string;data: WorkspaceUpdateRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>,
         TError,
         {workspaceId: string;data: WorkspaceUpdateRequest},
         TContext
       > => {
-      return useMutation(getUpdateWorkspaceWorkspacesWorkspaceIdPatchMutationOptions(options));
+      return useMutation(getUpdateWorkspaceWorkspacesWorkspaceIdPatchMutationOptions(options), queryClient);
     }
     
 /**
@@ -522,13 +575,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useDeleteWorkspaceWorkspacesWorkspaceIdDelete = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>, TError,{workspaceId: string}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>,
         TError,
         {workspaceId: string},
         TContext
       > => {
-      return useMutation(getDeleteWorkspaceWorkspacesWorkspaceIdDeleteMutationOptions(options));
+      return useMutation(getDeleteWorkspaceWorkspacesWorkspaceIdDeleteMutationOptions(options), queryClient);
     }
     
 /**
@@ -590,7 +643,7 @@ export const getListMembersWorkspacesWorkspaceIdMembersGetQueryKey = (workspaceI
     }
 
     
-export const getListMembersWorkspacesWorkspaceIdMembersGetQueryOptions = <TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>, fetch?: RequestInit}
+export const getListMembersWorkspacesWorkspaceIdMembersGetQueryOptions = <TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -605,25 +658,49 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type ListMembersWorkspacesWorkspaceIdMembersGetQueryResult = NonNullable<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>>
 export type ListMembersWorkspacesWorkspaceIdMembersGetQueryError = HTTPValidationError
 
 
+export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>,
+          TError,
+          Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>,
+          TError,
+          Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary List Members
  */
 
 export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListMembersWorkspacesWorkspaceIdMembersGetQueryOptions(workspaceId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -723,13 +800,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useAddMemberWorkspacesWorkspaceIdMembersUserIdPut = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberUpsertRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>,
         TError,
         {workspaceId: string;userId: string;data: WorkspaceMemberUpsertRequest},
         TContext
       > => {
-      return useMutation(getAddMemberWorkspacesWorkspaceIdMembersUserIdPutMutationOptions(options));
+      return useMutation(getAddMemberWorkspacesWorkspaceIdMembersUserIdPutMutationOptions(options), queryClient);
     }
     
 /**
@@ -823,13 +900,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberRoleUpdateRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>,
         TError,
         {workspaceId: string;userId: string;data: WorkspaceMemberRoleUpdateRequest},
         TContext
       > => {
-      return useMutation(getUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchMutationOptions(options));
+      return useMutation(getUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchMutationOptions(options), queryClient);
     }
     
 /**
@@ -921,13 +998,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useRemoveMemberWorkspacesWorkspaceIdMembersUserIdDelete = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>, TError,{workspaceId: string;userId: string}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>,
         TError,
         {workspaceId: string;userId: string},
         TContext
       > => {
-      return useMutation(getRemoveMemberWorkspacesWorkspaceIdMembersUserIdDeleteMutationOptions(options));
+      return useMutation(getRemoveMemberWorkspacesWorkspaceIdMembersUserIdDeleteMutationOptions(options), queryClient);
     }
     
 /**
@@ -1019,13 +1096,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useTransferOwnerWorkspacesWorkspaceIdOwnerPost = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>, TError,{workspaceId: string;data: WorkspaceOwnerTransferRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>,
         TError,
         {workspaceId: string;data: WorkspaceOwnerTransferRequest},
         TContext
       > => {
-      return useMutation(getTransferOwnerWorkspacesWorkspaceIdOwnerPostMutationOptions(options));
+      return useMutation(getTransferOwnerWorkspacesWorkspaceIdOwnerPostMutationOptions(options), queryClient);
     }
     
 /**
@@ -1117,13 +1194,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useCreateInvitationWorkspacesWorkspaceIdInvitationsPost = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>, TError,{workspaceId: string;data: WorkspaceInvitationCreateRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>,
         TError,
         {workspaceId: string;data: WorkspaceInvitationCreateRequest},
         TContext
       > => {
-      return useMutation(getCreateInvitationWorkspacesWorkspaceIdInvitationsPostMutationOptions(options));
+      return useMutation(getCreateInvitationWorkspacesWorkspaceIdInvitationsPostMutationOptions(options), queryClient);
     }
     
 /**
@@ -1185,7 +1262,7 @@ export const getListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryKey = (wo
     }
 
     
-export const getListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryOptions = <TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>, fetch?: RequestInit}
+export const getListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryOptions = <TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -1200,25 +1277,49 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type ListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryResult = NonNullable<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>>
 export type ListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryError = HTTPValidationError
 
 
+export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>,
+          TError,
+          Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>,
+          TError,
+          Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary List Invitations
  */
 
 export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryOptions(workspaceId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -1316,13 +1417,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>, TError,{workspaceId: string;invitationId: string}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>,
         TError,
         {workspaceId: string;invitationId: string},
         TContext
       > => {
-      return useMutation(getRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteMutationOptions(options));
+      return useMutation(getRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteMutationOptions(options), queryClient);
     }
     
 /**
@@ -1414,13 +1515,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useCreateHostWorkspacesWorkspaceIdHostsPost = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>, TError,{workspaceId: string;data: HostCreateRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>,
         TError,
         {workspaceId: string;data: HostCreateRequest},
         TContext
       > => {
-      return useMutation(getCreateHostWorkspacesWorkspaceIdHostsPostMutationOptions(options));
+      return useMutation(getCreateHostWorkspacesWorkspaceIdHostsPostMutationOptions(options), queryClient);
     }
     
 /**
@@ -1482,7 +1583,7 @@ export const getListHostsWorkspacesWorkspaceIdHostsGetQueryKey = (workspaceId: s
     }
 
     
-export const getListHostsWorkspacesWorkspaceIdHostsGetQueryOptions = <TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>, fetch?: RequestInit}
+export const getListHostsWorkspacesWorkspaceIdHostsGetQueryOptions = <TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -1497,25 +1598,49 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type ListHostsWorkspacesWorkspaceIdHostsGetQueryResult = NonNullable<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>>
 export type ListHostsWorkspacesWorkspaceIdHostsGetQueryError = HTTPValidationError
 
 
+export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>,
+          TError,
+          Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>,
+          TError,
+          Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary List Hosts
  */
 
 export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListHostsWorkspacesWorkspaceIdHostsGetQueryOptions(workspaceId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -1587,7 +1712,7 @@ export const getGetHostWorkspacesWorkspaceIdHostsHostIdGetQueryKey = (workspaceI
 
     
 export const getGetHostWorkspacesWorkspaceIdHostsHostIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(workspaceId: string,
-    hostId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>, fetch?: RequestInit}
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -1602,26 +1727,53 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(workspaceId && hostId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(workspaceId && hostId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetHostWorkspacesWorkspaceIdHostsHostIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>>
 export type GetHostWorkspacesWorkspaceIdHostsHostIdGetQueryError = HTTPValidationError
 
 
+export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    hostId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>,
+          TError,
+          Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>,
+          TError,
+          Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Host
  */
 
 export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    hostId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetHostWorkspacesWorkspaceIdHostsHostIdGetQueryOptions(workspaceId,hostId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -1721,13 +1873,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useUpdateHostWorkspacesWorkspaceIdHostsHostIdPatch = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>, TError,{workspaceId: string;hostId: string;data: HostUpdateRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>,
         TError,
         {workspaceId: string;hostId: string;data: HostUpdateRequest},
         TContext
       > => {
-      return useMutation(getUpdateHostWorkspacesWorkspaceIdHostsHostIdPatchMutationOptions(options));
+      return useMutation(getUpdateHostWorkspacesWorkspaceIdHostsHostIdPatchMutationOptions(options), queryClient);
     }
     
 /**
@@ -1819,13 +1971,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useDeleteHostWorkspacesWorkspaceIdHostsHostIdDelete = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>, TError,{workspaceId: string;hostId: string}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>,
         TError,
         {workspaceId: string;hostId: string},
         TContext
       > => {
-      return useMutation(getDeleteHostWorkspacesWorkspaceIdHostsHostIdDeleteMutationOptions(options));
+      return useMutation(getDeleteHostWorkspacesWorkspaceIdHostsHostIdDeleteMutationOptions(options), queryClient);
     }
     
 /**
@@ -1916,13 +2068,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useCreateJobCliJobsPost = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createJobCliJobsPost>>, TError,{data: JobCreateRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createJobCliJobsPost>>,
         TError,
         {data: JobCreateRequest},
         TContext
       > => {
-      return useMutation(getCreateJobCliJobsPostMutationOptions(options));
+      return useMutation(getCreateJobCliJobsPostMutationOptions(options), queryClient);
     }
     
 /**
@@ -2014,13 +2166,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useUpdateJobCliJobsJobIdPatch = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>, TError,{jobId: string;data: JobUpdateRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>,
         TError,
         {jobId: string;data: JobUpdateRequest},
         TContext
       > => {
-      return useMutation(getUpdateJobCliJobsJobIdPatchMutationOptions(options));
+      return useMutation(getUpdateJobCliJobsJobIdPatchMutationOptions(options), queryClient);
     }
     
 /**
@@ -2082,7 +2234,7 @@ export const getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryKey = (works
     }
 
     
-export const getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryOptions = <TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>, fetch?: RequestInit}
+export const getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryOptions = <TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -2097,25 +2249,49 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type ListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryResult = NonNullable<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>>
 export type ListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryError = HTTPValidationError
 
 
+export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>,
+          TError,
+          Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>,
+          TError,
+          Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary List Jobs By Workspace
  */
 
 export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryOptions(workspaceId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -2187,7 +2363,7 @@ export const getListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetQueryKey = 
 
     
 export const getListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetQueryOptions = <TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(workspaceId: string,
-    hostId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>, fetch?: RequestInit}
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -2202,26 +2378,53 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(workspaceId && hostId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(workspaceId && hostId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type ListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetQueryResult = NonNullable<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>>
 export type ListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetQueryError = HTTPValidationError
 
 
+export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    hostId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>,
+          TError,
+          Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>,
+          TError,
+          Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary List Jobs By Host
  */
 
 export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    hostId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetQueryOptions(workspaceId,hostId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -2293,7 +2496,7 @@ export const getGetJobWorkspacesWorkspaceIdJobsJobIdGetQueryKey = (workspaceId: 
 
     
 export const getGetJobWorkspacesWorkspaceIdJobsJobIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(workspaceId: string,
-    jobId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>, fetch?: RequestInit}
+    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -2308,26 +2511,53 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(workspaceId && jobId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(workspaceId && jobId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetJobWorkspacesWorkspaceIdJobsJobIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>>
 export type GetJobWorkspacesWorkspaceIdJobsJobIdGetQueryError = HTTPValidationError
 
 
+export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    jobId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>,
+          TError,
+          Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>,
+          TError,
+          Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Job
  */
 
 export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    jobId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetJobWorkspacesWorkspaceIdJobsJobIdGetQueryOptions(workspaceId,jobId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -2425,13 +2655,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useDeleteJobWorkspacesWorkspaceIdJobsJobIdDelete = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>, TError,{workspaceId: string;jobId: string}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>,
         TError,
         {workspaceId: string;jobId: string},
         TContext
       > => {
-      return useMutation(getDeleteJobWorkspacesWorkspaceIdJobsJobIdDeleteMutationOptions(options));
+      return useMutation(getDeleteJobWorkspacesWorkspaceIdJobsJobIdDeleteMutationOptions(options), queryClient);
     }
     
 /**
@@ -2486,7 +2716,7 @@ export const getReadCurrentUserUsersMeGetQueryKey = () => {
     }
 
     
-export const getReadCurrentUserUsersMeGetQueryOptions = <TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>, fetch?: RequestInit}
+export const getReadCurrentUserUsersMeGetQueryOptions = <TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -2501,25 +2731,49 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type ReadCurrentUserUsersMeGetQueryResult = NonNullable<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>>
 export type ReadCurrentUserUsersMeGetQueryError = unknown
 
 
+export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>,
+          TError,
+          Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>,
+          TError,
+          Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Read Current User
  */
 
 export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getReadCurrentUserUsersMeGetQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -2580,7 +2834,7 @@ export const getListUserWorkspacesUsersMeWorkspacesGetQueryKey = () => {
     }
 
     
-export const getListUserWorkspacesUsersMeWorkspacesGetQueryOptions = <TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>, fetch?: RequestInit}
+export const getListUserWorkspacesUsersMeWorkspacesGetQueryOptions = <TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -2595,25 +2849,49 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type ListUserWorkspacesUsersMeWorkspacesGetQueryResult = NonNullable<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>>
 export type ListUserWorkspacesUsersMeWorkspacesGetQueryError = unknown
 
 
+export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>,
+          TError,
+          Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>,
+          TError,
+          Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary List User Workspaces
  */
 
 export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListUserWorkspacesUsersMeWorkspacesGetQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -2710,11 +2988,11 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  */
 export const useAcceptInvitationInvitationsAcceptPost = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>, TError,{data: InvitationAcceptRequest}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>,
         TError,
         {data: InvitationAcceptRequest},
         TContext
       > => {
-      return useMutation(getAcceptInvitationInvitationsAcceptPostMutationOptions(options));
+      return useMutation(getAcceptInvitationInvitationsAcceptPostMutationOptions(options), queryClient);
     }

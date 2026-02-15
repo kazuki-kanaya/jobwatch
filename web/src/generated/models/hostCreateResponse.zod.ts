@@ -6,15 +6,14 @@
  */
 import { z as zod } from 'zod';
 
-export const HostCreateResponse = export const hostCreateResponseMessageDefault = `Save this token securely. It will not be shown again.`;
-zod.object({
+export const HostCreateResponse = zod.object({
   "host_id": zod.string(),
   "workspace_id": zod.string(),
   "name": zod.string(),
   "token": zod.string(),
   "created_at": zod.iso.datetime({}),
   "updated_at": zod.iso.datetime({}),
-  "message": zod.string().default(hostCreateResponseMessageDefault)
+  "message": zod.string()
 })
 
 export type HostCreateResponse = zod.infer<typeof HostCreateResponse>;

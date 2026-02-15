@@ -18,7 +18,7 @@ class HostCreateResponse(BaseModel):
     token: str
     created_at: datetime
     updated_at: datetime
-    message: str = "Save this token securely. It will not be shown again."
+    message: str
 
 
 class HostResponse(BaseModel):
