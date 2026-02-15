@@ -1,0 +1,60 @@
+// Responsibility: Define shared prop contracts for dashboard member section subcomponents.
+import type { DashboardMemberItem } from "@/features/dashboard/types";
+
+export type MemberRoleOption = {
+  id: string;
+  name: string;
+};
+
+export type DashboardMembersSectionProps = {
+  title: string;
+  userIdLabel: string;
+  usernameLabel: string;
+  roleLabel: string;
+  invitationLinkLabel: string;
+  invitationLinkPlaceholder: string;
+  generateInviteLabel: string;
+  copyLinkLabel: string;
+  addLabel: string;
+  updateLabel: string;
+  cancelLabel: string;
+  deleteLabel: string;
+  emptyLabel: string;
+  errorLabel: string;
+  deleteConfirmTitle: string;
+  deleteConfirmDescription: string;
+  noPermissionLabel: string;
+  canManage: boolean;
+  members: DashboardMemberItem[];
+  roleOptions: MemberRoleOption[];
+  draftUserId: string;
+  draftRole: string;
+  inviteRole: string;
+  editingUserId: string | null;
+  editingRole: string;
+  invitationUrl: string | null;
+  isLoading: boolean;
+  isError: boolean;
+  isSubmitting: boolean;
+  isAddDialogOpen: boolean;
+  isInviteDialogOpen: boolean;
+  isEditDialogOpen: boolean;
+  pendingDeleteUserId: string | null;
+  onOpenAddDialog: () => void;
+  onCloseAddDialog: () => void;
+  onOpenInviteDialog: () => void;
+  onCloseInviteDialog: () => void;
+  onDraftUserIdChange: (value: string) => void;
+  onDraftRoleChange: (value: string) => void;
+  onInviteRoleChange: (value: string) => void;
+  onEditingRoleChange: (value: string) => void;
+  onSubmitAdd: () => void;
+  onGenerateInvite: () => void;
+  onCopyInvitationLink: () => void;
+  onRequestEdit: (userId: string, role: DashboardMemberItem["role"]) => void;
+  onCloseEditDialog: () => void;
+  onSubmitRoleUpdate: () => void;
+  onRequestDelete: (userId: string) => void;
+  onCancelDelete: () => void;
+  onConfirmDelete: () => void;
+};

@@ -10,11 +10,26 @@ const meta = {
     backgrounds: { default: "dark" },
   },
   args: {
-    workspace: "Workspace: all",
-    host: "Host: all",
-    query: "Search: failed",
+    workspaceLabel: "Workspace",
+    hostLabel: "Host",
+    queryLabel: "Search",
+    workspaceOptions: [
+      { id: "all", name: "all" },
+      { id: "vision-lab", name: "vision-lab" },
+    ],
+    hostOptions: [
+      { id: "all", name: "all" },
+      { id: "gpu-a100-01", name: "gpu-a100-01" },
+    ],
+    workspaceId: "all",
+    hostId: "all",
+    query: "failed",
     title: "Filters",
     applyLabel: "Apply",
+    onWorkspaceChange: () => {},
+    onHostChange: () => {},
+    onQueryChange: () => {},
+    onApply: () => {},
   },
 } satisfies Meta<typeof DashboardFiltersSection>;
 

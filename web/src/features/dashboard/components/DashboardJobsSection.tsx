@@ -2,6 +2,7 @@
 import { AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import DashboardJobRow from "@/features/dashboard/components/DashboardJobRow";
 import type { JobListItem, JobStatus } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
 
@@ -13,14 +14,18 @@ type DashboardJobsSectionProps = {
   title: string;
   emptyLabel: string;
   errorLabel: string;
+  jobIdLabel: string;
+  commandLabel: string;
+  argsLabel: string;
+  tagsLabel: string;
+  startedAtLabel: string;
+  finishedAtLabel: string;
+  durationLabel: string;
   statusLabels: Record<JobStatus, string>;
-};
-
-const statusClassMap: Record<JobStatus, string> = {
-  running: "bg-cyan-400/20 text-cyan-200 border-cyan-300/40",
-  completed: "bg-emerald-400/20 text-emerald-200 border-emerald-300/40",
-  failed: "bg-rose-400/20 text-rose-200 border-rose-300/40",
-  queued: "bg-amber-400/20 text-amber-200 border-amber-300/40",
+  selectedJobId: string | null;
+  onSelectJob: (jobId: string) => void;
+  onSelectPreviousJob: (jobId: string) => void;
+  onSelectNextJob: (jobId: string) => void;
 };
 
 export default function DashboardJobsSection({
@@ -29,7 +34,18 @@ export default function DashboardJobsSection({
   title,
   emptyLabel,
   errorLabel,
+  jobIdLabel,
+  commandLabel,
+  argsLabel,
+  tagsLabel,
+  startedAtLabel,
+  finishedAtLabel,
+  durationLabel,
   statusLabels,
+  selectedJobId,
+  onSelectJob,
+  onSelectPreviousJob,
+  onSelectNextJob,
 }: DashboardJobsSectionProps) {
   return (
     <Card className={cn("border-slate-700/60 bg-slate-900/80 py-4")}>
@@ -40,7 +56,26 @@ export default function DashboardJobsSection({
         {uiState === "loading" ? <LoadingRows /> : null}
         {uiState === "error" ? <ErrorRow label={errorLabel} /> : null}
         {uiState === "empty" ? <EmptyRow label={emptyLabel} /> : null}
-        {uiState === "ready" ? jobs.map((job) => <JobRow key={job.id} job={job} statusLabels={statusLabels} />) : null}
+        {uiState === "ready"
+          ? jobs.map((job) => (
+              <DashboardJobRow
+                key={job.id}
+                job={job}
+                jobIdLabel={jobIdLabel}
+                commandLabel={commandLabel}
+                argsLabel={argsLabel}
+                tagsLabel={tagsLabel}
+                startedAtLabel={startedAtLabel}
+                finishedAtLabel={finishedAtLabel}
+                durationLabel={durationLabel}
+                statusLabels={statusLabels}
+                isSelected={job.id === selectedJobId}
+                onSelectJob={onSelectJob}
+                onSelectPreviousJob={onSelectPreviousJob}
+                onSelectNextJob={onSelectNextJob}
+              />
+            ))
+          : null}
       </CardContent>
     </Card>
   );
@@ -76,30 +111,5 @@ function ErrorRow({ label }: { label: string }) {
       <AlertTriangle className={cn("size-4")} />
       {label}
     </div>
-  );
-}
-
-function JobRow({ job, statusLabels }: { job: JobListItem; statusLabels: Record<JobStatus, string> }) {
-  return (
-    <article
-      className={cn(
-        "grid gap-2 rounded-lg border border-slate-700 bg-slate-800/80 p-4 md:grid-cols-[2fr_1fr_1fr_auto] md:items-center",
-      )}
-    >
-      <div>
-        <h3 className={cn("font-medium text-slate-100")}>{job.title}</h3>
-        <p className={cn("font-mono text-xs text-slate-400")}>{job.startedAt}</p>
-      </div>
-      <p className={cn("text-sm text-slate-300")}>{job.workspace}</p>
-      <p className={cn("text-sm text-slate-300")}>{job.host}</p>
-      <span
-        className={cn(
-          "inline-flex items-center justify-center rounded-full border px-2 py-1 text-xs font-medium capitalize",
-          statusClassMap[job.status],
-        )}
-      >
-        {statusLabels[job.status]}
-      </span>
-    </article>
   );
 }

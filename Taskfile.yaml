@@ -99,7 +99,7 @@ tasks:
     desc: Build CLI binary
     dir: cli
     cmds:
-      - go build .
+      - go build -o dist/jobwatch .
 
   cli:ci:
     desc: Run CLI CI checks
