@@ -42,7 +42,7 @@ tasks:
       - task: api:fix
       - git diff --exit-code -- api
 
-  api:up:
+  api:dev:
     desc: Run API dev server
     dir: api
     cmds:
@@ -133,6 +133,12 @@ tasks:
       - task: web:fix
       - task: web:build
       - git diff --exit-code -- web
+  
+  web:dev:
+    desc: Run web development server
+    dir: web
+    cmds:
+      - pnpm dev
 
   infra:init:
     desc: Initialize Terraform
@@ -174,6 +180,7 @@ tasks:
     cmds:
       - terraform apply -auto-approve
       - task: infra:sync-env
+
   infra:destroy:
     desc: Destroy Terraform resources
     dir: infra/terraform
@@ -200,3 +207,9 @@ tasks:
   all:fix:
     desc: Run fix tasks for all modules
     deps: [api:fix, cli:fix, web:fix, infra:fix]
+
+  dev:
+    desc: Run development environment with API and web servers
+    deps: [infra:sync-env]
+    cmds:
+      - task --parallel api:dev web:dev ddb:up

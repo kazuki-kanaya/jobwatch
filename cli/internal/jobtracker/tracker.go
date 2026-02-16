@@ -1,11 +1,10 @@
-package tracker
+package jobtracker
 
 import (
 	"context"
 	"time"
 )
 
-// JobStatus represents the status of a job
 type JobStatus string
 
 const (
