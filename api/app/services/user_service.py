@@ -53,7 +53,10 @@ class UserService:
             membership.workspace_id for membership in workspace_memberships
         }
         workspaces = self._workspace_repository.get_many(workspace_ids)
-        workspaces.sort(key=lambda workspace: workspace.created_at, reverse=True)
+        workspaces.sort(
+            key=lambda workspace: (workspace.updated_at, workspace.created_at),
+            reverse=True,
+        )
         workspace_responses = [
             WorkspaceResponse(
                 workspace_id=workspace.workspace_id,

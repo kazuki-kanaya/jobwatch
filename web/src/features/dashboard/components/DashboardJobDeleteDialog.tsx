@@ -1,4 +1,3 @@
-// Responsibility: Render a confirmation dialog before deleting a job.
 import {
   AlertDialog,
   AlertDialogAction,

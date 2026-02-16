@@ -1,4 +1,3 @@
-// Responsibility: Render host delete confirmation dialog.
 import {
   AlertDialog,
   AlertDialogAction,

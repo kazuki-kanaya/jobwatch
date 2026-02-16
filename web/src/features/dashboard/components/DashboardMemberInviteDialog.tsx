@@ -1,4 +1,3 @@
-// Responsibility: Render invitation link generation dialog and link copy action.
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

@@ -1,4 +1,3 @@
-// Responsibility: Manage member add/remove and invitation URL state transitions with toast feedback.
 import { useState } from "react";
 import { toast } from "sonner";
 import { useDashboardInvitationMutations } from "@/features/dashboard/api/dashboardInvitationMutations";

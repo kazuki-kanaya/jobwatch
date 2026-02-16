@@ -1,4 +1,3 @@
-// Responsibility: Aggregate locale message dictionaries and export locale types.
 import { enMessages } from "@/i18n/messages.en";
 import { jaMessages } from "@/i18n/messages.ja";
 

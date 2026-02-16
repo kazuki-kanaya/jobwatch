@@ -40,7 +40,8 @@ class HostService:
         )
 
     def list_hosts(self, workspace_id: str) -> list[HostResponse]:
-        hosts = self._host_repository.list_by_workspace(workspace_id)
+        hosts = list(self._host_repository.list_by_workspace(workspace_id))
+        hosts.sort(key=lambda host: (host.updated_at, host.created_at), reverse=True)
         return [
             HostResponse(
                 host_id=host.host_id,

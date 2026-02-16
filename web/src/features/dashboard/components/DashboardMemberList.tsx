@@ -1,4 +1,3 @@
-// Responsibility: Render members list states (loading, error, empty, data rows) with row actions.
 import { Fingerprint, MoreHorizontal, PencilLine, ShieldCheck, Trash2, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

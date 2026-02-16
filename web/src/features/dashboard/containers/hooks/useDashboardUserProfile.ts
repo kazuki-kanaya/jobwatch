@@ -1,4 +1,3 @@
-// Responsibility: Manage current-user profile edit dialog state and update mutation feedback.
 import { useState } from "react";
 import { toast } from "sonner";
 import { useDashboardUserMutations } from "@/features/dashboard/api/dashboardUserMutations";

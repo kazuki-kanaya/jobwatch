@@ -1,4 +1,3 @@
-// Responsibility: Provide visual regression stories for job list UI states.
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import DashboardJobsSection from "@/features/dashboard/components/DashboardJobsSection";
 

@@ -1,4 +1,3 @@
-// Responsibility: Orchestrate dashboard hooks and compose the final view model for rendering.
 import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 import { useSearchParams } from "react-router";

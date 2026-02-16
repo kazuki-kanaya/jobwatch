@@ -1,4 +1,3 @@
-// Responsibility: Render a selectable job row for recent jobs list.
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { JobListItem, JobStatus } from "@/features/dashboard/types";
@@ -63,75 +62,72 @@ export default function DashboardJobRow({
         isSelected ? "border-cyan-400/70 ring-1 ring-cyan-400/50" : "",
       )}
     >
-      <div className={cn("flex items-start justify-between gap-3")}>
-        <div className={cn("min-w-0 space-y-2")}>
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() => onSelectJob(job.id)}
-            onKeyDown={(event) => {
-              if (event.key === "ArrowUp") {
-                event.preventDefault();
-                onSelectPreviousJob(job.id);
-              }
-              if (event.key === "ArrowDown") {
-                event.preventDefault();
-                onSelectNextJob(job.id);
-              }
-            }}
-            className={cn(
-              "h-auto w-full justify-start rounded-sm p-0 text-left hover:bg-transparent hover:text-cyan-100",
-              "focus-visible:ring-0 focus-visible:ring-offset-0",
-            )}
-          >
+      <button
+        type="button"
+        className={cn("w-full space-y-2 text-left")}
+        onClick={() => onSelectJob(job.id)}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowUp") {
+            event.preventDefault();
+            onSelectPreviousJob(job.id);
+            return;
+          }
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            onSelectNextJob(job.id);
+          }
+        }}
+      >
+        <div className={cn("flex items-start justify-between gap-3")}>
+          <div className={cn("min-w-0 space-y-2")}>
             <p className={cn("break-all font-mono text-base font-medium leading-6 text-slate-100")}>
               {commandWithArgs || "-"}
             </p>
-          </Button>
-          <div className={cn("flex flex-wrap items-center gap-2 text-sm text-slate-200")}>
-            <MetaPill label={jobIdLabel} value={job.jobId} mono />
-            <MetaPill label={workspaceLabel} value={job.workspace} />
-            <MetaPill label={hostLabel} value={job.host} />
-            <MetaPill label={projectLabel} value={job.project} />
+            <div className={cn("flex flex-wrap items-center gap-2 text-sm text-slate-200")}>
+              <MetaPill label={jobIdLabel} value={job.jobId} mono />
+              <MetaPill label={workspaceLabel} value={job.workspace} />
+              <MetaPill label={hostLabel} value={job.host} />
+              <MetaPill label={projectLabel} value={job.project} />
+            </div>
+          </div>
+          <span
+            className={cn(
+              "inline-flex shrink-0 items-center justify-center rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wide",
+              statusClassMap[job.status],
+            )}
+          >
+            {statusLabels[job.status]}
+          </span>
+        </div>
+        <div className={cn("space-y-2 text-sm text-slate-300")}>
+          <div className={cn("flex flex-wrap items-center gap-2")}>
+            <span className={cn("rounded border border-slate-600 px-1.5 py-0.5")}>{tagsLabel}:</span>
+            {job.tags.length > 0 ? (
+              job.tags.map((tag) => (
+                <span
+                  key={`${job.id}-tag-${tag}`}
+                  className={cn("rounded-full border border-cyan-400/40 bg-cyan-500/10 px-2 py-0.5 text-cyan-100")}
+                >
+                  {tag}
+                </span>
+              ))
+            ) : (
+              <span>-</span>
+            )}
+          </div>
+          <div className={cn("flex flex-wrap items-center gap-2")}>
+            <span className={cn("rounded border border-slate-600 px-1.5 py-0.5")}>
+              {startedAtLabel}: {job.startedAt}
+            </span>
+            <span className={cn("rounded border border-slate-600 px-1.5 py-0.5")}>
+              {finishedAtLabel}: {job.finishedAt ?? "-"}
+            </span>
+            <span className={cn("rounded border border-slate-600 px-1.5 py-0.5")}>
+              {durationLabel}: {job.duration}
+            </span>
           </div>
         </div>
-        <span
-          className={cn(
-            "inline-flex shrink-0 items-center justify-center rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wide",
-            statusClassMap[job.status],
-          )}
-        >
-          {statusLabels[job.status]}
-        </span>
-      </div>
-      <div className={cn("space-y-2 text-sm text-slate-300")}>
-        <div className={cn("flex flex-wrap items-center gap-2")}>
-          <span className={cn("rounded border border-slate-600 px-1.5 py-0.5")}>{tagsLabel}:</span>
-          {job.tags.length > 0 ? (
-            job.tags.map((tag) => (
-              <span
-                key={`${job.id}-tag-${tag}`}
-                className={cn("rounded-full border border-cyan-400/40 bg-cyan-500/10 px-2 py-0.5 text-cyan-100")}
-              >
-                {tag}
-              </span>
-            ))
-          ) : (
-            <span>-</span>
-          )}
-        </div>
-        <div className={cn("flex flex-wrap items-center gap-2")}>
-          <span className={cn("rounded border border-slate-600 px-1.5 py-0.5")}>
-            {startedAtLabel}: {job.startedAt}
-          </span>
-          <span className={cn("rounded border border-slate-600 px-1.5 py-0.5")}>
-            {finishedAtLabel}: {job.finishedAt ?? "-"}
-          </span>
-          <span className={cn("rounded border border-slate-600 px-1.5 py-0.5")}>
-            {durationLabel}: {job.duration}
-          </span>
-        </div>
-      </div>
+      </button>
       <div className={cn("flex justify-end")}>
         <Button
           type="button"

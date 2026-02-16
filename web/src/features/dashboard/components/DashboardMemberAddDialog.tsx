@@ -1,4 +1,3 @@
-// Responsibility: Render member add dialog for user ID and role inputs.
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

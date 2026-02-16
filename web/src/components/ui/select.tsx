@@ -1,4 +1,3 @@
-// Responsibility: Provide reusable shadcn-style select primitives.
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { Select as SelectPrimitive } from "radix-ui";
 import type * as React from "react";

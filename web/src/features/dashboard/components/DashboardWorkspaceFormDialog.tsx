@@ -1,4 +1,3 @@
-// Responsibility: Render workspace create/update form dialog.
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

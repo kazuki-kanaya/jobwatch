@@ -1,4 +1,3 @@
-// Responsibility: Manage dashboard filter state and user interactions.
 import { useState } from "react";
 import { ALL_FILTER_ID } from "@/features/dashboard/containers/hooks/constants";
 

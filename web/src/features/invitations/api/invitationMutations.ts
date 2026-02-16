@@ -1,4 +1,3 @@
-// Responsibility: Provide invitation accept mutation through Orval with auth headers.
 import { useAcceptInvitationInvitationsAcceptPost } from "@/generated/api";
 
 type UseInvitationAcceptMutationParams = {

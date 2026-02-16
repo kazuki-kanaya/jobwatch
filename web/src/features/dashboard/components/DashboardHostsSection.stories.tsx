@@ -1,4 +1,3 @@
-// Responsibility: Provide visual regression stories for host CRUD section states.
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import DashboardHostsSection from "@/features/dashboard/components/DashboardHostsSection";
 
@@ -21,7 +20,7 @@ const meta = {
     noPermissionLabel: "You do not have permission for this action.",
     canManage: true,
     tokenLabel: "Host token",
-    tokenCopyLabel: "Copy link",
+    tokenCopyLabel: "Copy token",
     tokenValue: null,
     tokenMessage: null,
     deleteConfirmTitle: "Delete host?",

@@ -1,4 +1,3 @@
-// Responsibility: Render KPI snapshot cards for quick status overview.
 import { Activity, CheckCircle2, ServerCrash, TimerReset } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { DashboardSnapshot } from "@/features/dashboard/types";

@@ -1,4 +1,3 @@
-// Responsibility: Render selected job details and latest logs in the right-side panel.
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import type { JobListItem, JobStatus } from "@/features/dashboard/types";

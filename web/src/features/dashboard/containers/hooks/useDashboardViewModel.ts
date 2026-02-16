@@ -1,4 +1,3 @@
-// Responsibility: Build dashboard view model from translated labels and container state.
 import type { DashboardViewModel, JobListItem } from "@/features/dashboard/types";
 import type { Locale, MessageKey } from "@/i18n/messages";
 
@@ -48,7 +47,6 @@ export const buildDashboardViewModel = ({
       updatedAt: t("dashboard_updated_at_label"),
       refresh: t("dashboard_refresh"),
       signOut: t("dashboard_sign_out"),
-      alertRules: t("dashboard_alert_rules"),
       filters: t("dashboard_filters"),
       apply: t("dashboard_apply"),
       recentJobs: t("dashboard_recent_jobs"),
@@ -116,6 +114,7 @@ export const buildDashboardViewModel = ({
       invitationLinkPlaceholder: t("dashboard_invitation_link_placeholder"),
       generateInvite: t("dashboard_generate_invite"),
       copyLink: t("dashboard_copy_link"),
+      copyToken: t("dashboard_copy_token"),
       invitationLinkCreated: t("dashboard_invitation_link_created"),
       invitationLinkCopied: t("dashboard_invitation_link_copied"),
       invitationLinkCreateError: t("dashboard_invitation_link_create_error"),

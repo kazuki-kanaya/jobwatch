@@ -1,4 +1,3 @@
-// Responsibility: Provide reusable shadcn-style card primitives for structured content blocks.
 import type * as React from "react";
 
 import { cn } from "@/lib/utils";

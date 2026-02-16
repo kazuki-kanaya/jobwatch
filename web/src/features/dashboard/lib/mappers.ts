@@ -1,5 +1,3 @@
-// Responsibility: Map API models into dashboard view DTOs.
-
 import type {
   DashboardCurrentUser,
   DashboardInvitationItem,

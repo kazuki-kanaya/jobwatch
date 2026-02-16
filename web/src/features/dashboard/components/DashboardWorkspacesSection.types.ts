@@ -1,4 +1,3 @@
-// Responsibility: Define shared prop contracts for workspace management section and subcomponents.
 import type { DashboardInvitationItem, DashboardSelectOption } from "@/features/dashboard/types";
 
 export type DashboardWorkspacesSectionProps = {

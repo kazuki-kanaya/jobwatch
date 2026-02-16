@@ -49,7 +49,11 @@ class JobService:
         )
 
     def list_jobs_by_workspace(self, workspace_id: str) -> list[JobResponse]:
-        jobs = self._job_repository.list_by_workspace(workspace_id)
+        jobs = list(self._job_repository.list_by_workspace(workspace_id))
+        jobs.sort(
+            key=lambda job: (job.started_at, job.created_at),
+            reverse=True,
+        )
         return [
             JobResponse(
                 job_id=job.job_id,
@@ -69,7 +73,11 @@ class JobService:
         ]
 
     def list_jobs_by_host(self, workspace_id: str, host_id: str) -> list[JobResponse]:
-        jobs = self._job_repository.list_by_host(workspace_id, host_id)
+        jobs = list(self._job_repository.list_by_host(workspace_id, host_id))
+        jobs.sort(
+            key=lambda job: (job.started_at, job.created_at),
+            reverse=True,
+        )
         return [
             JobResponse(
                 job_id=job.job_id,

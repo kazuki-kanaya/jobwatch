@@ -1,4 +1,3 @@
-// Responsibility: Render hosts and members management sections with provided callbacks.
 import DashboardHostsSection from "@/features/dashboard/components/DashboardHostsSection";
 import DashboardMembersSection from "@/features/dashboard/components/DashboardMembersSection";
 import type { DashboardPageViewProps } from "@/features/dashboard/views/DashboardPageView.types";
@@ -76,7 +75,7 @@ export default function DashboardManagementSection(props: DashboardManagementSec
         noPermissionLabel={model.texts.noPermission}
         canManage={props.canManageHosts}
         tokenLabel={model.texts.hostToken}
-        tokenCopyLabel={model.texts.copyLink}
+        tokenCopyLabel={model.texts.copyToken}
         tokenValue={props.hostToken}
         tokenMessage={props.hostTokenMessage}
         deleteConfirmTitle={model.texts.hostDeleteConfirmTitle}

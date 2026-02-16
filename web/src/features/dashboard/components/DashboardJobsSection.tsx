@@ -1,4 +1,3 @@
-// Responsibility: Render job list area with ready/empty/loading/error visual states.
 import { AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";

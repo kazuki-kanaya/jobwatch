@@ -1,5 +1,4 @@
-// Responsibility: Render dashboard title and top-level call-to-action controls.
-import { BellRing, Fingerprint, Languages, LogOut, PenLine, RefreshCw, UserRound } from "lucide-react";
+import { Fingerprint, Languages, LogOut, PenLine, RefreshCw, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -18,7 +17,6 @@ type DashboardHeaderSectionProps = {
   updatedAtLabel: string;
   refreshLabel: string;
   signOutLabel: string;
-  alertRulesLabel: string;
   localeLabel: string;
   profileEditLabel: string;
   profileNameLabel: string;
@@ -50,7 +48,6 @@ export default function DashboardHeaderSection({
   updatedAtLabel,
   refreshLabel,
   signOutLabel,
-  alertRulesLabel,
   localeLabel,
   profileEditLabel,
   profileNameLabel,
@@ -150,16 +147,12 @@ export default function DashboardHeaderSection({
             </Button>
             <Button
               type="button"
-              variant="outline"
+              variant="destructive"
               onClick={onSignOut}
-              className={cn("border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
+              className={cn("bg-rose-700 text-white hover:bg-rose-600")}
             >
               <LogOut className={cn("size-4")} />
               {signOutLabel}
-            </Button>
-            <Button className={cn("bg-cyan-500 text-slate-950 hover:bg-cyan-400")}>
-              <BellRing className={cn("size-4")} />
-              {alertRulesLabel}
             </Button>
           </div>
         </div>
