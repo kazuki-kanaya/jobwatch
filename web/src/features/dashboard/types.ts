@@ -1,7 +1,7 @@
 // Responsibility: Define view-facing DTOs for dashboard skeleton rendering.
 import type { MembershipRole } from "@/generated/api";
 
-export type JobStatus = "running" | "completed" | "failed" | "queued";
+export type JobStatus = "running" | "completed" | "failed" | "canceled";
 
 export type JobListItem = {
   id: string;

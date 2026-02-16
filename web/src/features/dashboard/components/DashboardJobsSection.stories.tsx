@@ -58,7 +58,7 @@ const meta = {
       running: "running",
       completed: "completed",
       failed: "failed",
-      queued: "queued",
+      canceled: "canceled",
     },
     onSelectJob: () => {},
     onRequestDelete: () => {},

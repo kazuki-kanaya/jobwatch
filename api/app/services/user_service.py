@@ -69,7 +69,7 @@ class UserService:
         normalized_user_ids = [
             user_id.strip() for user_id in user_ids if user_id.strip()
         ]
-        users = self._user_repository.get_many(normalized_user_ids)
+        users = self._user_repository.get_many(set(normalized_user_ids))
         user_map = {user.user_id: user for user in users}
 
         response_users: list[UserResponse] = []

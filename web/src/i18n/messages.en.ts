@@ -128,5 +128,5 @@ export const enMessages = {
   status_running: "running",
   status_completed: "completed",
   status_failed: "failed",
-  status_queued: "queued",
+  status_canceled: "canceled",
 } as const;

@@ -8,7 +8,7 @@ const statusClassMap: Record<JobStatus, string> = {
   running: "bg-cyan-400/20 text-cyan-200 border-cyan-300/40",
   completed: "bg-emerald-400/20 text-emerald-200 border-emerald-300/40",
   failed: "bg-rose-400/20 text-rose-200 border-rose-300/40",
-  queued: "bg-amber-400/20 text-amber-200 border-amber-300/40",
+  canceled: "bg-slate-400/20 text-slate-200 border-slate-300/40",
 };
 
 type DashboardJobRowProps = {

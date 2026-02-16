@@ -128,5 +128,5 @@ export const jaMessages = {
   status_running: "実行中",
   status_completed: "完了",
   status_failed: "失敗",
-  status_queued: "待機中",
+  status_canceled: "キャンセル",
 } as const;

@@ -1,5 +1,5 @@
 // Responsibility: Render members list states (loading, error, empty, data rows) with row actions.
-import { MoreHorizontal, PencilLine, Trash2 } from "lucide-react";
+import { Fingerprint, MoreHorizontal, PencilLine, ShieldCheck, Trash2, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -70,18 +70,40 @@ export default function DashboardMemberList({
       {members.map((member) => (
         <article
           key={member.userId}
-          className={cn("flex items-center justify-between rounded-md border border-slate-700 bg-slate-800/70 p-3")}
+          className={cn(
+            "flex items-start justify-between gap-3 rounded-md border border-slate-700 bg-slate-800/70 p-3",
+            "transition-colors hover:border-slate-600",
+          )}
         >
-          <div>
-            <p className={cn("text-sm text-slate-200")}>
-              {usernameLabel}: {member.userName ?? "-"}
+          <div className={cn("min-w-0 space-y-2")}>
+            <p className={cn("flex items-center gap-2 text-sm font-semibold text-slate-100")}>
+              <span className={cn("rounded-md border border-slate-600 bg-slate-900/70 p-1 text-slate-300")}>
+                <UserRound className={cn("size-3.5")} />
+              </span>
+              <span className={cn("truncate")} title={usernameLabel}>
+                {member.userName ?? "no name"}
+              </span>
             </p>
-            <p className={cn("text-xs text-slate-400")}>
-              {userIdLabel}: {member.userId}
-            </p>
-            <p className={cn("text-xs text-slate-400")}>
-              {roleLabel}: {member.role}
-            </p>
+            <div className={cn("flex flex-wrap items-center gap-2 text-xs text-slate-300")}>
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full border border-slate-600 bg-slate-900/50 px-2 py-1 font-mono",
+                )}
+                title={userIdLabel}
+              >
+                <Fingerprint className={cn("size-3.5 text-slate-400")} />
+                <span className={cn("break-all")}>{member.userId}</span>
+              </span>
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full border border-cyan-400/40 bg-cyan-500/10 px-2 py-1 text-cyan-200",
+                )}
+                title={roleLabel}
+              >
+                <ShieldCheck className={cn("size-3.5")} />
+                <span className={cn("uppercase tracking-wide")}>{member.role}</span>
+              </span>
+            </div>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

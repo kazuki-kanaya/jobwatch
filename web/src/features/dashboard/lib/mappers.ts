@@ -31,7 +31,7 @@ const statusMap: Record<JobResponse["status"], JobStatus> = {
   RUNNING: "running",
   FINISHED: "completed",
   FAILED: "failed",
-  CANCELED: "queued",
+  CANCELED: "canceled",
 };
 
 const toReadableDateTime = (value: string, localeTag: string) => {

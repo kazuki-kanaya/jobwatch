@@ -21,17 +21,16 @@ class UserRepository:
             return None
         return DynamoDBMappers.from_item(item, User)
 
-    def get_many(self, user_ids: list[str]) -> list[User]:
-        users: list[User] = []
-        seen: set[str] = set()
-        for user_id in user_ids:
-            if user_id in seen:
-                continue
-            seen.add(user_id)
-            user = self.get(user_id)
-            if user is not None:
-                users.append(user)
-        return users
+    def get_many(self, user_ids: set[str]) -> list[User]:
+        keys = [
+            {
+                "PK": DynamoDBKeys.user_pk(user_id),
+                "SK": DynamoDBKeys.user_sk(),
+            }
+            for user_id in user_ids
+        ]
+        items = self._table.batch_get(keys)
+        return [DynamoDBMappers.from_item(item, User) for item in items]
 
     def update(self, user: User) -> User:
         item = self._to_item(user)

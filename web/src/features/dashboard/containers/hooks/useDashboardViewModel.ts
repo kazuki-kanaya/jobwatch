@@ -145,7 +145,7 @@ export const buildDashboardViewModel = ({
         running: t("status_running"),
         completed: t("status_completed"),
         failed: t("status_failed"),
-        queued: t("status_queued"),
+        canceled: t("status_canceled"),
       },
     },
     language: {
