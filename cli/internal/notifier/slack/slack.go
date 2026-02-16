@@ -27,7 +27,18 @@ func New(tr *http.Transport, webhookURL string) *SlackNotifier {
 func (s *SlackNotifier) Notify(ctx context.Context, n notifier.Notification) error {
 	msg := format(n)
 	payload := map[string]any{
-		"text": msg,
+		"text": msg.Fallback,
+		"attachments": []map[string]any{
+			{
+				"color":    msg.Color,
+				"title":    msg.Title,
+				"text":     msg.Text,
+				"fallback": msg.Fallback,
+				"mrkdwn_in": []string{
+					"text",
+				},
+			},
+		},
 	}
 	body, err := json.Marshal(payload)
 	if err != nil {
