@@ -1,4 +1,3 @@
-// Responsibility: Render ownership transfer dialog for a workspace.
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

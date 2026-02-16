@@ -1,4 +1,3 @@
-// Responsibility: Render member delete confirmation dialog.
 import {
   AlertDialog,
   AlertDialogAction,

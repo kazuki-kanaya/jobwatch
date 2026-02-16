@@ -1,4 +1,3 @@
-// Responsibility: Provide visual regression stories for workspace management section states.
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import DashboardWorkspacesSection from "@/features/dashboard/components/DashboardWorkspacesSection";
 

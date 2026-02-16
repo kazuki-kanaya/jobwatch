@@ -1,4 +1,3 @@
-// Responsibility: Render workspace invitation list states and revoke actions.
 import {
   AlertDialog,
   AlertDialogAction,

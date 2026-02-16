@@ -1,4 +1,3 @@
-// Responsibility: Provide visual regression stories for member add/remove section states.
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import DashboardMembersSection from "@/features/dashboard/components/DashboardMembersSection";
 

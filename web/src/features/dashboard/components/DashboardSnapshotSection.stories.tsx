@@ -1,4 +1,3 @@
-// Responsibility: Provide visual regression stories for dashboard snapshot cards.
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import DashboardSnapshotSection from "@/features/dashboard/components/DashboardSnapshotSection";
 

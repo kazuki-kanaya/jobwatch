@@ -1,4 +1,3 @@
-// Responsibility: Provide visual regression stories for dashboard filter section states.
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import DashboardFiltersSection from "@/features/dashboard/components/DashboardFiltersSection";
 

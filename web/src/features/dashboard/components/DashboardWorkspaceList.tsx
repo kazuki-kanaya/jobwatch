@@ -1,4 +1,3 @@
-// Responsibility: Render workspace list states and row action menu.
 import { Crown, MoreHorizontal, PencilLine, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

@@ -1,4 +1,3 @@
-// Responsibility: Compose member list and dialogs for add/remove/invitation actions.
 import { Link2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

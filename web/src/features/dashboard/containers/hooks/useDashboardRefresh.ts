@@ -1,5 +1,3 @@
-// Responsibility: Manage dashboard refresh action state, query invalidation, and user feedback.
-
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";

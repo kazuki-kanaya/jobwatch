@@ -1,4 +1,3 @@
-// Responsibility: Render member role update dialog.
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

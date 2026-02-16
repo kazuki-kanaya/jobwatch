@@ -1,4 +1,3 @@
-// Responsibility: Compose dashboard sections into the final page layout using view-only props.
 import DashboardDetailSection from "@/features/dashboard/components/DashboardDetailSection";
 import DashboardFiltersSection from "@/features/dashboard/components/DashboardFiltersSection";
 import DashboardHeaderSection from "@/features/dashboard/components/DashboardHeaderSection";
@@ -30,7 +29,6 @@ export default function DashboardPageView(props: DashboardPageViewProps) {
           updatedAtLabel={model.texts.updatedAt}
           refreshLabel={model.texts.refresh}
           signOutLabel={model.texts.signOut}
-          alertRulesLabel={model.texts.alertRules}
           localeLabel={model.language.label}
           localeOptions={model.language.options}
           localeValue={model.language.current}

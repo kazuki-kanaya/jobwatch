@@ -1,4 +1,3 @@
-// Responsibility: Provide current-user profile mutation with dashboard-scoped cache invalidation.
 import { useQueryClient } from "@tanstack/react-query";
 import { dashboardQueryKeys } from "@/features/dashboard/api/queryKeys";
 import { useUpdateCurrentUserUsersMePatch } from "@/generated/api";

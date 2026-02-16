@@ -1,5 +1,3 @@
-// Responsibility: Expose dashboard-scoped query hooks wrapping Orval generated clients.
-
 import { useQuery } from "@tanstack/react-query";
 import { dashboardQueryKeys } from "@/features/dashboard/api/queryKeys";
 import {

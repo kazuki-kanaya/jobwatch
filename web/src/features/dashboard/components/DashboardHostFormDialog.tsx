@@ -1,4 +1,3 @@
-// Responsibility: Render host create/update dialog with name input.
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

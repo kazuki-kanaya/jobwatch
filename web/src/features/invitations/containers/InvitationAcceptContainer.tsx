@@ -1,4 +1,3 @@
-// Responsibility: Handle invitation token parsing and acceptance mutation, then map state to view props.
 import { useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useNavigate, useSearchParams } from "react-router";

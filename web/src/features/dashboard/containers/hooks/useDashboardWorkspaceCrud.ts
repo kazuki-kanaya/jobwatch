@@ -1,4 +1,3 @@
-// Responsibility: Manage workspace CRUD and ownership transfer dialog state with toast feedback.
 import { useState } from "react";
 import { toast } from "sonner";
 import { useDashboardInvitationMutations } from "@/features/dashboard/api/dashboardInvitationMutations";

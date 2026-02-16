@@ -1,4 +1,3 @@
-// Responsibility: Provide visual regression stories for invitation accept page states.
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import InvitationAcceptView from "@/features/invitations/views/InvitationAcceptView";
 

@@ -1,4 +1,3 @@
-// Responsibility: Define shared prop contracts for dashboard member section subcomponents.
 import type { DashboardMemberItem } from "@/features/dashboard/types";
 
 export type MemberRoleOption = {

@@ -1,4 +1,3 @@
-// Responsibility: Manage job deletion state transitions and mutation feedback.
 import { useState } from "react";
 import { toast } from "sonner";
 import { useDashboardJobMutations } from "@/features/dashboard/api/dashboardJobMutations";

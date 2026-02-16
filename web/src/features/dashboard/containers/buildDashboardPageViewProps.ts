@@ -1,4 +1,3 @@
-// Responsibility: Map dashboard container state and handlers into DashboardPageView props.
 import { isLocale, isMembershipRole } from "@/features/dashboard/containers/dashboardGuards";
 import type { useDashboardData } from "@/features/dashboard/containers/hooks/useDashboardData";
 import type { useDashboardHostCrud } from "@/features/dashboard/containers/hooks/useDashboardHostCrud";

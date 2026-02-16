@@ -1,4 +1,3 @@
-// Responsibility: Provide current locale and translator function to the React tree.
 import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { type Locale, type MessageKey, messages } from "@/i18n/messages";
 

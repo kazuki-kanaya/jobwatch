@@ -1,5 +1,3 @@
-// Responsibility: Compose global providers required by the application.
-
 import { Toaster } from "@/components/ui/sonner";
 import LocaleProvider from "@/i18n/LocaleProvider";
 import AuthProvider from "./AuthProvider";

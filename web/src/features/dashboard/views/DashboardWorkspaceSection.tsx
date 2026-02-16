@@ -1,4 +1,3 @@
-// Responsibility: Bridge workspace management view model text and callbacks into workspace section component.
 import DashboardWorkspacesSection from "@/features/dashboard/components/DashboardWorkspacesSection";
 import type { DashboardPageViewProps } from "@/features/dashboard/views/DashboardPageView.types";
 

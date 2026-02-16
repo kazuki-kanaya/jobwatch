@@ -1,4 +1,3 @@
-// Responsibility: Define prop contracts for dashboard page view composition.
 import type { DashboardViewModel } from "@/features/dashboard/types";
 
 export type DashboardWorkspaceManagementProps = {

@@ -1,4 +1,3 @@
-// Responsibility: Derive filtered jobs and selected job state from current filters.
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { JobListItem } from "@/features/dashboard/types";
 

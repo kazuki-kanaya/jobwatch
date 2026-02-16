@@ -1,4 +1,3 @@
-// Responsibility: Provide namespaced React Query keys for dashboard-related data.
 export const dashboardQueryKeys = {
   root: ["dashboard"] as const,
   currentUser: () => ["dashboard", "users", "me"] as const,

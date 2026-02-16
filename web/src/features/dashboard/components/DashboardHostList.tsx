@@ -1,4 +1,3 @@
-// Responsibility: Render host list states and host row actions.
 import { MoreHorizontal, PencilLine, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

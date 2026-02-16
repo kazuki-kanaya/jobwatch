@@ -1,4 +1,3 @@
-// Responsibility: Manage host CRUD state transitions and mutations with user feedback.
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useDashboardHostMutations } from "@/features/dashboard/api/dashboardHostMutations";

@@ -1,4 +1,3 @@
-// Responsibility: Keep dashboard filter state synchronized with URL search parameters.
 import { useEffect } from "react";
 import type { SetURLSearchParams } from "react-router";
 import { ALL_FILTER_ID } from "@/features/dashboard/containers/hooks/constants";

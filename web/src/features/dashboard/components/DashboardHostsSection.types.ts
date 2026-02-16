@@ -1,4 +1,3 @@
-// Responsibility: Define shared props for dashboard hosts section and subcomponents.
 import type { DashboardHostItem } from "@/features/dashboard/types";
 
 export type DashboardHostsSectionProps = {

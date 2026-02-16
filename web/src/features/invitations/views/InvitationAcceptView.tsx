@@ -1,4 +1,3 @@
-// Responsibility: Render invitation acceptance states and actions without side effects.
 import { Loader2, ShieldCheck, TriangleAlert, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";

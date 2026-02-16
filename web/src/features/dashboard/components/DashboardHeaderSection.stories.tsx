@@ -1,4 +1,3 @@
-// Responsibility: Provide visual regression stories for dashboard header including language switch states.
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import DashboardHeaderSection from "@/features/dashboard/components/DashboardHeaderSection";
 
@@ -20,7 +19,6 @@ const meta = {
     updatedAtLabel: "Last sync",
     refreshLabel: "Refresh",
     signOutLabel: "Sign out",
-    alertRulesLabel: "Alert Rules",
     localeLabel: "Language",
     profileEditLabel: "Edit name",
     profileNameLabel: "Name",
@@ -62,7 +60,6 @@ export const Japanese: Story = {
     updatedAtLabel: "最終同期",
     refreshLabel: "更新",
     signOutLabel: "ログアウト",
-    alertRulesLabel: "アラート設定",
     localeLabel: "言語",
     profileEditLabel: "名前を変更",
     profileNameLabel: "名前",

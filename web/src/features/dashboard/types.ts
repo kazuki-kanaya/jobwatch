@@ -1,4 +1,3 @@
-// Responsibility: Define view-facing DTOs for dashboard skeleton rendering.
 import type { MembershipRole } from "@/generated/api";
 
 export type JobStatus = "running" | "completed" | "failed" | "canceled";
@@ -77,7 +76,6 @@ export type DashboardViewModel = {
     updatedAt: string;
     refresh: string;
     signOut: string;
-    alertRules: string;
     filters: string;
     apply: string;
     recentJobs: string;
@@ -145,6 +143,7 @@ export type DashboardViewModel = {
     invitationLinkPlaceholder: string;
     generateInvite: string;
     copyLink: string;
+    copyToken: string;
     invitationLinkCreated: string;
     invitationLinkCopied: string;
     invitationLinkCreateError: string;

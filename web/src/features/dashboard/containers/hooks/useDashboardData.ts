@@ -1,4 +1,3 @@
-// Responsibility: Fetch dashboard entities via Orval hooks and map them to view DTO inputs.
 import { useMemo } from "react";
 import {
   useDashboardCurrentUserQuery,

@@ -1,4 +1,3 @@
-// Responsibility: Render workspace delete confirmation dialog.
 import {
   AlertDialog,
   AlertDialogAction,

@@ -1,4 +1,3 @@
-// Responsibility: Provide workspace CRUD and ownership transfer mutations with dashboard cache invalidation.
 import { useQueryClient } from "@tanstack/react-query";
 import { dashboardQueryKeys } from "@/features/dashboard/api/queryKeys";
 import {
