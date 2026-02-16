@@ -1,28 +1,22 @@
 version: "3"
 
 tasks:
-  ddb:up:
-    desc: Start local DynamoDB services
-    cmds:
-      - docker compose up -d
-
-  ddb:down:
-    desc: Stop and remove local DynamoDB services
-    cmds:
-      - docker compose down -v
-
   ddb:create-tables:
     desc: Create DynamoDB tables in LocalStack
     cmds:
       - bash ./infra/scripts/dynamodb/wait.sh
       - bash ./infra/scripts/dynamodb/create-tables.sh
 
-  ddb:init:
-    desc: Initialize local DynamoDB environment
-    deps:
-      - ddb:up
+  ddb:up:
+    desc: Start local DynamoDB services
     cmds:
+      - docker compose up -d
       - task: ddb:create-tables
+
+  ddb:down:
+    desc: Stop and remove local DynamoDB services
+    cmds:
+      - docker compose down -v
 
   api:fmt:
     desc: Format API code

@@ -129,7 +129,7 @@ export default function DashboardWorkspaceInvitationsSection({
                 {roleLabel}: {invitation.role}
               </p>
               <p className={cn("text-xs text-slate-300")}>
-                {createdByLabel}: {invitation.createdByUserId}
+                {createdByLabel}: {invitation.createdBy}
               </p>
               <p className={cn("text-xs text-slate-300")}>
                 {expiresAtLabel}: {invitation.expiresAt}

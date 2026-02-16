@@ -15,7 +15,7 @@ import type {
   WorkspaceInvitationsResponse,
   WorkspaceMemberResponse,
   WorkspaceMembersResponse,
-} from "@/generated/models/index.zod";
+} from "@/generated/api";
 
 export type WorkspaceOption = {
   id: string;
@@ -46,6 +46,11 @@ const toReadableDateTime = (value: string, localeTag: string) => {
     minute: "2-digit",
     timeZoneName: "short",
   });
+};
+
+const toUserDisplayName = (userId: string, userNameById: Map<string, string>) => {
+  const userName = userNameById.get(userId);
+  return userName ? `${userName} (${userId})` : userId;
 };
 
 const toDurationLabel = (startedAt: string, finishedAt: string | null) => {
@@ -110,12 +115,14 @@ export const toCurrentUser = (payload?: UserResponse): DashboardCurrentUser | nu
 export const toInvitationItems = (
   payload: WorkspaceInvitationsResponse | undefined,
   localeTag: string,
+  userNameById: Map<string, string>,
 ): DashboardInvitationItem[] => {
   if (!payload) return [];
 
   return payload.invitations.map((invitation) => ({
     id: invitation.invitation_id,
     role: invitation.role,
+    createdBy: toUserDisplayName(invitation.created_by_user_id, userNameById),
     createdByUserId: invitation.created_by_user_id,
     expiresAtIso: invitation.expires_at,
     expiresAt: toReadableDateTime(invitation.expires_at, localeTag),
@@ -126,7 +133,7 @@ export const toInvitationItems = (
 export const toJobListItems = (
   payload: JobResponse[] | undefined,
   workspaceLabel: string,
-  hostLabel: string,
+  hostNameById: Map<string, string>,
   localeTag: string,
 ): JobListItem[] => {
   if (!payload) return [];
@@ -134,10 +141,12 @@ export const toJobListItems = (
   return payload.map((job) => ({
     id: job.job_id,
     jobId: job.job_id,
+    workspaceId: job.workspace_id,
+    hostId: job.host_id,
     title: job.project,
     project: job.project,
     workspace: workspaceLabel,
-    host: hostLabel,
+    host: hostNameById.get(job.host_id) ?? job.host_id,
     startedAtIso: job.started_at,
     finishedAtIso: job.finished_at ?? null,
     startedAt: toReadableDateTime(job.started_at, localeTag),

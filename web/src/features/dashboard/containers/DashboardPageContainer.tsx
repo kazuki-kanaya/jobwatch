@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router";
 import { buildDashboardPageViewProps } from "@/features/dashboard/containers/buildDashboardPageViewProps";
 import {
   canManageHosts,
+  canManageJobs,
   canManageMembers,
   canManageWorkspace,
   getCurrentMembershipRole,
@@ -14,9 +15,12 @@ import { ALL_FILTER_ID } from "@/features/dashboard/containers/hooks/constants";
 import { useDashboardData } from "@/features/dashboard/containers/hooks/useDashboardData";
 import { useDashboardFilters } from "@/features/dashboard/containers/hooks/useDashboardFilters";
 import { useDashboardHostCrud } from "@/features/dashboard/containers/hooks/useDashboardHostCrud";
+import { useDashboardJobCrud } from "@/features/dashboard/containers/hooks/useDashboardJobCrud";
 import { useDashboardMemberCrud } from "@/features/dashboard/containers/hooks/useDashboardMemberCrud";
+import { useDashboardRefresh } from "@/features/dashboard/containers/hooks/useDashboardRefresh";
 import { useDashboardSelection } from "@/features/dashboard/containers/hooks/useDashboardSelection";
 import { useDashboardUrlSync } from "@/features/dashboard/containers/hooks/useDashboardUrlSync";
+import { useDashboardUserProfile } from "@/features/dashboard/containers/hooks/useDashboardUserProfile";
 import { buildDashboardViewModel } from "@/features/dashboard/containers/hooks/useDashboardViewModel";
 import { useDashboardWorkspaceCrud } from "@/features/dashboard/containers/hooks/useDashboardWorkspaceCrud";
 import DashboardPageView from "@/features/dashboard/views/DashboardPageView";
@@ -83,6 +87,14 @@ export default function DashboardPageContainer() {
       hostCrudError: t("dashboard_host_crud_error"),
     },
   });
+  const jobCrud = useDashboardJobCrud({
+    accessToken: user?.access_token,
+    workspaceId: data.activeWorkspaceId,
+    texts: {
+      jobDeleted: t("dashboard_job_deleted"),
+      jobCrudError: t("dashboard_job_crud_error"),
+    },
+  });
 
   const memberCrud = useDashboardMemberCrud({
     accessToken: user?.access_token,
@@ -95,6 +107,18 @@ export default function DashboardPageContainer() {
       invitationLinkCreated: t("dashboard_invitation_link_created"),
       invitationLinkCopied: t("dashboard_invitation_link_copied"),
       invitationLinkCreateError: t("dashboard_invitation_link_create_error"),
+    },
+  });
+  const refreshState = useDashboardRefresh({
+    successMessage: t("dashboard_refresh_success"),
+    errorMessage: t("dashboard_refresh_error"),
+  });
+  const userProfile = useDashboardUserProfile({
+    accessToken: user?.access_token,
+    currentUser: data.currentUser,
+    texts: {
+      profileUpdated: t("dashboard_profile_updated"),
+      profileUpdateError: t("dashboard_profile_update_error"),
     },
   });
   const workspaceCrud = useDashboardWorkspaceCrud({
@@ -147,19 +171,24 @@ export default function DashboardPageContainer() {
   const canManageWorkspaceByRole = canManageWorkspace(currentMembershipRole);
   const canManageHostsByRole = canManageHosts(currentMembershipRole);
   const canManageMembersByRole = canManageMembers(currentMembershipRole);
+  const canManageJobsByRole = canManageJobs(currentMembershipRole);
 
   return (
     <DashboardPageView
       {...buildDashboardPageViewProps({
         model,
         jobsUiState,
+        isRefreshing: refreshState.isRefreshing,
         setLocale,
         setWorkspaceId,
         setHostId,
         setQueryInput,
+        refreshDashboard: refreshState.refreshDashboard,
         applyFilters,
         signOut: () => void signoutRedirect(),
         selection,
+        userProfile,
+        jobCrud,
         hostCrud,
         memberCrud,
         workspaceCrud,
@@ -167,6 +196,7 @@ export default function DashboardPageContainer() {
         canManageWorkspace: canManageWorkspaceByRole,
         canManageHosts: canManageHostsByRole,
         canManageMembers: canManageMembersByRole,
+        canManageJobs: canManageJobsByRole,
         data,
       })}
     />

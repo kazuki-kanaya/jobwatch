@@ -67,18 +67,13 @@ def get_current_user(
         )
         _validate_client_claim(payload, settings.oidc_audience)
         user_id = payload["sub"]
-        token_name = payload.get("name")
         current_user = user_repository.get(user_id)
         if not current_user:
             user = User(
                 user_id=user_id,
-                name=token_name or "no name",
+                name="no name",
             )
             current_user = user_repository.create(user)
-        elif token_name and current_user.name != token_name:
-            current_user.name = token_name
-            current_user.touch()
-            current_user = user_repository.update(current_user)
         return current_user
     except jwt.PyJWTError as e:
         raise AuthenticationError(f"Invalid OIDC token: {e}") from e

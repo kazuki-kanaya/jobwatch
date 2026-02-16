@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from app.models.workspace_membership import MembershipRole
 
@@ -8,9 +8,25 @@ from app.models.workspace_membership import MembershipRole
 class WorkspaceCreateRequest(BaseModel):
     name: str
 
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("name must not be empty")
+        return normalized
+
 
 class WorkspaceUpdateRequest(BaseModel):
     name: str
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("name must not be empty")
+        return normalized
 
 
 class WorkspaceResponse(BaseModel):
@@ -30,6 +46,14 @@ class WorkspaceMemberRoleUpdateRequest(BaseModel):
 
 class WorkspaceOwnerTransferRequest(BaseModel):
     new_owner_user_id: str
+
+    @field_validator("new_owner_user_id")
+    @classmethod
+    def validate_new_owner_user_id(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("new_owner_user_id must not be empty")
+        return normalized
 
 
 class WorkspaceOwnerTransferResponse(BaseModel):

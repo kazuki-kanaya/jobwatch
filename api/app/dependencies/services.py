@@ -1,6 +1,7 @@
 from app.dependencies.repositories import (
     get_host_repository,
     get_job_repository,
+    get_user_repository,
     get_workspace_invitation_repository,
     get_workspace_membership_repository,
     get_workspace_repository,
@@ -35,9 +36,14 @@ def get_job_service() -> JobService:
 
 
 def get_user_service() -> UserService:
+    user_repository = get_user_repository()
     workspace_repository = get_workspace_repository()
     workspace_membership_repository = get_workspace_membership_repository()
-    return UserService(workspace_repository, workspace_membership_repository)
+    return UserService(
+        user_repository,
+        workspace_repository,
+        workspace_membership_repository,
+    )
 
 
 def get_workspace_invitation_service() -> WorkspaceInvitationService:

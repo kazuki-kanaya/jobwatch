@@ -6,10 +6,6 @@ export default defineConfig({
     output: {
       target: "./src/generated/api.ts",
       client: "react-query",
-      schemas: {
-        path: "./src/generated/models",
-        type: "zod",
-      },
     },
   },
 });

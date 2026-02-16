@@ -7,6 +7,7 @@ import {
   useDashboardJobsByHostQuery,
   useDashboardJobsQuery,
   useDashboardMembersQuery,
+  useDashboardUsersLookupQuery,
   useDashboardWorkspacesQuery,
 } from "@/features/dashboard/api/dashboardQueries";
 import { ALL_FILTER_ID } from "@/features/dashboard/containers/hooks/constants";
@@ -91,26 +92,52 @@ export const useDashboardData = ({
   const membersQuery = useDashboardMembersQuery(activeWorkspaceId || null, accessToken, canRequest);
   const memberPayload =
     !Array.isArray(membersQuery.data?.data) && membersQuery.data?.status === 200 ? membersQuery.data.data : undefined;
-  const members = useMemo(() => {
-    const mappedMembers = toMemberItems(memberPayload);
-    if (!currentUser) return mappedMembers;
-
-    return mappedMembers.map((member) =>
-      member.userId === currentUser.userId && !member.userName ? { ...member, userName: currentUser.name } : member,
-    );
-  }, [currentUser, memberPayload]);
 
   const invitationsQuery = useDashboardInvitationsQuery(activeWorkspaceId || null, accessToken, canRequest);
   const invitationsPayload =
     !Array.isArray(invitationsQuery.data?.data) && invitationsQuery.data?.status === 200
       ? invitationsQuery.data.data
       : undefined;
-  const invitations = useMemo(() => toInvitationItems(invitationsPayload, localeTag), [invitationsPayload, localeTag]);
+
+  const lookupUserIds = useMemo(() => {
+    const ids = new Set<string>();
+    memberPayload?.members.forEach((member) => {
+      ids.add(member.user_id);
+    });
+    invitationsPayload?.invitations.forEach((invitation) => {
+      ids.add(invitation.created_by_user_id);
+    });
+    if (currentUser) ids.add(currentUser.userId);
+    return [...ids];
+  }, [currentUser, invitationsPayload, memberPayload]);
+  const usersLookupQuery = useDashboardUsersLookupQuery(lookupUserIds, accessToken, canRequest);
+  const userNameById = useMemo(() => {
+    const users = usersLookupQuery.data?.status === 200 ? usersLookupQuery.data.data.users : [];
+    const map = new Map(users.map((user) => [user.user_id, user.name]));
+    if (currentUser) map.set(currentUser.userId, currentUser.name);
+    return map;
+  }, [currentUser, usersLookupQuery.data]);
+
+  const members = useMemo(() => {
+    const mappedMembers = toMemberItems(memberPayload);
+    return mappedMembers.map((member) => {
+      const userName =
+        member.userName ??
+        userNameById.get(member.userId) ??
+        (currentUser?.userId === member.userId ? currentUser.name : null);
+      return { ...member, userName };
+    });
+  }, [currentUser, memberPayload, userNameById]);
+
+  const invitations = useMemo(
+    () => toInvitationItems(invitationsPayload, localeTag, userNameById),
+    [invitationsPayload, localeTag, userNameById],
+  );
 
   const selectedHostId = hostOptions.some((host) => host.id === hostId) ? hostId : ALL_FILTER_ID;
   const activeHostId = selectedHostId === ALL_FILTER_ID ? null : selectedHostId;
   const activeWorkspaceName = workspaces.find((workspace) => workspace.id === activeWorkspaceId)?.name ?? allLabel;
-  const activeHostName = hostOptions.find((host) => host.id === selectedHostId)?.name ?? allLabel;
+  const hostNameById = useMemo(() => new Map(hosts.map((host) => [host.id, host.name])), [hosts]);
 
   const jobsWorkspaceQuery = useDashboardJobsQuery(activeWorkspaceId || null, accessToken, canRequest && !activeHostId);
   const jobsByHostQuery = useDashboardJobsByHostQuery(activeWorkspaceId || null, activeHostId, accessToken, canRequest);
@@ -119,8 +146,8 @@ export const useDashboardData = ({
   const hostJobsPayload = Array.isArray(jobsByHostQuery.data?.data) ? jobsByHostQuery.data.data : undefined;
   const jobsPayload = activeHostId ? hostJobsPayload : workspaceJobsPayload;
   const jobs = useMemo(
-    () => toJobListItems(jobsPayload, activeWorkspaceName, activeHostName, localeTag),
-    [activeHostName, activeWorkspaceName, jobsPayload, localeTag],
+    () => toJobListItems(jobsPayload, activeWorkspaceName, hostNameById, localeTag),
+    [activeWorkspaceName, hostNameById, jobsPayload, localeTag],
   );
 
   const isLoading =

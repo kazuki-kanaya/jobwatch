@@ -1,7 +1,9 @@
 // Responsibility: Expose dashboard-scoped query hooks wrapping Orval generated clients.
 
+import { useQuery } from "@tanstack/react-query";
 import { dashboardQueryKeys } from "@/features/dashboard/api/queryKeys";
 import {
+  lookupUsersUsersLookupPost,
   useListHostsWorkspacesWorkspaceIdHostsGet,
   useListInvitationsWorkspacesWorkspaceIdInvitationsGet,
   useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet,
@@ -28,6 +30,29 @@ export const useDashboardWorkspacesQuery = (accessToken: string | undefined, ena
       enabled,
     },
     fetch: getAuthorizedFetchOptions(accessToken),
+  });
+};
+
+export const useDashboardUsersLookupQuery = (userIds: string[], accessToken: string | undefined, enabled: boolean) => {
+  const normalizedUserIds = [...new Set(userIds)].sort();
+  const fetch = getAuthorizedFetchOptions(accessToken);
+
+  return useQuery({
+    queryKey: dashboardQueryKeys.usersLookup(normalizedUserIds),
+    enabled: enabled && normalizedUserIds.length > 0,
+    queryFn: async ({ signal }) => {
+      const response = await lookupUsersUsersLookupPost(
+        { user_ids: normalizedUserIds },
+        {
+          signal,
+          ...fetch,
+        },
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to lookup users");
+      }
+      return response;
+    },
   });
 };
 

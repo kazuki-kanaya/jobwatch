@@ -1,7 +1,7 @@
 // Responsibility: Provide locale and role guard utilities for dashboard container wiring.
 
 import type { DashboardMemberItem } from "@/features/dashboard/types";
-import type { MembershipRole } from "@/generated/models/index.zod";
+import type { MembershipRole } from "@/generated/api";
 import type { Locale } from "@/i18n/messages";
 
 export const isLocale = (value: string): value is Locale => value === "en" || value === "ja";
@@ -24,5 +24,6 @@ export const getCurrentMembershipRole = (
 };
 
 export const canManageHosts = (role: MembershipRole | null) => role === "owner" || role === "editor";
+export const canManageJobs = canManageHosts;
 export const canManageWorkspace = (role: MembershipRole | null) => role === "owner";
 export const canManageMembers = canManageWorkspace;

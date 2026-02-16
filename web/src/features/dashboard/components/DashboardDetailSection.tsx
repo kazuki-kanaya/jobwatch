@@ -48,20 +48,26 @@ export default function DashboardDetailSection({
   return (
     <Card className={cn("h-full border-slate-700/60 bg-slate-900/80 py-4")}>
       <CardHeader className={cn("px-4")}>
-        <CardTitle className={cn("text-sm font-semibold text-slate-200")}>{title}</CardTitle>
+        <CardTitle className={cn("text-base font-semibold text-slate-100")}>{title}</CardTitle>
       </CardHeader>
       <CardContent className={cn("space-y-4 px-4")}>
         {!selectedJob ? <EmptyState label={emptyLabel} /> : null}
         {selectedJob ? (
           <>
-            <section className={cn("space-y-2")}>
-              <p className={cn("font-mono text-xs tracking-[0.14em] text-slate-500 uppercase")}>{selectedJobLabel}</p>
-              <p className={cn("break-all font-medium text-slate-100")}>{commandWithArgs || "-"}</p>
-              <div className={cn("space-y-1 text-sm text-slate-300")}>
-                <DetailRow label={jobIdLabel} value={selectedJob.jobId} />
+            <section className={cn("space-y-3")}>
+              <p className={cn("font-mono text-sm tracking-[0.12em] text-slate-400 uppercase")}>{selectedJobLabel}</p>
+              <p
+                className={cn(
+                  "break-all rounded-md border border-slate-700 bg-slate-800/70 p-3 font-mono text-base text-slate-100",
+                )}
+              >
+                {commandWithArgs || "-"}
+              </p>
+              <div className={cn("space-y-2 text-sm text-slate-200")}>
+                <DetailRow label={jobIdLabel} value={selectedJob.jobId} mono />
                 <DetailRow label={projectLabel} value={selectedJob.project} />
-                <DetailRow label={commandLabel} value={selectedJob.command} />
-                <DetailRow label={argsLabel} value={selectedJob.args.join(" ") || "-"} />
+                <DetailRow label={commandLabel} value={selectedJob.command} mono />
+                <DetailRow label={argsLabel} value={selectedJob.args.join(" ") || "-"} mono />
                 <DetailRow label={tagsLabel} value={selectedJob.tags.join(", ") || "-"} />
                 <DetailRow label={statusLabel} value={statusLabels[selectedJob.status]} />
                 <DetailRow label={startedAtLabel} value={selectedJob.startedAt} />
@@ -71,14 +77,14 @@ export default function DashboardDetailSection({
               </div>
             </section>
             <Separator className={cn("bg-slate-700")} />
-            <section className={cn("space-y-2")}>
-              <p className={cn("font-mono text-xs tracking-[0.14em] text-slate-500 uppercase")}>{latestLogsLabel}</p>
+            <section className={cn("space-y-3")}>
+              <p className={cn("font-mono text-sm tracking-[0.12em] text-slate-400 uppercase")}>{latestLogsLabel}</p>
               {selectedJob.tailLines.length === 0 ? (
                 <p className={cn("text-sm text-slate-400")}>{logsEmptyLabel}</p>
               ) : (
                 <ul
                   className={cn(
-                    "space-y-1 rounded-md border border-slate-700 bg-slate-800/60 p-3 font-mono text-xs text-slate-300",
+                    "space-y-1 rounded-md border border-slate-700 bg-slate-800/60 p-3 font-mono text-sm text-slate-200",
                   )}
                 >
                   {selectedJob.tailLines.slice(-6).map((line) => (
@@ -98,10 +104,13 @@ function EmptyState({ label }: { label: string }) {
   return <p className={cn("rounded-md border border-dashed border-slate-600 p-4 text-sm text-slate-400")}>{label}</p>;
 }
 
-function DetailRow({ label, value }: { label: string; value: string }) {
+function DetailRow({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
   return (
-    <p>
-      <span className={cn("text-slate-500")}>{label}:</span> {value}
-    </p>
+    <div
+      className={cn("grid grid-cols-[120px_1fr] gap-3 rounded-md border border-slate-700/70 bg-slate-800/40 px-3 py-2")}
+    >
+      <span className={cn("text-sm text-slate-400")}>{label}</span>
+      <span className={cn("break-all text-sm text-slate-100", mono ? "font-mono" : "")}>{value}</span>
+    </div>
   );
 }

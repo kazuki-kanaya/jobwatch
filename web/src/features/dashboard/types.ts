@@ -1,11 +1,13 @@
 // Responsibility: Define view-facing DTOs for dashboard skeleton rendering.
-import type { MembershipRole } from "@/generated/models/index.zod";
+import type { MembershipRole } from "@/generated/api";
 
 export type JobStatus = "running" | "completed" | "failed" | "queued";
 
 export type JobListItem = {
   id: string;
   jobId: string;
+  workspaceId: string;
+  hostId: string;
   title: string;
   project: string;
   workspace: string;
@@ -55,6 +57,7 @@ export type DashboardCurrentUser = {
 export type DashboardInvitationItem = {
   id: string;
   role: MembershipRole;
+  createdBy: string;
   createdByUserId: string;
   expiresAtIso: string;
   expiresAt: string;
@@ -67,6 +70,10 @@ export type DashboardViewModel = {
   texts: {
     missionControl: string;
     currentUser: string;
+    profileEdit: string;
+    profileName: string;
+    profileUpdated: string;
+    profileUpdateError: string;
     updatedAt: string;
     refresh: string;
     signOut: string;
@@ -76,6 +83,10 @@ export type DashboardViewModel = {
     recentJobs: string;
     noJobs: string;
     jobsError: string;
+    jobDeleted: string;
+    jobCrudError: string;
+    jobDeleteConfirmTitle: string;
+    jobDeleteConfirmDescription: string;
     detail: string;
     selectedJob: string;
     jobId: string;

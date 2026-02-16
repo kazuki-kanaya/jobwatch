@@ -1,11 +1,11 @@
 // Responsibility: Provide invitation create/revoke mutations with dashboard-scoped cache invalidation.
 import { useQueryClient } from "@tanstack/react-query";
 import { dashboardQueryKeys } from "@/features/dashboard/api/queryKeys";
+import type { MembershipRole } from "@/generated/api";
 import {
   useCreateInvitationWorkspacesWorkspaceIdInvitationsPost,
   useRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete,
 } from "@/generated/api";
-import type { MembershipRole } from "@/generated/models/index.zod";
 
 type UseDashboardInvitationMutationsParams = {
   accessToken: string | undefined;

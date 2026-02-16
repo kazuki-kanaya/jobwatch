@@ -1282,6 +1282,51 @@
             "HTTPBearer": []
           }
         ]
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update Current User",
+        "description": "Update current authenticated user's profile.",
+        "operationId": "update_current_user_users_me_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/users/me/workspaces": {
@@ -1299,6 +1344,53 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserWorkspacesResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/users/lookup": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Lookup Users",
+        "description": "Lookup users by user IDs.",
+        "operationId": "lookup_users_users_lookup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLookupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLookupResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -1572,6 +1664,14 @@
             "type": "string",
             "title": "Job Id"
           },
+          "workspace_id": {
+            "type": "string",
+            "title": "Workspace Id"
+          },
+          "host_id": {
+            "type": "string",
+            "title": "Host Id"
+          },
           "project": {
             "type": "string",
             "title": "Project"
@@ -1636,6 +1736,8 @@
         "type": "object",
         "required": [
           "job_id",
+          "workspace_id",
+          "host_id",
           "project",
           "command",
           "status",
@@ -1708,6 +1810,46 @@
         ],
         "title": "MembershipRole"
       },
+      "UserLookupRequest": {
+        "properties": {
+          "user_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "User Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_ids"
+        ],
+        "title": "UserLookupRequest"
+      },
+      "UserLookupResponse": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserResponse"
+            },
+            "type": "array",
+            "title": "Users"
+          },
+          "not_found_user_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Not Found User Ids",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "users"
+        ],
+        "title": "UserLookupResponse"
+      },
       "UserResponse": {
         "properties": {
           "user_id": {
@@ -1737,6 +1879,19 @@
           "updated_at"
         ],
         "title": "UserResponse"
+      },
+      "UserUpdateRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "UserUpdateRequest"
       },
       "UserWorkspacesResponse": {
         "properties": {

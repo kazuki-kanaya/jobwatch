@@ -34,8 +34,21 @@ export default function DashboardPageView(props: DashboardPageViewProps) {
           localeLabel={model.language.label}
           localeOptions={model.language.options}
           localeValue={model.language.current}
+          isRefreshing={props.isRefreshing}
           onLocaleChange={props.onLocaleChange}
+          onRefresh={props.onRefresh}
           onSignOut={props.onSignOut}
+          profileEditLabel={model.texts.profileEdit}
+          profileNameLabel={model.texts.profileName}
+          updateLabel={model.texts.update}
+          cancelLabel={model.texts.cancel}
+          isProfileDialogOpen={props.isUserProfileDialogOpen}
+          profileDraftName={props.userProfileDraftName}
+          isProfileSubmitting={props.isUserProfileSubmitting}
+          onOpenProfileDialog={props.onOpenUserProfileDialog}
+          onCloseProfileDialog={props.onCloseUserProfileDialog}
+          onProfileDraftNameChange={props.onUserProfileDraftNameChange}
+          onSubmitProfile={props.onSubmitUserProfile}
         />
         <DashboardSnapshotSection
           snapshot={model.snapshot}
@@ -72,15 +85,27 @@ export default function DashboardPageView(props: DashboardPageViewProps) {
             emptyLabel={model.texts.noJobs}
             errorLabel={model.texts.jobsError}
             jobIdLabel={model.texts.jobId}
-            commandLabel={model.texts.command}
-            argsLabel={model.texts.args}
+            projectLabel={model.texts.project}
+            workspaceLabel={model.texts.workspaceName}
+            hostLabel={model.texts.hostName}
             tagsLabel={model.texts.tags}
             startedAtLabel={model.texts.startedAt}
             finishedAtLabel={model.texts.finishedAt}
             durationLabel={model.texts.duration}
+            cancelLabel={model.texts.cancel}
+            deleteLabel={model.texts.delete}
+            noPermissionLabel={model.texts.noPermission}
+            deleteConfirmTitle={model.texts.jobDeleteConfirmTitle}
+            deleteConfirmDescription={model.texts.jobDeleteConfirmDescription}
+            canManage={props.canManageJobs}
+            pendingDeleteJobId={props.pendingDeleteJobId}
+            isSubmittingDelete={props.isJobSubmitting}
             statusLabels={model.texts.statusLabels}
             selectedJobId={props.selectedJobId}
             onSelectJob={props.onSelectJob}
+            onRequestDelete={props.onRequestDeleteJob}
+            onCancelDelete={props.onCancelDeleteJob}
+            onConfirmDelete={props.onConfirmDeleteJob}
             onSelectPreviousJob={props.onSelectPreviousJob}
             onSelectNextJob={props.onSelectNextJob}
           />

@@ -47,6 +47,7 @@ const meta = {
       {
         id: "inv-001",
         role: "viewer",
+        createdBy: "kazu (user-001)",
         createdByUserId: "user-001",
         expiresAtIso: "2026-03-01T10:00:00Z",
         expiresAt: "2026-03-01 10:00",
@@ -55,6 +56,7 @@ const meta = {
       {
         id: "inv-002",
         role: "editor",
+        createdBy: "kazu (user-001)",
         createdByUserId: "user-001",
         expiresAtIso: "2025-03-01T10:00:00Z",
         expiresAt: "2025-03-01 10:00",
@@ -63,6 +65,7 @@ const meta = {
       {
         id: "inv-003",
         role: "viewer",
+        createdBy: "alice (user-002)",
         createdByUserId: "user-002",
         expiresAtIso: "2026-02-01T10:00:00Z",
         expiresAt: "2026-02-01 10:00",

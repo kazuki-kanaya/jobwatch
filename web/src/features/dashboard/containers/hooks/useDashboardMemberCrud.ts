@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { useDashboardInvitationMutations } from "@/features/dashboard/api/dashboardInvitationMutations";
 import { useDashboardMemberMutations } from "@/features/dashboard/api/dashboardMemberMutations";
 import type { DashboardViewModel } from "@/features/dashboard/types";
-import type { MembershipRole } from "@/generated/models/index.zod";
+import type { MembershipRole } from "@/generated/api";
 
 type UseDashboardMemberCrudParams = {
   accessToken: string | undefined;

@@ -35,6 +35,8 @@ class JobService:
         created = self._job_repository.create(job)
         return JobResponse(
             job_id=created.job_id,
+            workspace_id=created.workspace_id,
+            host_id=created.host_id,
             project=created.project,
             command=created.command,
             args=created.args,
@@ -51,6 +53,8 @@ class JobService:
         return [
             JobResponse(
                 job_id=job.job_id,
+                workspace_id=job.workspace_id,
+                host_id=job.host_id,
                 project=job.project,
                 command=job.command,
                 args=job.args,
@@ -69,6 +73,8 @@ class JobService:
         return [
             JobResponse(
                 job_id=job.job_id,
+                workspace_id=job.workspace_id,
+                host_id=job.host_id,
                 project=job.project,
                 command=job.command,
                 args=job.args,
@@ -88,6 +94,8 @@ class JobService:
             raise NotFoundException(f"Job {job_id} not found")
         return JobResponse(
             job_id=job.job_id,
+            workspace_id=job.workspace_id,
+            host_id=job.host_id,
             project=job.project,
             command=job.command,
             args=job.args,
@@ -107,6 +115,8 @@ class JobService:
             )
         return JobResponse(
             job_id=job.job_id,
+            workspace_id=job.workspace_id,
+            host_id=job.host_id,
             project=job.project,
             command=job.command,
             args=job.args,
@@ -140,6 +150,8 @@ class JobService:
         updated = self._job_repository.update(job)
         return JobResponse(
             job_id=updated.job_id,
+            workspace_id=updated.workspace_id,
+            host_id=updated.host_id,
             project=updated.project,
             command=updated.command,
             args=updated.args,

@@ -2,6 +2,7 @@
 import { AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import DashboardJobDeleteDialog from "@/features/dashboard/components/DashboardJobDeleteDialog";
 import DashboardJobRow from "@/features/dashboard/components/DashboardJobRow";
 import type { JobListItem, JobStatus } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
@@ -15,15 +16,27 @@ type DashboardJobsSectionProps = {
   emptyLabel: string;
   errorLabel: string;
   jobIdLabel: string;
-  commandLabel: string;
-  argsLabel: string;
+  projectLabel: string;
+  workspaceLabel: string;
+  hostLabel: string;
   tagsLabel: string;
   startedAtLabel: string;
   finishedAtLabel: string;
   durationLabel: string;
+  cancelLabel: string;
+  deleteLabel: string;
+  noPermissionLabel: string;
+  deleteConfirmTitle: string;
+  deleteConfirmDescription: string;
+  canManage: boolean;
+  pendingDeleteJobId: string | null;
+  isSubmittingDelete: boolean;
   statusLabels: Record<JobStatus, string>;
   selectedJobId: string | null;
   onSelectJob: (jobId: string) => void;
+  onRequestDelete: (jobId: string) => void;
+  onCancelDelete: () => void;
+  onConfirmDelete: () => void;
   onSelectPreviousJob: (jobId: string) => void;
   onSelectNextJob: (jobId: string) => void;
 };
@@ -35,15 +48,27 @@ export default function DashboardJobsSection({
   emptyLabel,
   errorLabel,
   jobIdLabel,
-  commandLabel,
-  argsLabel,
+  projectLabel,
+  workspaceLabel,
+  hostLabel,
   tagsLabel,
   startedAtLabel,
   finishedAtLabel,
   durationLabel,
+  cancelLabel,
+  deleteLabel,
+  noPermissionLabel,
+  deleteConfirmTitle,
+  deleteConfirmDescription,
+  canManage,
+  pendingDeleteJobId,
+  isSubmittingDelete,
   statusLabels,
   selectedJobId,
   onSelectJob,
+  onRequestDelete,
+  onCancelDelete,
+  onConfirmDelete,
   onSelectPreviousJob,
   onSelectNextJob,
 }: DashboardJobsSectionProps) {
@@ -62,20 +87,36 @@ export default function DashboardJobsSection({
                 key={job.id}
                 job={job}
                 jobIdLabel={jobIdLabel}
-                commandLabel={commandLabel}
-                argsLabel={argsLabel}
+                projectLabel={projectLabel}
+                workspaceLabel={workspaceLabel}
+                hostLabel={hostLabel}
                 tagsLabel={tagsLabel}
                 startedAtLabel={startedAtLabel}
                 finishedAtLabel={finishedAtLabel}
                 durationLabel={durationLabel}
+                canManage={canManage}
+                deleteLabel={deleteLabel}
+                noPermissionLabel={noPermissionLabel}
+                isDeleting={isSubmittingDelete}
                 statusLabels={statusLabels}
                 isSelected={job.id === selectedJobId}
                 onSelectJob={onSelectJob}
+                onRequestDelete={onRequestDelete}
                 onSelectPreviousJob={onSelectPreviousJob}
                 onSelectNextJob={onSelectNextJob}
               />
             ))
           : null}
+        <DashboardJobDeleteDialog
+          title={deleteConfirmTitle}
+          description={deleteConfirmDescription}
+          cancelLabel={cancelLabel}
+          deleteLabel={deleteLabel}
+          pendingDeleteJobId={pendingDeleteJobId}
+          isSubmitting={isSubmittingDelete}
+          onCancel={onCancelDelete}
+          onConfirm={onConfirmDelete}
+        />
       </CardContent>
     </Card>
   );

@@ -1,8 +1,9 @@
 // Responsibility: Render dashboard title and top-level call-to-action controls.
-import { BellRing, Languages, LogOut, RefreshCw } from "lucide-react";
+import { BellRing, Fingerprint, Languages, LogOut, PenLine, RefreshCw, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import DashboardProfileEditDialog from "@/features/dashboard/components/DashboardProfileEditDialog";
 import type { DashboardSelectOption } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
 
@@ -19,10 +20,23 @@ type DashboardHeaderSectionProps = {
   signOutLabel: string;
   alertRulesLabel: string;
   localeLabel: string;
+  profileEditLabel: string;
+  profileNameLabel: string;
+  updateLabel: string;
+  cancelLabel: string;
   localeOptions: DashboardSelectOption[];
   localeValue: string;
+  isRefreshing: boolean;
+  isProfileDialogOpen: boolean;
+  profileDraftName: string;
+  isProfileSubmitting: boolean;
   onLocaleChange: (locale: string) => void;
+  onRefresh: () => void;
   onSignOut: () => void;
+  onOpenProfileDialog: () => void;
+  onCloseProfileDialog: () => void;
+  onProfileDraftNameChange: (value: string) => void;
+  onSubmitProfile: () => void;
 };
 
 export default function DashboardHeaderSection({
@@ -38,10 +52,23 @@ export default function DashboardHeaderSection({
   signOutLabel,
   alertRulesLabel,
   localeLabel,
+  profileEditLabel,
+  profileNameLabel,
+  updateLabel,
+  cancelLabel,
   localeOptions,
   localeValue,
+  isRefreshing,
+  isProfileDialogOpen,
+  profileDraftName,
+  isProfileSubmitting,
   onLocaleChange,
+  onRefresh,
   onSignOut,
+  onOpenProfileDialog,
+  onCloseProfileDialog,
+  onProfileDraftNameChange,
+  onSubmitProfile,
 }: DashboardHeaderSectionProps) {
   return (
     <Card className={cn("border-slate-700/60 bg-slate-900/80 py-4 backdrop-blur")}>
@@ -50,56 +77,100 @@ export default function DashboardHeaderSection({
           <p className={cn("font-mono text-xs tracking-[0.2em] text-cyan-300 uppercase")}>{missionControlLabel}</p>
           <h1 className={cn("text-2xl font-semibold text-slate-100 md:text-3xl")}>{title}</h1>
           <p className={cn("text-sm text-slate-400")}>{subtitle}</p>
-          <p className={cn("text-xs text-slate-400")}>
-            {currentUserLabel}: {currentUserName} ({currentUserId})
-          </p>
           <p className={cn("font-mono text-xs text-slate-500")}>
             {updatedAtLabel}: {updatedAt}
           </p>
         </div>
-        <div className={cn("flex items-center gap-2")}>
-          <div className={cn("space-y-1")}>
-            <span className={cn("sr-only")}>{localeLabel}</span>
-            <div className={cn("flex items-center gap-2 rounded-md border border-slate-600 bg-slate-800 px-2")}>
-              <Languages className={cn("size-4 text-slate-300")} />
-              <Select value={localeValue} onValueChange={onLocaleChange}>
-                <SelectTrigger
-                  id="dashboard-language"
-                  className={cn(
-                    "h-9 min-w-32 border-none bg-slate-800 text-slate-100 shadow-none focus-visible:ring-0",
-                  )}
-                >
-                  <SelectValue placeholder={localeLabel} />
-                </SelectTrigger>
-                <SelectContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
-                  {localeOptions.map((option) => (
-                    <SelectItem key={option.id} value={option.id}>
-                      {option.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <Button variant="outline" className={cn("border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}>
-            <RefreshCw className={cn("size-4")} />
-            {refreshLabel}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onSignOut}
-            className={cn("border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
+        <div className={cn("flex flex-col items-start gap-2 md:items-end")}>
+          <div
+            className={cn(
+              "inline-flex max-w-full flex-wrap items-center gap-2 rounded-md border border-cyan-300/35 bg-cyan-500/10 px-3 py-1.5",
+            )}
           >
-            <LogOut className={cn("size-4")} />
-            {signOutLabel}
-          </Button>
-          <Button className={cn("bg-cyan-500 text-slate-950 hover:bg-cyan-400")}>
-            <BellRing className={cn("size-4")} />
-            {alertRulesLabel}
-          </Button>
+            <span className={cn("text-xs font-semibold tracking-wide text-cyan-100 uppercase")}>
+              {currentUserLabel}
+            </span>
+            <span className={cn("inline-flex items-center gap-1 text-sm text-slate-100")}>
+              <UserRound className={cn("size-3.5 text-cyan-200")} />
+              <span className={cn("font-medium")}>{currentUserName}</span>
+            </span>
+            <span className={cn("inline-flex items-center gap-1 font-mono text-xs text-slate-300")}>
+              <Fingerprint className={cn("size-3.5 text-slate-300")} />
+              {currentUserId}
+            </span>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              onClick={onOpenProfileDialog}
+              className={cn("h-6 px-2 text-xs text-cyan-100 hover:bg-cyan-500/20 hover:text-cyan-50")}
+            >
+              <PenLine className={cn("size-3.5")} />
+              {profileEditLabel}
+            </Button>
+          </div>
+          <div className={cn("flex flex-wrap items-center gap-2")}>
+            <div className={cn("space-y-1")}>
+              <span className={cn("sr-only")}>{localeLabel}</span>
+              <div className={cn("flex items-center gap-2 rounded-md border border-slate-600 bg-slate-800 px-2")}>
+                <Languages className={cn("size-4 text-slate-300")} />
+                <Select value={localeValue} onValueChange={onLocaleChange}>
+                  <SelectTrigger
+                    id="dashboard-language"
+                    className={cn(
+                      "h-9 min-w-32 border-none bg-slate-800 text-slate-100 shadow-none focus-visible:ring-0",
+                    )}
+                  >
+                    <SelectValue placeholder={localeLabel} />
+                  </SelectTrigger>
+                  <SelectContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
+                    {localeOptions.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              className={cn("border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
+            >
+              <RefreshCw className={cn("size-4", isRefreshing ? "animate-spin" : "")} />
+              {refreshLabel}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onSignOut}
+              className={cn("border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
+            >
+              <LogOut className={cn("size-4")} />
+              {signOutLabel}
+            </Button>
+            <Button className={cn("bg-cyan-500 text-slate-950 hover:bg-cyan-400")}>
+              <BellRing className={cn("size-4")} />
+              {alertRulesLabel}
+            </Button>
+          </div>
         </div>
       </CardContent>
+      <DashboardProfileEditDialog
+        title={profileEditLabel}
+        nameLabel={profileNameLabel}
+        updateLabel={updateLabel}
+        cancelLabel={cancelLabel}
+        isOpen={isProfileDialogOpen}
+        draftName={profileDraftName}
+        isSubmitting={isProfileSubmitting}
+        onClose={onCloseProfileDialog}
+        onDraftNameChange={onProfileDraftNameChange}
+        onSubmit={onSubmitProfile}
+      />
     </Card>
   );
 }

@@ -23,33 +23,201 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import {
-  HTTPValidationError,
-  HealthResponse,
-  HostCreateRequest,
-  HostCreateResponse,
-  HostResponse,
-  HostUpdateRequest,
-  InvitationAcceptRequest,
-  InvitationAcceptResponse,
-  JobCreateRequest,
-  JobResponse,
-  JobUpdateRequest,
-  UserResponse,
-  UserWorkspacesResponse,
-  WorkspaceCreateRequest,
-  WorkspaceInvitationCreateRequest,
-  WorkspaceInvitationCreateResponse,
-  WorkspaceInvitationsResponse,
-  WorkspaceMemberResponse,
-  WorkspaceMemberRoleUpdateRequest,
-  WorkspaceMemberUpsertRequest,
-  WorkspaceMembersResponse,
-  WorkspaceOwnerTransferRequest,
-  WorkspaceOwnerTransferResponse,
-  WorkspaceResponse,
-  WorkspaceUpdateRequest
-} from './models/index.zod';
+export interface ValidationError {
+  loc: (string | number)[];
+  msg: string;
+  type: string;
+}
+
+export interface HTTPValidationError {
+  detail?: ValidationError[];
+}
+
+export interface HealthResponse {
+  ok: boolean;
+}
+
+export interface HostCreateRequest {
+  name: string;
+}
+
+export interface HostCreateResponse {
+  host_id: string;
+  workspace_id: string;
+  name: string;
+  token: string;
+  created_at: string;
+  updated_at: string;
+  message: string;
+}
+
+export interface HostResponse {
+  host_id: string;
+  workspace_id: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface HostUpdateRequest {
+  name: string;
+}
+
+export interface InvitationAcceptRequest {
+  token: string;
+}
+
+export type MembershipRole = typeof MembershipRole[keyof typeof MembershipRole];
+
+
+export const MembershipRole = {
+  owner: 'owner',
+  editor: 'editor',
+  viewer: 'viewer',
+} as const;
+
+export interface InvitationAcceptResponse {
+  workspace_id: string;
+  user_id: string;
+  role: MembershipRole;
+}
+
+export interface JobCreateRequest {
+  project: string;
+  command: string;
+  args?: string[];
+  tags?: string[];
+  started_at: string;
+}
+
+export type JobStatus = typeof JobStatus[keyof typeof JobStatus];
+
+
+export const JobStatus = {
+  RUNNING: 'RUNNING',
+  FINISHED: 'FINISHED',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED',
+} as const;
+
+export interface JobResponse {
+  job_id: string;
+  workspace_id: string;
+  host_id: string;
+  project: string;
+  command: string;
+  args?: string[];
+  tags?: string[];
+  status: JobStatus;
+  err?: string | null;
+  tail_lines?: string[];
+  started_at: string;
+  finished_at?: string | null;
+}
+
+export interface JobUpdateRequest {
+  status?: JobStatus | null;
+  err?: string | null;
+  tail_lines?: string[];
+  finished_at?: string | null;
+}
+
+export interface UserLookupRequest {
+  user_ids: string[];
+}
+
+export interface UserResponse {
+  user_id: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserLookupResponse {
+  users: UserResponse[];
+  not_found_user_ids?: string[];
+}
+
+export interface UserUpdateRequest {
+  name: string;
+}
+
+export interface WorkspaceResponse {
+  workspace_id: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserWorkspacesResponse {
+  workspaces: WorkspaceResponse[];
+}
+
+export interface WorkspaceCreateRequest {
+  name: string;
+}
+
+export interface WorkspaceInvitationCreateRequest {
+  role?: MembershipRole;
+}
+
+export interface WorkspaceInvitationCreateResponse {
+  invitation_id: string;
+  workspace_id: string;
+  role: MembershipRole;
+  token: string;
+  expires_at: string;
+  created_at: string;
+}
+
+export interface WorkspaceInvitationResponse {
+  invitation_id: string;
+  workspace_id: string;
+  role: MembershipRole;
+  created_by_user_id: string;
+  expires_at: string;
+  used_at?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceInvitationsResponse {
+  invitations: WorkspaceInvitationResponse[];
+}
+
+export interface WorkspaceMemberResponse {
+  workspace_id: string;
+  user_id: string;
+  role: MembershipRole;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceMemberRoleUpdateRequest {
+  role: MembershipRole;
+}
+
+export interface WorkspaceMemberUpsertRequest {
+  role?: MembershipRole;
+}
+
+export interface WorkspaceMembersResponse {
+  members: WorkspaceMemberResponse[];
+}
+
+export interface WorkspaceOwnerTransferRequest {
+  new_owner_user_id: string;
+}
+
+export interface WorkspaceOwnerTransferResponse {
+  workspace_id: string;
+  previous_owner_user_id: string;
+  new_owner_user_id: string;
+}
+
+export interface WorkspaceUpdateRequest {
+  name: string;
+}
 
 /**
  * @summary Health
@@ -2783,6 +2951,103 @@ export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof r
 
 
 /**
+ * Update current authenticated user's profile.
+ * @summary Update Current User
+ */
+export type updateCurrentUserUsersMePatchResponse200 = {
+  data: UserResponse
+  status: 200
+}
+
+export type updateCurrentUserUsersMePatchResponse422 = {
+  data: HTTPValidationError
+  status: 422
+}
+    
+export type updateCurrentUserUsersMePatchResponseSuccess = (updateCurrentUserUsersMePatchResponse200) & {
+  headers: Headers;
+};
+export type updateCurrentUserUsersMePatchResponseError = (updateCurrentUserUsersMePatchResponse422) & {
+  headers: Headers;
+};
+
+export type updateCurrentUserUsersMePatchResponse = (updateCurrentUserUsersMePatchResponseSuccess | updateCurrentUserUsersMePatchResponseError)
+
+export const getUpdateCurrentUserUsersMePatchUrl = () => {
+
+
+  
+
+  return `/users/me`
+}
+
+export const updateCurrentUserUsersMePatch = async (userUpdateRequest: UserUpdateRequest, options?: RequestInit): Promise<updateCurrentUserUsersMePatchResponse> => {
+  
+  const res = await fetch(getUpdateCurrentUserUsersMePatchUrl(),
+  {      
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      userUpdateRequest,)
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  
+  const data: updateCurrentUserUsersMePatchResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as updateCurrentUserUsersMePatchResponse
+}
+
+
+
+
+export const getUpdateCurrentUserUsersMePatchMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, TError,{data: UserUpdateRequest}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, TError,{data: UserUpdateRequest}, TContext> => {
+
+const mutationKey = ['updateCurrentUserUsersMePatch'];
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, fetch: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, {data: UserUpdateRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateCurrentUserUsersMePatch(data,fetchOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateCurrentUserUsersMePatchMutationResult = NonNullable<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>>
+    export type UpdateCurrentUserUsersMePatchMutationBody = UserUpdateRequest
+    export type UpdateCurrentUserUsersMePatchMutationError = HTTPValidationError
+
+    /**
+ * @summary Update Current User
+ */
+export const useUpdateCurrentUserUsersMePatch = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, TError,{data: UserUpdateRequest}, TContext>, fetch?: RequestInit}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>,
+        TError,
+        {data: UserUpdateRequest},
+        TContext
+      > => {
+      return useMutation(getUpdateCurrentUserUsersMePatchMutationOptions(options), queryClient);
+    }
+    
+/**
  * List all workspaces the current user has access to.
  * @summary List User Workspaces
  */
@@ -2900,6 +3165,103 @@ export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<Return
 
 
 
+/**
+ * Lookup users by user IDs.
+ * @summary Lookup Users
+ */
+export type lookupUsersUsersLookupPostResponse200 = {
+  data: UserLookupResponse
+  status: 200
+}
+
+export type lookupUsersUsersLookupPostResponse422 = {
+  data: HTTPValidationError
+  status: 422
+}
+    
+export type lookupUsersUsersLookupPostResponseSuccess = (lookupUsersUsersLookupPostResponse200) & {
+  headers: Headers;
+};
+export type lookupUsersUsersLookupPostResponseError = (lookupUsersUsersLookupPostResponse422) & {
+  headers: Headers;
+};
+
+export type lookupUsersUsersLookupPostResponse = (lookupUsersUsersLookupPostResponseSuccess | lookupUsersUsersLookupPostResponseError)
+
+export const getLookupUsersUsersLookupPostUrl = () => {
+
+
+  
+
+  return `/users/lookup`
+}
+
+export const lookupUsersUsersLookupPost = async (userLookupRequest: UserLookupRequest, options?: RequestInit): Promise<lookupUsersUsersLookupPostResponse> => {
+  
+  const res = await fetch(getLookupUsersUsersLookupPostUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      userLookupRequest,)
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  
+  const data: lookupUsersUsersLookupPostResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as lookupUsersUsersLookupPostResponse
+}
+
+
+
+
+export const getLookupUsersUsersLookupPostMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, TError,{data: UserLookupRequest}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, TError,{data: UserLookupRequest}, TContext> => {
+
+const mutationKey = ['lookupUsersUsersLookupPost'];
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, fetch: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, {data: UserLookupRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  lookupUsersUsersLookupPost(data,fetchOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LookupUsersUsersLookupPostMutationResult = NonNullable<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>>
+    export type LookupUsersUsersLookupPostMutationBody = UserLookupRequest
+    export type LookupUsersUsersLookupPostMutationError = HTTPValidationError
+
+    /**
+ * @summary Lookup Users
+ */
+export const useLookupUsersUsersLookupPost = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, TError,{data: UserLookupRequest}, TContext>, fetch?: RequestInit}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>,
+        TError,
+        {data: UserLookupRequest},
+        TContext
+      > => {
+      return useMutation(getLookupUsersUsersLookupPostMutationOptions(options), queryClient);
+    }
+    
 /**
  * Accept workspace invitation by token.
  * @summary Accept Invitation
