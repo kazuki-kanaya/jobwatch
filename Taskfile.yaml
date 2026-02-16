@@ -151,7 +151,7 @@ tasks:
     dir: infra/terraform
     cmds:
       - terraform validate
-  
+
   infra:fix:
     desc: Run Terraform init, fmt, and validate
     dir: infra/terraform
@@ -159,7 +159,7 @@ tasks:
     cmds:
       - task: infra:fmt
       - task: infra:validate
-  
+
   infra:plan:
     desc: Generate Terraform plan
     dir: infra/terraform
@@ -173,7 +173,7 @@ tasks:
     deps: [infra:fix]
     cmds:
       - terraform apply -auto-approve
-  
+      - task: infra:sync-env
   infra:destroy:
     desc: Destroy Terraform resources
     dir: infra/terraform
@@ -181,13 +181,18 @@ tasks:
     cmds:
       - terraform destroy -auto-approve
 
+  infra:sync-env:
+    desc: Sync web/api env files from Terraform outputs
+    cmds:
+      - bash ./infra/scripts/sync-env.sh
+
   infra:ci:
     desc: Run Terraform CI checks
     dir: infra/terraform
     cmds:
       - task: infra:fix
       - git diff --exit-code -- infra/terraform
-  
+
   all:ci:
     desc: Run CI checks for all modules
     deps: [api:ci, cli:ci, web:ci, infra:ci]

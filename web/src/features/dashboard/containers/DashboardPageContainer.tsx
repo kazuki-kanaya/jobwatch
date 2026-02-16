@@ -25,9 +25,10 @@ import { buildDashboardViewModel } from "@/features/dashboard/containers/hooks/u
 import { useDashboardWorkspaceCrud } from "@/features/dashboard/containers/hooks/useDashboardWorkspaceCrud";
 import DashboardPageView from "@/features/dashboard/views/DashboardPageView";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { env } from "@/lib/env";
 
 export default function DashboardPageContainer() {
-  const { isAuthenticated, isLoading: isAuthLoading, user, signoutRedirect } = useAuth();
+  const { isAuthenticated, isLoading: isAuthLoading, user, removeUser } = useAuth();
   const { locale, setLocale, t } = useLocale();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -172,6 +173,13 @@ export default function DashboardPageContainer() {
   const canManageHostsByRole = canManageHosts(currentMembershipRole);
   const canManageMembersByRole = canManageMembers(currentMembershipRole);
   const canManageJobsByRole = canManageJobs(currentMembershipRole);
+  const signOut = () => {
+    void removeUser();
+    const logoutUrl = new URL(`${env.oidcCognitoDomain}/logout`);
+    logoutUrl.searchParams.set("client_id", env.oidcClientId);
+    logoutUrl.searchParams.set("logout_uri", `${window.location.origin}/`);
+    window.location.assign(logoutUrl.toString());
+  };
 
   return (
     <DashboardPageView
@@ -185,7 +193,7 @@ export default function DashboardPageContainer() {
         setQueryInput,
         refreshDashboard: refreshState.refreshDashboard,
         applyFilters,
-        signOut: () => void signoutRedirect(),
+        signOut,
         selection,
         userProfile,
         jobCrud,
