@@ -1,0 +1,38 @@
+// Responsibility: Define shared props for dashboard hosts section and subcomponents.
+import type { DashboardHostItem } from "@/features/dashboard/types";
+
+export type DashboardHostsSectionProps = {
+  title: string;
+  hostNameLabel: string;
+  addLabel: string;
+  updateLabel: string;
+  cancelLabel: string;
+  deleteLabel: string;
+  emptyLabel: string;
+  errorLabel: string;
+  tokenLabel: string;
+  tokenCopyLabel: string;
+  tokenValue: string | null;
+  tokenMessage: string | null;
+  deleteConfirmTitle: string;
+  deleteConfirmDescription: string;
+  noPermissionLabel: string;
+  canManage: boolean;
+  draftName: string;
+  editingHostId: string | null;
+  hosts: DashboardHostItem[];
+  isLoading: boolean;
+  isError: boolean;
+  isSubmitting: boolean;
+  isFormOpen: boolean;
+  pendingDeleteHostId: string | null;
+  onOpenCreate: () => void;
+  onDraftNameChange: (value: string) => void;
+  onSubmit: () => void;
+  onCopyToken: () => void;
+  onStartEdit: (hostId: string) => void;
+  onCloseForm: () => void;
+  onRequestDelete: (hostId: string) => void;
+  onCancelDelete: () => void;
+  onConfirmDelete: () => void;
+};

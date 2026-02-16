@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Any, Iterable
 
 from app.database.client import DynamoDBKeys, DynamoDBMappers, DynamoDBTable
 from app.models.job import Job
@@ -9,9 +9,7 @@ class JobRepository:
         self._table = table
 
     def create(self, job: Job) -> Job:
-        pk = DynamoDBKeys.workspace_pk(job.workspace_id)
-        sk = DynamoDBKeys.job_sk(job.host_id, job.job_id)
-        item = DynamoDBMappers.to_item(job, pk, sk)
+        item = self._to_item(job)
         self._table.put(item)
         return job
 
@@ -36,9 +34,7 @@ class JobRepository:
             yield DynamoDBMappers.from_item(item, Job)
 
     def update(self, job: Job) -> Job:
-        pk = DynamoDBKeys.workspace_pk(job.workspace_id)
-        sk = DynamoDBKeys.job_sk(job.host_id, job.job_id)
-        item = DynamoDBMappers.to_item(job, pk, sk)
+        item = self._to_item(job)
         self._table.put(item)
         return job
 
@@ -46,3 +42,9 @@ class JobRepository:
         pk = DynamoDBKeys.workspace_pk(job.workspace_id)
         sk = DynamoDBKeys.job_sk(job.host_id, job.job_id)
         self._table.delete(pk, sk)
+
+    @staticmethod
+    def _to_item(job: Job) -> dict[str, Any]:
+        pk = DynamoDBKeys.workspace_pk(job.workspace_id)
+        sk = DynamoDBKeys.job_sk(job.host_id, job.job_id)
+        return DynamoDBMappers.to_item(job, pk, sk)

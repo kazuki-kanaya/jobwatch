@@ -28,12 +28,6 @@ resource "aws_cognito_user_pool" "this" {
     required            = true
     mutable             = true
   }
-  schema {
-    name                = "name"
-    attribute_data_type = "String"
-    required            = true
-    mutable             = true
-  }
 
   email_configuration {
     email_sending_account = "COGNITO_DEFAULT"
@@ -53,7 +47,7 @@ resource "aws_cognito_user_pool_client" "this" {
 
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_flows_user_pool_client = true
-  allowed_oauth_scopes                 = ["openid", "profile"]
+  allowed_oauth_scopes                 = ["openid", "email"]
 
   supported_identity_providers = ["COGNITO"]
 

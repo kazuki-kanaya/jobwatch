@@ -1,3 +1,5 @@
+/* Responsibility: Define global design tokens and baseline visual atmosphere for the web app. */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -47,24 +49,24 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --background: oklch(0.15 0.02 258);
+  --foreground: oklch(0.96 0.01 240);
+  --card: oklch(0.21 0.02 257);
+  --card-foreground: oklch(0.97 0.01 244);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --primary: oklch(0.77 0.11 205);
+  --primary-foreground: oklch(0.21 0.03 258);
+  --secondary: oklch(0.3 0.03 257);
+  --secondary-foreground: oklch(0.95 0.01 241);
+  --muted: oklch(0.25 0.02 255);
+  --muted-foreground: oklch(0.73 0.01 245);
+  --accent: oklch(0.85 0.13 82);
+  --accent-foreground: oklch(0.19 0.02 255);
+  --destructive: oklch(0.7 0.2 22);
+  --border: oklch(0.33 0.02 256);
+  --input: oklch(0.27 0.02 256);
+  --ring: oklch(0.75 0.1 206);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -119,6 +121,12 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: "IBM Plex Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: "Space Mono", "IBM Plex Sans JP", monospace;
   }
 }

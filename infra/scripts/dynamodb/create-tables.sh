@@ -13,7 +13,7 @@ aws dynamodb create-table \
         AttributeName=SK,AttributeType=S \
         AttributeName=token_hash,AttributeType=S \
         AttributeName=job_id,AttributeType=S \
-        AttributeName=user_id,AttributeType=S \
+        AttributeName=membership_user_key,AttributeType=S \
     --key-schema \
         AttributeName=PK,KeyType=HASH \
         AttributeName=SK,KeyType=RANGE \
@@ -27,8 +27,8 @@ aws dynamodb create-table \
             \"KeySchema\": [{\"AttributeName\":\"job_id\",\"KeyType\":\"HASH\"}],
             \"Projection\": {\"ProjectionType\":\"ALL\"}
         },{
-            \"IndexName\": \"gsi_user_memberships-index\",
-            \"KeySchema\": [{\"AttributeName\":\"user_id\",\"KeyType\":\"HASH\"}],
+            \"IndexName\": \"membership_user_key-index\",
+            \"KeySchema\": [{\"AttributeName\":\"membership_user_key\",\"KeyType\":\"HASH\"}],
             \"Projection\": {\"ProjectionType\":\"ALL\"}
         }]" \
     --billing-mode PAY_PER_REQUEST \

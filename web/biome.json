@@ -10,7 +10,8 @@
     "ignoreUnknown": false,
     "includes": [
       "**",
-      "!src/components/ui"
+      "!src/components/ui",
+      "!src/generated"
     ]
   },
   "formatter": {

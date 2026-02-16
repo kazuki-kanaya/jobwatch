@@ -1,14 +1,30 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class HostCreateRequest(BaseModel):
     name: str
 
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("name must not be empty")
+        return normalized
+
 
 class HostUpdateRequest(BaseModel):
     name: str
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("name must not be empty")
+        return normalized
 
 
 class HostCreateResponse(BaseModel):
@@ -18,7 +34,7 @@ class HostCreateResponse(BaseModel):
     token: str
     created_at: datetime
     updated_at: datetime
-    message: str = "Save this token securely. It will not be shown again."
+    message: str
 
 
 class HostResponse(BaseModel):

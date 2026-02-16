@@ -1,3 +1,5 @@
+from typing import Any
+
 from app.database.client import DynamoDBKeys, DynamoDBMappers, DynamoDBTable
 from app.models.workspace import Workspace
 from app.models.workspace_membership import WorkspaceMembership
@@ -12,15 +14,8 @@ class WorkspaceRepository:
         workspace: Workspace,
         owner_membership: WorkspaceMembership,
     ) -> Workspace:
-        workspace_pk = DynamoDBKeys.workspace_pk(workspace.workspace_id)
-        workspace_sk = DynamoDBKeys.workspace_sk()
-        workspace_item = DynamoDBMappers.to_item(workspace, workspace_pk, workspace_sk)
-
-        membership_pk = DynamoDBKeys.workspace_pk(owner_membership.workspace_id)
-        membership_sk = DynamoDBKeys.workspace_membership_sk(owner_membership.user_id)
-        membership_item = DynamoDBMappers.to_item(
-            owner_membership, membership_pk, membership_sk
-        )
+        workspace_item = self._to_item(workspace)
+        membership_item = self._to_membership_item(owner_membership)
 
         self._table.transact_write(
             [
@@ -60,9 +55,7 @@ class WorkspaceRepository:
         return [DynamoDBMappers.from_item(item, Workspace) for item in items]
 
     def update(self, workspace: Workspace) -> Workspace:
-        pk = DynamoDBKeys.workspace_pk(workspace.workspace_id)
-        sk = DynamoDBKeys.workspace_sk()
-        item = DynamoDBMappers.to_item(workspace, pk, sk)
+        item = self._to_item(workspace)
         self._table.put(item)
         return workspace
 
@@ -71,3 +64,17 @@ class WorkspaceRepository:
         items = list(self._table.query_all(pk))
         if items:
             self._table.batch_delete(items)
+
+    @staticmethod
+    def _to_item(workspace: Workspace) -> dict[str, Any]:
+        pk = DynamoDBKeys.workspace_pk(workspace.workspace_id)
+        sk = DynamoDBKeys.workspace_sk()
+        return DynamoDBMappers.to_item(workspace, pk, sk)
+
+    @staticmethod
+    def _to_membership_item(owner_membership: WorkspaceMembership) -> dict[str, Any]:
+        pk = DynamoDBKeys.workspace_pk(owner_membership.workspace_id)
+        sk = DynamoDBKeys.workspace_membership_sk(owner_membership.user_id)
+        item = DynamoDBMappers.to_item(owner_membership, pk, sk)
+        item["membership_user_key"] = owner_membership.user_id
+        return item

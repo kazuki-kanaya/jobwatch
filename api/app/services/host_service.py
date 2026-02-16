@@ -36,6 +36,7 @@ class HostService:
             token=token,
             created_at=created.created_at,
             updated_at=created.updated_at,
+            message="Save this token securely. It will not be shown again.",
         )
 
     def list_hosts(self, workspace_id: str) -> list[HostResponse]:
