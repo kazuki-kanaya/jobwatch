@@ -14,3 +14,8 @@ variable "project_name" {
   type        = string
   default     = "jobwatch-web"
 }
+
+variable "api_origin" {
+  description = "Backend API origin for /cli proxy (for example, API Gateway invoke URL)"
+  type        = string
+}

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	runapp "github.com/kanaya/jobwatch/cli/internal/app/run"
 	"github.com/kanaya/jobwatch/cli/internal/config"
+	"github.com/kanaya/jobwatch/cli/internal/run"
 	"github.com/spf13/cobra"
 )
 
@@ -31,13 +31,13 @@ var runCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		service, err := runapp.New(cfg, &http.Transport{})
+		runner, err := run.NewRunner(cfg, &http.Transport{})
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to prepare run service: %v\n", err)
 			os.Exit(1)
 		}
 
-		report := service.Execute(cmd.Context(), command, commandArgs)
+		report := runner.Execute(cmd.Context(), command, commandArgs)
 		if report.TrackingStartError != nil {
 			fmt.Fprintf(os.Stderr, "Failed to start job tracking: %v\n", report.TrackingStartError)
 		}

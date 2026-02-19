@@ -23,15 +23,20 @@ tasks:
       - task: fmt
       - task: validate
 
+  sync-from-aws:
+    desc: Sync Cloudflare auto tfvars from AWS Terraform outputs
+    cmds:
+      - bash ../../scripts/cloudflare/sync-from-aws.sh
+
   plan:
     desc: Generate Cloudflare Terraform plan
-    deps: [fix]
+    deps: [fix, sync-from-aws]
     cmds:
       - terraform plan
 
   apply:
     desc: Apply Cloudflare Terraform changes
-    deps: [fix]
+    deps: [fix, sync-from-aws]
     cmds:
       - terraform apply -auto-approve
 

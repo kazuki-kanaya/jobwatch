@@ -14,3 +14,9 @@ Each directory owns its own Terraform state and lifecycle.
 
 - First login: `pnpm dlx wrangler login`
 - Deploy web: `task infra:deploy:web`
+
+## `/cli/*` Proxy on Pages
+
+- `web/functions/cli/[[path]].ts` proxies `/cli/*` requests to `API_ORIGIN`.
+- `api_origin` is generated from AWS outputs into `infra/terraform/cloudflare/from_aws.auto.tfvars`.
+- Run `task infra:cf:sync-from-aws` (also executed by `task infra:cf:plan` and `task infra:cf:apply`).

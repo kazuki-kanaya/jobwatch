@@ -1,3 +1,4 @@
+import { Fingerprint } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -119,26 +120,56 @@ export default function DashboardWorkspaceInvitationsSection({
         ? invitations.map((invitation) => (
             <article
               key={invitation.id}
-              className={cn("space-y-1 rounded-md border border-slate-700 bg-slate-900/60 p-3")}
+              className={cn("space-y-2 rounded-md border border-slate-700 bg-slate-900/70 p-3")}
             >
               <div className={cn("flex items-center justify-between gap-2")}>
-                <p className={cn("text-xs text-slate-500")}>{invitation.id}</p>
+                <p
+                  className={cn(
+                    "rounded border border-slate-700 bg-slate-950/70 px-2 py-1 font-mono text-[11px] text-slate-300",
+                  )}
+                >
+                  {invitation.id}
+                </p>
                 <Badge className={cn(getStatusClassName(getInvitationStatus(invitation)))} variant="outline">
                   {getStatusLabel(getInvitationStatus(invitation))}
                 </Badge>
               </div>
-              <p className={cn("text-xs text-slate-300")}>
-                {roleLabel}: {invitation.role}
-              </p>
-              <p className={cn("text-xs text-slate-300")}>
-                {createdByLabel}: {invitation.createdBy}
-              </p>
-              <p className={cn("text-xs text-slate-300")}>
-                {expiresAtLabel}: {invitation.expiresAt}
-              </p>
-              <p className={cn("text-xs text-slate-300")}>
-                {usedAtLabel}: {invitation.usedAt ?? "-"}
-              </p>
+              <dl className={cn("space-y-1.5 rounded border border-slate-800/80 bg-slate-950/40 p-2.5")}>
+                <div className={cn("flex items-start gap-3")}>
+                  <dt className={cn("min-w-28 text-[11px] font-semibold uppercase tracking-wide text-slate-400")}>
+                    {roleLabel}
+                  </dt>
+                  <dd className={cn("text-sm font-semibold text-slate-100")}>{invitation.role}</dd>
+                </div>
+                <div className={cn("flex items-start gap-3")}>
+                  <dt className={cn("min-w-28 text-[11px] font-semibold uppercase tracking-wide text-slate-400")}>
+                    {createdByLabel}
+                  </dt>
+                  <dd className={cn("flex flex-wrap items-center gap-2")}>
+                    <span className={cn("text-sm text-slate-100")}>{invitation.createdBy}</span>
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1 rounded-full border border-slate-600 bg-slate-900/50 px-2 py-1 font-mono text-xs text-slate-300",
+                      )}
+                    >
+                      <Fingerprint className={cn("size-3.5 text-slate-400")} />
+                      <span className={cn("break-all")}>{invitation.createdByUserId}</span>
+                    </span>
+                  </dd>
+                </div>
+                <div className={cn("flex items-start gap-3")}>
+                  <dt className={cn("min-w-28 text-[11px] font-semibold uppercase tracking-wide text-slate-400")}>
+                    {expiresAtLabel}
+                  </dt>
+                  <dd className={cn("text-sm font-medium text-cyan-200")}>{invitation.expiresAt}</dd>
+                </div>
+                <div className={cn("flex items-start gap-3")}>
+                  <dt className={cn("min-w-28 text-[11px] font-semibold uppercase tracking-wide text-slate-400")}>
+                    {usedAtLabel}
+                  </dt>
+                  <dd className={cn("text-sm text-slate-100")}>{invitation.usedAt ?? "-"}</dd>
+                </div>
+              </dl>
               <Button
                 type="button"
                 size="sm"

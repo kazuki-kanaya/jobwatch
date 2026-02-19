@@ -17,10 +17,10 @@ type formattedMessage struct {
 
 func format(n notifier.Notification) formattedMessage {
 	color := "#22c55e"
-	statusLabel := "🟢 SUCCESS"
+	statusLabel := "✅ SUCCESS"
 	if !n.Success {
 		color = "#ef4444"
-		statusLabel = "🔴 FAILED"
+		statusLabel = "❌ FAILED"
 	}
 
 	command := strings.TrimSpace(strings.Join(append([]string{n.Command}, n.Args...), " "))
