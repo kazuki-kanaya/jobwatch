@@ -6,31 +6,26 @@ type UseDashboardUserMutationsParams = {
   accessToken: string | undefined;
 };
 
-const getAuthorizedFetchOptions = (accessToken: string | undefined) => {
+const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
   if (!accessToken) return undefined;
 
   return {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  } satisfies RequestInit;
+  };
 };
 
 export const useDashboardUserMutations = ({ accessToken }: UseDashboardUserMutationsParams) => {
   const queryClient = useQueryClient();
-  const fetch = getAuthorizedFetchOptions(accessToken);
-  const updateMutation = useUpdateCurrentUserUsersMePatch({ fetch });
+  const request = getAuthorizedRequestOptions(accessToken);
+  const updateMutation = useUpdateCurrentUserUsersMePatch({ request });
 
   const updateCurrentUserName = async (name: string) => {
     const response = await updateMutation.mutateAsync({ data: { name } });
     await queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.currentUser() });
     await queryClient.invalidateQueries({ queryKey: ["dashboard", "users"] });
-
-    if (response.status !== 200) {
-      throw new Error("Failed to update current user");
-    }
-
-    return response.data;
+    return response;
   };
 
   return {

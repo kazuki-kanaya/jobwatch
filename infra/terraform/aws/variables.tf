@@ -34,16 +34,16 @@ variable "dynamodb_table_name" {
   default     = "jobwatch-table"
 }
 
-variable "enable_serverless_api" {
-  description = "Enable Lambda + API Gateway modules"
-  type        = bool
-  default     = false
+variable "api_cors_allow_origins" {
+  description = "Allowed origins for API Gateway CORS"
+  type        = list(string)
+  default     = ["http://localhost:5173", "http://127.0.0.1:5173"]
 }
 
 variable "lambda_zip_path" {
   description = "Path to Lambda deployment zip artifact"
   type        = string
-  default     = "../../api/build/lambda.zip"
+  default     = "../../../api/build/lambda.zip"
 }
 
 variable "lambda_environment" {

@@ -43,6 +43,7 @@ export type DashboardWorkspacesSectionProps = {
   isError: boolean;
   isInvitationsLoading: boolean;
   isInvitationsError: boolean;
+  isInvitationsForbidden: boolean;
   isSubmitting: boolean;
   isFormOpen: boolean;
   isTransferDialogOpen: boolean;

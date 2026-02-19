@@ -87,17 +87,20 @@ jobs:
   infra:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: infra/terraform
-
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: tfsec
+      - name: tfsec (AWS)
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
+          working_directory: infra/terraform/aws
+          soft_fail: false
+
+      - name: tfsec (Cloudflare)
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          working_directory: infra/terraform/cloudflare
           soft_fail: false
 
   gitleaks:

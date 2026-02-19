@@ -137,9 +137,9 @@ export default function DashboardPageContainer() {
     },
   });
 
-  const jobsUiState = data.isLoading
+  const jobsUiState = data.isJobsLoading
     ? "loading"
-    : data.isError
+    : data.isJobsError
       ? "error"
       : selection.filteredJobs.length === 0
         ? "empty"

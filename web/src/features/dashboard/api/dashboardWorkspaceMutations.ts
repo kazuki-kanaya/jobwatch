@@ -11,24 +11,24 @@ type UseDashboardWorkspaceMutationsParams = {
   accessToken: string | undefined;
 };
 
-const getAuthorizedFetchOptions = (accessToken: string | undefined) => {
+const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
   if (!accessToken) return undefined;
 
   return {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  } satisfies RequestInit;
+  };
 };
 
 export const useDashboardWorkspaceMutations = ({ accessToken }: UseDashboardWorkspaceMutationsParams) => {
   const queryClient = useQueryClient();
-  const fetch = getAuthorizedFetchOptions(accessToken);
+  const request = getAuthorizedRequestOptions(accessToken);
 
-  const createMutation = useCreateWorkspaceWorkspacesPost({ fetch });
-  const updateMutation = useUpdateWorkspaceWorkspacesWorkspaceIdPatch({ fetch });
-  const deleteMutation = useDeleteWorkspaceWorkspacesWorkspaceIdDelete({ fetch });
-  const transferOwnerMutation = useTransferOwnerWorkspacesWorkspaceIdOwnerPost({ fetch });
+  const createMutation = useCreateWorkspaceWorkspacesPost({ request });
+  const updateMutation = useUpdateWorkspaceWorkspacesWorkspaceIdPatch({ request });
+  const deleteMutation = useDeleteWorkspaceWorkspacesWorkspaceIdDelete({ request });
+  const transferOwnerMutation = useTransferOwnerWorkspacesWorkspaceIdOwnerPost({ request });
 
   const invalidateDashboardQueries = async () => {
     await queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.root });
@@ -37,23 +37,18 @@ export const useDashboardWorkspaceMutations = ({ accessToken }: UseDashboardWork
   const createWorkspace = async (name: string) => {
     const response = await createMutation.mutateAsync({ data: { name } });
     await invalidateDashboardQueries();
-    if (response.status !== 201) throw new Error("Failed to create workspace");
-
-    return response.data;
+    return response;
   };
 
   const updateWorkspace = async (workspaceId: string, name: string) => {
     const response = await updateMutation.mutateAsync({ workspaceId, data: { name } });
     await invalidateDashboardQueries();
-    if (response.status !== 200) throw new Error("Failed to update workspace");
-
-    return response.data;
+    return response;
   };
 
   const deleteWorkspace = async (workspaceId: string) => {
-    const response = await deleteMutation.mutateAsync({ workspaceId });
+    await deleteMutation.mutateAsync({ workspaceId });
     await invalidateDashboardQueries();
-    if (response.status !== 204) throw new Error("Failed to delete workspace");
   };
 
   const transferOwner = async (workspaceId: string, newOwnerUserId: string) => {
@@ -62,9 +57,7 @@ export const useDashboardWorkspaceMutations = ({ accessToken }: UseDashboardWork
       data: { new_owner_user_id: newOwnerUserId },
     });
     await invalidateDashboardQueries();
-    if (response.status !== 200) throw new Error("Failed to transfer owner");
-
-    return response.data;
+    return response;
   };
 
   return {

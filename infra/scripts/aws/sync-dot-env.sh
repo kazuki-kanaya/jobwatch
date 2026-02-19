@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-TF_DIR="$ROOT_DIR/infra/terraform"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+TF_DIR="$ROOT_DIR/infra/terraform/aws"
 WEB_ENV_FILE="$ROOT_DIR/web/.env.local"
 API_ENV_FILE="$ROOT_DIR/api/.env"
 
 if ! command -v jq >/dev/null 2>&1; then
-  echo "jq is required for infra/scripts/sync-env.sh" >&2
+  echo "jq is required for infra/scripts/aws/sync-dot-env.sh" >&2
   exit 1
 fi
 

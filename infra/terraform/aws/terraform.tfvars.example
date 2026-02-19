@@ -8,8 +8,11 @@ logout_urls   = ["http://localhost:5173/"]
 
 dynamodb_table_name = "jobwatch-table"
 
-enable_serverless_api = true
-lambda_zip_path = "../../api/build/lambda.zip"
+lambda_zip_path = "../../../api/build/lambda.zip"
+api_cors_allow_origins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+]
 
 lambda_environment = {
   JOBWATCH_AWS_REGION              = "ap-northeast-1"

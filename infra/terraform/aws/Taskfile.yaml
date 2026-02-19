@@ -1,0 +1,48 @@
+version: "3"
+
+tasks:
+  init:
+    desc: Initialize AWS Terraform
+    cmds:
+      - terraform init
+
+  fmt:
+    desc: Format AWS Terraform files
+    cmds:
+      - terraform fmt -recursive
+
+  validate:
+    desc: Validate AWS Terraform config
+    cmds:
+      - terraform validate
+
+  fix:
+    desc: Run AWS Terraform init, fmt, and validate
+    cmds:
+      - task: init
+      - task: fmt
+      - task: validate
+
+  plan:
+    desc: Generate AWS Terraform plan
+    deps: [fix]
+    cmds:
+      - terraform plan
+
+  apply:
+    desc: Apply AWS Terraform changes
+    deps: [fix]
+    cmds:
+      - terraform apply -auto-approve
+      - task: sync-dot-env
+
+  destroy:
+    desc: Destroy AWS Terraform resources
+    deps: [fix]
+    cmds:
+      - terraform destroy -auto-approve
+
+  sync-dot-env:
+    desc: Sync web/api .env files from Terraform outputs
+    cmds:
+      - bash ../../scripts/aws/sync-dot-env.sh

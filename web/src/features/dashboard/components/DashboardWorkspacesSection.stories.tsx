@@ -85,6 +85,7 @@ const meta = {
     isError: false,
     isInvitationsLoading: false,
     isInvitationsError: false,
+    isInvitationsForbidden: false,
     isSubmitting: false,
     isFormOpen: false,
     isTransferDialogOpen: false,

@@ -1,0 +1,42 @@
+version: "3"
+
+tasks:
+  init:
+    desc: Initialize Cloudflare Terraform
+    cmds:
+      - terraform init
+
+  fmt:
+    desc: Format Cloudflare Terraform files
+    cmds:
+      - terraform fmt -recursive
+
+  validate:
+    desc: Validate Cloudflare Terraform config
+    cmds:
+      - terraform validate
+
+  fix:
+    desc: Run Cloudflare Terraform init, fmt, and validate
+    cmds:
+      - task: init
+      - task: fmt
+      - task: validate
+
+  plan:
+    desc: Generate Cloudflare Terraform plan
+    deps: [fix]
+    cmds:
+      - terraform plan
+
+  apply:
+    desc: Apply Cloudflare Terraform changes
+    deps: [fix]
+    cmds:
+      - terraform apply -auto-approve
+
+  destroy:
+    desc: Destroy Cloudflare Terraform resources
+    deps: [fix]
+    cmds:
+      - terraform destroy -auto-approve

@@ -8,7 +8,6 @@ module "cognito" {
 }
 
 module "dynamodb" {
-  count  = var.enable_serverless_api ? 1 : 0
   source = "./modules/dynamodb"
 
   table_name = var.dynamodb_table_name
@@ -16,15 +15,14 @@ module "dynamodb" {
 }
 
 module "lambda" {
-  count  = var.enable_serverless_api ? 1 : 0
   source = "./modules/lambda"
 
   lambda_zip_path    = var.lambda_zip_path
-  dynamodb_table_arn = module.dynamodb[0].table_arn
+  dynamodb_table_arn = module.dynamodb.table_arn
   environment_variables = merge(
     var.lambda_environment,
     {
-      JOBWATCH_DDB_TABLE_NAME = module.dynamodb[0].table_name
+      JOBWATCH_DDB_TABLE_NAME = module.dynamodb.table_name
       JOBWATCH_OIDC_JWKS_URL  = module.cognito.oidc_jwks_url
       JOBWATCH_OIDC_AUDIENCE  = module.cognito.user_pool_client_id
       JOBWATCH_OIDC_ISSUER    = module.cognito.oidc_issuer
@@ -34,10 +32,10 @@ module "lambda" {
 }
 
 module "apigateway" {
-  count  = var.enable_serverless_api ? 1 : 0
   source = "./modules/apigateway"
 
-  lambda_function_name = module.lambda[0].function_name
-  lambda_invoke_arn    = module.lambda[0].invoke_arn
+  lambda_function_name = module.lambda.function_name
+  lambda_invoke_arn    = module.lambda.invoke_arn
+  cors_allow_origins   = var.api_cors_allow_origins
   tags                 = var.tags
 }

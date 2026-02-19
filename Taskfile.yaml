@@ -1,233 +1,46 @@
 version: "3"
 
+includes:
+  api:
+    taskfile: ./api/Taskfile.yaml
+    dir: ./api
+  cli:
+    taskfile: ./cli/Taskfile.yaml
+    dir: ./cli
+  web:
+    taskfile: ./web/Taskfile.yaml
+    dir: ./web
+  infra:
+    taskfile: ./infra/Taskfile.yaml
+    dir: ./infra
+
 tasks:
-  ddb:create-tables:
-    desc: Create DynamoDB tables in LocalStack
-    cmds:
-      - bash ./infra/scripts/dynamodb/wait.sh
-      - bash ./infra/scripts/dynamodb/create-tables.sh
-
-  ddb:up:
-    desc: Start local DynamoDB services
-    cmds:
-      - docker compose up -d
-      - task: ddb:create-tables
-
-  ddb:down:
-    desc: Stop and remove local DynamoDB services
-    cmds:
-      - docker compose down -v
-
-  api:fmt:
-    desc: Format API code
-    dir: api
-    cmds:
-      - uv run ruff format .
-
-  api:lint:
-    desc: Lint and type-check API code
-    dir: api
-    cmds:
-      - uv run ruff check . --fix
-      - uv run ty check .
-
-  api:fix:
-    desc: Run API formatting and lint fixes
-    dir: api
-    deps: [api:fmt, api:lint]
-
-  api:ci:
-    desc: Run API CI checks
-    cmds:
-      - task: api:fix
-      - git diff --exit-code -- api
-
-  api:dev:
-    desc: Run API dev server
-    dir: api
-    cmds:
-      - uv run uvicorn app.main:app --reload --reload-dir app
-
-  api:openapi:
-    desc: Export OpenAPI spec to web/openapi.json
-    dir: api
-    cmds:
-      - uv run python -c "import json; from app.main import app; print(json.dumps(app.openapi(), ensure_ascii=False, indent=2))" > ../web/openapi.json
-
-  api:build:
-    desc: Build API for production
-    dir: api
-    cmds:
-      - rm -rf build && mkdir -p build/packages
-      - uv export --frozen --no-dev --no-editable -o build/requirements.txt
-      - >
-        uv pip install
-        --no-installer-metadata
-        --no-compile-bytecode
-        --python 3.11
-        --python-platform x86_64-manylinux2014
-        --target build/packages
-        -r build/requirements.txt
-      - rsync -av --exclude "__pycache__" --exclude "*.pyc" app/ build/app
-      - (cd build/packages && zip -qr ../lambda.zip .)
-      - (cd build && zip -qr lambda.zip app)
-
-  web:gen-api:
-    desc: Generate web API client from OpenAPI
-    dir: web
-    cmds:
-      - pnpm generate:api
-
-  web:sync-api:
-    desc: Sync OpenAPI and regenerate web client
+  sync-api:
+    desc: Sync OpenAPI and regenerate web API client
     cmds:
       - task: api:openapi
       - task: web:gen-api
 
-  cli:fmt:
-    desc: Format CLI code
-    dir: cli
-    cmds:
-      - go fmt ./...
-
-  cli:vet:
-    desc: Run go vet on CLI code
-    dir: cli
-    cmds:
-      - go vet ./...
-
-  cli:fix:
-    desc: Run CLI format and vet
-    dir: cli
-    deps: [cli:fmt, cli:vet]
-
-  cli:test:
-    desc: Run CLI tests
-    dir: cli
-    cmds:
-      - go test ./...
-
-  cli:build:
-    desc: Build CLI binary
-    dir: cli
-    cmds:
-      - go build -o dist/jobwatch .
-
-  cli:ci:
-    desc: Run CLI CI checks
-    cmds:
-      - task: cli:fix
-      - task: cli:test
-      - task: cli:build
-      - git diff --exit-code -- cli
-
-  web:fmt:
-    desc: Format web code
-    dir: web
-    cmds:
-      - pnpm fmt
-
-  web:lint:
-    desc: Lint web code
-    dir: web
-    cmds:
-      - pnpm lint
-
-  web:fix:
-    desc: Run web formatter and lint fixes
-    dir: web
-    cmds:
-      - pnpm fix
-
-  web:build:
-    desc: Build web app
-    dir: web
-    cmds:
-      - pnpm build
-
-  web:ci:
-    desc: Run web CI checks
-    cmds:
-      - task: web:fix
-      - task: web:build
-      - git diff --exit-code -- web
-  
-  web:dev:
-    desc: Run web development server
-    dir: web
-    cmds:
-      - pnpm dev
-
-  infra:init:
-    desc: Initialize Terraform
-    dir: infra/terraform
-    cmds:
-      - terraform init
-
-  infra:fmt:
-    desc: Format Terraform files
-    dir: infra/terraform
-    cmds:
-      - terraform fmt -recursive
-
-  infra:validate:
-    desc: Validate Terraform config
-    dir: infra/terraform
-    cmds:
-      - terraform validate
-
-  infra:fix:
-    desc: Run Terraform init, fmt, and validate
-    dir: infra/terraform
-    deps: [infra:init]
-    cmds:
-      - task: infra:fmt
-      - task: infra:validate
-
-  infra:plan:
-    desc: Generate Terraform plan
-    dir: infra/terraform
-    deps: [infra:fix]
-    cmds:
-      - terraform plan
-
-  infra:apply:
-    desc: Apply Terraform changes
-    dir: infra/terraform
-    deps: [infra:fix]
-    cmds:
-      - terraform apply -auto-approve
-      - task: infra:sync-env
-
-  infra:destroy:
-    desc: Destroy Terraform resources
-    dir: infra/terraform
-    deps: [infra:fix]
-    cmds:
-      - terraform destroy -auto-approve
-
-  infra:sync-env:
-    desc: Sync web/api env files from Terraform outputs
-    cmds:
-      - bash ./infra/scripts/sync-env.sh
-
-  infra:ci:
-    desc: Run Terraform CI checks
-    dir: infra/terraform
-    cmds:
-      - task: infra:fix
-      - git diff --exit-code -- infra/terraform
+  all:fix:
+    desc: Run fix tasks for all modules
+    deps: [api:fix, cli:fix, web:fix, infra:aws:fix]
 
   all:ci:
     desc: Run CI checks for all modules
     deps: [api:ci, cli:ci, web:ci, infra:ci]
 
-  all:fix:
-    desc: Run fix tasks for all modules
-    deps: [api:fix, cli:fix, web:fix, infra:fix]
+  all:build:
+    desc: Build all modules for production
+    deps: [api:build, cli:build, web:build]
+  
+  deploy:
+    desc: Deploy all modules to production
+    cmds:
+      - task: all:build
+      - task: infra:deploy
 
   dev:
     desc: Run development environment with API and web servers
-    deps: [infra:sync-env]
+    deps: [infra:aws:sync-dot-env]
     cmds:
-      - task --parallel api:dev web:dev ddb:up
+      - task --parallel api:dev web:dev infra:ddb:up

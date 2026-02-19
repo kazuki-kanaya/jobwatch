@@ -20,5 +20,5 @@ output "cognito_hosted_ui_base_url" {
 
 output "api_invoke_url" {
   description = "API Gateway invoke URL"
-  value       = try(module.apigateway[0].invoke_url, null)
+  value       = module.apigateway.invoke_url
 }

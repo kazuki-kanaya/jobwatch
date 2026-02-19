@@ -8,6 +8,11 @@ variable "lambda_invoke_arn" {
   type        = string
 }
 
+variable "cors_allow_origins" {
+  description = "Allowed origins for API Gateway CORS"
+  type        = list(string)
+}
+
 variable "tags" {
   description = "Tags for API Gateway resources"
   type        = map(string)

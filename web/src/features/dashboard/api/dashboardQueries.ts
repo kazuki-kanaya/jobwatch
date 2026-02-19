@@ -11,14 +11,14 @@ import {
   useReadCurrentUserUsersMeGet,
 } from "@/generated/api";
 
-const getAuthorizedFetchOptions = (accessToken: string | undefined) => {
+const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
   if (!accessToken) return undefined;
 
   return {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  } satisfies RequestInit;
+  };
 };
 
 export const useDashboardWorkspacesQuery = (accessToken: string | undefined, enabled: boolean) => {
@@ -27,13 +27,13 @@ export const useDashboardWorkspacesQuery = (accessToken: string | undefined, ena
       queryKey: dashboardQueryKeys.workspaces(),
       enabled,
     },
-    fetch: getAuthorizedFetchOptions(accessToken),
+    request: getAuthorizedRequestOptions(accessToken),
   });
 };
 
 export const useDashboardUsersLookupQuery = (userIds: string[], accessToken: string | undefined, enabled: boolean) => {
   const normalizedUserIds = [...new Set(userIds)].sort();
-  const fetch = getAuthorizedFetchOptions(accessToken);
+  const request = getAuthorizedRequestOptions(accessToken);
 
   return useQuery({
     queryKey: dashboardQueryKeys.usersLookup(normalizedUserIds),
@@ -43,12 +43,9 @@ export const useDashboardUsersLookupQuery = (userIds: string[], accessToken: str
         { user_ids: normalizedUserIds },
         {
           signal,
-          ...fetch,
+          ...request,
         },
       );
-      if (response.status !== 200) {
-        throw new Error("Failed to lookup users");
-      }
       return response;
     },
   });
@@ -60,7 +57,7 @@ export const useDashboardCurrentUserQuery = (accessToken: string | undefined, en
       queryKey: dashboardQueryKeys.currentUser(),
       enabled,
     },
-    fetch: getAuthorizedFetchOptions(accessToken),
+    request: getAuthorizedRequestOptions(accessToken),
   });
 };
 
@@ -76,7 +73,7 @@ export const useDashboardHostsQuery = (
       queryKey: dashboardQueryKeys.hosts(safeWorkspaceId),
       enabled: enabled && Boolean(workspaceId),
     },
-    fetch: getAuthorizedFetchOptions(accessToken),
+    request: getAuthorizedRequestOptions(accessToken),
   });
 };
 
@@ -92,7 +89,7 @@ export const useDashboardMembersQuery = (
       queryKey: dashboardQueryKeys.members(safeWorkspaceId),
       enabled: enabled && Boolean(workspaceId),
     },
-    fetch: getAuthorizedFetchOptions(accessToken),
+    request: getAuthorizedRequestOptions(accessToken),
   });
 };
 
@@ -108,7 +105,7 @@ export const useDashboardInvitationsQuery = (
       queryKey: dashboardQueryKeys.invitations(safeWorkspaceId),
       enabled: enabled && Boolean(workspaceId),
     },
-    fetch: getAuthorizedFetchOptions(accessToken),
+    request: getAuthorizedRequestOptions(accessToken),
   });
 };
 
@@ -124,7 +121,7 @@ export const useDashboardJobsQuery = (
       queryKey: dashboardQueryKeys.jobs(safeWorkspaceId),
       enabled: enabled && Boolean(workspaceId),
     },
-    fetch: getAuthorizedFetchOptions(accessToken),
+    request: getAuthorizedRequestOptions(accessToken),
   });
 };
 
@@ -142,6 +139,6 @@ export const useDashboardJobsByHostQuery = (
       queryKey: dashboardQueryKeys.jobsByHost(safeWorkspaceId, safeHostId),
       enabled: enabled && Boolean(workspaceId) && Boolean(hostId),
     },
-    fetch: getAuthorizedFetchOptions(accessToken),
+    request: getAuthorizedRequestOptions(accessToken),
   });
 };

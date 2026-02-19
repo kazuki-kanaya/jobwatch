@@ -27,7 +27,7 @@ jobs:
         uses: go-task/setup-task@v1
 
       - name: Task CI
-        run: task -d .. cli:ci
+        run: task ci
 
   api:
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
         uses: go-task/setup-task@v1
 
       - name: Task CI
-        run: task -d .. api:ci
+        run: task ci
 
   web:
     runs-on: ubuntu-latest
@@ -88,11 +88,15 @@ jobs:
         uses: go-task/setup-task@v1
 
       - name: Task CI
-        run: task -d .. web:ci
+        run: task ci
 
   infra:
     runs-on: ubuntu-latest
-    
+
+    defaults:
+      run:
+        working-directory: infra
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -104,4 +108,7 @@ jobs:
         uses: go-task/setup-task@v1
 
       - name: Task CI
-        run: task infra:ci
+        env:
+          TF_VAR_cloudflare_api_token: dummy
+          TF_VAR_cloudflare_account_id: dummy
+        run: task ci

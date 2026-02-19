@@ -38,6 +38,7 @@ type DashboardWorkspaceInvitationsSectionProps = {
   invitations: DashboardInvitationItem[];
   isLoading: boolean;
   isError: boolean;
+  isForbidden: boolean;
   isSubmitting: boolean;
   pendingRevokeInvitationId: string | null;
   onRequestRevoke: (invitationId: string) => void;
@@ -67,6 +68,7 @@ export default function DashboardWorkspaceInvitationsSection({
   invitations,
   isLoading,
   isError,
+  isForbidden,
   isSubmitting,
   pendingRevokeInvitationId,
   onRequestRevoke,
@@ -108,11 +110,12 @@ export default function DashboardWorkspaceInvitationsSection({
           <Skeleton className={cn("h-14 bg-slate-800")} />
         </div>
       ) : null}
-      {isError ? <p className={cn("text-sm text-rose-300")}>{errorLabel}</p> : null}
-      {!isLoading && !isError && invitations.length === 0 ? (
+      {!isLoading && isForbidden ? <p className={cn("text-sm text-amber-200")}>{noPermissionLabel}</p> : null}
+      {!isLoading && !isForbidden && isError ? <p className={cn("text-sm text-rose-300")}>{errorLabel}</p> : null}
+      {!isLoading && !isForbidden && !isError && invitations.length === 0 ? (
         <p className={cn("text-sm text-slate-400")}>{emptyLabel}</p>
       ) : null}
-      {!isLoading && !isError
+      {!isLoading && !isForbidden && !isError
         ? invitations.map((invitation) => (
             <article
               key={invitation.id}

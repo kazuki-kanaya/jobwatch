@@ -1,0 +1,50 @@
+version: "3"
+
+tasks:
+  fmt:
+    desc: Format API code
+    cmds:
+      - uv run ruff format .
+
+  lint:
+    desc: Lint and type-check API code
+    cmds:
+      - uv run ruff check . --fix
+      - uv run ty check .
+
+  fix:
+    desc: Run API formatting and lint fixes
+    deps: [fmt, lint]
+
+  ci:
+    desc: Run API CI checks
+    cmds:
+      - task: fix
+      - git diff --exit-code -- .
+
+  dev:
+    desc: Run API dev server
+    cmds:
+      - uv run uvicorn app.main:app --reload --reload-dir app
+
+  openapi:
+    desc: Export OpenAPI spec to web/openapi.json
+    cmds:
+      - uv run python -c "import json; from app.main import app; print(json.dumps(app.openapi(), ensure_ascii=False, indent=2))" > ../web/openapi.json
+
+  build:
+    desc: Build API for production
+    cmds:
+      - rm -rf build && mkdir -p build/packages
+      - uv export --frozen --no-dev --no-editable -o build/requirements.txt
+      - >
+        uv pip install
+        --no-installer-metadata
+        --no-compile-bytecode
+        --python 3.11
+        --python-platform x86_64-manylinux2014
+        --target build/packages
+        -r build/requirements.txt
+      - rsync -av --exclude "__pycache__" --exclude "*.pyc" app/ build/app
+      - (cd build/packages && zip -qr ../lambda.zip .)
+      - (cd build && zip -qr lambda.zip app)

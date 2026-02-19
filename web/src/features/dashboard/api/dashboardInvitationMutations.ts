@@ -11,14 +11,14 @@ type UseDashboardInvitationMutationsParams = {
   workspaceId: string;
 };
 
-const getAuthorizedFetchOptions = (accessToken: string | undefined) => {
+const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
   if (!accessToken) return undefined;
 
   return {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  } satisfies RequestInit;
+  };
 };
 
 export const useDashboardInvitationMutations = ({
@@ -26,9 +26,9 @@ export const useDashboardInvitationMutations = ({
   workspaceId,
 }: UseDashboardInvitationMutationsParams) => {
   const queryClient = useQueryClient();
-  const fetch = getAuthorizedFetchOptions(accessToken);
-  const createMutation = useCreateInvitationWorkspacesWorkspaceIdInvitationsPost({ fetch });
-  const revokeMutation = useRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete({ fetch });
+  const request = getAuthorizedRequestOptions(accessToken);
+  const createMutation = useCreateInvitationWorkspacesWorkspaceIdInvitationsPost({ request });
+  const revokeMutation = useRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete({ request });
 
   const invalidateInvitationQueries = async () => {
     await queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.invitations(workspaceId) });
@@ -41,26 +41,19 @@ export const useDashboardInvitationMutations = ({
       workspaceId,
       data: { role },
     });
-
-    if (response.status !== 201) {
-      throw new Error("Failed to create invitation");
-    }
-
     await invalidateInvitationQueries();
-
-    return response.data;
+    return response;
   };
 
   const revokeInvitation = async (invitationId: string) => {
     if (!workspaceId) throw new Error("Workspace is not selected");
 
-    const response = await revokeMutation.mutateAsync({
+    await revokeMutation.mutateAsync({
       workspaceId,
       invitationId,
     });
 
     await invalidateInvitationQueries();
-    if (response.status !== 204) throw new Error("Failed to revoke invitation");
   };
 
   return {
