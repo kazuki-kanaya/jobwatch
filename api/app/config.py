@@ -12,8 +12,6 @@ class Settings(BaseSettings):
 
     ddb_endpoint: str | None = None
     aws_region: str = "ap-northeast-1"
-    aws_access_key: str = "dummy"
-    aws_secret_key: str = "dummy"
     ddb_table_name: str = "jobwatch-dev"
     log_level: str = "INFO"
     app_timezone: str = "Asia/Tokyo"

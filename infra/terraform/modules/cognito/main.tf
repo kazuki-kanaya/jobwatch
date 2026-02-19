@@ -39,6 +39,8 @@ resource "aws_cognito_user_pool" "this" {
       priority = 1
     }
   }
+
+  tags = var.tags
 }
 
 resource "aws_cognito_user_pool_client" "this" {

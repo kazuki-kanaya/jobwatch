@@ -15,3 +15,9 @@ variable "logout_urls" {
   type        = list(string)
   default     = ["http://localhost:5173/"]
 }
+
+variable "tags" {
+  description = "Tags for the Cognito User Pool"
+  type        = map(string)
+  default     = {}
+}

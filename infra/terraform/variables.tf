@@ -27,3 +27,33 @@ variable "logout_urls" {
   type        = list(string)
   default     = ["http://localhost:5173/"]
 }
+
+variable "dynamodb_table_name" {
+  description = "The name of the DynamoDB table"
+  type        = string
+  default     = "jobwatch-table"
+}
+
+variable "enable_serverless_api" {
+  description = "Enable Lambda + API Gateway modules"
+  type        = bool
+  default     = false
+}
+
+variable "lambda_zip_path" {
+  description = "Path to Lambda deployment zip artifact"
+  type        = string
+  default     = "../../api/build/lambda.zip"
+}
+
+variable "lambda_environment" {
+  description = "Environment variables passed to API Lambda"
+  type        = map(string)
+  default     = {}
+}
+
+variable "tags" {
+  description = "Common tags for resources"
+  type        = map(string)
+  default     = {}
+}

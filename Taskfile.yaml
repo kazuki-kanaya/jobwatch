@@ -54,6 +54,24 @@ tasks:
     cmds:
       - uv run python -c "import json; from app.main import app; print(json.dumps(app.openapi(), ensure_ascii=False, indent=2))" > ../web/openapi.json
 
+  api:build:
+    desc: Build API for production
+    dir: api
+    cmds:
+      - rm -rf build && mkdir -p build/packages
+      - uv export --frozen --no-dev --no-editable -o build/requirements.txt
+      - >
+        uv pip install
+        --no-installer-metadata
+        --no-compile-bytecode
+        --python 3.11
+        --python-platform x86_64-manylinux2014
+        --target build/packages
+        -r build/requirements.txt
+      - rsync -av --exclude "__pycache__" --exclude "*.pyc" app/ build/app
+      - (cd build/packages && zip -qr ../lambda.zip .)
+      - (cd build && zip -qr lambda.zip app)
+
   web:gen-api:
     desc: Generate web API client from OpenAPI
     dir: web
