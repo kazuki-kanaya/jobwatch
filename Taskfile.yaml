@@ -23,7 +23,7 @@ tasks:
 
   all:fix:
     desc: Run fix tasks for all modules
-    deps: [api:fix, cli:fix, web:fix, infra:aws:fix]
+    deps: [api:fix, cli:fix, web:fix, infra:fix]
 
   all:ci:
     desc: Run CI checks for all modules

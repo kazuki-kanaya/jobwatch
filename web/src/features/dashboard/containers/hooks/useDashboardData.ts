@@ -9,6 +9,7 @@ import {
   useDashboardUsersLookupQuery,
   useDashboardWorkspacesQuery,
 } from "@/features/dashboard/api/dashboardQueries";
+import { canManageWorkspace } from "@/features/dashboard/containers/dashboardGuards";
 import { ALL_FILTER_ID } from "@/features/dashboard/containers/hooks/constants";
 import {
   toCurrentUser,
@@ -89,8 +90,17 @@ export const useDashboardData = ({
 
   const membersQuery = useDashboardMembersQuery(activeWorkspaceId || null, accessToken, canRequest);
   const memberPayload = membersQuery.data;
+  const currentMembershipRole =
+    currentUser?.userId && memberPayload
+      ? (memberPayload.members.find((member) => member.user_id === currentUser.userId)?.role ?? null)
+      : null;
+  const canManageWorkspaceByRole = canManageWorkspace(currentMembershipRole);
 
-  const invitationsQuery = useDashboardInvitationsQuery(activeWorkspaceId || null, accessToken, canRequest);
+  const invitationsQuery = useDashboardInvitationsQuery(
+    activeWorkspaceId || null,
+    accessToken,
+    canRequest && canManageWorkspaceByRole,
+  );
   const invitationsPayload = invitationsQuery.data;
 
   const lookupUserIds = useMemo(() => {
