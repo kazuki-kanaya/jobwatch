@@ -51,7 +51,7 @@ jobs:
       - name: Pip Audit
         uses: pypa/gh-action-pip-audit@v1.1.0
         with:
-          inputs: pylock.toml
+          inputs: api
           locked: true
 
   web:
