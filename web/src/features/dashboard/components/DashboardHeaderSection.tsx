@@ -1,7 +1,7 @@
-import { Fingerprint, Languages, LogOut, PenLine, RefreshCw, UserRound } from "lucide-react";
+import { Fingerprint, LogOut, PenLine, RefreshCw, UserRound } from "lucide-react";
+import LocaleSelect from "@/components/LocaleSelect";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import DashboardProfileEditDialog from "@/features/dashboard/components/DashboardProfileEditDialog";
 import type { DashboardSelectOption } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
@@ -114,26 +114,14 @@ export default function DashboardHeaderSection({
           <div className={cn("flex flex-wrap items-center gap-2")}>
             <div className={cn("space-y-1")}>
               <span className={cn("sr-only")}>{localeLabel}</span>
-              <div className={cn("flex items-center gap-2 rounded-md border border-slate-600 bg-slate-800 px-2")}>
-                <Languages className={cn("size-4 text-slate-300")} />
-                <Select value={localeValue} onValueChange={onLocaleChange}>
-                  <SelectTrigger
-                    id="dashboard-language"
-                    className={cn(
-                      "h-9 min-w-32 border-none bg-slate-800 text-slate-100 shadow-none focus-visible:ring-0",
-                    )}
-                  >
-                    <SelectValue placeholder={localeLabel} />
-                  </SelectTrigger>
-                  <SelectContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
-                    {localeOptions.map((option) => (
-                      <SelectItem key={option.id} value={option.id}>
-                        {option.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <LocaleSelect
+                id="dashboard-language"
+                label={localeLabel}
+                options={localeOptions}
+                value={localeValue}
+                onChange={onLocaleChange}
+                triggerClassName={cn("min-w-32")}
+              />
             </div>
             <Button
               type="button"

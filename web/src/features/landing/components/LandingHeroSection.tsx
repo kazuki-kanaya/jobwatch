@@ -114,16 +114,17 @@ export default function LandingHeroSection({
             <span className={cn("ml-2 font-mono text-xs text-slate-500")}>user@machine:~</span>
           </div>
           <div className={cn("space-y-2 font-mono text-sm text-slate-300 md:text-lg")}>
-            <p>➜ ~ # Run your training script normally</p>
-            <p className={cn("text-slate-500 line-through")}>➜ python train_model.py --epochs 100</p>
-            <p>➜ ~ # Wrap it with jobwatch</p>
-            <p>
-              <span className={cn("text-amber-300")}>➜ jobwatch run</span> "python train_model.py --epochs 100"
+            <p># Run your training script normally</p>
+            <p className={cn("text-slate-500 line-through")}>python train_model.py --epochs 100</p>
+            <p># One-time setup (generate jobwatch.yaml)</p>
+            <p className={cn("text-amber-300")}>
+              <span className={cn("text-cyan-300")}>➜</span> jobwatch init
             </p>
-            <p className={cn("text-blue-300")}>🚀 Job started: training-run-8291</p>
-            <p className={cn("text-blue-300")}>🔗 Tracking URL: https://jobwatch.dev/j/8291</p>
-            <p className={cn("text-slate-200")}>⏱ ETA: 4h 23m</p>
-            <p className={cn("text-emerald-300")}>● Running ...</p>
+            <p># Wrap it with jobwatch</p>
+            <p>
+              <span className={cn("text-cyan-300")}>➜</span> <span className={cn("text-amber-300")}>jobwatch run</span>{" "}
+              python train_model.py --epochs 100
+            </p>
           </div>
         </div>
       </div>

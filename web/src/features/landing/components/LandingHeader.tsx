@@ -1,5 +1,6 @@
 import { Github, SquareTerminal } from "lucide-react";
 import { Link } from "react-router";
+import LocaleSelect from "@/components/LocaleSelect";
 import { Button } from "@/components/ui/button";
 import type { LandingOption, LandingTexts } from "@/features/landing/types";
 import { cn } from "@/lib/utils";
@@ -51,24 +52,16 @@ export default function LandingHeader({ texts, localeOptions, localeValue, onLoc
               {texts.landing_get_started}
             </Button>
           </Link>
-          <div
-            className={cn(
-              "hidden items-center rounded border border-[#2c3c4f] px-1 py-0.5 text-[11px] font-semibold lg:flex",
-            )}
-          >
-            {localeOptions.map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => onLocaleChange(opt.id)}
-                className={cn(
-                  "rounded px-2 py-0.5",
-                  localeValue === opt.id ? "bg-[#1d3d77] text-cyan-100" : "text-slate-300",
-                )}
-              >
-                {opt.name}
-              </button>
-            ))}
+          <div className={cn("hidden lg:block")}>
+            <LocaleSelect
+              id="landing-language"
+              label="Language"
+              options={localeOptions}
+              value={localeValue}
+              onChange={onLocaleChange}
+              wrapperClassName={cn("border-[#2c3c4f] bg-[#141c32]")}
+              triggerClassName={cn("h-8 min-w-24 px-2 text-xs font-semibold")}
+            />
           </div>
         </div>
       </div>
