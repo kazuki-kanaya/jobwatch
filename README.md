@@ -33,7 +33,7 @@ Jobwatch aims to be a minimal, easy-to-adopt solution.
 Wrap your command with Jobwatch:
 
 ```bash
-jobwatch run -- python main.py
+jobwatch run python main.py
 ```
 
 Jobwatch tracks:
@@ -69,7 +69,11 @@ And syncs job states to a web dashboard.
 Example future flow:
 
 ```bash
-pip install jobwatch
+# Homebrew
+brew install jobwatch
+
+# curl installer
+curl -fsSL https://example.com/jobwatch/install.sh | bash
 ```
 
 ---
@@ -129,7 +133,7 @@ lefthook install
 
 ```bash
 # Start LocalStack (AWS emulator)
-task ddb:init
+task ddb:up
 
 # Start API server
 task api:dev

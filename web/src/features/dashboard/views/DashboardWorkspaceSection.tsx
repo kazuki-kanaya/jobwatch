@@ -52,6 +52,7 @@ export default function DashboardWorkspaceSection({ model, workspaceManagement }
       isError={workspaceManagement.isWorkspacesError}
       isInvitationsLoading={workspaceManagement.isInvitationsLoading}
       isInvitationsError={workspaceManagement.isInvitationsError}
+      isInvitationsForbidden={workspaceManagement.isInvitationsForbidden}
       isSubmitting={workspaceManagement.isWorkspaceSubmitting}
       isFormOpen={workspaceManagement.isWorkspaceFormOpen}
       isTransferDialogOpen={workspaceManagement.isWorkspaceTransferDialogOpen}

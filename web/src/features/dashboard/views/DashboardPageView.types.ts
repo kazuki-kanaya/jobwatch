@@ -14,6 +14,7 @@ export type DashboardWorkspaceManagementProps = {
   isWorkspacesError: boolean;
   isInvitationsLoading: boolean;
   isInvitationsError: boolean;
+  isInvitationsForbidden: boolean;
   isWorkspaceFormOpen: boolean;
   isWorkspaceTransferDialogOpen: boolean;
   onOpenWorkspaceCreateForm: () => void;

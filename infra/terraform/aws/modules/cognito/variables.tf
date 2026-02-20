@@ -1,16 +1,4 @@
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-  default     = "ap-northeast-1"
-}
-
-variable "aws_profile" {
-  description = "The AWS CLI profile to use"
-  type        = string
-  default     = "default"
-}
-
-variable "cognito_domain_prefix" {
+variable "domain_prefix" {
   description = "The prefix for the Cognito User Pool domain"
   type        = string
   default     = "jobwatch-app"
@@ -26,4 +14,10 @@ variable "logout_urls" {
   description = "List of logout URLs for the Cognito User Pool client"
   type        = list(string)
   default     = ["http://localhost:5173/"]
+}
+
+variable "tags" {
+  description = "Tags for the Cognito User Pool"
+  type        = map(string)
+  default     = {}
 }

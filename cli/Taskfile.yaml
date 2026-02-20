@@ -1,0 +1,34 @@
+version: "3"
+
+tasks:
+  fmt:
+    desc: Format CLI code
+    cmds:
+      - go fmt ./...
+
+  vet:
+    desc: Run go vet on CLI code
+    cmds:
+      - go vet ./...
+
+  fix:
+    desc: Run CLI format and vet
+    deps: [fmt, vet]
+
+  test:
+    desc: Run CLI tests
+    cmds:
+      - go test ./...
+
+  build:
+    desc: Build CLI binary
+    cmds:
+      - go build -o dist/jobwatch .
+
+  ci:
+    desc: Run CLI CI checks
+    cmds:
+      - task: fix
+      - task: test
+      - task: build
+      - git diff --exit-code -- .

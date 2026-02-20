@@ -47,8 +47,7 @@ const toReadableDateTime = (value: string, localeTag: string) => {
 };
 
 const toUserDisplayName = (userId: string, userNameById: Map<string, string>) => {
-  const userName = userNameById.get(userId);
-  return userName ? `${userName} (${userId})` : userId;
+  return userNameById.get(userId) ?? userId;
 };
 
 const toDurationLabel = (startedAt: string, finishedAt: string | null) => {

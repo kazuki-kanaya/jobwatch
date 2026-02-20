@@ -4,26 +4,24 @@ type UseInvitationAcceptMutationParams = {
   accessToken: string | undefined;
 };
 
-const getAuthorizedFetchOptions = (accessToken: string | undefined) => {
+const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
   if (!accessToken) return undefined;
 
   return {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  } satisfies RequestInit;
+  };
 };
 
 export const useInvitationAcceptMutation = ({ accessToken }: UseInvitationAcceptMutationParams) => {
   const mutation = useAcceptInvitationInvitationsAcceptPost({
-    fetch: getAuthorizedFetchOptions(accessToken),
+    request: getAuthorizedRequestOptions(accessToken),
   });
 
   const acceptInvitation = async (token: string) => {
     const response = await mutation.mutateAsync({ data: { token } });
-    if (response.status !== 200) throw new Error("Failed to accept invitation");
-
-    return response.data;
+    return response;
   };
 
   return {

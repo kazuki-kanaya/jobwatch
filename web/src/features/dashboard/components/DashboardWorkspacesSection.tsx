@@ -52,6 +52,7 @@ export default function DashboardWorkspacesSection({
   isError,
   isInvitationsLoading,
   isInvitationsError,
+  isInvitationsForbidden,
   isSubmitting,
   isFormOpen,
   isTransferDialogOpen,
@@ -152,6 +153,7 @@ export default function DashboardWorkspacesSection({
           invitations={invitations}
           isLoading={isInvitationsLoading}
           isError={isInvitationsError}
+          isForbidden={isInvitationsForbidden}
           isSubmitting={isSubmitting}
           pendingRevokeInvitationId={pendingRevokeInvitationId}
           onRequestRevoke={onRequestRevokeInvitation}

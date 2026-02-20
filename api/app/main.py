@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from mangum import Mangum
 
 from app.dependencies.settings import get_settings
 from app.config import configure_logging
@@ -19,3 +20,4 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+handler = Mangum(app, lifespan="off")

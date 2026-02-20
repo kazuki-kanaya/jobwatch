@@ -1,0 +1,39 @@
+version: "3"
+
+tasks:
+  gen-api:
+    desc: Generate web API client from OpenAPI
+    cmds:
+      - pnpm generate:api
+
+  fmt:
+    desc: Format web code
+    cmds:
+      - pnpm fmt
+
+  lint:
+    desc: Lint web code
+    cmds:
+      - pnpm lint
+
+  fix:
+    desc: Run web formatter and lint fixes
+    cmds:
+      - pnpm fix
+
+  build:
+    desc: Build web app
+    cmds:
+      - pnpm build
+
+  ci:
+    desc: Run web CI checks
+    cmds:
+      - task: fix
+      - task: build
+      - git diff --exit-code -- .
+
+  dev:
+    desc: Run web development server
+    cmds:
+      - pnpm dev

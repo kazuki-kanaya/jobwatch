@@ -1,10 +1,10 @@
-package runapp
+package run
 
 import (
 	"net/http"
 	"testing"
 
-	"github.com/kanaya/jobwatch/cli/internal/config"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
 )
 
 func TestShouldNotify(t *testing.T) {
@@ -23,7 +23,7 @@ func TestShouldNotify(t *testing.T) {
 	}
 }
 
-func TestNew_RequiresAPIBaseURLAndTokenWhenEnabled(t *testing.T) {
+func TestNewRunner_RequiresAPIBaseURLAndTokenWhenEnabled(t *testing.T) {
 	cfg := config.Config{
 		Project: config.Project{Name: "test"},
 		API: config.API{
@@ -33,13 +33,13 @@ func TestNew_RequiresAPIBaseURLAndTokenWhenEnabled(t *testing.T) {
 		},
 	}
 
-	_, err := New(cfg, &http.Transport{})
+	_, err := NewRunner(cfg, &http.Transport{})
 	if err == nil {
 		t.Fatal("expected error when API is enabled without base_url/token")
 	}
 }
 
-func TestNew_FailsOnUnsupportedNotifier(t *testing.T) {
+func TestNewRunner_FailsOnUnsupportedNotifier(t *testing.T) {
 	cfg := config.Config{
 		Project: config.Project{Name: "test"},
 		Notify: config.Notify{
@@ -49,13 +49,13 @@ func TestNew_FailsOnUnsupportedNotifier(t *testing.T) {
 		},
 	}
 
-	_, err := New(cfg, &http.Transport{})
+	_, err := NewRunner(cfg, &http.Transport{})
 	if err == nil {
 		t.Fatal("expected error for unsupported notifier kind")
 	}
 }
 
-func TestNew_FailsOnSlackWithoutWebhook(t *testing.T) {
+func TestNewRunner_FailsOnSlackWithoutWebhook(t *testing.T) {
 	cfg := config.Config{
 		Project: config.Project{Name: "test"},
 		Notify: config.Notify{
@@ -65,7 +65,7 @@ func TestNew_FailsOnSlackWithoutWebhook(t *testing.T) {
 		},
 	}
 
-	_, err := New(cfg, &http.Transport{})
+	_, err := NewRunner(cfg, &http.Transport{})
 	if err == nil {
 		t.Fatal("expected error when slack webhook_url is missing")
 	}

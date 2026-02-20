@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-TF_DIR="$ROOT_DIR/infra/terraform"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+TF_DIR="$ROOT_DIR/infra/terraform/aws"
 WEB_ENV_FILE="$ROOT_DIR/web/.env.local"
 API_ENV_FILE="$ROOT_DIR/api/.env"
 
 if ! command -v jq >/dev/null 2>&1; then
-  echo "jq is required for infra/scripts/sync-env.sh" >&2
+  echo "jq is required for infra/scripts/aws/sync-dot-env.sh" >&2
   exit 1
 fi
 
@@ -17,6 +17,8 @@ oidc_issuer="$(echo "$outputs_json" | jq -r '.oidc_issuer.value')"
 oidc_jwks_url="$(echo "$outputs_json" | jq -r '.oidc_jwks_url.value')"
 oidc_client_id="$(echo "$outputs_json" | jq -r '.cognito_user_pool_client_id.value')"
 oidc_cognito_domain="$(echo "$outputs_json" | jq -r '.cognito_hosted_ui_base_url.value')"
+api_invoke_url="$(echo "$outputs_json" | jq -r '.api_invoke_url.value // empty')"
+api_base_url="${api_invoke_url:-http://127.0.0.1:8000}"
 
 upsert_env() {
   local file="$1"
@@ -48,7 +50,7 @@ upsert_env() {
 upsert_env "$WEB_ENV_FILE" "VITE_OIDC_AUTHORITY" "$oidc_issuer"
 upsert_env "$WEB_ENV_FILE" "VITE_OIDC_CLIENT_ID" "$oidc_client_id"
 upsert_env "$WEB_ENV_FILE" "VITE_OIDC_COGNITO_DOMAIN" "$oidc_cognito_domain"
-upsert_env "$WEB_ENV_FILE" "VITE_API_BASE_URL" "http://127.0.0.1:8000"
+upsert_env "$WEB_ENV_FILE" "VITE_API_BASE_URL" "$api_base_url"
 
 upsert_env "$API_ENV_FILE" "JOBWATCH_OIDC_JWKS_URL" "$oidc_jwks_url"
 upsert_env "$API_ENV_FILE" "JOBWATCH_OIDC_AUDIENCE" "$oidc_client_id"

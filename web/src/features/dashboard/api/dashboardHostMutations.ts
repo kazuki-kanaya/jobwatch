@@ -11,28 +11,28 @@ type UseDashboardHostMutationsParams = {
   workspaceId: string;
 };
 
-const getAuthorizedFetchOptions = (accessToken: string | undefined) => {
+const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
   if (!accessToken) return undefined;
 
   return {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  } satisfies RequestInit;
+  };
 };
 
 export const useDashboardHostMutations = ({ accessToken, workspaceId }: UseDashboardHostMutationsParams) => {
   const queryClient = useQueryClient();
-  const fetch = getAuthorizedFetchOptions(accessToken);
+  const request = getAuthorizedRequestOptions(accessToken);
 
   const invalidateHostRelatedQueries = async () => {
     await queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.hosts(workspaceId) });
     await queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.jobs(workspaceId) });
   };
 
-  const createMutation = useCreateHostWorkspacesWorkspaceIdHostsPost({ fetch });
-  const updateMutation = useUpdateHostWorkspacesWorkspaceIdHostsHostIdPatch({ fetch });
-  const deleteMutation = useDeleteHostWorkspacesWorkspaceIdHostsHostIdDelete({ fetch });
+  const createMutation = useCreateHostWorkspacesWorkspaceIdHostsPost({ request });
+  const updateMutation = useUpdateHostWorkspacesWorkspaceIdHostsHostIdPatch({ request });
+  const deleteMutation = useDeleteHostWorkspacesWorkspaceIdHostsHostIdDelete({ request });
 
   const createHost = async (name: string) => {
     if (!workspaceId) throw new Error("Workspace is not selected");
@@ -41,12 +41,7 @@ export const useDashboardHostMutations = ({ accessToken, workspaceId }: UseDashb
       data: { name },
     });
     await invalidateHostRelatedQueries();
-
-    if (response.status !== 201) {
-      throw new Error("Failed to create host");
-    }
-
-    return response.data;
+    return response;
   };
 
   const updateHost = async (hostId: string, name: string) => {
@@ -57,22 +52,13 @@ export const useDashboardHostMutations = ({ accessToken, workspaceId }: UseDashb
       data: { name },
     });
     await invalidateHostRelatedQueries();
-
-    if (response.status !== 200) {
-      throw new Error("Failed to update host");
-    }
-
-    return response.data;
+    return response;
   };
 
   const deleteHost = async (hostId: string) => {
     if (!workspaceId) throw new Error("Workspace is not selected");
-    const response = await deleteMutation.mutateAsync({ workspaceId, hostId });
+    await deleteMutation.mutateAsync({ workspaceId, hostId });
     await invalidateHostRelatedQueries();
-
-    if (response.status !== 204) {
-      throw new Error("Failed to delete host");
-    }
   };
 
   return {

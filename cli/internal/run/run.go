@@ -1,4 +1,4 @@
-package runapp
+package run
 
 import (
 	"context"
@@ -7,14 +7,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/kanaya/jobwatch/cli/internal/config"
-	"github.com/kanaya/jobwatch/cli/internal/jobtracker"
-	"github.com/kanaya/jobwatch/cli/internal/notifier"
-	"github.com/kanaya/jobwatch/cli/internal/notifier/slack"
-	"github.com/kanaya/jobwatch/cli/internal/runner"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/jobtracker"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/notifier"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/notifier/slack"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/runner"
 )
 
-type Service struct {
+type Runner struct {
 	cfg       config.Config
 	exec      runner.Runner
 	tracker   jobtracker.JobTracker
@@ -28,7 +28,7 @@ type Report struct {
 	NotifyError         error
 }
 
-func New(cfg config.Config, transport *http.Transport) (*Service, error) {
+func NewRunner(cfg config.Config, transport *http.Transport) (*Runner, error) {
 	tr, err := setupTracker(cfg, transport)
 	if err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func New(cfg config.Config, transport *http.Transport) (*Service, error) {
 		return nil, err
 	}
 
-	return &Service{
+	return &Runner{
 		cfg:       cfg,
 		exec:      runner.NewExecutor(cfg.Run.LogTail),
 		tracker:   tr,
@@ -47,17 +47,17 @@ func New(cfg config.Config, transport *http.Transport) (*Service, error) {
 	}, nil
 }
 
-func (s *Service) Execute(ctx context.Context, command string, commandArgs []string) Report {
+func (r *Runner) Execute(ctx context.Context, command string, commandArgs []string) Report {
 	startedAt := time.Now()
-	jobID, startErr := s.tracker.Start(ctx, jobtracker.StartRequest{
-		Project:   s.cfg.Project.Name,
+	jobID, startErr := r.tracker.Start(ctx, jobtracker.StartRequest{
+		Project:   r.cfg.Project.Name,
 		Command:   command,
 		Args:      commandArgs,
-		Tags:      s.cfg.Project.Tags,
+		Tags:      r.cfg.Project.Tags,
 		StartedAt: startedAt,
 	})
 
-	result := s.exec.Run(ctx, command, commandArgs)
+	result := r.exec.Run(ctx, command, commandArgs)
 	result.StartedAt = startedAt
 
 	var finishErr error
@@ -69,7 +69,7 @@ func (s *Service) Execute(ctx context.Context, command string, commandArgs []str
 			errMsg = result.Err.Error()
 		}
 
-		finishErr = s.tracker.Finish(ctx, jobID, jobtracker.FinishRequest{
+		finishErr = r.tracker.Finish(ctx, jobID, jobtracker.FinishRequest{
 			Status:     status,
 			Err:        errMsg,
 			TailLines:  result.TailLines,
@@ -78,8 +78,8 @@ func (s *Service) Execute(ctx context.Context, command string, commandArgs []str
 	}
 
 	notification := notifier.Notification{
-		Project:    s.cfg.Project.Name,
-		Tags:       s.cfg.Project.Tags,
+		Project:    r.cfg.Project.Name,
+		Tags:       r.cfg.Project.Tags,
 		Command:    command,
 		Args:       commandArgs,
 		Success:    result.Err == nil,
@@ -90,9 +90,9 @@ func (s *Service) Execute(ctx context.Context, command string, commandArgs []str
 	}
 
 	var notifyErr error
-	if shouldNotify(s.cfg, notification.Success) {
+	if shouldNotify(r.cfg, notification.Success) {
 		var errs []error
-		for _, n := range s.notifiers {
+		for _, n := range r.notifiers {
 			if err := n.Notify(ctx, notification); err != nil {
 				errs = append(errs, err)
 			}

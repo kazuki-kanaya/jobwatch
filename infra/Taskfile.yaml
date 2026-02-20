@@ -1,0 +1,69 @@
+version: "3"
+
+includes:
+  aws:
+    taskfile: ./terraform/aws/Taskfile.yaml
+    dir: ./terraform/aws
+  cf:
+    taskfile: ./terraform/cloudflare/Taskfile.yaml
+    dir: ./terraform/cloudflare
+
+tasks:
+  ddb:create-tables:
+    desc: Create DynamoDB tables in LocalStack
+    cmds:
+      - bash ./scripts/aws/dynamodb/wait.sh
+      - bash ./scripts/aws/dynamodb/create-tables.sh
+
+  ddb:up:
+    desc: Start local DynamoDB services
+    cmds:
+      - docker compose up -d
+      - task: ddb:create-tables
+
+  ddb:down:
+    desc: Stop and remove local DynamoDB services
+    cmds:
+      - docker compose down -v
+
+  fix:
+    desc: Run Terraform formatting and validation for AWS and Cloudflare
+    cmds:
+      - task: aws:fix
+      - task: cf:fix
+
+  plan:
+    desc: Generate Terraform execution plans for AWS and Cloudflare
+    cmds:
+      - task: aws:plan
+      - task: cf:plan
+
+  apply:
+    desc: Apply Terraform configurations for AWS and Cloudflare
+    cmds:
+      - task: aws:apply
+      - task: cf:apply
+
+  deploy:web:
+    desc: Apply infra and deploy web to Cloudflare Pages
+    cmds:
+      - task -d .. web:build
+      - bash ./scripts/cloudflare/deploy-pages.sh
+  
+  deploy:
+    desc: Deploy all infrastructure and web application
+    cmds:
+      - task: apply
+      - task: deploy:web
+
+  destroy:
+    desc: Destroy Terraform-managed infrastructure for AWS and Cloudflare
+    cmds:
+      - task: aws:destroy
+      - task: cf:destroy
+
+  ci:
+    desc: Run Terraform CI checks for AWS and Cloudflare
+    cmds:
+      - task: fix
+      - git diff --exit-code -- .

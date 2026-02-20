@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/kanaya/jobwatch/cli/internal/config"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
 	"github.com/spf13/cobra"
 )
 

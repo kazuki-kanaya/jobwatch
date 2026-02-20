@@ -1,0 +1,6 @@
+cloudflare_api_token  = "your-api-token"
+cloudflare_account_id = "your-account-id"
+project_name          = "jobwatch-example"
+
+# api_origin is generated into from_aws.auto.tfvars by:
+#   task infra:cf:sync-from-aws

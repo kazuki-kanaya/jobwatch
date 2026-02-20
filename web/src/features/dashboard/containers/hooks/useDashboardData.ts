@@ -9,6 +9,7 @@ import {
   useDashboardUsersLookupQuery,
   useDashboardWorkspacesQuery,
 } from "@/features/dashboard/api/dashboardQueries";
+import { canManageWorkspace } from "@/features/dashboard/containers/dashboardGuards";
 import { ALL_FILTER_ID } from "@/features/dashboard/containers/hooks/constants";
 import {
   toCurrentUser,
@@ -57,6 +58,8 @@ type UseDashboardDataResult = {
   isHostsError: boolean;
   isMembersLoading: boolean;
   isMembersError: boolean;
+  isJobsLoading: boolean;
+  isJobsError: boolean;
 };
 
 export const useDashboardData = ({
@@ -69,18 +72,15 @@ export const useDashboardData = ({
   allLabel,
 }: UseDashboardDataParams): UseDashboardDataResult => {
   const currentUserQuery = useDashboardCurrentUserQuery(accessToken, canRequest && !isAuthLoading);
-  const currentUser = useMemo(
-    () => toCurrentUser(currentUserQuery.data?.status === 200 ? currentUserQuery.data.data : undefined),
-    [currentUserQuery.data],
-  );
+  const currentUser = useMemo(() => toCurrentUser(currentUserQuery.data), [currentUserQuery.data]);
 
   const workspaceQuery = useDashboardWorkspacesQuery(accessToken, canRequest && !isAuthLoading);
-  const workspaces = useMemo(() => toWorkspaceOptions(workspaceQuery.data?.data), [workspaceQuery.data?.data]);
+  const workspaces = useMemo(() => toWorkspaceOptions(workspaceQuery.data), [workspaceQuery.data]);
 
   const activeWorkspaceId = workspaceId || workspaces[0]?.id || "";
 
   const hostsQuery = useDashboardHostsQuery(activeWorkspaceId || null, accessToken, canRequest);
-  const hostPayload = Array.isArray(hostsQuery.data?.data) ? hostsQuery.data.data : undefined;
+  const hostPayload = Array.isArray(hostsQuery.data) ? hostsQuery.data : undefined;
 
   const hostOptions = useMemo(() => {
     const mappedHosts = toHostOptions(hostPayload);
@@ -89,14 +89,19 @@ export const useDashboardData = ({
   const hosts = useMemo(() => toHostOptions(hostPayload), [hostPayload]);
 
   const membersQuery = useDashboardMembersQuery(activeWorkspaceId || null, accessToken, canRequest);
-  const memberPayload =
-    !Array.isArray(membersQuery.data?.data) && membersQuery.data?.status === 200 ? membersQuery.data.data : undefined;
+  const memberPayload = membersQuery.data;
+  const currentMembershipRole =
+    currentUser?.userId && memberPayload
+      ? (memberPayload.members.find((member) => member.user_id === currentUser.userId)?.role ?? null)
+      : null;
+  const canManageWorkspaceByRole = canManageWorkspace(currentMembershipRole);
 
-  const invitationsQuery = useDashboardInvitationsQuery(activeWorkspaceId || null, accessToken, canRequest);
-  const invitationsPayload =
-    !Array.isArray(invitationsQuery.data?.data) && invitationsQuery.data?.status === 200
-      ? invitationsQuery.data.data
-      : undefined;
+  const invitationsQuery = useDashboardInvitationsQuery(
+    activeWorkspaceId || null,
+    accessToken,
+    canRequest && canManageWorkspaceByRole,
+  );
+  const invitationsPayload = invitationsQuery.data;
 
   const lookupUserIds = useMemo(() => {
     const ids = new Set<string>();
@@ -111,7 +116,7 @@ export const useDashboardData = ({
   }, [currentUser, invitationsPayload, memberPayload]);
   const usersLookupQuery = useDashboardUsersLookupQuery(lookupUserIds, accessToken, canRequest);
   const userNameById = useMemo(() => {
-    const users = usersLookupQuery.data?.status === 200 ? usersLookupQuery.data.data.users : [];
+    const users = usersLookupQuery.data?.users ?? [];
     const map = new Map(users.map((user) => [user.user_id, user.name]));
     if (currentUser) map.set(currentUser.userId, currentUser.name);
     return map;
@@ -141,8 +146,8 @@ export const useDashboardData = ({
   const jobsWorkspaceQuery = useDashboardJobsQuery(activeWorkspaceId || null, accessToken, canRequest && !activeHostId);
   const jobsByHostQuery = useDashboardJobsByHostQuery(activeWorkspaceId || null, activeHostId, accessToken, canRequest);
 
-  const workspaceJobsPayload = Array.isArray(jobsWorkspaceQuery.data?.data) ? jobsWorkspaceQuery.data.data : undefined;
-  const hostJobsPayload = Array.isArray(jobsByHostQuery.data?.data) ? jobsByHostQuery.data.data : undefined;
+  const workspaceJobsPayload = Array.isArray(jobsWorkspaceQuery.data) ? jobsWorkspaceQuery.data : undefined;
+  const hostJobsPayload = Array.isArray(jobsByHostQuery.data) ? jobsByHostQuery.data : undefined;
   const jobsPayload = activeHostId ? hostJobsPayload : workspaceJobsPayload;
   const jobs = useMemo(
     () => toJobListItems(jobsPayload, activeWorkspaceName, hostNameById, localeTag),
@@ -158,6 +163,7 @@ export const useDashboardData = ({
     invitationsQuery.isLoading ||
     jobsWorkspaceQuery.isLoading ||
     jobsByHostQuery.isLoading;
+  const isJobsLoading = jobsWorkspaceQuery.isLoading || jobsByHostQuery.isLoading;
   const isError =
     workspaceQuery.isError ||
     currentUserQuery.isError ||
@@ -166,6 +172,7 @@ export const useDashboardData = ({
     invitationsQuery.isError ||
     jobsWorkspaceQuery.isError ||
     jobsByHostQuery.isError;
+  const isJobsError = jobsWorkspaceQuery.isError || jobsByHostQuery.isError;
 
   return {
     workspaces,
@@ -187,5 +194,7 @@ export const useDashboardData = ({
     isHostsError: hostsQuery.isError,
     isMembersLoading: membersQuery.isLoading,
     isMembersError: membersQuery.isError,
+    isJobsLoading,
+    isJobsError,
   };
 };

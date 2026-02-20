@@ -23,6 +23,7 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
+import { axiosInstance } from '../lib/axios';
 export interface ValidationError {
   loc: (string | number)[];
   msg: string;
@@ -219,47 +220,25 @@ export interface WorkspaceUpdateRequest {
   name: string;
 }
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+
 /**
  * @summary Health
  */
-export type healthHealthGetResponse200 = {
-  data: HealthResponse
-  status: 200
-}
+export const healthHealthGet = (
     
-export type healthHealthGetResponseSuccess = (healthHealthGetResponse200) & {
-  headers: Headers;
-};
-;
-
-export type healthHealthGetResponse = (healthHealthGetResponseSuccess)
-
-export const getHealthHealthGetUrl = () => {
-
-
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<HealthResponse>(
+      {url: `/health`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/health`
-}
-
-export const healthHealthGet = async ( options?: RequestInit): Promise<healthHealthGetResponse> => {
-  
-  const res = await fetch(getHealthHealthGetUrl(),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: healthHealthGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as healthHealthGetResponse
-}
-
-
 
 
 
@@ -270,16 +249,16 @@ export const getHealthHealthGetQueryKey = () => {
     }
 
     
-export const getHealthHealthGetQueryOptions = <TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, fetch?: RequestInit}
+export const getHealthHealthGetQueryOptions = <TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getHealthHealthGetQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof healthHealthGet>>> = ({ signal }) => healthHealthGet({ signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof healthHealthGet>>> = ({ signal }) => healthHealthGet(requestOptions, signal);
 
       
 
@@ -299,7 +278,7 @@ export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealt
           TError,
           Awaited<ReturnType<typeof healthHealthGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>(
@@ -309,11 +288,11 @@ export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealt
           TError,
           Awaited<ReturnType<typeof healthHealthGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, fetch?: RequestInit}
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -321,7 +300,7 @@ export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealt
  */
 
 export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealthGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, fetch?: RequestInit}
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -340,64 +319,32 @@ export function useHealthHealthGet<TData = Awaited<ReturnType<typeof healthHealt
  * Create a new workspace.
  * @summary Create Workspace
  */
-export type createWorkspaceWorkspacesPostResponse201 = {
-  data: WorkspaceResponse
-  status: 201
-}
-
-export type createWorkspaceWorkspacesPostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type createWorkspaceWorkspacesPostResponseSuccess = (createWorkspaceWorkspacesPostResponse201) & {
-  headers: Headers;
-};
-export type createWorkspaceWorkspacesPostResponseError = (createWorkspaceWorkspacesPostResponse422) & {
-  headers: Headers;
-};
-
-export type createWorkspaceWorkspacesPostResponse = (createWorkspaceWorkspacesPostResponseSuccess | createWorkspaceWorkspacesPostResponseError)
-
-export const getCreateWorkspaceWorkspacesPostUrl = () => {
-
-
+export const createWorkspaceWorkspacesPost = (
+    workspaceCreateRequest: WorkspaceCreateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceResponse>(
+      {url: `/workspaces`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: workspaceCreateRequest, signal
+    },
+      options);
+    }
   
-
-  return `/workspaces`
-}
-
-export const createWorkspaceWorkspacesPost = async (workspaceCreateRequest: WorkspaceCreateRequest, options?: RequestInit): Promise<createWorkspaceWorkspacesPostResponse> => {
-  
-  const res = await fetch(getCreateWorkspaceWorkspacesPostUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      workspaceCreateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: createWorkspaceWorkspacesPostResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as createWorkspaceWorkspacesPostResponse
-}
-
-
 
 
 export const getCreateWorkspaceWorkspacesPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>, TError,{data: WorkspaceCreateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>, TError,{data: WorkspaceCreateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>, TError,{data: WorkspaceCreateRequest}, TContext> => {
 
 const mutationKey = ['createWorkspaceWorkspacesPost'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -405,7 +352,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>, {data: WorkspaceCreateRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  createWorkspaceWorkspacesPost(data,fetchOptions)
+          return  createWorkspaceWorkspacesPost(data,requestOptions)
         }
 
 
@@ -423,7 +370,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Create Workspace
  */
 export const useCreateWorkspaceWorkspacesPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>, TError,{data: WorkspaceCreateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>, TError,{data: WorkspaceCreateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createWorkspaceWorkspacesPost>>,
         TError,
@@ -437,51 +384,18 @@ export const useCreateWorkspaceWorkspacesPost = <TError = HTTPValidationError,
  * Get a single workspace by ID.
  * @summary Get Workspace
  */
-export type getWorkspaceWorkspacesWorkspaceIdGetResponse200 = {
-  data: WorkspaceResponse
-  status: 200
-}
-
-export type getWorkspaceWorkspacesWorkspaceIdGetResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type getWorkspaceWorkspacesWorkspaceIdGetResponseSuccess = (getWorkspaceWorkspacesWorkspaceIdGetResponse200) & {
-  headers: Headers;
-};
-export type getWorkspaceWorkspacesWorkspaceIdGetResponseError = (getWorkspaceWorkspacesWorkspaceIdGetResponse422) & {
-  headers: Headers;
-};
-
-export type getWorkspaceWorkspacesWorkspaceIdGetResponse = (getWorkspaceWorkspacesWorkspaceIdGetResponseSuccess | getWorkspaceWorkspacesWorkspaceIdGetResponseError)
-
-export const getGetWorkspaceWorkspacesWorkspaceIdGetUrl = (workspaceId: string,) => {
-
-
+export const getWorkspaceWorkspacesWorkspaceIdGet = (
+    workspaceId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceResponse>(
+      {url: `/workspaces/${workspaceId}`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}`
-}
-
-export const getWorkspaceWorkspacesWorkspaceIdGet = async (workspaceId: string, options?: RequestInit): Promise<getWorkspaceWorkspacesWorkspaceIdGetResponse> => {
-  
-  const res = await fetch(getGetWorkspaceWorkspacesWorkspaceIdGetUrl(workspaceId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getWorkspaceWorkspacesWorkspaceIdGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getWorkspaceWorkspacesWorkspaceIdGetResponse
-}
-
-
 
 
 
@@ -492,16 +406,16 @@ export const getGetWorkspaceWorkspacesWorkspaceIdGetQueryKey = (workspaceId: str
     }
 
     
-export const getGetWorkspaceWorkspacesWorkspaceIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, fetch?: RequestInit}
+export const getGetWorkspaceWorkspacesWorkspaceIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetWorkspaceWorkspacesWorkspaceIdGetQueryKey(workspaceId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>> = ({ signal }) => getWorkspaceWorkspacesWorkspaceIdGet(workspaceId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>> = ({ signal }) => getWorkspaceWorkspacesWorkspaceIdGet(workspaceId, requestOptions, signal);
 
       
 
@@ -521,7 +435,7 @@ export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnTy
           TError,
           Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(
@@ -531,11 +445,11 @@ export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnTy
           TError,
           Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -543,7 +457,7 @@ export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnTy
  */
 
 export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkspaceWorkspacesWorkspaceIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -562,65 +476,33 @@ export function useGetWorkspaceWorkspacesWorkspaceIdGet<TData = Awaited<ReturnTy
  * Update a workspace's information.
  * @summary Update Workspace
  */
-export type updateWorkspaceWorkspacesWorkspaceIdPatchResponse200 = {
-  data: WorkspaceResponse
-  status: 200
-}
-
-export type updateWorkspaceWorkspacesWorkspaceIdPatchResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type updateWorkspaceWorkspacesWorkspaceIdPatchResponseSuccess = (updateWorkspaceWorkspacesWorkspaceIdPatchResponse200) & {
-  headers: Headers;
-};
-export type updateWorkspaceWorkspacesWorkspaceIdPatchResponseError = (updateWorkspaceWorkspacesWorkspaceIdPatchResponse422) & {
-  headers: Headers;
-};
-
-export type updateWorkspaceWorkspacesWorkspaceIdPatchResponse = (updateWorkspaceWorkspacesWorkspaceIdPatchResponseSuccess | updateWorkspaceWorkspacesWorkspaceIdPatchResponseError)
-
-export const getUpdateWorkspaceWorkspacesWorkspaceIdPatchUrl = (workspaceId: string,) => {
-
-
+export const updateWorkspaceWorkspacesWorkspaceIdPatch = (
+    workspaceId: string,
+    workspaceUpdateRequest: WorkspaceUpdateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceResponse>(
+      {url: `/workspaces/${workspaceId}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: workspaceUpdateRequest, signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}`
-}
-
-export const updateWorkspaceWorkspacesWorkspaceIdPatch = async (workspaceId: string,
-    workspaceUpdateRequest: WorkspaceUpdateRequest, options?: RequestInit): Promise<updateWorkspaceWorkspacesWorkspaceIdPatchResponse> => {
-  
-  const res = await fetch(getUpdateWorkspaceWorkspacesWorkspaceIdPatchUrl(workspaceId),
-  {      
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      workspaceUpdateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateWorkspaceWorkspacesWorkspaceIdPatchResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateWorkspaceWorkspacesWorkspaceIdPatchResponse
-}
-
-
 
 
 export const getUpdateWorkspaceWorkspacesWorkspaceIdPatchMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>, TError,{workspaceId: string;data: WorkspaceUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>, TError,{workspaceId: string;data: WorkspaceUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>, TError,{workspaceId: string;data: WorkspaceUpdateRequest}, TContext> => {
 
 const mutationKey = ['updateWorkspaceWorkspacesWorkspaceIdPatch'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -628,7 +510,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>, {workspaceId: string;data: WorkspaceUpdateRequest}> = (props) => {
           const {workspaceId,data} = props ?? {};
 
-          return  updateWorkspaceWorkspacesWorkspaceIdPatch(workspaceId,data,fetchOptions)
+          return  updateWorkspaceWorkspacesWorkspaceIdPatch(workspaceId,data,requestOptions)
         }
 
 
@@ -646,7 +528,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Update Workspace
  */
 export const useUpdateWorkspaceWorkspacesWorkspaceIdPatch = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>, TError,{workspaceId: string;data: WorkspaceUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>, TError,{workspaceId: string;data: WorkspaceUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateWorkspaceWorkspacesWorkspaceIdPatch>>,
         TError,
@@ -660,63 +542,30 @@ export const useUpdateWorkspaceWorkspacesWorkspaceIdPatch = <TError = HTTPValida
  * Delete a workspace and all its associated resources.
  * @summary Delete Workspace
  */
-export type deleteWorkspaceWorkspacesWorkspaceIdDeleteResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteWorkspaceWorkspacesWorkspaceIdDeleteResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type deleteWorkspaceWorkspacesWorkspaceIdDeleteResponseSuccess = (deleteWorkspaceWorkspacesWorkspaceIdDeleteResponse204) & {
-  headers: Headers;
-};
-export type deleteWorkspaceWorkspacesWorkspaceIdDeleteResponseError = (deleteWorkspaceWorkspacesWorkspaceIdDeleteResponse422) & {
-  headers: Headers;
-};
-
-export type deleteWorkspaceWorkspacesWorkspaceIdDeleteResponse = (deleteWorkspaceWorkspacesWorkspaceIdDeleteResponseSuccess | deleteWorkspaceWorkspacesWorkspaceIdDeleteResponseError)
-
-export const getDeleteWorkspaceWorkspacesWorkspaceIdDeleteUrl = (workspaceId: string,) => {
-
-
+export const deleteWorkspaceWorkspacesWorkspaceIdDelete = (
+    workspaceId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<void>(
+      {url: `/workspaces/${workspaceId}`, method: 'DELETE', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}`
-}
-
-export const deleteWorkspaceWorkspacesWorkspaceIdDelete = async (workspaceId: string, options?: RequestInit): Promise<deleteWorkspaceWorkspacesWorkspaceIdDeleteResponse> => {
-  
-  const res = await fetch(getDeleteWorkspaceWorkspacesWorkspaceIdDeleteUrl(workspaceId),
-  {      
-    ...options,
-    method: 'DELETE'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteWorkspaceWorkspacesWorkspaceIdDeleteResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteWorkspaceWorkspacesWorkspaceIdDeleteResponse
-}
-
-
 
 
 export const getDeleteWorkspaceWorkspacesWorkspaceIdDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>, TError,{workspaceId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>, TError,{workspaceId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>, TError,{workspaceId: string}, TContext> => {
 
 const mutationKey = ['deleteWorkspaceWorkspacesWorkspaceIdDelete'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -724,7 +573,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>, {workspaceId: string}> = (props) => {
           const {workspaceId} = props ?? {};
 
-          return  deleteWorkspaceWorkspacesWorkspaceIdDelete(workspaceId,fetchOptions)
+          return  deleteWorkspaceWorkspacesWorkspaceIdDelete(workspaceId,requestOptions)
         }
 
 
@@ -742,7 +591,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Delete Workspace
  */
 export const useDeleteWorkspaceWorkspacesWorkspaceIdDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>, TError,{workspaceId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>, TError,{workspaceId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteWorkspaceWorkspacesWorkspaceIdDelete>>,
         TError,
@@ -756,51 +605,18 @@ export const useDeleteWorkspaceWorkspacesWorkspaceIdDelete = <TError = HTTPValid
  * List members in a workspace.
  * @summary List Members
  */
-export type listMembersWorkspacesWorkspaceIdMembersGetResponse200 = {
-  data: WorkspaceMembersResponse
-  status: 200
-}
-
-export type listMembersWorkspacesWorkspaceIdMembersGetResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type listMembersWorkspacesWorkspaceIdMembersGetResponseSuccess = (listMembersWorkspacesWorkspaceIdMembersGetResponse200) & {
-  headers: Headers;
-};
-export type listMembersWorkspacesWorkspaceIdMembersGetResponseError = (listMembersWorkspacesWorkspaceIdMembersGetResponse422) & {
-  headers: Headers;
-};
-
-export type listMembersWorkspacesWorkspaceIdMembersGetResponse = (listMembersWorkspacesWorkspaceIdMembersGetResponseSuccess | listMembersWorkspacesWorkspaceIdMembersGetResponseError)
-
-export const getListMembersWorkspacesWorkspaceIdMembersGetUrl = (workspaceId: string,) => {
-
-
+export const listMembersWorkspacesWorkspaceIdMembersGet = (
+    workspaceId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceMembersResponse>(
+      {url: `/workspaces/${workspaceId}/members`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/members`
-}
-
-export const listMembersWorkspacesWorkspaceIdMembersGet = async (workspaceId: string, options?: RequestInit): Promise<listMembersWorkspacesWorkspaceIdMembersGetResponse> => {
-  
-  const res = await fetch(getListMembersWorkspacesWorkspaceIdMembersGetUrl(workspaceId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: listMembersWorkspacesWorkspaceIdMembersGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as listMembersWorkspacesWorkspaceIdMembersGetResponse
-}
-
-
 
 
 
@@ -811,16 +627,16 @@ export const getListMembersWorkspacesWorkspaceIdMembersGetQueryKey = (workspaceI
     }
 
     
-export const getListMembersWorkspacesWorkspaceIdMembersGetQueryOptions = <TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, fetch?: RequestInit}
+export const getListMembersWorkspacesWorkspaceIdMembersGetQueryOptions = <TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListMembersWorkspacesWorkspaceIdMembersGetQueryKey(workspaceId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>> = ({ signal }) => listMembersWorkspacesWorkspaceIdMembersGet(workspaceId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>> = ({ signal }) => listMembersWorkspacesWorkspaceIdMembersGet(workspaceId, requestOptions, signal);
 
       
 
@@ -840,7 +656,7 @@ export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<Re
           TError,
           Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(
@@ -850,11 +666,11 @@ export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<Re
           TError,
           Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -862,7 +678,7 @@ export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<Re
  */
 
 export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMembersWorkspacesWorkspaceIdMembersGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -881,67 +697,34 @@ export function useListMembersWorkspacesWorkspaceIdMembersGet<TData = Awaited<Re
  * Add a member to a workspace.
  * @summary Add Member
  */
-export type addMemberWorkspacesWorkspaceIdMembersUserIdPutResponse200 = {
-  data: WorkspaceMemberResponse
-  status: 200
-}
-
-export type addMemberWorkspacesWorkspaceIdMembersUserIdPutResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type addMemberWorkspacesWorkspaceIdMembersUserIdPutResponseSuccess = (addMemberWorkspacesWorkspaceIdMembersUserIdPutResponse200) & {
-  headers: Headers;
-};
-export type addMemberWorkspacesWorkspaceIdMembersUserIdPutResponseError = (addMemberWorkspacesWorkspaceIdMembersUserIdPutResponse422) & {
-  headers: Headers;
-};
-
-export type addMemberWorkspacesWorkspaceIdMembersUserIdPutResponse = (addMemberWorkspacesWorkspaceIdMembersUserIdPutResponseSuccess | addMemberWorkspacesWorkspaceIdMembersUserIdPutResponseError)
-
-export const getAddMemberWorkspacesWorkspaceIdMembersUserIdPutUrl = (workspaceId: string,
-    userId: string,) => {
-
-
-  
-
-  return `/workspaces/${workspaceId}/members/${userId}`
-}
-
-export const addMemberWorkspacesWorkspaceIdMembersUserIdPut = async (workspaceId: string,
+export const addMemberWorkspacesWorkspaceIdMembersUserIdPut = (
+    workspaceId: string,
     userId: string,
-    workspaceMemberUpsertRequest: WorkspaceMemberUpsertRequest, options?: RequestInit): Promise<addMemberWorkspacesWorkspaceIdMembersUserIdPutResponse> => {
+    workspaceMemberUpsertRequest: WorkspaceMemberUpsertRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceMemberResponse>(
+      {url: `/workspaces/${workspaceId}/members/${userId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: workspaceMemberUpsertRequest, signal
+    },
+      options);
+    }
   
-  const res = await fetch(getAddMemberWorkspacesWorkspaceIdMembersUserIdPutUrl(workspaceId,userId),
-  {      
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      workspaceMemberUpsertRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: addMemberWorkspacesWorkspaceIdMembersUserIdPutResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as addMemberWorkspacesWorkspaceIdMembersUserIdPutResponse
-}
-
-
 
 
 export const getAddMemberWorkspacesWorkspaceIdMembersUserIdPutMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberUpsertRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberUpsertRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberUpsertRequest}, TContext> => {
 
 const mutationKey = ['addMemberWorkspacesWorkspaceIdMembersUserIdPut'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -949,7 +732,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>, {workspaceId: string;userId: string;data: WorkspaceMemberUpsertRequest}> = (props) => {
           const {workspaceId,userId,data} = props ?? {};
 
-          return  addMemberWorkspacesWorkspaceIdMembersUserIdPut(workspaceId,userId,data,fetchOptions)
+          return  addMemberWorkspacesWorkspaceIdMembersUserIdPut(workspaceId,userId,data,requestOptions)
         }
 
 
@@ -967,7 +750,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Add Member
  */
 export const useAddMemberWorkspacesWorkspaceIdMembersUserIdPut = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberUpsertRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberUpsertRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addMemberWorkspacesWorkspaceIdMembersUserIdPut>>,
         TError,
@@ -981,67 +764,34 @@ export const useAddMemberWorkspacesWorkspaceIdMembersUserIdPut = <TError = HTTPV
  * Update a member role in a workspace.
  * @summary Update Member Role
  */
-export type updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponse200 = {
-  data: WorkspaceMemberResponse
-  status: 200
-}
-
-export type updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponseSuccess = (updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponse200) & {
-  headers: Headers;
-};
-export type updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponseError = (updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponse422) & {
-  headers: Headers;
-};
-
-export type updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponse = (updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponseSuccess | updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponseError)
-
-export const getUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchUrl = (workspaceId: string,
-    userId: string,) => {
-
-
-  
-
-  return `/workspaces/${workspaceId}/members/${userId}`
-}
-
-export const updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch = async (workspaceId: string,
+export const updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch = (
+    workspaceId: string,
     userId: string,
-    workspaceMemberRoleUpdateRequest: WorkspaceMemberRoleUpdateRequest, options?: RequestInit): Promise<updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponse> => {
+    workspaceMemberRoleUpdateRequest: WorkspaceMemberRoleUpdateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceMemberResponse>(
+      {url: `/workspaces/${workspaceId}/members/${userId}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: workspaceMemberRoleUpdateRequest, signal
+    },
+      options);
+    }
   
-  const res = await fetch(getUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchUrl(workspaceId,userId),
-  {      
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      workspaceMemberRoleUpdateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchResponse
-}
-
-
 
 
 export const getUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatchMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberRoleUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberRoleUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberRoleUpdateRequest}, TContext> => {
 
 const mutationKey = ['updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -1049,7 +799,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>, {workspaceId: string;userId: string;data: WorkspaceMemberRoleUpdateRequest}> = (props) => {
           const {workspaceId,userId,data} = props ?? {};
 
-          return  updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch(workspaceId,userId,data,fetchOptions)
+          return  updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch(workspaceId,userId,data,requestOptions)
         }
 
 
@@ -1067,7 +817,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Update Member Role
  */
 export const useUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberRoleUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>, TError,{workspaceId: string;userId: string;data: WorkspaceMemberRoleUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch>>,
         TError,
@@ -1081,65 +831,31 @@ export const useUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch = <TErro
  * Remove a member from a workspace.
  * @summary Remove Member
  */
-export type removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponse204 = {
-  data: void
-  status: 204
-}
-
-export type removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponseSuccess = (removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponse204) & {
-  headers: Headers;
-};
-export type removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponseError = (removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponse422) & {
-  headers: Headers;
-};
-
-export type removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponse = (removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponseSuccess | removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponseError)
-
-export const getRemoveMemberWorkspacesWorkspaceIdMembersUserIdDeleteUrl = (workspaceId: string,
-    userId: string,) => {
-
-
+export const removeMemberWorkspacesWorkspaceIdMembersUserIdDelete = (
+    workspaceId: string,
+    userId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<void>(
+      {url: `/workspaces/${workspaceId}/members/${userId}`, method: 'DELETE', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/members/${userId}`
-}
-
-export const removeMemberWorkspacesWorkspaceIdMembersUserIdDelete = async (workspaceId: string,
-    userId: string, options?: RequestInit): Promise<removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponse> => {
-  
-  const res = await fetch(getRemoveMemberWorkspacesWorkspaceIdMembersUserIdDeleteUrl(workspaceId,userId),
-  {      
-    ...options,
-    method: 'DELETE'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as removeMemberWorkspacesWorkspaceIdMembersUserIdDeleteResponse
-}
-
-
 
 
 export const getRemoveMemberWorkspacesWorkspaceIdMembersUserIdDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>, TError,{workspaceId: string;userId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>, TError,{workspaceId: string;userId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>, TError,{workspaceId: string;userId: string}, TContext> => {
 
 const mutationKey = ['removeMemberWorkspacesWorkspaceIdMembersUserIdDelete'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -1147,7 +863,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>, {workspaceId: string;userId: string}> = (props) => {
           const {workspaceId,userId} = props ?? {};
 
-          return  removeMemberWorkspacesWorkspaceIdMembersUserIdDelete(workspaceId,userId,fetchOptions)
+          return  removeMemberWorkspacesWorkspaceIdMembersUserIdDelete(workspaceId,userId,requestOptions)
         }
 
 
@@ -1165,7 +881,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Remove Member
  */
 export const useRemoveMemberWorkspacesWorkspaceIdMembersUserIdDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>, TError,{workspaceId: string;userId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>, TError,{workspaceId: string;userId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof removeMemberWorkspacesWorkspaceIdMembersUserIdDelete>>,
         TError,
@@ -1179,65 +895,33 @@ export const useRemoveMemberWorkspacesWorkspaceIdMembersUserIdDelete = <TError =
  * Transfer workspace ownership to another member.
  * @summary Transfer Owner
  */
-export type transferOwnerWorkspacesWorkspaceIdOwnerPostResponse200 = {
-  data: WorkspaceOwnerTransferResponse
-  status: 200
-}
-
-export type transferOwnerWorkspacesWorkspaceIdOwnerPostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type transferOwnerWorkspacesWorkspaceIdOwnerPostResponseSuccess = (transferOwnerWorkspacesWorkspaceIdOwnerPostResponse200) & {
-  headers: Headers;
-};
-export type transferOwnerWorkspacesWorkspaceIdOwnerPostResponseError = (transferOwnerWorkspacesWorkspaceIdOwnerPostResponse422) & {
-  headers: Headers;
-};
-
-export type transferOwnerWorkspacesWorkspaceIdOwnerPostResponse = (transferOwnerWorkspacesWorkspaceIdOwnerPostResponseSuccess | transferOwnerWorkspacesWorkspaceIdOwnerPostResponseError)
-
-export const getTransferOwnerWorkspacesWorkspaceIdOwnerPostUrl = (workspaceId: string,) => {
-
-
+export const transferOwnerWorkspacesWorkspaceIdOwnerPost = (
+    workspaceId: string,
+    workspaceOwnerTransferRequest: WorkspaceOwnerTransferRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceOwnerTransferResponse>(
+      {url: `/workspaces/${workspaceId}/owner`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: workspaceOwnerTransferRequest, signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/owner`
-}
-
-export const transferOwnerWorkspacesWorkspaceIdOwnerPost = async (workspaceId: string,
-    workspaceOwnerTransferRequest: WorkspaceOwnerTransferRequest, options?: RequestInit): Promise<transferOwnerWorkspacesWorkspaceIdOwnerPostResponse> => {
-  
-  const res = await fetch(getTransferOwnerWorkspacesWorkspaceIdOwnerPostUrl(workspaceId),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      workspaceOwnerTransferRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: transferOwnerWorkspacesWorkspaceIdOwnerPostResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as transferOwnerWorkspacesWorkspaceIdOwnerPostResponse
-}
-
-
 
 
 export const getTransferOwnerWorkspacesWorkspaceIdOwnerPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>, TError,{workspaceId: string;data: WorkspaceOwnerTransferRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>, TError,{workspaceId: string;data: WorkspaceOwnerTransferRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>, TError,{workspaceId: string;data: WorkspaceOwnerTransferRequest}, TContext> => {
 
 const mutationKey = ['transferOwnerWorkspacesWorkspaceIdOwnerPost'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -1245,7 +929,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>, {workspaceId: string;data: WorkspaceOwnerTransferRequest}> = (props) => {
           const {workspaceId,data} = props ?? {};
 
-          return  transferOwnerWorkspacesWorkspaceIdOwnerPost(workspaceId,data,fetchOptions)
+          return  transferOwnerWorkspacesWorkspaceIdOwnerPost(workspaceId,data,requestOptions)
         }
 
 
@@ -1263,7 +947,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Transfer Owner
  */
 export const useTransferOwnerWorkspacesWorkspaceIdOwnerPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>, TError,{workspaceId: string;data: WorkspaceOwnerTransferRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>, TError,{workspaceId: string;data: WorkspaceOwnerTransferRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof transferOwnerWorkspacesWorkspaceIdOwnerPost>>,
         TError,
@@ -1277,65 +961,33 @@ export const useTransferOwnerWorkspacesWorkspaceIdOwnerPost = <TError = HTTPVali
  * Create invitation token for workspace onboarding.
  * @summary Create Invitation
  */
-export type createInvitationWorkspacesWorkspaceIdInvitationsPostResponse201 = {
-  data: WorkspaceInvitationCreateResponse
-  status: 201
-}
-
-export type createInvitationWorkspacesWorkspaceIdInvitationsPostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type createInvitationWorkspacesWorkspaceIdInvitationsPostResponseSuccess = (createInvitationWorkspacesWorkspaceIdInvitationsPostResponse201) & {
-  headers: Headers;
-};
-export type createInvitationWorkspacesWorkspaceIdInvitationsPostResponseError = (createInvitationWorkspacesWorkspaceIdInvitationsPostResponse422) & {
-  headers: Headers;
-};
-
-export type createInvitationWorkspacesWorkspaceIdInvitationsPostResponse = (createInvitationWorkspacesWorkspaceIdInvitationsPostResponseSuccess | createInvitationWorkspacesWorkspaceIdInvitationsPostResponseError)
-
-export const getCreateInvitationWorkspacesWorkspaceIdInvitationsPostUrl = (workspaceId: string,) => {
-
-
+export const createInvitationWorkspacesWorkspaceIdInvitationsPost = (
+    workspaceId: string,
+    workspaceInvitationCreateRequest: WorkspaceInvitationCreateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceInvitationCreateResponse>(
+      {url: `/workspaces/${workspaceId}/invitations`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: workspaceInvitationCreateRequest, signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/invitations`
-}
-
-export const createInvitationWorkspacesWorkspaceIdInvitationsPost = async (workspaceId: string,
-    workspaceInvitationCreateRequest: WorkspaceInvitationCreateRequest, options?: RequestInit): Promise<createInvitationWorkspacesWorkspaceIdInvitationsPostResponse> => {
-  
-  const res = await fetch(getCreateInvitationWorkspacesWorkspaceIdInvitationsPostUrl(workspaceId),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      workspaceInvitationCreateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: createInvitationWorkspacesWorkspaceIdInvitationsPostResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as createInvitationWorkspacesWorkspaceIdInvitationsPostResponse
-}
-
-
 
 
 export const getCreateInvitationWorkspacesWorkspaceIdInvitationsPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>, TError,{workspaceId: string;data: WorkspaceInvitationCreateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>, TError,{workspaceId: string;data: WorkspaceInvitationCreateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>, TError,{workspaceId: string;data: WorkspaceInvitationCreateRequest}, TContext> => {
 
 const mutationKey = ['createInvitationWorkspacesWorkspaceIdInvitationsPost'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -1343,7 +995,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>, {workspaceId: string;data: WorkspaceInvitationCreateRequest}> = (props) => {
           const {workspaceId,data} = props ?? {};
 
-          return  createInvitationWorkspacesWorkspaceIdInvitationsPost(workspaceId,data,fetchOptions)
+          return  createInvitationWorkspacesWorkspaceIdInvitationsPost(workspaceId,data,requestOptions)
         }
 
 
@@ -1361,7 +1013,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Create Invitation
  */
 export const useCreateInvitationWorkspacesWorkspaceIdInvitationsPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>, TError,{workspaceId: string;data: WorkspaceInvitationCreateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>, TError,{workspaceId: string;data: WorkspaceInvitationCreateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createInvitationWorkspacesWorkspaceIdInvitationsPost>>,
         TError,
@@ -1375,51 +1027,18 @@ export const useCreateInvitationWorkspacesWorkspaceIdInvitationsPost = <TError =
  * List workspace invitations.
  * @summary List Invitations
  */
-export type listInvitationsWorkspacesWorkspaceIdInvitationsGetResponse200 = {
-  data: WorkspaceInvitationsResponse
-  status: 200
-}
-
-export type listInvitationsWorkspacesWorkspaceIdInvitationsGetResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type listInvitationsWorkspacesWorkspaceIdInvitationsGetResponseSuccess = (listInvitationsWorkspacesWorkspaceIdInvitationsGetResponse200) & {
-  headers: Headers;
-};
-export type listInvitationsWorkspacesWorkspaceIdInvitationsGetResponseError = (listInvitationsWorkspacesWorkspaceIdInvitationsGetResponse422) & {
-  headers: Headers;
-};
-
-export type listInvitationsWorkspacesWorkspaceIdInvitationsGetResponse = (listInvitationsWorkspacesWorkspaceIdInvitationsGetResponseSuccess | listInvitationsWorkspacesWorkspaceIdInvitationsGetResponseError)
-
-export const getListInvitationsWorkspacesWorkspaceIdInvitationsGetUrl = (workspaceId: string,) => {
-
-
+export const listInvitationsWorkspacesWorkspaceIdInvitationsGet = (
+    workspaceId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<WorkspaceInvitationsResponse>(
+      {url: `/workspaces/${workspaceId}/invitations`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/invitations`
-}
-
-export const listInvitationsWorkspacesWorkspaceIdInvitationsGet = async (workspaceId: string, options?: RequestInit): Promise<listInvitationsWorkspacesWorkspaceIdInvitationsGetResponse> => {
-  
-  const res = await fetch(getListInvitationsWorkspacesWorkspaceIdInvitationsGetUrl(workspaceId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: listInvitationsWorkspacesWorkspaceIdInvitationsGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as listInvitationsWorkspacesWorkspaceIdInvitationsGetResponse
-}
-
-
 
 
 
@@ -1430,16 +1049,16 @@ export const getListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryKey = (wo
     }
 
     
-export const getListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryOptions = <TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, fetch?: RequestInit}
+export const getListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryOptions = <TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListInvitationsWorkspacesWorkspaceIdInvitationsGetQueryKey(workspaceId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>> = ({ signal }) => listInvitationsWorkspacesWorkspaceIdInvitationsGet(workspaceId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>> = ({ signal }) => listInvitationsWorkspacesWorkspaceIdInvitationsGet(workspaceId, requestOptions, signal);
 
       
 
@@ -1459,7 +1078,7 @@ export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Aw
           TError,
           Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(
@@ -1469,11 +1088,11 @@ export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Aw
           TError,
           Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -1481,7 +1100,7 @@ export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Aw
  */
 
 export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listInvitationsWorkspacesWorkspaceIdInvitationsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -1500,65 +1119,31 @@ export function useListInvitationsWorkspacesWorkspaceIdInvitationsGet<TData = Aw
  * Revoke a workspace invitation.
  * @summary Revoke Invitation
  */
-export type revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponse204 = {
-  data: void
-  status: 204
-}
-
-export type revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponseSuccess = (revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponse204) & {
-  headers: Headers;
-};
-export type revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponseError = (revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponse422) & {
-  headers: Headers;
-};
-
-export type revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponse = (revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponseSuccess | revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponseError)
-
-export const getRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteUrl = (workspaceId: string,
-    invitationId: string,) => {
-
-
+export const revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete = (
+    workspaceId: string,
+    invitationId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<void>(
+      {url: `/workspaces/${workspaceId}/invitations/${invitationId}`, method: 'DELETE', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/invitations/${invitationId}`
-}
-
-export const revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete = async (workspaceId: string,
-    invitationId: string, options?: RequestInit): Promise<revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponse> => {
-  
-  const res = await fetch(getRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteUrl(workspaceId,invitationId),
-  {      
-    ...options,
-    method: 'DELETE'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteResponse
-}
-
-
 
 
 export const getRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>, TError,{workspaceId: string;invitationId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>, TError,{workspaceId: string;invitationId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>, TError,{workspaceId: string;invitationId: string}, TContext> => {
 
 const mutationKey = ['revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -1566,7 +1151,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>, {workspaceId: string;invitationId: string}> = (props) => {
           const {workspaceId,invitationId} = props ?? {};
 
-          return  revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete(workspaceId,invitationId,fetchOptions)
+          return  revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete(workspaceId,invitationId,requestOptions)
         }
 
 
@@ -1584,7 +1169,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Revoke Invitation
  */
 export const useRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>, TError,{workspaceId: string;invitationId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>, TError,{workspaceId: string;invitationId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof revokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete>>,
         TError,
@@ -1598,65 +1183,33 @@ export const useRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDele
  * Create a new host and return authentication token (one-time display).
  * @summary Create Host
  */
-export type createHostWorkspacesWorkspaceIdHostsPostResponse201 = {
-  data: HostCreateResponse
-  status: 201
-}
-
-export type createHostWorkspacesWorkspaceIdHostsPostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type createHostWorkspacesWorkspaceIdHostsPostResponseSuccess = (createHostWorkspacesWorkspaceIdHostsPostResponse201) & {
-  headers: Headers;
-};
-export type createHostWorkspacesWorkspaceIdHostsPostResponseError = (createHostWorkspacesWorkspaceIdHostsPostResponse422) & {
-  headers: Headers;
-};
-
-export type createHostWorkspacesWorkspaceIdHostsPostResponse = (createHostWorkspacesWorkspaceIdHostsPostResponseSuccess | createHostWorkspacesWorkspaceIdHostsPostResponseError)
-
-export const getCreateHostWorkspacesWorkspaceIdHostsPostUrl = (workspaceId: string,) => {
-
-
+export const createHostWorkspacesWorkspaceIdHostsPost = (
+    workspaceId: string,
+    hostCreateRequest: HostCreateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<HostCreateResponse>(
+      {url: `/workspaces/${workspaceId}/hosts`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: hostCreateRequest, signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/hosts`
-}
-
-export const createHostWorkspacesWorkspaceIdHostsPost = async (workspaceId: string,
-    hostCreateRequest: HostCreateRequest, options?: RequestInit): Promise<createHostWorkspacesWorkspaceIdHostsPostResponse> => {
-  
-  const res = await fetch(getCreateHostWorkspacesWorkspaceIdHostsPostUrl(workspaceId),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      hostCreateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: createHostWorkspacesWorkspaceIdHostsPostResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as createHostWorkspacesWorkspaceIdHostsPostResponse
-}
-
-
 
 
 export const getCreateHostWorkspacesWorkspaceIdHostsPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>, TError,{workspaceId: string;data: HostCreateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>, TError,{workspaceId: string;data: HostCreateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>, TError,{workspaceId: string;data: HostCreateRequest}, TContext> => {
 
 const mutationKey = ['createHostWorkspacesWorkspaceIdHostsPost'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -1664,7 +1217,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>, {workspaceId: string;data: HostCreateRequest}> = (props) => {
           const {workspaceId,data} = props ?? {};
 
-          return  createHostWorkspacesWorkspaceIdHostsPost(workspaceId,data,fetchOptions)
+          return  createHostWorkspacesWorkspaceIdHostsPost(workspaceId,data,requestOptions)
         }
 
 
@@ -1682,7 +1235,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Create Host
  */
 export const useCreateHostWorkspacesWorkspaceIdHostsPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>, TError,{workspaceId: string;data: HostCreateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>, TError,{workspaceId: string;data: HostCreateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createHostWorkspacesWorkspaceIdHostsPost>>,
         TError,
@@ -1696,51 +1249,18 @@ export const useCreateHostWorkspacesWorkspaceIdHostsPost = <TError = HTTPValidat
  * List all hosts in a workspace.
  * @summary List Hosts
  */
-export type listHostsWorkspacesWorkspaceIdHostsGetResponse200 = {
-  data: HostResponse[]
-  status: 200
-}
-
-export type listHostsWorkspacesWorkspaceIdHostsGetResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type listHostsWorkspacesWorkspaceIdHostsGetResponseSuccess = (listHostsWorkspacesWorkspaceIdHostsGetResponse200) & {
-  headers: Headers;
-};
-export type listHostsWorkspacesWorkspaceIdHostsGetResponseError = (listHostsWorkspacesWorkspaceIdHostsGetResponse422) & {
-  headers: Headers;
-};
-
-export type listHostsWorkspacesWorkspaceIdHostsGetResponse = (listHostsWorkspacesWorkspaceIdHostsGetResponseSuccess | listHostsWorkspacesWorkspaceIdHostsGetResponseError)
-
-export const getListHostsWorkspacesWorkspaceIdHostsGetUrl = (workspaceId: string,) => {
-
-
+export const listHostsWorkspacesWorkspaceIdHostsGet = (
+    workspaceId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<HostResponse[]>(
+      {url: `/workspaces/${workspaceId}/hosts`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/hosts`
-}
-
-export const listHostsWorkspacesWorkspaceIdHostsGet = async (workspaceId: string, options?: RequestInit): Promise<listHostsWorkspacesWorkspaceIdHostsGetResponse> => {
-  
-  const res = await fetch(getListHostsWorkspacesWorkspaceIdHostsGetUrl(workspaceId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: listHostsWorkspacesWorkspaceIdHostsGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as listHostsWorkspacesWorkspaceIdHostsGetResponse
-}
-
-
 
 
 
@@ -1751,16 +1271,16 @@ export const getListHostsWorkspacesWorkspaceIdHostsGetQueryKey = (workspaceId: s
     }
 
     
-export const getListHostsWorkspacesWorkspaceIdHostsGetQueryOptions = <TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, fetch?: RequestInit}
+export const getListHostsWorkspacesWorkspaceIdHostsGetQueryOptions = <TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListHostsWorkspacesWorkspaceIdHostsGetQueryKey(workspaceId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>> = ({ signal }) => listHostsWorkspacesWorkspaceIdHostsGet(workspaceId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>> = ({ signal }) => listHostsWorkspacesWorkspaceIdHostsGet(workspaceId, requestOptions, signal);
 
       
 
@@ -1780,7 +1300,7 @@ export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<Return
           TError,
           Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(
@@ -1790,11 +1310,11 @@ export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<Return
           TError,
           Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -1802,7 +1322,7 @@ export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<Return
  */
 
 export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listHostsWorkspacesWorkspaceIdHostsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -1821,53 +1341,19 @@ export function useListHostsWorkspacesWorkspaceIdHostsGet<TData = Awaited<Return
  * Get a single host by ID.
  * @summary Get Host
  */
-export type getHostWorkspacesWorkspaceIdHostsHostIdGetResponse200 = {
-  data: HostResponse
-  status: 200
-}
-
-export type getHostWorkspacesWorkspaceIdHostsHostIdGetResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type getHostWorkspacesWorkspaceIdHostsHostIdGetResponseSuccess = (getHostWorkspacesWorkspaceIdHostsHostIdGetResponse200) & {
-  headers: Headers;
-};
-export type getHostWorkspacesWorkspaceIdHostsHostIdGetResponseError = (getHostWorkspacesWorkspaceIdHostsHostIdGetResponse422) & {
-  headers: Headers;
-};
-
-export type getHostWorkspacesWorkspaceIdHostsHostIdGetResponse = (getHostWorkspacesWorkspaceIdHostsHostIdGetResponseSuccess | getHostWorkspacesWorkspaceIdHostsHostIdGetResponseError)
-
-export const getGetHostWorkspacesWorkspaceIdHostsHostIdGetUrl = (workspaceId: string,
-    hostId: string,) => {
-
-
+export const getHostWorkspacesWorkspaceIdHostsHostIdGet = (
+    workspaceId: string,
+    hostId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<HostResponse>(
+      {url: `/workspaces/${workspaceId}/hosts/${hostId}`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/hosts/${hostId}`
-}
-
-export const getHostWorkspacesWorkspaceIdHostsHostIdGet = async (workspaceId: string,
-    hostId: string, options?: RequestInit): Promise<getHostWorkspacesWorkspaceIdHostsHostIdGetResponse> => {
-  
-  const res = await fetch(getGetHostWorkspacesWorkspaceIdHostsHostIdGetUrl(workspaceId,hostId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getHostWorkspacesWorkspaceIdHostsHostIdGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getHostWorkspacesWorkspaceIdHostsHostIdGetResponse
-}
-
-
 
 
 
@@ -1880,16 +1366,16 @@ export const getGetHostWorkspacesWorkspaceIdHostsHostIdGetQueryKey = (workspaceI
 
     
 export const getGetHostWorkspacesWorkspaceIdHostsHostIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(workspaceId: string,
-    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, fetch?: RequestInit}
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetHostWorkspacesWorkspaceIdHostsHostIdGetQueryKey(workspaceId,hostId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>> = ({ signal }) => getHostWorkspacesWorkspaceIdHostsHostIdGet(workspaceId,hostId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>> = ({ signal }) => getHostWorkspacesWorkspaceIdHostsHostIdGet(workspaceId,hostId, requestOptions, signal);
 
       
 
@@ -1910,7 +1396,7 @@ export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<Re
           TError,
           Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(
@@ -1921,12 +1407,12 @@ export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<Re
           TError,
           Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, fetch?: RequestInit}
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -1935,7 +1421,7 @@ export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<Re
 
 export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, fetch?: RequestInit}
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getHostWorkspacesWorkspaceIdHostsHostIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -1954,67 +1440,34 @@ export function useGetHostWorkspacesWorkspaceIdHostsHostIdGet<TData = Awaited<Re
  * Update a host's information.
  * @summary Update Host
  */
-export type updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponse200 = {
-  data: HostResponse
-  status: 200
-}
-
-export type updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponseSuccess = (updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponse200) & {
-  headers: Headers;
-};
-export type updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponseError = (updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponse422) & {
-  headers: Headers;
-};
-
-export type updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponse = (updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponseSuccess | updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponseError)
-
-export const getUpdateHostWorkspacesWorkspaceIdHostsHostIdPatchUrl = (workspaceId: string,
-    hostId: string,) => {
-
-
-  
-
-  return `/workspaces/${workspaceId}/hosts/${hostId}`
-}
-
-export const updateHostWorkspacesWorkspaceIdHostsHostIdPatch = async (workspaceId: string,
+export const updateHostWorkspacesWorkspaceIdHostsHostIdPatch = (
+    workspaceId: string,
     hostId: string,
-    hostUpdateRequest: HostUpdateRequest, options?: RequestInit): Promise<updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponse> => {
+    hostUpdateRequest: HostUpdateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<HostResponse>(
+      {url: `/workspaces/${workspaceId}/hosts/${hostId}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: hostUpdateRequest, signal
+    },
+      options);
+    }
   
-  const res = await fetch(getUpdateHostWorkspacesWorkspaceIdHostsHostIdPatchUrl(workspaceId,hostId),
-  {      
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      hostUpdateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateHostWorkspacesWorkspaceIdHostsHostIdPatchResponse
-}
-
-
 
 
 export const getUpdateHostWorkspacesWorkspaceIdHostsHostIdPatchMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>, TError,{workspaceId: string;hostId: string;data: HostUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>, TError,{workspaceId: string;hostId: string;data: HostUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>, TError,{workspaceId: string;hostId: string;data: HostUpdateRequest}, TContext> => {
 
 const mutationKey = ['updateHostWorkspacesWorkspaceIdHostsHostIdPatch'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -2022,7 +1475,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>, {workspaceId: string;hostId: string;data: HostUpdateRequest}> = (props) => {
           const {workspaceId,hostId,data} = props ?? {};
 
-          return  updateHostWorkspacesWorkspaceIdHostsHostIdPatch(workspaceId,hostId,data,fetchOptions)
+          return  updateHostWorkspacesWorkspaceIdHostsHostIdPatch(workspaceId,hostId,data,requestOptions)
         }
 
 
@@ -2040,7 +1493,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Update Host
  */
 export const useUpdateHostWorkspacesWorkspaceIdHostsHostIdPatch = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>, TError,{workspaceId: string;hostId: string;data: HostUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>, TError,{workspaceId: string;hostId: string;data: HostUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateHostWorkspacesWorkspaceIdHostsHostIdPatch>>,
         TError,
@@ -2054,65 +1507,31 @@ export const useUpdateHostWorkspacesWorkspaceIdHostsHostIdPatch = <TError = HTTP
  * Delete a host and all its associated jobs.
  * @summary Delete Host
  */
-export type deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponseSuccess = (deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponse204) & {
-  headers: Headers;
-};
-export type deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponseError = (deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponse422) & {
-  headers: Headers;
-};
-
-export type deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponse = (deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponseSuccess | deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponseError)
-
-export const getDeleteHostWorkspacesWorkspaceIdHostsHostIdDeleteUrl = (workspaceId: string,
-    hostId: string,) => {
-
-
+export const deleteHostWorkspacesWorkspaceIdHostsHostIdDelete = (
+    workspaceId: string,
+    hostId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<void>(
+      {url: `/workspaces/${workspaceId}/hosts/${hostId}`, method: 'DELETE', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/hosts/${hostId}`
-}
-
-export const deleteHostWorkspacesWorkspaceIdHostsHostIdDelete = async (workspaceId: string,
-    hostId: string, options?: RequestInit): Promise<deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponse> => {
-  
-  const res = await fetch(getDeleteHostWorkspacesWorkspaceIdHostsHostIdDeleteUrl(workspaceId,hostId),
-  {      
-    ...options,
-    method: 'DELETE'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteHostWorkspacesWorkspaceIdHostsHostIdDeleteResponse
-}
-
-
 
 
 export const getDeleteHostWorkspacesWorkspaceIdHostsHostIdDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>, TError,{workspaceId: string;hostId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>, TError,{workspaceId: string;hostId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>, TError,{workspaceId: string;hostId: string}, TContext> => {
 
 const mutationKey = ['deleteHostWorkspacesWorkspaceIdHostsHostIdDelete'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -2120,7 +1539,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>, {workspaceId: string;hostId: string}> = (props) => {
           const {workspaceId,hostId} = props ?? {};
 
-          return  deleteHostWorkspacesWorkspaceIdHostsHostIdDelete(workspaceId,hostId,fetchOptions)
+          return  deleteHostWorkspacesWorkspaceIdHostsHostIdDelete(workspaceId,hostId,requestOptions)
         }
 
 
@@ -2138,7 +1557,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Delete Host
  */
 export const useDeleteHostWorkspacesWorkspaceIdHostsHostIdDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>, TError,{workspaceId: string;hostId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>, TError,{workspaceId: string;hostId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteHostWorkspacesWorkspaceIdHostsHostIdDelete>>,
         TError,
@@ -2152,64 +1571,32 @@ export const useDeleteHostWorkspacesWorkspaceIdHostsHostIdDelete = <TError = HTT
  * Create a new job by CLI (authenticated by host token).
  * @summary Create Job
  */
-export type createJobCliJobsPostResponse201 = {
-  data: JobResponse
-  status: 201
-}
-
-export type createJobCliJobsPostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type createJobCliJobsPostResponseSuccess = (createJobCliJobsPostResponse201) & {
-  headers: Headers;
-};
-export type createJobCliJobsPostResponseError = (createJobCliJobsPostResponse422) & {
-  headers: Headers;
-};
-
-export type createJobCliJobsPostResponse = (createJobCliJobsPostResponseSuccess | createJobCliJobsPostResponseError)
-
-export const getCreateJobCliJobsPostUrl = () => {
-
-
+export const createJobCliJobsPost = (
+    jobCreateRequest: JobCreateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<JobResponse>(
+      {url: `/cli/jobs`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: jobCreateRequest, signal
+    },
+      options);
+    }
   
-
-  return `/cli/jobs`
-}
-
-export const createJobCliJobsPost = async (jobCreateRequest: JobCreateRequest, options?: RequestInit): Promise<createJobCliJobsPostResponse> => {
-  
-  const res = await fetch(getCreateJobCliJobsPostUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      jobCreateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: createJobCliJobsPostResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as createJobCliJobsPostResponse
-}
-
-
 
 
 export const getCreateJobCliJobsPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createJobCliJobsPost>>, TError,{data: JobCreateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createJobCliJobsPost>>, TError,{data: JobCreateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createJobCliJobsPost>>, TError,{data: JobCreateRequest}, TContext> => {
 
 const mutationKey = ['createJobCliJobsPost'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -2217,7 +1604,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof createJobCliJobsPost>>, {data: JobCreateRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  createJobCliJobsPost(data,fetchOptions)
+          return  createJobCliJobsPost(data,requestOptions)
         }
 
 
@@ -2235,7 +1622,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Create Job
  */
 export const useCreateJobCliJobsPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createJobCliJobsPost>>, TError,{data: JobCreateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createJobCliJobsPost>>, TError,{data: JobCreateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createJobCliJobsPost>>,
         TError,
@@ -2249,65 +1636,33 @@ export const useCreateJobCliJobsPost = <TError = HTTPValidationError,
  * Update a job's status by CLI (authenticated by host token).
  * @summary Update Job
  */
-export type updateJobCliJobsJobIdPatchResponse200 = {
-  data: JobResponse
-  status: 200
-}
-
-export type updateJobCliJobsJobIdPatchResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type updateJobCliJobsJobIdPatchResponseSuccess = (updateJobCliJobsJobIdPatchResponse200) & {
-  headers: Headers;
-};
-export type updateJobCliJobsJobIdPatchResponseError = (updateJobCliJobsJobIdPatchResponse422) & {
-  headers: Headers;
-};
-
-export type updateJobCliJobsJobIdPatchResponse = (updateJobCliJobsJobIdPatchResponseSuccess | updateJobCliJobsJobIdPatchResponseError)
-
-export const getUpdateJobCliJobsJobIdPatchUrl = (jobId: string,) => {
-
-
+export const updateJobCliJobsJobIdPatch = (
+    jobId: string,
+    jobUpdateRequest: JobUpdateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<JobResponse>(
+      {url: `/cli/jobs/${jobId}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: jobUpdateRequest, signal
+    },
+      options);
+    }
   
-
-  return `/cli/jobs/${jobId}`
-}
-
-export const updateJobCliJobsJobIdPatch = async (jobId: string,
-    jobUpdateRequest: JobUpdateRequest, options?: RequestInit): Promise<updateJobCliJobsJobIdPatchResponse> => {
-  
-  const res = await fetch(getUpdateJobCliJobsJobIdPatchUrl(jobId),
-  {      
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      jobUpdateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateJobCliJobsJobIdPatchResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateJobCliJobsJobIdPatchResponse
-}
-
-
 
 
 export const getUpdateJobCliJobsJobIdPatchMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>, TError,{jobId: string;data: JobUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>, TError,{jobId: string;data: JobUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>, TError,{jobId: string;data: JobUpdateRequest}, TContext> => {
 
 const mutationKey = ['updateJobCliJobsJobIdPatch'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -2315,7 +1670,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>, {jobId: string;data: JobUpdateRequest}> = (props) => {
           const {jobId,data} = props ?? {};
 
-          return  updateJobCliJobsJobIdPatch(jobId,data,fetchOptions)
+          return  updateJobCliJobsJobIdPatch(jobId,data,requestOptions)
         }
 
 
@@ -2333,7 +1688,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Update Job
  */
 export const useUpdateJobCliJobsJobIdPatch = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>, TError,{jobId: string;data: JobUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>, TError,{jobId: string;data: JobUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateJobCliJobsJobIdPatch>>,
         TError,
@@ -2347,51 +1702,18 @@ export const useUpdateJobCliJobsJobIdPatch = <TError = HTTPValidationError,
  * List all jobs in a workspace.
  * @summary List Jobs By Workspace
  */
-export type listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponse200 = {
-  data: JobResponse[]
-  status: 200
-}
-
-export type listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponseSuccess = (listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponse200) & {
-  headers: Headers;
-};
-export type listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponseError = (listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponse422) & {
-  headers: Headers;
-};
-
-export type listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponse = (listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponseSuccess | listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponseError)
-
-export const getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetUrl = (workspaceId: string,) => {
-
-
+export const listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet = (
+    workspaceId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<JobResponse[]>(
+      {url: `/workspaces/${workspaceId}/jobs`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/jobs`
-}
-
-export const listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet = async (workspaceId: string, options?: RequestInit): Promise<listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponse> => {
-  
-  const res = await fetch(getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetUrl(workspaceId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as listJobsByWorkspaceWorkspacesWorkspaceIdJobsGetResponse
-}
-
-
 
 
 
@@ -2402,16 +1724,16 @@ export const getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryKey = (works
     }
 
     
-export const getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryOptions = <TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+export const getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryOptions = <TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListJobsByWorkspaceWorkspacesWorkspaceIdJobsGetQueryKey(workspaceId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>> = ({ signal }) => listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet(workspaceId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>> = ({ signal }) => listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet(workspaceId, requestOptions, signal);
 
       
 
@@ -2431,7 +1753,7 @@ export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Await
           TError,
           Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(
@@ -2441,11 +1763,11 @@ export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Await
           TError,
           Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2453,7 +1775,7 @@ export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Await
  */
 
 export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError = HTTPValidationError>(
- workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+ workspaceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByWorkspaceWorkspacesWorkspaceIdJobsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2472,53 +1794,19 @@ export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Await
  * List all jobs for a specific host.
  * @summary List Jobs By Host
  */
-export type listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponse200 = {
-  data: JobResponse[]
-  status: 200
-}
-
-export type listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponseSuccess = (listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponse200) & {
-  headers: Headers;
-};
-export type listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponseError = (listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponse422) & {
-  headers: Headers;
-};
-
-export type listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponse = (listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponseSuccess | listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponseError)
-
-export const getListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetUrl = (workspaceId: string,
-    hostId: string,) => {
-
-
+export const listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet = (
+    workspaceId: string,
+    hostId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<JobResponse[]>(
+      {url: `/workspaces/${workspaceId}/hosts/${hostId}/jobs`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/hosts/${hostId}/jobs`
-}
-
-export const listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet = async (workspaceId: string,
-    hostId: string, options?: RequestInit): Promise<listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponse> => {
-  
-  const res = await fetch(getListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetUrl(workspaceId,hostId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetResponse
-}
-
-
 
 
 
@@ -2531,16 +1819,16 @@ export const getListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetQueryKey = 
 
     
 export const getListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetQueryOptions = <TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(workspaceId: string,
-    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGetQueryKey(workspaceId,hostId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>> = ({ signal }) => listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet(workspaceId,hostId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>> = ({ signal }) => listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet(workspaceId,hostId, requestOptions, signal);
 
       
 
@@ -2561,7 +1849,7 @@ export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData =
           TError,
           Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(
@@ -2572,12 +1860,12 @@ export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData =
           TError,
           Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2586,7 +1874,7 @@ export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData =
 
 export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData = Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, fetch?: RequestInit}
+    hostId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2605,53 +1893,19 @@ export function useListJobsByHostWorkspacesWorkspaceIdHostsHostIdJobsGet<TData =
  * Get a single job by ID.
  * @summary Get Job
  */
-export type getJobWorkspacesWorkspaceIdJobsJobIdGetResponse200 = {
-  data: JobResponse
-  status: 200
-}
-
-export type getJobWorkspacesWorkspaceIdJobsJobIdGetResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type getJobWorkspacesWorkspaceIdJobsJobIdGetResponseSuccess = (getJobWorkspacesWorkspaceIdJobsJobIdGetResponse200) & {
-  headers: Headers;
-};
-export type getJobWorkspacesWorkspaceIdJobsJobIdGetResponseError = (getJobWorkspacesWorkspaceIdJobsJobIdGetResponse422) & {
-  headers: Headers;
-};
-
-export type getJobWorkspacesWorkspaceIdJobsJobIdGetResponse = (getJobWorkspacesWorkspaceIdJobsJobIdGetResponseSuccess | getJobWorkspacesWorkspaceIdJobsJobIdGetResponseError)
-
-export const getGetJobWorkspacesWorkspaceIdJobsJobIdGetUrl = (workspaceId: string,
-    jobId: string,) => {
-
-
+export const getJobWorkspacesWorkspaceIdJobsJobIdGet = (
+    workspaceId: string,
+    jobId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<JobResponse>(
+      {url: `/workspaces/${workspaceId}/jobs/${jobId}`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/jobs/${jobId}`
-}
-
-export const getJobWorkspacesWorkspaceIdJobsJobIdGet = async (workspaceId: string,
-    jobId: string, options?: RequestInit): Promise<getJobWorkspacesWorkspaceIdJobsJobIdGetResponse> => {
-  
-  const res = await fetch(getGetJobWorkspacesWorkspaceIdJobsJobIdGetUrl(workspaceId,jobId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getJobWorkspacesWorkspaceIdJobsJobIdGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getJobWorkspacesWorkspaceIdJobsJobIdGetResponse
-}
-
-
 
 
 
@@ -2664,16 +1918,16 @@ export const getGetJobWorkspacesWorkspaceIdJobsJobIdGetQueryKey = (workspaceId: 
 
     
 export const getGetJobWorkspacesWorkspaceIdJobsJobIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(workspaceId: string,
-    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, fetch?: RequestInit}
+    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetJobWorkspacesWorkspaceIdJobsJobIdGetQueryKey(workspaceId,jobId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>> = ({ signal }) => getJobWorkspacesWorkspaceIdJobsJobIdGet(workspaceId,jobId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>> = ({ signal }) => getJobWorkspacesWorkspaceIdJobsJobIdGet(workspaceId,jobId, requestOptions, signal);
 
       
 
@@ -2694,7 +1948,7 @@ export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<Retur
           TError,
           Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(
@@ -2705,12 +1959,12 @@ export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<Retur
           TError,
           Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, fetch?: RequestInit}
+    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2719,7 +1973,7 @@ export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<Retur
 
 export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError = HTTPValidationError>(
  workspaceId: string,
-    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, fetch?: RequestInit}
+    jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobWorkspacesWorkspaceIdJobsJobIdGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2738,65 +1992,31 @@ export function useGetJobWorkspacesWorkspaceIdJobsJobIdGet<TData = Awaited<Retur
  * Delete a job in a workspace.
  * @summary Delete Job
  */
-export type deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponseSuccess = (deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponse204) & {
-  headers: Headers;
-};
-export type deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponseError = (deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponse422) & {
-  headers: Headers;
-};
-
-export type deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponse = (deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponseSuccess | deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponseError)
-
-export const getDeleteJobWorkspacesWorkspaceIdJobsJobIdDeleteUrl = (workspaceId: string,
-    jobId: string,) => {
-
-
+export const deleteJobWorkspacesWorkspaceIdJobsJobIdDelete = (
+    workspaceId: string,
+    jobId: string,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<void>(
+      {url: `/workspaces/${workspaceId}/jobs/${jobId}`, method: 'DELETE', signal
+    },
+      options);
+    }
   
-
-  return `/workspaces/${workspaceId}/jobs/${jobId}`
-}
-
-export const deleteJobWorkspacesWorkspaceIdJobsJobIdDelete = async (workspaceId: string,
-    jobId: string, options?: RequestInit): Promise<deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponse> => {
-  
-  const res = await fetch(getDeleteJobWorkspacesWorkspaceIdJobsJobIdDeleteUrl(workspaceId,jobId),
-  {      
-    ...options,
-    method: 'DELETE'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteJobWorkspacesWorkspaceIdJobsJobIdDeleteResponse
-}
-
-
 
 
 export const getDeleteJobWorkspacesWorkspaceIdJobsJobIdDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>, TError,{workspaceId: string;jobId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>, TError,{workspaceId: string;jobId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>, TError,{workspaceId: string;jobId: string}, TContext> => {
 
 const mutationKey = ['deleteJobWorkspacesWorkspaceIdJobsJobIdDelete'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -2804,7 +2024,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>, {workspaceId: string;jobId: string}> = (props) => {
           const {workspaceId,jobId} = props ?? {};
 
-          return  deleteJobWorkspacesWorkspaceIdJobsJobIdDelete(workspaceId,jobId,fetchOptions)
+          return  deleteJobWorkspacesWorkspaceIdJobsJobIdDelete(workspaceId,jobId,requestOptions)
         }
 
 
@@ -2822,7 +2042,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Delete Job
  */
 export const useDeleteJobWorkspacesWorkspaceIdJobsJobIdDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>, TError,{workspaceId: string;jobId: string}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>, TError,{workspaceId: string;jobId: string}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteJobWorkspacesWorkspaceIdJobsJobIdDelete>>,
         TError,
@@ -2836,44 +2056,18 @@ export const useDeleteJobWorkspacesWorkspaceIdJobsJobIdDelete = <TError = HTTPVa
  * Get the current authenticated user.
  * @summary Read Current User
  */
-export type readCurrentUserUsersMeGetResponse200 = {
-  data: UserResponse
-  status: 200
-}
+export const readCurrentUserUsersMeGet = (
     
-export type readCurrentUserUsersMeGetResponseSuccess = (readCurrentUserUsersMeGetResponse200) & {
-  headers: Headers;
-};
-;
-
-export type readCurrentUserUsersMeGetResponse = (readCurrentUserUsersMeGetResponseSuccess)
-
-export const getReadCurrentUserUsersMeGetUrl = () => {
-
-
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<UserResponse>(
+      {url: `/users/me`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/users/me`
-}
-
-export const readCurrentUserUsersMeGet = async ( options?: RequestInit): Promise<readCurrentUserUsersMeGetResponse> => {
-  
-  const res = await fetch(getReadCurrentUserUsersMeGetUrl(),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: readCurrentUserUsersMeGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as readCurrentUserUsersMeGetResponse
-}
-
-
 
 
 
@@ -2884,16 +2078,16 @@ export const getReadCurrentUserUsersMeGetQueryKey = () => {
     }
 
     
-export const getReadCurrentUserUsersMeGetQueryOptions = <TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, fetch?: RequestInit}
+export const getReadCurrentUserUsersMeGetQueryOptions = <TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getReadCurrentUserUsersMeGetQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>> = ({ signal }) => readCurrentUserUsersMeGet({ signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>> = ({ signal }) => readCurrentUserUsersMeGet(requestOptions, signal);
 
       
 
@@ -2913,7 +2107,7 @@ export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof r
           TError,
           Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>(
@@ -2923,11 +2117,11 @@ export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof r
           TError,
           Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, fetch?: RequestInit}
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -2935,7 +2129,7 @@ export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof r
  */
 
 export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, fetch?: RequestInit}
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readCurrentUserUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -2954,64 +2148,32 @@ export function useReadCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof r
  * Update current authenticated user's profile.
  * @summary Update Current User
  */
-export type updateCurrentUserUsersMePatchResponse200 = {
-  data: UserResponse
-  status: 200
-}
-
-export type updateCurrentUserUsersMePatchResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type updateCurrentUserUsersMePatchResponseSuccess = (updateCurrentUserUsersMePatchResponse200) & {
-  headers: Headers;
-};
-export type updateCurrentUserUsersMePatchResponseError = (updateCurrentUserUsersMePatchResponse422) & {
-  headers: Headers;
-};
-
-export type updateCurrentUserUsersMePatchResponse = (updateCurrentUserUsersMePatchResponseSuccess | updateCurrentUserUsersMePatchResponseError)
-
-export const getUpdateCurrentUserUsersMePatchUrl = () => {
-
-
+export const updateCurrentUserUsersMePatch = (
+    userUpdateRequest: UserUpdateRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<UserResponse>(
+      {url: `/users/me`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: userUpdateRequest, signal
+    },
+      options);
+    }
   
-
-  return `/users/me`
-}
-
-export const updateCurrentUserUsersMePatch = async (userUpdateRequest: UserUpdateRequest, options?: RequestInit): Promise<updateCurrentUserUsersMePatchResponse> => {
-  
-  const res = await fetch(getUpdateCurrentUserUsersMePatchUrl(),
-  {      
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      userUpdateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateCurrentUserUsersMePatchResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateCurrentUserUsersMePatchResponse
-}
-
-
 
 
 export const getUpdateCurrentUserUsersMePatchMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, TError,{data: UserUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, TError,{data: UserUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, TError,{data: UserUpdateRequest}, TContext> => {
 
 const mutationKey = ['updateCurrentUserUsersMePatch'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -3019,7 +2181,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, {data: UserUpdateRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  updateCurrentUserUsersMePatch(data,fetchOptions)
+          return  updateCurrentUserUsersMePatch(data,requestOptions)
         }
 
 
@@ -3037,7 +2199,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Update Current User
  */
 export const useUpdateCurrentUserUsersMePatch = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, TError,{data: UserUpdateRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>, TError,{data: UserUpdateRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateCurrentUserUsersMePatch>>,
         TError,
@@ -3051,44 +2213,18 @@ export const useUpdateCurrentUserUsersMePatch = <TError = HTTPValidationError,
  * List all workspaces the current user has access to.
  * @summary List User Workspaces
  */
-export type listUserWorkspacesUsersMeWorkspacesGetResponse200 = {
-  data: UserWorkspacesResponse
-  status: 200
-}
+export const listUserWorkspacesUsersMeWorkspacesGet = (
     
-export type listUserWorkspacesUsersMeWorkspacesGetResponseSuccess = (listUserWorkspacesUsersMeWorkspacesGetResponse200) & {
-  headers: Headers;
-};
-;
-
-export type listUserWorkspacesUsersMeWorkspacesGetResponse = (listUserWorkspacesUsersMeWorkspacesGetResponseSuccess)
-
-export const getListUserWorkspacesUsersMeWorkspacesGetUrl = () => {
-
-
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<UserWorkspacesResponse>(
+      {url: `/users/me/workspaces`, method: 'GET', signal
+    },
+      options);
+    }
   
-
-  return `/users/me/workspaces`
-}
-
-export const listUserWorkspacesUsersMeWorkspacesGet = async ( options?: RequestInit): Promise<listUserWorkspacesUsersMeWorkspacesGetResponse> => {
-  
-  const res = await fetch(getListUserWorkspacesUsersMeWorkspacesGetUrl(),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: listUserWorkspacesUsersMeWorkspacesGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as listUserWorkspacesUsersMeWorkspacesGetResponse
-}
-
-
 
 
 
@@ -3099,16 +2235,16 @@ export const getListUserWorkspacesUsersMeWorkspacesGetQueryKey = () => {
     }
 
     
-export const getListUserWorkspacesUsersMeWorkspacesGetQueryOptions = <TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, fetch?: RequestInit}
+export const getListUserWorkspacesUsersMeWorkspacesGetQueryOptions = <TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListUserWorkspacesUsersMeWorkspacesGetQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>> = ({ signal }) => listUserWorkspacesUsersMeWorkspacesGet({ signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>> = ({ signal }) => listUserWorkspacesUsersMeWorkspacesGet(requestOptions, signal);
 
       
 
@@ -3128,7 +2264,7 @@ export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<Return
           TError,
           Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>(
@@ -3138,11 +2274,11 @@ export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<Return
           TError,
           Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, fetch?: RequestInit}
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -3150,7 +2286,7 @@ export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<Return
  */
 
 export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, fetch?: RequestInit}
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listUserWorkspacesUsersMeWorkspacesGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -3169,64 +2305,32 @@ export function useListUserWorkspacesUsersMeWorkspacesGet<TData = Awaited<Return
  * Lookup users by user IDs.
  * @summary Lookup Users
  */
-export type lookupUsersUsersLookupPostResponse200 = {
-  data: UserLookupResponse
-  status: 200
-}
-
-export type lookupUsersUsersLookupPostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type lookupUsersUsersLookupPostResponseSuccess = (lookupUsersUsersLookupPostResponse200) & {
-  headers: Headers;
-};
-export type lookupUsersUsersLookupPostResponseError = (lookupUsersUsersLookupPostResponse422) & {
-  headers: Headers;
-};
-
-export type lookupUsersUsersLookupPostResponse = (lookupUsersUsersLookupPostResponseSuccess | lookupUsersUsersLookupPostResponseError)
-
-export const getLookupUsersUsersLookupPostUrl = () => {
-
-
+export const lookupUsersUsersLookupPost = (
+    userLookupRequest: UserLookupRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<UserLookupResponse>(
+      {url: `/users/lookup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userLookupRequest, signal
+    },
+      options);
+    }
   
-
-  return `/users/lookup`
-}
-
-export const lookupUsersUsersLookupPost = async (userLookupRequest: UserLookupRequest, options?: RequestInit): Promise<lookupUsersUsersLookupPostResponse> => {
-  
-  const res = await fetch(getLookupUsersUsersLookupPostUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      userLookupRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: lookupUsersUsersLookupPostResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as lookupUsersUsersLookupPostResponse
-}
-
-
 
 
 export const getLookupUsersUsersLookupPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, TError,{data: UserLookupRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, TError,{data: UserLookupRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, TError,{data: UserLookupRequest}, TContext> => {
 
 const mutationKey = ['lookupUsersUsersLookupPost'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -3234,7 +2338,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, {data: UserLookupRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  lookupUsersUsersLookupPost(data,fetchOptions)
+          return  lookupUsersUsersLookupPost(data,requestOptions)
         }
 
 
@@ -3252,7 +2356,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Lookup Users
  */
 export const useLookupUsersUsersLookupPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, TError,{data: UserLookupRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>, TError,{data: UserLookupRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof lookupUsersUsersLookupPost>>,
         TError,
@@ -3266,64 +2370,32 @@ export const useLookupUsersUsersLookupPost = <TError = HTTPValidationError,
  * Accept workspace invitation by token.
  * @summary Accept Invitation
  */
-export type acceptInvitationInvitationsAcceptPostResponse200 = {
-  data: InvitationAcceptResponse
-  status: 200
-}
-
-export type acceptInvitationInvitationsAcceptPostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-    
-export type acceptInvitationInvitationsAcceptPostResponseSuccess = (acceptInvitationInvitationsAcceptPostResponse200) & {
-  headers: Headers;
-};
-export type acceptInvitationInvitationsAcceptPostResponseError = (acceptInvitationInvitationsAcceptPostResponse422) & {
-  headers: Headers;
-};
-
-export type acceptInvitationInvitationsAcceptPostResponse = (acceptInvitationInvitationsAcceptPostResponseSuccess | acceptInvitationInvitationsAcceptPostResponseError)
-
-export const getAcceptInvitationInvitationsAcceptPostUrl = () => {
-
-
+export const acceptInvitationInvitationsAcceptPost = (
+    invitationAcceptRequest: InvitationAcceptRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<InvitationAcceptResponse>(
+      {url: `/invitations/accept`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: invitationAcceptRequest, signal
+    },
+      options);
+    }
   
-
-  return `/invitations/accept`
-}
-
-export const acceptInvitationInvitationsAcceptPost = async (invitationAcceptRequest: InvitationAcceptRequest, options?: RequestInit): Promise<acceptInvitationInvitationsAcceptPostResponse> => {
-  
-  const res = await fetch(getAcceptInvitationInvitationsAcceptPostUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      invitationAcceptRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: acceptInvitationInvitationsAcceptPostResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as acceptInvitationInvitationsAcceptPostResponse
-}
-
-
 
 
 export const getAcceptInvitationInvitationsAcceptPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>, TError,{data: InvitationAcceptRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>, TError,{data: InvitationAcceptRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>, TError,{data: InvitationAcceptRequest}, TContext> => {
 
 const mutationKey = ['acceptInvitationInvitationsAcceptPost'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -3331,7 +2403,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>, {data: InvitationAcceptRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  acceptInvitationInvitationsAcceptPost(data,fetchOptions)
+          return  acceptInvitationInvitationsAcceptPost(data,requestOptions)
         }
 
 
@@ -3349,7 +2421,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
  * @summary Accept Invitation
  */
 export const useAcceptInvitationInvitationsAcceptPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>, TError,{data: InvitationAcceptRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>, TError,{data: InvitationAcceptRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof acceptInvitationInvitationsAcceptPost>>,
         TError,

@@ -12,23 +12,23 @@ type UseDashboardMemberMutationsParams = {
   workspaceId: string;
 };
 
-const getAuthorizedFetchOptions = (accessToken: string | undefined) => {
+const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
   if (!accessToken) return undefined;
 
   return {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  } satisfies RequestInit;
+  };
 };
 
 export const useDashboardMemberMutations = ({ accessToken, workspaceId }: UseDashboardMemberMutationsParams) => {
   const queryClient = useQueryClient();
-  const fetch = getAuthorizedFetchOptions(accessToken);
+  const request = getAuthorizedRequestOptions(accessToken);
 
-  const addMutation = useAddMemberWorkspacesWorkspaceIdMembersUserIdPut({ fetch });
-  const updateMutation = useUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch({ fetch });
-  const removeMutation = useRemoveMemberWorkspacesWorkspaceIdMembersUserIdDelete({ fetch });
+  const addMutation = useAddMemberWorkspacesWorkspaceIdMembersUserIdPut({ request });
+  const updateMutation = useUpdateMemberRoleWorkspacesWorkspaceIdMembersUserIdPatch({ request });
+  const removeMutation = useRemoveMemberWorkspacesWorkspaceIdMembersUserIdDelete({ request });
 
   const invalidateMemberQueries = async () => {
     await queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.members(workspaceId) });
@@ -44,18 +44,15 @@ export const useDashboardMemberMutations = ({ accessToken, workspaceId }: UseDas
     });
 
     await invalidateMemberQueries();
-    if (response.status !== 200) throw new Error("Failed to add member");
-
-    return response.data;
+    return response;
   };
 
   const removeMember = async (userId: string) => {
     if (!workspaceId) throw new Error("Workspace is not selected");
 
-    const response = await removeMutation.mutateAsync({ workspaceId, userId });
+    await removeMutation.mutateAsync({ workspaceId, userId });
 
     await invalidateMemberQueries();
-    if (response.status !== 204) throw new Error("Failed to remove member");
   };
 
   const updateMemberRole = async (userId: string, role: MembershipRole) => {
@@ -68,9 +65,7 @@ export const useDashboardMemberMutations = ({ accessToken, workspaceId }: UseDas
     });
 
     await invalidateMemberQueries();
-    if (response.status !== 200) throw new Error("Failed to update member role");
-
-    return response.data;
+    return response;
   };
 
   return {
