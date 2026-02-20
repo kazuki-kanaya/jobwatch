@@ -69,7 +69,11 @@ And syncs job states to a web dashboard.
 Example future flow:
 
 ```bash
-pip install jobwatch
+# Homebrew
+brew install jobwatch
+
+# curl installer
+curl -fsSL https://example.com/jobwatch/install.sh | bash
 ```
 
 ---

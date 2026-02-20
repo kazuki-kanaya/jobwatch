@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/kanaya/jobwatch/cli/internal/config"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
 )
 
 func TestShouldNotify(t *testing.T) {

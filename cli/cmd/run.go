@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/kanaya/jobwatch/cli/internal/config"
-	"github.com/kanaya/jobwatch/cli/internal/run"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/run"
 	"github.com/spf13/cobra"
 )
 

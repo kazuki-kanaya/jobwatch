@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/kanaya/jobwatch/cli/internal/config"
-	"github.com/kanaya/jobwatch/cli/internal/jobtracker"
-	"github.com/kanaya/jobwatch/cli/internal/notifier"
-	"github.com/kanaya/jobwatch/cli/internal/notifier/slack"
-	"github.com/kanaya/jobwatch/cli/internal/runner"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/jobtracker"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/notifier"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/notifier/slack"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/runner"
 )
 
 type Runner struct {

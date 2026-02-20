@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/kanaya/jobwatch/cli/internal/notifier"
+	"github.com/kazuki-kanaya/jobwatch/cli/internal/notifier"
 )
 
 type SlackNotifier struct {
