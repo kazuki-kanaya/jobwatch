@@ -18,7 +18,7 @@ output "cognito_hosted_ui_base_url" {
   value       = module.cognito.hosted_ui_base_url
 }
 
-output "api_invoke_url" {
-  description = "API Gateway invoke URL"
-  value       = module.apigateway.invoke_url
-}
+# output "api_invoke_url" {
+#   description = "API Gateway invoke URL"
+#   value       = module.apigateway.invoke_url
+# }
