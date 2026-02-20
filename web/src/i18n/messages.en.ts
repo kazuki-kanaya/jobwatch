@@ -23,9 +23,9 @@ export const enMessages = {
   landing_nav_docs: "Docs",
   landing_release_badge: "Now in Beta",
 
-  landing_hero_title_a: "Stop checking jobs over",
+  landing_hero_title_a: "Stop checking",
   landing_hero_title_ssh: "SSH",
-  landing_hero_title_b: ".",
+  landing_hero_title_b: " just to see if it’s still running",
   landing_hero_subtitle:
     "Track long-running jobs in real time. Get notified on failures and manage everything from a unified dashboard — no code changes required.",
   landing_get_started: "Get Started",
