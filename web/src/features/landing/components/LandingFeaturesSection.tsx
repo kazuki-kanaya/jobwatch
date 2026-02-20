@@ -40,7 +40,7 @@ export default function LandingFeaturesSection({ texts }: LandingFeaturesSection
       </div>
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl border border-[#2d3948] bg-[#0f1726] p-3 shadow-[0_20px_40px_rgba(2,6,23,0.28)] md:p-4",
+          "relative overflow-visible rounded-2xl border border-[#2d3948] bg-[#0f1726] p-3 shadow-[0_20px_40px_rgba(2,6,23,0.28)] md:p-4",
         )}
       >
         <div
@@ -56,12 +56,23 @@ export default function LandingFeaturesSection({ texts }: LandingFeaturesSection
         </div>
         <div
           className={cn(
-            "absolute bottom-3 right-2 z-10 w-[56%] rotate-[1deg] overflow-hidden rounded-xl border border-[#a7f3d0]/60 bg-white/96 shadow-[0_22px_40px_rgba(2,6,23,0.52)] backdrop-blur-sm md:bottom-4 md:right-4 md:w-[50%]",
+            "absolute bottom-8 left-4 z-[9] w-[48%] -rotate-[6deg] overflow-hidden rounded-2xl border border-rose-300/65 bg-white/94 shadow-[0_18px_34px_rgba(2,6,23,0.42)] backdrop-blur-sm md:bottom-10 md:left-8 md:w-[44%]",
           )}
         >
           <img
-            alt="Jobwatch slack notification preview"
-            src="/slack.png"
+            alt="Jobwatch slack failed notification preview"
+            src="/slack_failed.png"
+            className={cn("h-full w-full object-contain object-center")}
+          />
+        </div>
+        <div
+          className={cn(
+            "absolute bottom-2 right-2 z-10 w-[56%] rotate-[6deg] overflow-hidden rounded-2xl border border-[#a7f3d0]/60 bg-white/96 shadow-[0_22px_40px_rgba(2,6,23,0.52)] backdrop-blur-sm md:bottom-4 md:right-4 md:w-[50%]",
+          )}
+        >
+          <img
+            alt="Jobwatch slack success notification preview"
+            src="/slack_success.png"
             className={cn("h-full w-full object-contain object-center")}
           />
         </div>
