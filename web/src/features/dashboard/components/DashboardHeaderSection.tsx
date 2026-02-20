@@ -1,7 +1,7 @@
-import { Fingerprint, Languages, LogOut, PenLine, RefreshCw, UserRound } from "lucide-react";
+import { Fingerprint, LogOut, PenLine, RefreshCw, SquareTerminal, UserRound } from "lucide-react";
+import LocaleSelect from "@/components/LocaleSelect";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import DashboardProfileEditDialog from "@/features/dashboard/components/DashboardProfileEditDialog";
 import type { DashboardSelectOption } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
@@ -39,7 +39,6 @@ type DashboardHeaderSectionProps = {
 
 export default function DashboardHeaderSection({
   title,
-  subtitle,
   updatedAt,
   missionControlLabel,
   currentUserLabel,
@@ -71,11 +70,19 @@ export default function DashboardHeaderSection({
     <Card className={cn("border-slate-700/60 bg-slate-900/80 py-4 backdrop-blur")}>
       <CardContent className={cn("flex flex-col gap-4 px-4 md:flex-row md:items-center md:justify-between")}>
         <div className={cn("space-y-1")}>
-          <p className={cn("font-mono text-xs tracking-[0.2em] text-cyan-300 uppercase")}>{missionControlLabel}</p>
-          <h1 className={cn("text-2xl font-semibold text-slate-100 md:text-3xl")}>{title}</h1>
-          <p className={cn("text-sm text-slate-400")}>{subtitle}</p>
-          <p className={cn("font-mono text-xs text-slate-500")}>
-            {updatedAtLabel}: {updatedAt}
+          <p className={cn("font-mono text-sm tracking-[0.2em] text-cyan-300 uppercase")}>{missionControlLabel}</p>
+          <div className={cn("flex items-center gap-3")}>
+            <span
+              className={cn(
+                "inline-flex size-8 items-center justify-center rounded-md border border-cyan-300/40 bg-cyan-500/10 text-cyan-300",
+              )}
+            >
+              <SquareTerminal className={cn("size-4.5")} />
+            </span>
+            <h1 className={cn("text-3xl font-semibold text-slate-100 md:text-4xl")}>{title}</h1>
+          </div>
+          <p className={cn("font-mono text-sm text-slate-500")}>
+            {updatedAtLabel}: {updatedAt} JST
           </p>
         </div>
         <div className={cn("flex flex-col items-start gap-2 md:items-end")}>
@@ -114,26 +121,14 @@ export default function DashboardHeaderSection({
           <div className={cn("flex flex-wrap items-center gap-2")}>
             <div className={cn("space-y-1")}>
               <span className={cn("sr-only")}>{localeLabel}</span>
-              <div className={cn("flex items-center gap-2 rounded-md border border-slate-600 bg-slate-800 px-2")}>
-                <Languages className={cn("size-4 text-slate-300")} />
-                <Select value={localeValue} onValueChange={onLocaleChange}>
-                  <SelectTrigger
-                    id="dashboard-language"
-                    className={cn(
-                      "h-9 min-w-32 border-none bg-slate-800 text-slate-100 shadow-none focus-visible:ring-0",
-                    )}
-                  >
-                    <SelectValue placeholder={localeLabel} />
-                  </SelectTrigger>
-                  <SelectContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
-                    {localeOptions.map((option) => (
-                      <SelectItem key={option.id} value={option.id}>
-                        {option.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <LocaleSelect
+                id="dashboard-language"
+                label={localeLabel}
+                options={localeOptions}
+                value={localeValue}
+                onChange={onLocaleChange}
+                triggerClassName={cn("min-w-32")}
+              />
             </div>
             <Button
               type="button"

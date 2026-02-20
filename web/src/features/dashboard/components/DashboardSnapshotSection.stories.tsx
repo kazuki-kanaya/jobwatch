@@ -17,7 +17,7 @@ const meta = {
       updatedAt: "2026-02-15 11:40 UTC",
     },
     labels: {
-      tracked: "Tracked",
+      tracked: "Total",
       running: "Running",
       completed: "Completed",
       failed: "Failed",

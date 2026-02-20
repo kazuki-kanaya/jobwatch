@@ -1,4 +1,5 @@
 import { Fingerprint, MoreHorizontal, PencilLine, ShieldCheck, Trash2, UserRound } from "lucide-react";
+import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,14 +20,14 @@ type DashboardMemberListProps = {
   isError: boolean;
   emptyLabel: string;
   errorLabel: string;
-  updateLabel: string;
+  editLabel: string;
   deleteLabel: string;
   canManage: boolean;
   onRequestEdit: (userId: string, role: DashboardMemberItem["role"]) => void;
   onRequestDelete: (userId: string) => void;
 };
 
-export default function DashboardMemberList({
+function DashboardMemberList({
   members,
   userIdLabel,
   usernameLabel,
@@ -35,7 +36,7 @@ export default function DashboardMemberList({
   isError,
   emptyLabel,
   errorLabel,
-  updateLabel,
+  editLabel,
   deleteLabel,
   canManage,
   onRequestEdit,
@@ -121,7 +122,7 @@ export default function DashboardMemberList({
                 disabled={!canManage}
               >
                 <PencilLine className={cn("size-4")} />
-                {updateLabel}
+                {editLabel}
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"
@@ -138,3 +139,5 @@ export default function DashboardMemberList({
     </>
   );
 }
+
+export default memo(DashboardMemberList);

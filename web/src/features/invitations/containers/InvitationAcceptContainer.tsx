@@ -48,7 +48,7 @@ export default function InvitationAcceptContainer() {
       isSuccess={isSuccess}
       errorMessage={errorMessage}
       onAccept={handleAcceptInvitation}
-      onGoDashboard={() => navigate("/")}
+      onGoDashboard={() => navigate("/dashboard")}
     />
   );
 }

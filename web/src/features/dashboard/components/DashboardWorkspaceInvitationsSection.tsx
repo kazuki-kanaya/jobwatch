@@ -161,13 +161,13 @@ export default function DashboardWorkspaceInvitationsSection({
                   <dt className={cn("min-w-28 text-[11px] font-semibold uppercase tracking-wide text-slate-400")}>
                     {expiresAtLabel}
                   </dt>
-                  <dd className={cn("text-sm font-medium text-cyan-200")}>{invitation.expiresAt}</dd>
+                  <dd className={cn("text-sm font-medium text-rose-200")}>{invitation.expiresAt}</dd>
                 </div>
                 <div className={cn("flex items-start gap-3")}>
                   <dt className={cn("min-w-28 text-[11px] font-semibold uppercase tracking-wide text-slate-400")}>
                     {usedAtLabel}
                   </dt>
-                  <dd className={cn("text-sm text-slate-100")}>{invitation.usedAt ?? "-"}</dd>
+                  <dd className={cn("text-sm text-cyan-100")}>{invitation.usedAt ?? "-"}</dd>
                 </div>
               </dl>
               <Button

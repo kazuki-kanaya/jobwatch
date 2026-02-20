@@ -60,6 +60,7 @@ type UseDashboardDataResult = {
   isMembersError: boolean;
   isJobsLoading: boolean;
   isJobsError: boolean;
+  isWorkspaceScopedFetching: boolean;
 };
 
 export const useDashboardData = ({
@@ -173,6 +174,12 @@ export const useDashboardData = ({
     jobsWorkspaceQuery.isError ||
     jobsByHostQuery.isError;
   const isJobsError = jobsWorkspaceQuery.isError || jobsByHostQuery.isError;
+  const isWorkspaceScopedFetching =
+    hostsQuery.isFetching ||
+    membersQuery.isFetching ||
+    invitationsQuery.isFetching ||
+    jobsWorkspaceQuery.isFetching ||
+    jobsByHostQuery.isFetching;
 
   return {
     workspaces,
@@ -196,5 +203,6 @@ export const useDashboardData = ({
     isMembersError: membersQuery.isError,
     isJobsLoading,
     isJobsError,
+    isWorkspaceScopedFetching,
   };
 };

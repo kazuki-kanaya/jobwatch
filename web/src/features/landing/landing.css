@@ -1,0 +1,13 @@
+.landing-page h1,
+.landing-page h2,
+.landing-page h3 {
+  font-family: "IBM Plex Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.landing-page p,
+.landing-page li,
+.landing-page th,
+.landing-page td {
+  font-family: "IBM Plex Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}

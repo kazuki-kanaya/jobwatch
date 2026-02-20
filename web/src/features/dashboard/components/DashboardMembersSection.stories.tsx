@@ -18,6 +18,7 @@ const meta = {
     generateInviteLabel: "Generate invite",
     copyLinkLabel: "Copy link",
     addLabel: "Add",
+    editLabel: "Edit",
     updateLabel: "Update",
     cancelLabel: "Cancel",
     deleteLabel: "Delete",

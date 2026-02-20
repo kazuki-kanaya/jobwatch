@@ -4,6 +4,7 @@ export type DashboardHostsSectionProps = {
   title: string;
   hostNameLabel: string;
   addLabel: string;
+  editLabel: string;
   updateLabel: string;
   cancelLabel: string;
   deleteLabel: string;
@@ -29,6 +30,7 @@ export type DashboardHostsSectionProps = {
   onDraftNameChange: (value: string) => void;
   onSubmit: () => void;
   onCopyToken: () => void;
+  onDismissToken: () => void;
   onStartEdit: (hostId: string) => void;
   onCloseForm: () => void;
   onRequestDelete: (hostId: string) => void;

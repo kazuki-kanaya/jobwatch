@@ -98,6 +98,7 @@ export type DashboardViewModel = {
     finishedAt: string;
     duration: string;
     error: string;
+    viewFull: string;
     detailEmpty: string;
     logsEmpty: string;
     workspaces: string;
@@ -127,6 +128,10 @@ export type DashboardViewModel = {
     workspaceCrudError: string;
     workspaceDeleteConfirmTitle: string;
     workspaceDeleteConfirmDescription: string;
+    currentWorkspace: string;
+    workspaceScopeHint: string;
+    tabOverview: string;
+    tabMembers: string;
     hosts: string;
     hostName: string;
     members: string;
@@ -148,6 +153,7 @@ export type DashboardViewModel = {
     invitationLinkCopied: string;
     invitationLinkCreateError: string;
     add: string;
+    edit: string;
     update: string;
     cancel: string;
     delete: string;

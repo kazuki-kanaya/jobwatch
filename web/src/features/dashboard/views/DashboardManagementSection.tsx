@@ -21,6 +21,7 @@ type DashboardManagementSectionProps = Pick<
   | "onHostDraftChange"
   | "onHostSubmit"
   | "onHostCopyToken"
+  | "onHostDismissToken"
   | "onHostStartEdit"
   | "onHostCloseForm"
   | "onHostRequestDelete"
@@ -67,7 +68,8 @@ export default function DashboardManagementSection(props: DashboardManagementSec
         title={model.texts.hosts}
         hostNameLabel={model.texts.hostName}
         addLabel={model.texts.add}
-        updateLabel={model.texts.update}
+        editLabel={model.texts.edit}
+        updateLabel={model.texts.edit}
         cancelLabel={model.texts.cancel}
         deleteLabel={model.texts.delete}
         emptyLabel={model.texts.hostsEmpty}
@@ -92,6 +94,7 @@ export default function DashboardManagementSection(props: DashboardManagementSec
         onDraftNameChange={props.onHostDraftChange}
         onSubmit={props.onHostSubmit}
         onCopyToken={props.onHostCopyToken}
+        onDismissToken={props.onHostDismissToken}
         onStartEdit={props.onHostStartEdit}
         onCloseForm={props.onHostCloseForm}
         onRequestDelete={props.onHostRequestDelete}
@@ -108,7 +111,8 @@ export default function DashboardManagementSection(props: DashboardManagementSec
         generateInviteLabel={model.texts.generateInvite}
         copyLinkLabel={model.texts.copyLink}
         addLabel={model.texts.add}
-        updateLabel={model.texts.update}
+        editLabel={model.texts.edit}
+        updateLabel={model.texts.edit}
         cancelLabel={model.texts.cancel}
         deleteLabel={model.texts.delete}
         emptyLabel={model.texts.membersEmpty}

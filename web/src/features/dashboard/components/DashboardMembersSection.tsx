@@ -19,6 +19,7 @@ export default function DashboardMembersSection({
   generateInviteLabel,
   copyLinkLabel,
   addLabel,
+  editLabel,
   updateLabel,
   cancelLabel,
   deleteLabel,
@@ -101,7 +102,7 @@ export default function DashboardMembersSection({
           isError={isError}
           emptyLabel={emptyLabel}
           errorLabel={errorLabel}
-          updateLabel={updateLabel}
+          editLabel={editLabel}
           deleteLabel={deleteLabel}
           canManage={canManage}
           onRequestEdit={onRequestEdit}

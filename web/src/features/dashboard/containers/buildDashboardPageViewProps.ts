@@ -12,6 +12,7 @@ import type { Locale } from "@/i18n/messages";
 type BuildDashboardPageViewPropsParams = {
   model: DashboardPageViewProps["model"];
   jobsUiState: DashboardPageViewProps["jobsUiState"];
+  isWorkspaceSwitching: boolean;
   isRefreshing: boolean;
   setLocale: (locale: Locale) => void;
   setWorkspaceId: (workspaceId: string) => void;
@@ -47,6 +48,7 @@ type BuildDashboardPageViewPropsParams = {
 export const buildDashboardPageViewProps = ({
   model,
   jobsUiState,
+  isWorkspaceSwitching,
   isRefreshing,
   setLocale,
   setWorkspaceId,
@@ -76,6 +78,7 @@ export const buildDashboardPageViewProps = ({
 
   return {
     model,
+    isWorkspaceSwitching,
     workspaceManagement: {
       workspaceDraftName: workspaceCrud.workspaceDraftName,
       transferOwnerUserId: workspaceCrud.transferOwnerUserId,
@@ -88,11 +91,12 @@ export const buildDashboardPageViewProps = ({
       isWorkspaceSubmitting: workspaceCrud.isWorkspaceSubmitting,
       isWorkspacesLoading: data.isWorkspacesLoading,
       isWorkspacesError: data.isWorkspacesError,
-      isInvitationsLoading: canManageWorkspace ? data.isInvitationsLoading : false,
+      isInvitationsLoading: canManageWorkspace ? data.isInvitationsLoading || isWorkspaceSwitching : false,
       isInvitationsError: canManageWorkspace ? data.isInvitationsError : false,
       isInvitationsForbidden: !canManageWorkspace,
       isWorkspaceFormOpen: workspaceCrud.isWorkspaceFormOpen,
       isWorkspaceTransferDialogOpen: workspaceCrud.isWorkspaceTransferDialogOpen,
+      onSelectWorkspace: setWorkspaceId,
       onOpenWorkspaceCreateForm: () => canCreateWorkspace && workspaceCrud.openWorkspaceCreateForm(),
       onStartEditWorkspace: (workspaceId) => canManageWorkspace && workspaceCrud.startEditWorkspace(workspaceId),
       onWorkspaceDraftNameChange: workspaceCrud.setWorkspaceDraftName,
@@ -117,7 +121,7 @@ export const buildDashboardPageViewProps = ({
     canManageHosts,
     canManageMembers,
     canManageJobs,
-    jobsUiState,
+    jobsUiState: isWorkspaceSwitching ? "loading" : jobsUiState,
     isRefreshing,
     onLocaleChange: (nextLocale) => isLocale(nextLocale) && setLocale(nextLocale),
     onWorkspaceChange: setWorkspaceId,
@@ -147,7 +151,7 @@ export const buildDashboardPageViewProps = ({
     hostToken: hostCrud.hostToken,
     hostTokenMessage: hostCrud.hostTokenMessage,
     isHostSubmitting: hostCrud.isHostSubmitting,
-    isHostsLoading: data.isHostsLoading,
+    isHostsLoading: data.isHostsLoading || isWorkspaceSwitching,
     isHostsError: data.isHostsError,
     isHostFormOpen: hostCrud.isHostFormOpen,
     pendingDeleteHostId: hostCrud.pendingDeleteHostId,
@@ -155,6 +159,7 @@ export const buildDashboardPageViewProps = ({
     onHostDraftChange: hostCrud.setHostDraftName,
     onHostSubmit: () => canManageHosts && hostCrud.submitHost(),
     onHostCopyToken: () => canManageHosts && hostCrud.copyHostToken(),
+    onHostDismissToken: () => canManageHosts && hostCrud.dismissHostToken(),
     onHostStartEdit: (hostId) => canManageHosts && hostCrud.startEditHost(hostId),
     onHostCloseForm: () => canManageHosts && hostCrud.closeHostForm(),
     onHostRequestDelete: (hostId) => canManageHosts && hostCrud.requestDeleteHost(hostId),
@@ -168,7 +173,7 @@ export const buildDashboardPageViewProps = ({
     memberInvitationUrl: memberCrud.invitationUrl,
     pendingDeleteMemberUserId: memberCrud.pendingDeleteUserId,
     isMemberSubmitting: memberCrud.isMemberSubmitting,
-    isMembersLoading: data.isMembersLoading,
+    isMembersLoading: data.isMembersLoading || isWorkspaceSwitching,
     isMembersError: data.isMembersError,
     isMemberAddDialogOpen: memberCrud.isAddDialogOpen,
     isMemberInviteDialogOpen: memberCrud.isInviteDialogOpen,

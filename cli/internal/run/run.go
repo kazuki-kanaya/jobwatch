@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
@@ -56,20 +57,20 @@ func (r *Runner) Execute(ctx context.Context, command string, commandArgs []stri
 		Tags:      r.cfg.Project.Tags,
 		StartedAt: startedAt,
 	})
+	if jobID != "" {
+		fmt.Fprintf(os.Stderr, "[Jobwatch] 🚀 Job started: %s\n", jobID)
+	}
 
 	result := r.exec.Run(ctx, command, commandArgs)
 	result.StartedAt = startedAt
 
 	var finishErr error
 	if jobID != "" {
-		status := jobtracker.JobStatusFinished
-		errMsg := ""
-		if result.Err != nil {
-			status = jobtracker.JobStatusFailed
-			errMsg = result.Err.Error()
-		}
+		status, errMsg := toFinishState(ctx, result.Err)
+		finishCtx, finishCancel := withFinishContext(ctx)
+		defer finishCancel()
 
-		finishErr = r.tracker.Finish(ctx, jobID, jobtracker.FinishRequest{
+		finishErr = r.tracker.Finish(finishCtx, jobID, jobtracker.FinishRequest{
 			Status:     status,
 			Err:        errMsg,
 			TailLines:  result.TailLines,
@@ -108,6 +109,23 @@ func (r *Runner) Execute(ctx context.Context, command string, commandArgs []stri
 		TrackingFinishError: finishErr,
 		NotifyError:         notifyErr,
 	}
+}
+
+func toFinishState(ctx context.Context, runErr error) (jobtracker.JobStatus, string) {
+	if runErr == nil {
+		return jobtracker.JobStatusFinished, ""
+	}
+	if errors.Is(ctx.Err(), context.Canceled) {
+		return jobtracker.JobStatusCanceled, "canceled"
+	}
+	return jobtracker.JobStatusFailed, runErr.Error()
+}
+
+func withFinishContext(ctx context.Context) (context.Context, context.CancelFunc) {
+	if errors.Is(ctx.Err(), context.Canceled) {
+		return context.WithTimeout(context.Background(), 5*time.Second)
+	}
+	return ctx, func() {}
 }
 
 func setupTracker(cfg config.Config, transport *http.Transport) (jobtracker.JobTracker, error) {

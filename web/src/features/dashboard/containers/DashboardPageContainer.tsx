@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useSearchParams } from "react-router";
 import { buildDashboardPageViewProps } from "@/features/dashboard/containers/buildDashboardPageViewProps";
@@ -38,6 +38,7 @@ export default function DashboardPageContainer() {
   });
   const { workspaceId, setWorkspaceId, hostId, setHostId, queryInput, setQueryInput, applyFilters, appliedQuery } =
     filters;
+  const [pendingWorkspaceId, setPendingWorkspaceId] = useState<string | null>(null);
 
   const data = useDashboardData({
     accessToken: user?.access_token,
@@ -54,6 +55,13 @@ export default function DashboardPageContainer() {
       setWorkspaceId(data.activeWorkspaceId);
     }
   }, [data.activeWorkspaceId, setWorkspaceId, workspaceId]);
+
+  useEffect(() => {
+    if (!pendingWorkspaceId) return;
+    if (workspaceId !== pendingWorkspaceId) return;
+    if (data.isWorkspaceScopedFetching) return;
+    setPendingWorkspaceId(null);
+  }, [data.isWorkspaceScopedFetching, pendingWorkspaceId, workspaceId]);
 
   useEffect(() => {
     if (hostId !== data.selectedHostId) {
@@ -179,15 +187,21 @@ export default function DashboardPageContainer() {
     logoutUrl.searchParams.set("logout_uri", `${window.location.origin}/`);
     window.location.assign(logoutUrl.toString());
   };
+  const handleWorkspaceChange = (nextWorkspaceId: string) => {
+    setPendingWorkspaceId(nextWorkspaceId);
+    setWorkspaceId(nextWorkspaceId);
+  };
+  const isWorkspaceSwitching = pendingWorkspaceId !== null;
 
   return (
     <DashboardPageView
       {...buildDashboardPageViewProps({
         model,
         jobsUiState,
+        isWorkspaceSwitching,
         isRefreshing: refreshState.isRefreshing,
         setLocale,
-        setWorkspaceId,
+        setWorkspaceId: handleWorkspaceChange,
         setHostId,
         setQueryInput,
         refreshDashboard: refreshState.refreshDashboard,
