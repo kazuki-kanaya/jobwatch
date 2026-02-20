@@ -167,7 +167,7 @@ export default function DashboardWorkspaceInvitationsSection({
                   <dt className={cn("min-w-28 text-[11px] font-semibold uppercase tracking-wide text-slate-400")}>
                     {usedAtLabel}
                   </dt>
-                  <dd className={cn("text-sm text-slate-100 text-cyan-100")}>{invitation.usedAt ?? "-"}</dd>
+                  <dd className={cn("text-sm text-cyan-100")}>{invitation.usedAt ?? "-"}</dd>
                 </div>
               </dl>
               <Button
