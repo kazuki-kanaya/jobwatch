@@ -108,7 +108,4 @@ jobs:
         uses: go-task/setup-task@v1
 
       - name: Task CI
-        env:
-          TF_VAR_cloudflare_api_token: dummy
-          TF_VAR_cloudflare_account_id: dummy
         run: task ci

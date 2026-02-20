@@ -19,9 +19,14 @@ export const onRequest = async ({ request, env, params }: OnRequestContext) => {
   const origin = new URL(env.API_ORIGIN);
   const rawPath = params.path;
   const path = Array.isArray(rawPath) ? rawPath.join("/") : (rawPath ?? "");
+  const segments = path.split("/").filter((segment) => segment.length > 0 && segment !== ".");
+  if (segments.some((segment) => segment === "..")) {
+    return new Response("Invalid path", { status: 400 });
+  }
+  const safePath = segments.join("/");
 
   const basePath = origin.pathname.replace(/\/+$/, "");
-  origin.pathname = `${basePath}/cli/${path}`.replace(/\/{2,}/g, "/");
+  origin.pathname = `${basePath}/cli/${safePath}`.replace(/\/{2,}/g, "/");
   origin.search = incoming.search;
 
   const allowedHeaders = ["authorization", "content-type", "accept", "user-agent"];
