@@ -6,7 +6,7 @@ import { AUTH_RETURN_TO_KEY } from "@/features/auth/constants";
 
 const getPostAuthPath = () => {
   const returnTo = window.sessionStorage.getItem(AUTH_RETURN_TO_KEY);
-  if (!returnTo || !returnTo.startsWith("/") || returnTo.startsWith("/auth/callback")) return "/";
+  if (!returnTo || !returnTo.startsWith("/") || returnTo.startsWith("/auth/callback")) return "/dashboard";
   return returnTo;
 };
 

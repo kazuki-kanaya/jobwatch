@@ -1,4 +1,4 @@
-import { Fingerprint, LogOut, PenLine, RefreshCw, UserRound } from "lucide-react";
+import { Fingerprint, LogOut, PenLine, RefreshCw, SquareTerminal, UserRound } from "lucide-react";
 import LocaleSelect from "@/components/LocaleSelect";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -39,7 +39,6 @@ type DashboardHeaderSectionProps = {
 
 export default function DashboardHeaderSection({
   title,
-  subtitle,
   updatedAt,
   missionControlLabel,
   currentUserLabel,
@@ -71,10 +70,18 @@ export default function DashboardHeaderSection({
     <Card className={cn("border-slate-700/60 bg-slate-900/80 py-4 backdrop-blur")}>
       <CardContent className={cn("flex flex-col gap-4 px-4 md:flex-row md:items-center md:justify-between")}>
         <div className={cn("space-y-1")}>
-          <p className={cn("font-mono text-xs tracking-[0.2em] text-cyan-300 uppercase")}>{missionControlLabel}</p>
-          <h1 className={cn("text-2xl font-semibold text-slate-100 md:text-3xl")}>{title}</h1>
-          <p className={cn("text-sm text-slate-400")}>{subtitle}</p>
-          <p className={cn("font-mono text-xs text-slate-500")}>
+          <p className={cn("font-mono text-sm tracking-[0.2em] text-cyan-300 uppercase")}>{missionControlLabel}</p>
+          <div className={cn("flex items-center gap-3")}>
+            <span
+              className={cn(
+                "inline-flex size-8 items-center justify-center rounded-md border border-cyan-300/40 bg-cyan-500/10 text-cyan-300",
+              )}
+            >
+              <SquareTerminal className={cn("size-4.5")} />
+            </span>
+            <h1 className={cn("text-3xl font-semibold text-slate-100 md:text-4xl")}>{title}</h1>
+          </div>
+          <p className={cn("font-mono text-sm text-slate-500")}>
             {updatedAtLabel}: {updatedAt}
           </p>
         </div>

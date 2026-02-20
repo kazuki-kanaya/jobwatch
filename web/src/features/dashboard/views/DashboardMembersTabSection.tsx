@@ -1,31 +1,13 @@
-import DashboardHostsSection from "@/features/dashboard/components/DashboardHostsSection";
 import DashboardMembersSection from "@/features/dashboard/components/DashboardMembersSection";
+import DashboardWorkspaceInvitationsSection from "@/features/dashboard/components/DashboardWorkspaceInvitationsSection";
 import type { DashboardPageViewProps } from "@/features/dashboard/views/DashboardPageView.types";
 import { cn } from "@/lib/utils";
 
-type DashboardManagementSectionProps = Pick<
+type DashboardMembersTabSectionProps = Pick<
   DashboardPageViewProps,
   | "model"
-  | "canManageHosts"
+  | "workspaceManagement"
   | "canManageMembers"
-  | "hostDraftName"
-  | "editingHostId"
-  | "hostToken"
-  | "hostTokenMessage"
-  | "isHostSubmitting"
-  | "isHostsLoading"
-  | "isHostsError"
-  | "isHostFormOpen"
-  | "pendingDeleteHostId"
-  | "onOpenHostCreate"
-  | "onHostDraftChange"
-  | "onHostSubmit"
-  | "onHostCopyToken"
-  | "onHostStartEdit"
-  | "onHostCloseForm"
-  | "onHostRequestDelete"
-  | "onHostCancelDelete"
-  | "onHostConfirmDelete"
   | "memberDraftUserId"
   | "memberDraftRole"
   | "memberInviteRole"
@@ -58,47 +40,13 @@ type DashboardManagementSectionProps = Pick<
   | "onMemberConfirmDelete"
 >;
 
-export default function DashboardManagementSection(props: DashboardManagementSectionProps) {
-  const { model } = props;
+export default function DashboardMembersTabSection(props: DashboardMembersTabSectionProps) {
+  const { model, workspaceManagement } = props;
+  const activeWorkspaceName =
+    model.filters.workspaceOptions.find((workspace) => workspace.id === model.filters.workspaceId)?.name ?? "-";
 
   return (
-    <div className={cn("grid gap-4 lg:grid-cols-2")}>
-      <DashboardHostsSection
-        title={model.texts.hosts}
-        hostNameLabel={model.texts.hostName}
-        addLabel={model.texts.add}
-        editLabel={model.texts.edit}
-        updateLabel={model.texts.edit}
-        cancelLabel={model.texts.cancel}
-        deleteLabel={model.texts.delete}
-        emptyLabel={model.texts.hostsEmpty}
-        errorLabel={model.texts.hostsError}
-        noPermissionLabel={model.texts.noPermission}
-        canManage={props.canManageHosts}
-        tokenLabel={model.texts.hostToken}
-        tokenCopyLabel={model.texts.copyToken}
-        tokenValue={props.hostToken}
-        tokenMessage={props.hostTokenMessage}
-        deleteConfirmTitle={model.texts.hostDeleteConfirmTitle}
-        deleteConfirmDescription={model.texts.hostDeleteConfirmDescription}
-        draftName={props.hostDraftName}
-        editingHostId={props.editingHostId}
-        hosts={model.hosts}
-        isLoading={props.isHostsLoading}
-        isError={props.isHostsError}
-        isSubmitting={props.isHostSubmitting}
-        isFormOpen={props.isHostFormOpen}
-        pendingDeleteHostId={props.pendingDeleteHostId}
-        onOpenCreate={props.onOpenHostCreate}
-        onDraftNameChange={props.onHostDraftChange}
-        onSubmit={props.onHostSubmit}
-        onCopyToken={props.onHostCopyToken}
-        onStartEdit={props.onHostStartEdit}
-        onCloseForm={props.onHostCloseForm}
-        onRequestDelete={props.onHostRequestDelete}
-        onCancelDelete={props.onHostCancelDelete}
-        onConfirmDelete={props.onHostConfirmDelete}
-      />
+    <section className={cn("grid gap-4 xl:grid-cols-2")}>
       <DashboardMembersSection
         title={model.texts.members}
         userIdLabel={model.texts.memberUserId}
@@ -156,6 +104,35 @@ export default function DashboardManagementSection(props: DashboardManagementSec
         onCancelDelete={props.onMemberCancelDelete}
         onConfirmDelete={props.onMemberConfirmDelete}
       />
-    </div>
+      <DashboardWorkspaceInvitationsSection
+        title={model.texts.invitations}
+        workspaceLabel={model.texts.workspaceName}
+        workspaceName={activeWorkspaceName}
+        roleLabel={model.texts.invitationRole}
+        createdByLabel={model.texts.invitationCreatedBy}
+        expiresAtLabel={model.texts.invitationExpiresAt}
+        usedAtLabel={model.texts.invitationUsedAt}
+        statusActiveLabel={model.texts.invitationStatusActive}
+        statusUsedLabel={model.texts.invitationStatusUsed}
+        statusExpiredLabel={model.texts.invitationStatusExpired}
+        revokeConfirmTitle={model.texts.invitationRevokeConfirmTitle}
+        revokeConfirmDescription={model.texts.invitationRevokeConfirmDescription}
+        revokeLabel={model.texts.delete}
+        cancelLabel={model.texts.cancel}
+        emptyLabel={model.texts.invitationsEmpty}
+        errorLabel={model.texts.invitationsError}
+        canManage={workspaceManagement.canManageWorkspace}
+        noPermissionLabel={model.texts.noPermission}
+        invitations={workspaceManagement.invitations}
+        isLoading={workspaceManagement.isInvitationsLoading}
+        isError={workspaceManagement.isInvitationsError}
+        isForbidden={workspaceManagement.isInvitationsForbidden}
+        isSubmitting={workspaceManagement.isWorkspaceSubmitting}
+        pendingRevokeInvitationId={workspaceManagement.pendingRevokeInvitationId}
+        onRequestRevoke={workspaceManagement.onRequestRevokeInvitation}
+        onCancelRevoke={workspaceManagement.onCancelRevokeInvitation}
+        onConfirmRevoke={workspaceManagement.onConfirmRevokeInvitation}
+      />
+    </section>
   );
 }

@@ -17,6 +17,7 @@ export type DashboardWorkspaceManagementProps = {
   isInvitationsForbidden: boolean;
   isWorkspaceFormOpen: boolean;
   isWorkspaceTransferDialogOpen: boolean;
+  onSelectWorkspace: (workspaceId: string) => void;
   onOpenWorkspaceCreateForm: () => void;
   onStartEditWorkspace: (workspaceId: string) => void;
   onWorkspaceDraftNameChange: (value: string) => void;
@@ -42,6 +43,7 @@ export type DashboardPageViewProps = {
   canManageHosts: boolean;
   canManageMembers: boolean;
   canManageJobs: boolean;
+  isWorkspaceSwitching: boolean;
   jobsUiState: "ready" | "loading" | "empty" | "error";
   isRefreshing: boolean;
   onLocaleChange: (locale: string) => void;

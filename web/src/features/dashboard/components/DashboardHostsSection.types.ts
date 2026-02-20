@@ -4,6 +4,7 @@ export type DashboardHostsSectionProps = {
   title: string;
   hostNameLabel: string;
   addLabel: string;
+  editLabel: string;
   updateLabel: string;
   cancelLabel: string;
   deleteLabel: string;

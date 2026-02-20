@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react";
+import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import type { JobListItem, JobStatus } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
@@ -32,7 +33,7 @@ type DashboardJobRowProps = {
   onSelectNextJob: (jobId: string) => void;
 };
 
-export default function DashboardJobRow({
+function DashboardJobRow({
   job,
   jobIdLabel,
   projectLabel,
@@ -157,3 +158,5 @@ function MetaPill({ label, value, mono = false }: { label: string; value: string
     </span>
   );
 }
+
+export default memo(DashboardJobRow);

@@ -11,6 +11,7 @@ export default function DashboardHostsSection({
   title,
   hostNameLabel,
   addLabel,
+  editLabel,
   updateLabel,
   cancelLabel,
   deleteLabel,
@@ -85,7 +86,7 @@ export default function DashboardHostsSection({
           isError={isError}
           emptyLabel={emptyLabel}
           errorLabel={errorLabel}
-          updateLabel={updateLabel}
+          editLabel={editLabel}
           deleteLabel={deleteLabel}
           canManage={canManage}
           onStartEdit={onStartEdit}

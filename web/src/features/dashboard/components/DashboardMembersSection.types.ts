@@ -15,6 +15,7 @@ export type DashboardMembersSectionProps = {
   generateInviteLabel: string;
   copyLinkLabel: string;
   addLabel: string;
+  editLabel: string;
   updateLabel: string;
   cancelLabel: string;
   deleteLabel: string;

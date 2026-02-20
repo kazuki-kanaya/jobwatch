@@ -1,4 +1,5 @@
 import { MoreHorizontal, PencilLine, Trash2 } from "lucide-react";
+import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,20 +17,20 @@ type DashboardHostListProps = {
   isError: boolean;
   emptyLabel: string;
   errorLabel: string;
-  updateLabel: string;
+  editLabel: string;
   deleteLabel: string;
   canManage: boolean;
   onStartEdit: (hostId: string) => void;
   onRequestDelete: (hostId: string) => void;
 };
 
-export default function DashboardHostList({
+function DashboardHostList({
   hosts,
   isLoading,
   isError,
   emptyLabel,
   errorLabel,
-  updateLabel,
+  editLabel,
   deleteLabel,
   canManage,
   onStartEdit,
@@ -65,7 +66,17 @@ export default function DashboardHostList({
           key={host.id}
           className={cn("flex items-center justify-between rounded-md border border-slate-700 bg-slate-800/70 p-3")}
         >
-          <p className={cn("text-sm text-slate-200")}>{host.name}</p>
+          <div className={cn("flex min-w-0 items-center gap-2")}>
+            <p className={cn("truncate text-sm font-medium text-slate-200")}>{host.name}</p>
+            <p
+              className={cn(
+                "inline-flex items-center rounded-full border border-slate-600 bg-slate-900/70 px-2 py-0.5 font-mono text-[11px] text-slate-300",
+              )}
+              title={host.id}
+            >
+              <span className={cn("break-all")}>{host.id}</span>
+            </p>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -80,7 +91,7 @@ export default function DashboardHostList({
             <DropdownMenuContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
               <DropdownMenuItem onSelect={() => canManage && onStartEdit(host.id)} disabled={!canManage}>
                 <PencilLine className={cn("size-4")} />
-                {updateLabel}
+                {editLabel}
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"
@@ -97,3 +108,5 @@ export default function DashboardHostList({
     </>
   );
 }
+
+export default memo(DashboardHostList);

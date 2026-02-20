@@ -16,7 +16,7 @@ export default function LandingPageView({ texts, localeOptions, localeValue, onL
   return (
     <main
       className={cn(
-        "landing-page min-h-screen bg-[radial-gradient(circle_at_50%_22%,rgba(59,130,246,0.25),transparent_35%),radial-gradient(circle_at_72%_24%,rgba(168,85,247,0.18),transparent_32%),#0a1020] text-slate-100",
+        "landing-page min-h-screen bg-[radial-gradient(circle_at_50%_18%,rgba(56,139,253,0.22),transparent_34%),radial-gradient(circle_at_18%_32%,rgba(34,211,238,0.12),transparent_30%),radial-gradient(circle_at_78%_26%,rgba(168,85,247,0.14),transparent_30%),#09142c] text-slate-100",
       )}
     >
       <LandingHeader

@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardWorkspaceDeleteDialog from "@/features/dashboard/components/DashboardWorkspaceDeleteDialog";
 import DashboardWorkspaceFormDialog from "@/features/dashboard/components/DashboardWorkspaceFormDialog";
-import DashboardWorkspaceInvitationsSection from "@/features/dashboard/components/DashboardWorkspaceInvitationsSection";
 import DashboardWorkspaceList from "@/features/dashboard/components/DashboardWorkspaceList";
 import type { DashboardWorkspacesSectionProps } from "@/features/dashboard/components/DashboardWorkspacesSection.types";
 import DashboardWorkspaceTransferDialog from "@/features/dashboard/components/DashboardWorkspaceTransferDialog";
@@ -12,23 +11,11 @@ import { cn } from "@/lib/utils";
 export default function DashboardWorkspacesSection({
   title,
   workspaceNameLabel,
-  activeWorkspaceName,
+  activeWorkspaceId,
   newOwnerUserIdLabel,
   transferOwnerLabel,
-  invitationsTitle,
-  invitationRoleLabel,
-  invitationCreatedByLabel,
-  invitationExpiresAtLabel,
-  invitationUsedAtLabel,
-  invitationStatusActiveLabel,
-  invitationStatusUsedLabel,
-  invitationStatusExpiredLabel,
-  invitationRevokeConfirmTitle,
-  invitationRevokeConfirmDescription,
-  revokeLabel,
-  invitationsEmptyLabel,
-  invitationsErrorLabel,
   addLabel,
+  editLabel,
   updateLabel,
   cancelLabel,
   deleteLabel,
@@ -40,22 +27,18 @@ export default function DashboardWorkspacesSection({
   canCreate,
   canManage,
   workspaces,
-  invitations,
   workspaceDraftName,
   transferOwnerUserId,
   transferOwnerOptions,
   editingWorkspaceId,
   transferWorkspaceId,
   pendingDeleteWorkspaceId,
-  pendingRevokeInvitationId,
   isLoading,
   isError,
-  isInvitationsLoading,
-  isInvitationsError,
-  isInvitationsForbidden,
   isSubmitting,
   isFormOpen,
   isTransferDialogOpen,
+  onSelectWorkspace,
   onOpenCreate,
   onStartEdit,
   onDraftNameChange,
@@ -65,9 +48,6 @@ export default function DashboardWorkspacesSection({
   onTransferOwnerUserIdChange,
   onCloseTransfer,
   onSubmitTransfer,
-  onRequestRevokeInvitation,
-  onCancelRevokeInvitation,
-  onConfirmRevokeInvitation,
   onRequestDelete,
   onCancelDelete,
   onConfirmDelete,
@@ -91,14 +71,16 @@ export default function DashboardWorkspacesSection({
       <CardContent className={cn("space-y-3 px-4")}>
         <DashboardWorkspaceList
           workspaces={workspaces}
+          activeWorkspaceId={activeWorkspaceId}
           isLoading={isLoading}
           isError={isError}
           emptyLabel={emptyLabel}
           errorLabel={errorLabel}
-          updateLabel={updateLabel}
+          editLabel={editLabel}
           transferOwnerLabel={transferOwnerLabel}
           deleteLabel={deleteLabel}
           canManage={canManage}
+          onSelectWorkspace={onSelectWorkspace}
           onStartEdit={onStartEdit}
           onOpenTransfer={onOpenTransfer}
           onRequestDelete={onRequestDelete}
@@ -130,35 +112,6 @@ export default function DashboardWorkspacesSection({
           onClose={onCloseTransfer}
           onTransferOwnerUserIdChange={onTransferOwnerUserIdChange}
           onSubmit={onSubmitTransfer}
-        />
-        <DashboardWorkspaceInvitationsSection
-          title={invitationsTitle}
-          workspaceLabel={workspaceNameLabel}
-          workspaceName={activeWorkspaceName}
-          roleLabel={invitationRoleLabel}
-          createdByLabel={invitationCreatedByLabel}
-          expiresAtLabel={invitationExpiresAtLabel}
-          usedAtLabel={invitationUsedAtLabel}
-          statusActiveLabel={invitationStatusActiveLabel}
-          statusUsedLabel={invitationStatusUsedLabel}
-          statusExpiredLabel={invitationStatusExpiredLabel}
-          revokeConfirmTitle={invitationRevokeConfirmTitle}
-          revokeConfirmDescription={invitationRevokeConfirmDescription}
-          revokeLabel={revokeLabel}
-          cancelLabel={cancelLabel}
-          emptyLabel={invitationsEmptyLabel}
-          errorLabel={invitationsErrorLabel}
-          canManage={canManage}
-          noPermissionLabel={noPermissionLabel}
-          invitations={invitations}
-          isLoading={isInvitationsLoading}
-          isError={isInvitationsError}
-          isForbidden={isInvitationsForbidden}
-          isSubmitting={isSubmitting}
-          pendingRevokeInvitationId={pendingRevokeInvitationId}
-          onRequestRevoke={onRequestRevokeInvitation}
-          onCancelRevoke={onCancelRevokeInvitation}
-          onConfirmRevoke={onConfirmRevokeInvitation}
         />
         <DashboardWorkspaceDeleteDialog
           deleteConfirmTitle={deleteConfirmTitle}

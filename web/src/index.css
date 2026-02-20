@@ -116,12 +116,25 @@
 }
 
 @layer base {
+  html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground antialiased;
+    overflow-x: hidden;
     font-family: "IBM Plex Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  }
+  body[data-scroll-locked] {
+    /* biome-ignore lint/complexity/noImportantStyles: keep layout width stable while Radix dialog applies scroll-lock compensation */
+    padding-right: 0 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: keep layout width stable while Radix dialog applies scroll-lock compensation */
+    margin-right: 0 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: neutralize remove-scroll CSS var to avoid horizontal shift */
+    --removed-body-scroll-bar-size: 0px !important;
   }
   h1,
   h2,

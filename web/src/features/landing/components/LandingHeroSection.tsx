@@ -22,7 +22,15 @@ export default function LandingHeroSection({
   onCopy,
 }: LandingHeroSectionProps) {
   return (
-    <section className={cn("mx-auto w-full max-w-6xl space-y-8 px-4 py-16 md:px-8 md:py-24")}>
+    <section className={cn("relative mx-auto w-full max-w-6xl space-y-8 overflow-hidden px-4 py-16 md:px-8 md:py-24")}>
+      <div
+        className={cn(
+          "pointer-events-none absolute left-1/2 top-10 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/15 blur-3xl",
+        )}
+      />
+      <div
+        className={cn("pointer-events-none absolute right-10 top-20 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl")}
+      />
       <div className={cn("mx-auto max-w-5xl text-center")}>
         <p
           className={cn(
@@ -47,7 +55,7 @@ export default function LandingHeroSection({
           <Link to="/dashboard" className={cn("inline-flex")}>
             <Button
               className={cn(
-                "h-12 w-48 justify-center bg-blue-500 px-8 text-base font-semibold text-white hover:bg-blue-400",
+                "h-12 w-48 justify-center bg-blue-500 px-8 text-base font-semibold text-white shadow-[0_0_28px_rgba(59,130,246,0.35)] hover:bg-blue-400",
               )}
             >
               {texts.landing_get_started}
@@ -67,7 +75,7 @@ export default function LandingHeroSection({
       </div>
 
       <div className={cn("mx-auto w-full max-w-5xl")}>
-        <div className={cn("rounded-xl border border-[#2a3748] bg-[#141b24]")}>
+        <div className={cn("rounded-xl border border-[#2a3748] bg-[#141b24] shadow-[0_0_42px_rgba(59,130,246,0.18)]")}>
           <div className={cn("flex items-center justify-between border-b border-[#2a3748] px-3 py-3")}>
             <div className={cn("inline-flex rounded-md border border-[#2f3f52] bg-[#151f2b] p-1")}>
               {(["brew", "curl"] as const).map((method) => (
@@ -106,7 +114,11 @@ export default function LandingHeroSection({
       </div>
 
       <div className={cn("mx-auto max-w-4xl")}>
-        <div className={cn("relative rounded-xl border border-[#314760] bg-[#171d29] p-4 md:p-6")}>
+        <div
+          className={cn(
+            "relative rounded-xl border border-[#314760] bg-[#171d29] p-4 shadow-[0_0_48px_rgba(56,189,248,0.14)] md:p-6",
+          )}
+        >
           <div className={cn("mb-3 flex items-center gap-2")}>
             <span className={cn("size-3 rounded-full bg-red-400")} />
             <span className={cn("size-3 rounded-full bg-yellow-400")} />

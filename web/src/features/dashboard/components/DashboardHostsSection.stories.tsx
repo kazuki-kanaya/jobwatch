@@ -12,6 +12,7 @@ const meta = {
     title: "Hosts",
     hostNameLabel: "Host name",
     addLabel: "Add",
+    editLabel: "Edit",
     updateLabel: "Update",
     cancelLabel: "Cancel",
     deleteLabel: "Delete",

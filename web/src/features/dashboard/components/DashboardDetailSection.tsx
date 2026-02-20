@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { JobListItem, JobStatus } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ type DashboardDetailSectionProps = {
   errorLabel: string;
   emptyLabel: string;
   logsEmptyLabel: string;
+  isLoading: boolean;
   selectedJob: JobListItem | null;
 };
 
@@ -40,6 +42,7 @@ export default function DashboardDetailSection({
   errorLabel,
   emptyLabel,
   logsEmptyLabel,
+  isLoading,
   selectedJob,
 }: DashboardDetailSectionProps) {
   const commandWithArgs = selectedJob ? [selectedJob.command, ...selectedJob.args].join(" ").trim() : "";
@@ -50,8 +53,15 @@ export default function DashboardDetailSection({
         <CardTitle className={cn("text-base font-semibold text-slate-100")}>{title}</CardTitle>
       </CardHeader>
       <CardContent className={cn("space-y-4 px-4")}>
-        {!selectedJob ? <EmptyState label={emptyLabel} /> : null}
-        {selectedJob ? (
+        {isLoading ? (
+          <div className={cn("space-y-3")}>
+            <Skeleton className={cn("h-28 bg-slate-800")} />
+            <Skeleton className={cn("h-36 bg-slate-800")} />
+            <Skeleton className={cn("h-32 bg-slate-800")} />
+          </div>
+        ) : null}
+        {!isLoading && !selectedJob ? <EmptyState label={emptyLabel} /> : null}
+        {!isLoading && selectedJob ? (
           <>
             <section className={cn("space-y-3")}>
               <p className={cn("font-mono text-sm tracking-[0.12em] text-slate-400 uppercase")}>{selectedJobLabel}</p>
