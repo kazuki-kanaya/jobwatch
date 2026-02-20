@@ -65,12 +65,12 @@ func (e *Executor) Run(ctx context.Context, command string, args []string) Resul
 
 	go func() {
 		defer wg.Done()
-		stream(stdout, os.Stdout, tail)
+		_ = stream(stdout, os.Stdout, tail)
 	}()
 
 	go func() {
 		defer wg.Done()
-		stream(stderr, os.Stderr, tail)
+		_ = stream(stderr, os.Stderr, tail)
 	}()
 
 	err = cmd.Wait()

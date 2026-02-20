@@ -159,6 +159,7 @@ export const buildDashboardPageViewProps = ({
     onHostDraftChange: hostCrud.setHostDraftName,
     onHostSubmit: () => canManageHosts && hostCrud.submitHost(),
     onHostCopyToken: () => canManageHosts && hostCrud.copyHostToken(),
+    onHostDismissToken: () => canManageHosts && hostCrud.dismissHostToken(),
     onHostStartEdit: (hostId) => canManageHosts && hostCrud.startEditHost(hostId),
     onHostCloseForm: () => canManageHosts && hostCrud.closeHostForm(),
     onHostRequestDelete: (hostId) => canManageHosts && hostCrud.requestDeleteHost(hostId),

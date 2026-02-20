@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardHostDeleteDialog from "@/features/dashboard/components/DashboardHostDeleteDialog";
@@ -37,6 +37,7 @@ export default function DashboardHostsSection({
   onDraftNameChange,
   onSubmit,
   onCopyToken,
+  onDismissToken,
   onStartEdit,
   onCloseForm,
   onRequestDelete,
@@ -64,7 +65,17 @@ export default function DashboardHostsSection({
           <div
             className={cn("space-y-2 rounded-md border border-amber-300/40 bg-amber-500/10 p-3 text-sm text-amber-200")}
           >
-            <p className={cn("text-xs text-amber-100/90")}>{tokenMessage ?? ""}</p>
+            <div className={cn("flex items-start justify-between gap-2")}>
+              <p className={cn("text-xs text-amber-100/90")}>{tokenMessage ?? ""}</p>
+              <button
+                type="button"
+                onClick={onDismissToken}
+                className={cn("rounded p-1 text-amber-100/80 transition hover:bg-amber-200/10 hover:text-amber-50")}
+                aria-label="dismiss host token"
+              >
+                <X className={cn("size-3.5")} />
+              </button>
+            </div>
             <p className={cn("break-all text-xs")}>
               <span className={cn("font-semibold")}>{tokenLabel}:</span> {tokenValue}
             </p>

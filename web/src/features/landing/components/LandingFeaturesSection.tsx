@@ -15,38 +15,55 @@ const icons = {
 
 export default function LandingFeaturesSection({ texts }: LandingFeaturesSectionProps) {
   return (
-    <section id="features" className={cn("mx-auto grid w-full max-w-6xl gap-10 px-4 py-16 md:grid-cols-2 md:px-8")}>
-      <div>
-        <h2 className={cn("text-4xl font-bold leading-tight text-white")}>{texts.landing_features_title}</h2>
+    <section
+      id="features"
+      className={cn("mx-auto grid w-full max-w-6xl gap-8 px-4 py-16 md:grid-cols-2 md:px-8 md:py-20")}
+    >
+      <div className={cn("rounded-2xl border border-[#243448] bg-[#0f1928]/75 p-6 md:p-8")}>
+        <h2 className={cn("text-3xl font-bold leading-tight text-white md:text-4xl")}>
+          {texts.landing_features_title}
+        </h2>
         <ul className={cn("mt-8 space-y-6")}>
           {featureCards.map((feature) => {
             const Icon = icons[feature.icon];
             return (
-              <li key={feature.titleKey}>
+              <li key={feature.titleKey} className={cn("rounded-xl border border-[#2d3d52] bg-[#121f31] p-4")}>
                 <p className={cn("flex items-center gap-2 text-lg font-semibold text-white")}>
                   <Icon className={cn("size-4 text-cyan-300")} />
                   {texts[feature.titleKey]}
                 </p>
-                <p className={cn("mt-1 text-sm text-slate-400")}>{texts[feature.bodyKey]}</p>
+                <p className={cn("mt-2 text-sm leading-7 text-slate-300")}>{texts[feature.bodyKey]}</p>
               </li>
             );
           })}
         </ul>
       </div>
-      <div className={cn("relative overflow-hidden rounded-xl border border-[#2d3948] bg-[#15202d]")}>
-        <img
-          alt="Jobwatch dashboard preview"
-          src="/dashboard.png"
-          className={cn("h-full w-full object-cover opacity-70")}
-        />
-        <div className={cn("absolute inset-0 flex items-center justify-center")}>
-          <div
-            className={cn(
-              "flex size-16 items-center justify-center rounded-full border border-cyan-300/60 bg-cyan-300/20 text-cyan-200",
-            )}
-          >
-            ▶
-          </div>
+      <div
+        className={cn(
+          "relative overflow-hidden rounded-2xl border border-[#2d3948] bg-[#0f1726] p-3 shadow-[0_20px_40px_rgba(2,6,23,0.28)] md:p-4",
+        )}
+      >
+        <div
+          className={cn(
+            "overflow-hidden rounded-xl border border-[#223247] bg-[#0b1321] shadow-[0_12px_28px_rgba(2,6,23,0.32)]",
+          )}
+        >
+          <img
+            alt="Jobwatch dashboard preview"
+            src="/dashboard.png"
+            className={cn("h-full w-full object-contain object-center opacity-92")}
+          />
+        </div>
+        <div
+          className={cn(
+            "absolute bottom-3 right-2 z-10 w-[56%] rotate-[1deg] overflow-hidden rounded-xl border border-[#a7f3d0]/60 bg-white/96 shadow-[0_22px_40px_rgba(2,6,23,0.52)] backdrop-blur-sm md:bottom-4 md:right-4 md:w-[50%]",
+          )}
+        >
+          <img
+            alt="Jobwatch slack notification preview"
+            src="/slack.png"
+            className={cn("h-full w-full object-contain object-center")}
+          />
         </div>
       </div>
     </section>

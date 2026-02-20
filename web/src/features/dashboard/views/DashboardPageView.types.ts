@@ -82,6 +82,7 @@ export type DashboardPageViewProps = {
   onHostDraftChange: (value: string) => void;
   onHostSubmit: () => void;
   onHostCopyToken: () => void;
+  onHostDismissToken: () => void;
   onHostStartEdit: (hostId: string) => void;
   onHostCloseForm: () => void;
   onHostRequestDelete: (hostId: string) => void;

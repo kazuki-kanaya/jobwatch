@@ -1,4 +1,5 @@
-import { SquareTerminal } from "lucide-react";
+import { Github } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { LandingTexts } from "@/features/landing/types";
 import { cn } from "@/lib/utils";
 
@@ -9,29 +10,27 @@ type LandingFooterProps = {
 export default function LandingFooter({ texts }: LandingFooterProps) {
   return (
     <footer className={cn("border-t border-[#1f2c3a] bg-[#0b111d] py-12")}>
-      <div className={cn("mx-auto grid w-full max-w-6xl gap-10 px-4 md:grid-cols-4 md:px-8")}>
-        <div className={cn("md:col-span-2")}>
-          <div className={cn("flex items-center gap-2")}>
-            <SquareTerminal className={cn("size-4 text-cyan-300")} />
-            <p className={cn("font-semibold text-white")}>Jobwatch</p>
+      <div className={cn("mx-auto w-full max-w-6xl px-4 md:px-8")}>
+        <div
+          className={cn(
+            "flex flex-col items-start justify-between gap-5 rounded-2xl border border-cyan-400/20 bg-[#10192b] p-6 md:flex-row md:items-center",
+          )}
+        >
+          <div className={cn("space-y-2")}>
+            <p className={cn("text-lg font-semibold text-white md:text-xl")}>{texts.landing_footer_star_title}</p>
+            <p className={cn("text-sm leading-7 text-slate-300 md:text-base")}>{texts.landing_footer_star_subtitle}</p>
           </div>
-          <p className={cn("mt-4 max-w-md text-sm text-slate-400")}>{texts.landing_footer_blurb}</p>
-        </div>
-        <div>
-          <p className={cn("text-sm font-semibold text-white")}>{texts.landing_footer_product}</p>
-          <ul className={cn("mt-3 space-y-2 text-sm text-slate-400")}>
-            <li>{texts.landing_nav_features}</li>
-            <li>{texts.landing_nav_comparison}</li>
-            <li>{texts.landing_nav_docs}</li>
-          </ul>
-        </div>
-        <div>
-          <p className={cn("text-sm font-semibold text-white")}>{texts.landing_footer_company}</p>
-          <ul className={cn("mt-3 space-y-2 text-sm text-slate-400")}>
-            <li>GitHub</li>
-            <li>Terms</li>
-            <li>Privacy</li>
-          </ul>
+          <a
+            href="https://github.com/kazuki-kanaya/jobwatch"
+            target="_blank"
+            rel="noreferrer"
+            className={cn("md:shrink-0")}
+          >
+            <Button className={cn("h-11 bg-cyan-400 px-6 text-slate-950 hover:bg-cyan-300")}>
+              <Github className={cn("mr-2 size-4")} />
+              {texts.landing_footer_star_cta}
+            </Button>
+          </a>
         </div>
       </div>
     </footer>

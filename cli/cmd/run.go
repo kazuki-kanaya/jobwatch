@@ -1,9 +1,13 @@
 package cmd
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
 	"github.com/kazuki-kanaya/jobwatch/cli/internal/run"
@@ -37,7 +41,10 @@ var runCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		report := runner.Execute(cmd.Context(), command, commandArgs)
+		runCtx, stop := signal.NotifyContext(cmd.Context(), os.Interrupt, syscall.SIGTERM)
+		defer stop()
+
+		report := runner.Execute(runCtx, command, commandArgs)
 		if report.TrackingStartError != nil {
 			fmt.Fprintf(os.Stderr, "Failed to start job tracking: %v\n", report.TrackingStartError)
 		}
@@ -49,13 +56,11 @@ var runCmd = &cobra.Command{
 		}
 
 		if report.Result.Err != nil {
-			fmt.Fprintf(os.Stderr, "Command failed: %v\n", report.Result.Err)
-			if len(report.Result.TailLines) > 0 {
-				fmt.Fprintf(os.Stderr, "\nLast %d lines of output:\n", len(report.Result.TailLines))
-				for _, line := range report.Result.TailLines {
-					fmt.Fprintln(os.Stderr, line)
-				}
+			if errors.Is(runCtx.Err(), context.Canceled) {
+				fmt.Fprintln(os.Stderr, "Command canceled.")
+				os.Exit(130)
 			}
+			fmt.Fprintf(os.Stderr, "Command failed: %v\n", report.Result.Err)
 			os.Exit(1)
 		}
 	},

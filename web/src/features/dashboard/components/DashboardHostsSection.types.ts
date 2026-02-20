@@ -30,6 +30,7 @@ export type DashboardHostsSectionProps = {
   onDraftNameChange: (value: string) => void;
   onSubmit: () => void;
   onCopyToken: () => void;
+  onDismissToken: () => void;
   onStartEdit: (hostId: string) => void;
   onCloseForm: () => void;
   onRequestDelete: (hostId: string) => void;

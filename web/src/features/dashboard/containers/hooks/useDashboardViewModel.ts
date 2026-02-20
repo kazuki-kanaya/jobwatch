@@ -69,6 +69,7 @@ export const buildDashboardViewModel = ({
       finishedAt: t("dashboard_finished_at"),
       duration: t("dashboard_duration"),
       error: t("dashboard_error"),
+      viewFull: t("dashboard_view_full"),
       detailEmpty: t("dashboard_detail_empty"),
       logsEmpty: t("dashboard_logs_empty"),
       workspaces: t("dashboard_workspaces"),

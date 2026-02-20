@@ -1,15 +1,21 @@
 export const compareRows = [
   {
+    key: "purpose",
+    jobwatch: "landing_compare_purpose_jobwatch",
+    mlflow: "landing_compare_purpose_mlflow",
+    tensor: "landing_compare_purpose_tensorboard",
+  },
+  {
     key: "setup",
     jobwatch: "landing_compare_setup_jobwatch",
     mlflow: "landing_compare_setup_mlflow",
     tensor: "landing_compare_setup_tensorboard",
   },
   {
-    key: "status",
-    jobwatch: "landing_compare_status_jobwatch",
-    mlflow: "landing_compare_status_mlflow",
-    tensor: "landing_compare_status_tensorboard",
+    key: "target",
+    jobwatch: "landing_compare_target_jobwatch",
+    mlflow: "landing_compare_target_mlflow",
+    tensor: "landing_compare_target_tensorboard",
   },
   {
     key: "alerts",
@@ -18,10 +24,10 @@ export const compareRows = [
     tensor: "landing_compare_alerts_tensorboard",
   },
   {
-    key: "infra",
-    jobwatch: "landing_compare_infra_jobwatch",
-    mlflow: "landing_compare_infra_mlflow",
-    tensor: "landing_compare_infra_tensorboard",
+    key: "scope",
+    jobwatch: "landing_compare_scope_jobwatch",
+    mlflow: "landing_compare_scope_mlflow",
+    tensor: "landing_compare_scope_tensorboard",
   },
 ] as const;
 

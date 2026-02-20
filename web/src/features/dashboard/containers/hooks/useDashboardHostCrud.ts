@@ -27,6 +27,7 @@ type UseDashboardHostCrudResult = {
   closeHostForm: () => void;
   submitHost: () => Promise<void>;
   copyHostToken: () => Promise<void>;
+  dismissHostToken: () => void;
   requestDeleteHost: (hostId: string) => void;
   cancelDeleteHost: () => void;
   confirmDeleteHost: () => Promise<void>;
@@ -108,6 +109,10 @@ export const useDashboardHostCrud = ({
         console.error(error);
         toast.error(texts.hostTokenCopyError);
       }
+    },
+    dismissHostToken: () => {
+      setHostToken(null);
+      setHostTokenMessage(null);
     },
     requestDeleteHost: (hostId) => setPendingDeleteHostId(hostId),
     cancelDeleteHost: () => setPendingDeleteHostId(null),

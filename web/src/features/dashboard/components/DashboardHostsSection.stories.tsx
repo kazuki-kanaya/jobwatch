@@ -41,6 +41,7 @@ const meta = {
     onDraftNameChange: () => {},
     onSubmit: () => {},
     onCopyToken: () => {},
+    onDismissToken: () => {},
     onStartEdit: () => {},
     onCloseForm: () => {},
     onRequestDelete: () => {},

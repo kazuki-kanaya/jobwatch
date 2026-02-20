@@ -32,6 +32,7 @@ type DashboardOverviewTabSectionProps = Pick<
   | "onHostDraftChange"
   | "onHostSubmit"
   | "onHostCopyToken"
+  | "onHostDismissToken"
   | "onHostStartEdit"
   | "onHostCloseForm"
   | "onHostRequestDelete"
@@ -74,6 +75,7 @@ export default function DashboardOverviewTabSection(props: DashboardOverviewTabS
         onDraftNameChange={props.onHostDraftChange}
         onSubmit={props.onHostSubmit}
         onCopyToken={props.onHostCopyToken}
+        onDismissToken={props.onHostDismissToken}
         onStartEdit={props.onHostStartEdit}
         onCloseForm={props.onHostCloseForm}
         onRequestDelete={props.onHostRequestDelete}
@@ -128,6 +130,7 @@ export default function DashboardOverviewTabSection(props: DashboardOverviewTabS
           finishedAtLabel={model.texts.finishedAt}
           durationLabel={model.texts.duration}
           errorLabel={model.texts.error}
+          viewFullLabel={model.texts.viewFull}
           emptyLabel={model.texts.detailEmpty}
           logsEmptyLabel={model.texts.logsEmpty}
           isLoading={props.jobsUiState === "loading"}

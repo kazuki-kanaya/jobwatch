@@ -82,7 +82,7 @@ export default function DashboardHeaderSection({
             <h1 className={cn("text-3xl font-semibold text-slate-100 md:text-4xl")}>{title}</h1>
           </div>
           <p className={cn("font-mono text-sm text-slate-500")}>
-            {updatedAtLabel}: {updatedAt}
+            {updatedAtLabel}: {updatedAt} JST
           </p>
         </div>
         <div className={cn("flex flex-col items-start gap-2 md:items-end")}>

@@ -21,6 +21,7 @@ type DashboardManagementSectionProps = Pick<
   | "onHostDraftChange"
   | "onHostSubmit"
   | "onHostCopyToken"
+  | "onHostDismissToken"
   | "onHostStartEdit"
   | "onHostCloseForm"
   | "onHostRequestDelete"
@@ -93,6 +94,7 @@ export default function DashboardManagementSection(props: DashboardManagementSec
         onDraftNameChange={props.onHostDraftChange}
         onSubmit={props.onHostSubmit}
         onCopyToken={props.onHostCopyToken}
+        onDismissToken={props.onHostDismissToken}
         onStartEdit={props.onHostStartEdit}
         onCloseForm={props.onHostCloseForm}
         onRequestDelete={props.onHostRequestDelete}

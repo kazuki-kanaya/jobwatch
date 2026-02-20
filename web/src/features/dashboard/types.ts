@@ -98,6 +98,7 @@ export type DashboardViewModel = {
     finishedAt: string;
     duration: string;
     error: string;
+    viewFull: string;
     detailEmpty: string;
     logsEmpty: string;
     workspaces: string;
