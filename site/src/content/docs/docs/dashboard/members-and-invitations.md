@@ -20,6 +20,3 @@ Two ways to add members:
 
 <img src="/docs/dashboard/members-03-after-invite.png" alt="Member list and invitation record after join" width="1100" />
 
-## Username Update Example
-
-<img src="/docs/dashboard/members-04-edit-name.png" alt="Edit name dialog for signed-in user" width="1000" />

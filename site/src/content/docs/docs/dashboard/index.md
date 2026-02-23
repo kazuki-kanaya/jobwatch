@@ -17,32 +17,31 @@ Relationship:
 
 Use this flow when onboarding a new workspace:
 
-1. Open dashboard after account creation.
-2. Create workspace.
-3. Create host and copy the one-time token.
-4. Confirm jobs are arriving.
-5. Invite members and assign roles.
-
-## Flow Screens
-
-1) Initial dashboard (before workspace)
-
-<img src="/docs/dashboard/flow-01-initial.png" alt="Initial dashboard before workspace creation" width="1100" />
-
-2) Workspace creation
-
-<img src="/docs/dashboard/flow-02-workspace-create.png" alt="Workspace creation dialog" width="1100" />
-
-3) Host creation and token one-time display
-
-<img src="/docs/dashboard/flow-03-host-create.png" alt="Host creation dialog" width="1000" />
-
-<img src="/docs/dashboard/flow-04-token-once.png" alt="One-time host token displayed after host creation" width="1100" />
-
-4) Jobs and details
-
-<img src="/docs/dashboard/flow-05-jobs-detail.png" alt="Job list and job detail view" width="920" />
-
-5) Member invitations and role state
-
-<img src="/docs/dashboard/members-03-after-invite.png" alt="Members and invitation result with viewer role" width="1100" />
+<ol class="step-flow">
+  <li>
+    <h3>Initial dashboard (before workspace)</h3>
+    <p>Open the dashboard after account creation and verify your session is active.</p>
+    <img src="/docs/dashboard/flow-01-initial.png" alt="Initial dashboard before workspace creation" width="1100" />
+  </li>
+  <li>
+    <h3>Workspace creation</h3>
+    <p>Create a workspace to define the scope for hosts, jobs, and member access.</p>
+    <img src="/docs/dashboard/flow-02-workspace-create.png" alt="Workspace creation dialog" width="1100" />
+  </li>
+  <li>
+    <h3>Host creation and token one-time display</h3>
+    <p>Create a host in the workspace, then copy and store the token shown once.</p>
+    <img src="/docs/dashboard/flow-03-host-create.png" alt="Host creation dialog" width="1000" />
+    <img src="/docs/dashboard/flow-04-token-once.png" alt="One-time host token displayed after host creation" width="1100" />
+  </li>
+  <li>
+    <h3>Jobs and details</h3>
+    <p>Run commands via Obsern and confirm status, metadata, and logs in the jobs panel.</p>
+    <img src="/docs/dashboard/flow-05-jobs-detail.png" alt="Job list and job detail view" width="920" />
+  </li>
+  <li>
+    <h3>Member invitations and role state</h3>
+    <p>Invite members and check role assignment for collaboration and access control.</p>
+    <img src="/docs/dashboard/members-03-after-invite.png" alt="Members and invitation result with viewer role" width="1100" />
+  </li>
+</ol>

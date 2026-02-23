@@ -3,7 +3,7 @@ title: Dashboard Guide
 description: Dashboard の全体フローと主要機能。
 ---
 
-## 用語の意味
+## 基本概念
 
 - `Workspace`: チーム運用の単位です。メンバー、ホスト、ジョブはワークスペースごとに管理されます。ワークスペースは複数作成できます。
 - `Host`: 1つのワークスペースに紐づく実行元マシンです。Dashboard でホストを作成し、一度きり表示されるトークンを `obsern.yaml` に設定します。
@@ -17,32 +17,31 @@ description: Dashboard の全体フローと主要機能。
 
 新規運用時は次の流れで進めます。
 
-1. アカウント作成後に Dashboard を開く
-2. ワークスペース作成
-3. ホスト作成と一度きり表示トークンの保存
-4. ジョブ到着確認
-5. メンバー招待とロール設定
-
-## フロー画面
-
-1) 初期画面（ワークスペース作成前）
-
-<img src="/docs/dashboard/flow-01-initial.png" alt="ワークスペース作成前の初期ダッシュボード画面" width="1100" />
-
-2) ワークスペース作成
-
-<img src="/docs/dashboard/flow-02-workspace-create.png" alt="ワークスペース作成ダイアログ" width="1100" />
-
-3) ホスト作成とトークン一度きり表示
-
-<img src="/docs/dashboard/flow-03-host-create.png" alt="ホスト作成ダイアログ" width="1000" />
-
-<img src="/docs/dashboard/flow-04-token-once.png" alt="ホスト作成後の一度きりトークン表示" width="1100" />
-
-4) ジョブ一覧と詳細
-
-<img src="/docs/dashboard/flow-05-jobs-detail.png" alt="ジョブ一覧と詳細パネル" width="920" />
-
-5) メンバー招待とロール反映
-
-<img src="/docs/dashboard/members-03-after-invite.png" alt="招待後のメンバー一覧と viewer ロール表示" width="1100" />
+<ol class="step-flow">
+  <li>
+    <h3>初期画面（ワークスペース作成前）</h3>
+    <p>アカウント作成後に Dashboard を開き、ログイン状態を確認します。</p>
+    <img src="/docs/dashboard/flow-01-initial.png" alt="ワークスペース作成前の初期ダッシュボード画面" width="1100" />
+  </li>
+  <li>
+    <h3>ワークスペース作成</h3>
+    <p>ホスト、ジョブ、メンバー管理の単位となるワークスペースを作成します。</p>
+    <img src="/docs/dashboard/flow-02-workspace-create.png" alt="ワークスペース作成ダイアログ" width="1100" />
+  </li>
+  <li>
+    <h3>ホスト作成とトークン一度きり表示</h3>
+    <p>ワークスペースにホストを作成し、一度だけ表示されるトークンを保存します。</p>
+    <img src="/docs/dashboard/flow-03-host-create.png" alt="ホスト作成ダイアログ" width="1000" />
+    <img src="/docs/dashboard/flow-04-token-once.png" alt="ホスト作成後の一度きりトークン表示" width="1100" />
+  </li>
+  <li>
+    <h3>ジョブ一覧と詳細</h3>
+    <p>Obsern 経由で実行した結果が届くことを確認し、詳細ログを確認します。</p>
+    <img src="/docs/dashboard/flow-05-jobs-detail.png" alt="ジョブ一覧と詳細パネル" width="920" />
+  </li>
+  <li>
+    <h3>メンバー招待とロール反映</h3>
+    <p>メンバー招待とロール設定を行い、チーム運用のアクセス制御を確認します。</p>
+    <img src="/docs/dashboard/members-03-after-invite.png" alt="招待後のメンバー一覧と viewer ロール表示" width="1100" />
+  </li>
+</ol>

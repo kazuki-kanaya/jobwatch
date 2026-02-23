@@ -20,6 +20,3 @@ description: ワークスペースメンバーの招待。
 
 <img src="/docs/dashboard/members-03-after-invite.png" alt="招待利用後のメンバー一覧と招待履歴" width="1100" />
 
-## ユーザー名変更の例
-
-<img src="/docs/dashboard/members-04-edit-name.png" alt="サインインユーザー名の変更ダイアログ" width="1000" />
