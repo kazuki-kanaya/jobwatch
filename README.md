@@ -69,9 +69,6 @@ And syncs job states to a web dashboard.
 Example future flow:
 
 ```bash
-# Homebrew
-brew install jobwatch
-
 # curl installer
 curl -fsSL https://example.com/jobwatch/install.sh | bash
 ```
@@ -127,16 +124,6 @@ After installing Lefthook, run:
 
 ```bash
 lefthook install
-```
-
-### Start Local Services
-
-```bash
-# Start LocalStack (AWS emulator)
-task ddb:up
-
-# Start API server
-task api:dev
 ```
 
 Note: LocalStack emulates AWS services locally. See [docs.localstack.cloud](https://docs.localstack.cloud/) for details.

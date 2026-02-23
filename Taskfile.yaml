@@ -46,4 +46,4 @@ tasks:
     desc: Run development environment with API and web servers
     deps: [infra:aws:sync-dot-env]
     cmds:
-      - task --parallel api:dev web:dev infra:ddb:up
+      - task --parallel api:dev web:dev site:dev infra:db:up

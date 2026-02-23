@@ -1,9 +1,9 @@
 import type { DashboardViewModel, JobListItem } from "@/features/dashboard/types";
-import type { Locale, MessageKey } from "@/i18n/messages";
+import type { Locale, MessagesKey } from "@/i18n/messages";
 
 type UseDashboardViewModelParams = {
   locale: Locale;
-  t: (key: MessageKey) => string;
+  t: (key: MessagesKey) => string;
   updatedAt: string;
   workspaceId: string;
   hostId: string;

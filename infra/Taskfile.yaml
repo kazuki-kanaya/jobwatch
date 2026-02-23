@@ -9,19 +9,19 @@ includes:
     dir: ./terraform/cloudflare
 
 tasks:
-  ddb:create-tables:
+  db:create-tables:
     desc: Create DynamoDB tables in LocalStack
     cmds:
       - bash ./scripts/aws/dynamodb/wait.sh
       - bash ./scripts/aws/dynamodb/create-tables.sh
 
-  ddb:up:
+  db:up:
     desc: Start local DynamoDB services
     cmds:
       - docker compose up -d
-      - task: ddb:create-tables
+      - task: db:create-tables
 
-  ddb:down:
+  db:down:
     desc: Stop and remove local DynamoDB services
     cmds:
       - docker compose down -v

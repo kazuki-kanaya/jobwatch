@@ -1,3 +1,5 @@
+import type { Messages } from "@/i18n/messages/types";
+
 export const enMessages = {
   dashboard_title: "Jobwatch Control Deck",
   dashboard_subtitle: "Monitor command processes (jobs) across workspaces and GPU hosts.",
@@ -16,77 +18,6 @@ export const enMessages = {
   dashboard_tab_members: "Members",
   locale_en: "English",
   locale_ja: "Japanese",
-
-  landing_nav_features: "Features",
-  landing_nav_how_it_works: "How It Works",
-  landing_nav_comparison: "Comparison",
-  landing_nav_docs: "Docs",
-  landing_release_badge: "Now in Beta",
-
-  landing_hero_title_a: "Stop checking",
-  landing_hero_title_ssh: "SSH",
-  landing_hero_title_b: " just to see if it’s still running",
-  landing_hero_subtitle:
-    "Track long-running jobs in real time. Get notified on failures and manage everything from a unified dashboard — no code changes required.",
-  landing_get_started: "Get Started",
-
-  landing_pain_eyebrow: "The pain",
-  landing_pain_title: "Why Jobwatch?",
-  landing_pain_subtitle: "A background job died after five minutes. You found out the next morning.",
-  landing_pain_card_1_title: "Silent Stops",
-  landing_pain_card_1_body:
-    "The background job stopped after five minutes, and I didn’t realize until the next morning. A failure alert would have saved me hours.",
-  landing_pain_card_2_title: "Hard to Debug",
-  landing_pain_card_2_body:
-    "When jobs fail in the background, the cause is unclear. Jobwatch captures exit status and error output for faster diagnosis.",
-  landing_pain_card_3_title: "Multi-Host Visibility",
-  landing_pain_card_3_body: "Unsure what’s running where? Jobwatch shows job status and logs across hosts in one view.",
-
-  landing_features_title: "Built for engineers who run real workloads.",
-  landing_feature_1_title: "Zero Code Changes",
-  landing_feature_1_body: "Wrap existing commands with jobwatch. No SDK imports, no instrumentation boilerplate.",
-  landing_feature_2_title: "Instant Slack Alerts",
-  landing_feature_2_body: "Failure notifications go directly to your channel through webhook integration.",
-  landing_feature_3_title: "Unified Dashboard",
-  landing_feature_3_body: "Inspect command status, logs, and runtime context across your infrastructure in one screen.",
-
-  landing_compare_title: "How It Compares",
-  landing_compare_subtitle: "Jobwatch focuses on execution health, not just experiment metrics.",
-  landing_compare_col_feature: "Feature",
-
-  landing_compare_purpose_label: "Primary Goal",
-  landing_compare_purpose_jobwatch: "Execution monitoring",
-  landing_compare_purpose_mlflow: "Experiment management",
-  landing_compare_purpose_tensorboard: "Training metrics visualization",
-
-  landing_compare_setup_label: "Adoption Method",
-  landing_compare_setup_jobwatch: "CLI wrapper (no code changes)",
-  landing_compare_setup_mlflow: "SDK integration",
-  landing_compare_setup_tensorboard: "SDK integration",
-
-  landing_compare_target_label: "Monitoring Target",
-  landing_compare_target_jobwatch: "Running jobs",
-  landing_compare_target_mlflow: "Experiment logs",
-  landing_compare_target_tensorboard: "Training logs",
-
-  landing_compare_alerts_label: "Abnormal Exit Alerts",
-  landing_compare_alerts_jobwatch: "Instant alerts (Slack, etc.)",
-  landing_compare_alerts_mlflow: "Not built-in",
-  landing_compare_alerts_tensorboard: "None",
-
-  landing_compare_scope_label: "Monitoring Scope",
-  landing_compare_scope_jobwatch: "Across multiple servers",
-  landing_compare_scope_mlflow: "Per project",
-  landing_compare_scope_tensorboard: "Local-first",
-
-  landing_cta_title: "Ready to automate your monitoring?",
-  landing_cta_subtitle: "Get started in a few minutes.",
-  landing_cta_primary: "Get Started for Free",
-  landing_cta_secondary: "Documentation",
-
-  landing_footer_star_title: "If Jobwatch helps, leave a star on GitHub.",
-  landing_footer_star_subtitle: "Jobwatch is open source. Stars and feedback directly support development.",
-  landing_footer_star_cta: "Star on GitHub",
 
   dashboard_refresh: "Refresh",
   dashboard_refresh_success: "Dashboard refreshed.",
@@ -220,4 +151,4 @@ export const enMessages = {
   status_completed: "Completed",
   status_failed: "Failed",
   status_canceled: "Canceled",
-} as const;
+} as const satisfies Messages;
