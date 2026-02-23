@@ -33,11 +33,11 @@ data "aws_iam_policy_document" "dynamodb_access" {
 }
 
 locals {
-  function_name = "jobwatch-api"
+  function_name = "obsern-api"
 }
 
 resource "aws_iam_role" "this" {
-  name               = "jobwatch-api-lambda-role"
+  name               = "obsern-api-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
   tags               = var.tags
 }

@@ -5,7 +5,7 @@ export const enMessages = {
   languageSwitchLabel: "日本語",
   nav: {
     features: "Features",
-    howItWorks: "Why Jobwatch",
+    howItWorks: "Why Obsern",
     comparison: "Comparison",
     docs: "Docs",
     getStarted: "Get Started",
@@ -23,17 +23,17 @@ export const enMessages = {
     quickStartLines: [
       "# Run as usual",
       "python train_model.py --epochs 100",
-      "# One-time setup (generate jobwatch.yaml)",
-      "jobwatch init",
-      "# Wrap your command with jobwatch",
-      "jobwatch run python train_model.py --epochs 100",
+      "# One-time setup (generate obsern.yaml)",
+      "obsern init",
+      "# Wrap your command with obsern",
+      "obsern run python train_model.py --epochs 100",
     ],
   },
   pain: {
     eyebrow: "The pain",
-    title: "Why Jobwatch?",
+    title: "Why Obsern?",
     subtitle:
-      "A workflow that relies on repeatedly checking processes over SSH leads to missed completions and delayed failure detection. Jobwatch reduces that wasted wait time and rework, and lowers operational burden.",
+      "A workflow that relies on repeatedly checking processes over SSH leads to missed completions and delayed failure detection. Obsern reduces that wasted wait time and rework, and lowers operational burden.",
     cards: [
       {
         title: "Silent Stops",
@@ -41,11 +41,11 @@ export const enMessages = {
       },
       {
         title: "Slow Debug Cycles",
-        body: "A background run fails, but the cause is unclear. With Jobwatch, you can immediately check exit status and error output.",
+        body: "A background run fails, but the cause is unclear. With Obsern, you can immediately check exit status and error output.",
       },
       {
         title: "Multi-Host Blind Spots",
-        body: "It is hard to know what is running on which server. Jobwatch gives you one cross-host view of runtime status and logs.",
+        body: "It is hard to know what is running on which server. Obsern gives you one cross-host view of runtime status and logs.",
       },
     ],
   },
@@ -54,7 +54,7 @@ export const enMessages = {
     cards: [
       {
         title: "Zero Code Changes",
-        body: "Wrap existing commands with jobwatch. No SDK imports, no instrumentation boilerplate.",
+        body: "Wrap existing commands with obsern. No SDK imports, no instrumentation boilerplate.",
       },
       {
         title: "Instant Slack Alerts",
@@ -68,36 +68,36 @@ export const enMessages = {
   },
   comparison: {
     title: "How It Compares",
-    subtitle: "Jobwatch focuses on execution health rather than experiment metrics.",
+    subtitle: "Obsern focuses on execution health rather than experiment metrics.",
     featureColumn: "Feature",
     rows: [
       {
         label: "Primary Goal",
-        jobwatch: "Execution monitoring",
+        obsern: "Execution monitoring",
         mlflow: "Experiment management",
         tensorboard: "Training metrics visualization",
       },
       {
         label: "Adoption Method",
-        jobwatch: "CLI wrapper (no code changes)",
+        obsern: "CLI wrapper (no code changes)",
         mlflow: "SDK integration",
         tensorboard: "SDK integration",
       },
       {
         label: "Monitoring Target",
-        jobwatch: "Running processes",
+        obsern: "Running processes",
         mlflow: "Experiment logs",
         tensorboard: "Training logs",
       },
       {
         label: "Abnormal Exit Alerts",
-        jobwatch: "Instant alerts (Slack)",
+        obsern: "Instant alerts (Slack)",
         mlflow: "Not built-in",
         tensorboard: "None",
       },
       {
         label: "Monitoring Scope",
-        jobwatch: "Across multiple servers",
+        obsern: "Across multiple servers",
         mlflow: "Per project",
         tensorboard: "Local-first",
       },
@@ -110,8 +110,8 @@ export const enMessages = {
     secondary: "Documentation",
   },
   footer: {
-    title: "If Jobwatch helps, leave a star on GitHub.",
-    subtitle: "Jobwatch is open source. Stars and feedback directly support development.",
+    title: "If Obsern helps, leave a star on GitHub.",
+    subtitle: "Obsern is open source. Stars and feedback directly support development.",
     button: "Star on GitHub",
   },
 } satisfies LandingMessages;

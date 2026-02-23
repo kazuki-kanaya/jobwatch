@@ -1,7 +1,7 @@
 variable "table_name" {
   description = "The name of the DynamoDB table"
   type        = string
-  default     = "jobwatch-table"
+  default     = "obsern-table"
 }
 
 variable "tags" {

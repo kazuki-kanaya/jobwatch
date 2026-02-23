@@ -9,8 +9,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/run"
+	"github.com/kazuki-kanaya/obsern/cli/internal/config"
+	"github.com/kazuki-kanaya/obsern/cli/internal/run"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +18,7 @@ var configPath string
 
 var runCmd = &cobra.Command{
 	Use:   "run <command...>",
-	Short: "Run a command with jobwatch notifications",
+	Short: "Run a command with obsern notifications",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		command := args[0]
@@ -70,6 +70,6 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 	runCmd.Flags().StringVarP(&configPath, "config", "c", "", "config file path")
 	// Treat everything after the first positional arg as command args.
-	// This allows `jobwatch run ls -la` without requiring `--`.
+	// This allows `obsern run ls -la` without requiring `--`.
 	runCmd.Flags().SetInterspersed(false)
 }

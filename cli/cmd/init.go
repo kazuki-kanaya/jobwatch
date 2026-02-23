@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
+	"github.com/kazuki-kanaya/obsern/cli/internal/config"
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +14,7 @@ var (
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialize jobwatch configuration",
+	Short: "Initialize obsern configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		path := initPath
 		if path == "" {

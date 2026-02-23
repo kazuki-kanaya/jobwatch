@@ -9,7 +9,7 @@ const meta = {
     backgrounds: { default: "dark" },
   },
   args: {
-    title: "Jobwatch Control Deck",
+    title: "Obsern Control Deck",
     subtitle: "GPU server jobs at a glance, with fast anomaly spotting.",
     updatedAt: "02/16/2026, 09:41 AM",
     missionControlLabel: "mission control",
@@ -50,7 +50,7 @@ export const English: Story = {};
 
 export const Japanese: Story = {
   args: {
-    title: "Jobwatch コントロールデッキ",
+    title: "Obsern コントロールデッキ",
     subtitle: "GPUサーバーのジョブ状況を素早く俯瞰できます。",
     updatedAt: "2026/02/16 09:41",
     missionControlLabel: "監視モード",

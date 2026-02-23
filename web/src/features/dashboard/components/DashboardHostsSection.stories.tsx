@@ -76,7 +76,7 @@ export const ReadOnly: Story = {
 
 export const TokenIssued: Story = {
   args: {
-    tokenValue: "jobwatch_hst_abc123def456",
+    tokenValue: "obsern_hst_abc123def456",
     tokenMessage: "Save this token securely. It will not be shown again.",
   },
 };

@@ -1,7 +1,7 @@
 import type { Messages } from "@/i18n/messages/types";
 
 export const jaMessages = {
-  dashboard_title: "Jobwatch Control Deck",
+  dashboard_title: "Obsern Control Deck",
   dashboard_subtitle: "ワークスペースやGPUホストをまたいで、コマンド実行ジョブを監視します。",
   dashboard_filter_workspace: "ワークスペース",
   dashboard_filter_host: "ホスト",

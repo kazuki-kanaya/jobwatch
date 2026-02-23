@@ -22,10 +22,10 @@ module "cognito" {
 #   environment_variables = merge(
 #     var.lambda_environment,
 #     {
-#       JOBWATCH_DDB_TABLE_NAME = module.dynamodb.table_name
-#       JOBWATCH_OIDC_JWKS_URL  = module.cognito.oidc_jwks_url
-#       JOBWATCH_OIDC_AUDIENCE  = module.cognito.user_pool_client_id
-#       JOBWATCH_OIDC_ISSUER    = module.cognito.oidc_issuer
+#       OBSERN_DDB_TABLE_NAME = module.dynamodb.table_name
+#       OBSERN_OIDC_JWKS_URL  = module.cognito.oidc_jwks_url
+#       OBSERN_OIDC_AUDIENCE  = module.cognito.user_pool_client_id
+#       OBSERN_OIDC_ISSUER    = module.cognito.oidc_issuer
 #     },
 #   )
 #   tags = var.tags

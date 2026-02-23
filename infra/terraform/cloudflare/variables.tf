@@ -12,7 +12,7 @@ variable "cloudflare_account_id" {
 variable "project_name" {
   description = "Cloudflare Pages project name"
   type        = string
-  default     = "jobwatch-web"
+  default     = "obsern-web"
 }
 
 variable "api_origin" {

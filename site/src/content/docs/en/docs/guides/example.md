@@ -3,7 +3,7 @@ title: Slack Alert Setup Example
 description: Minimal Slack webhook notification setup.
 ---
 
-Add a Slack webhook to `jobwatch.yaml` to receive immediate failure alerts.
+Add a Slack webhook to `obsern.yaml` to receive immediate failure alerts.
 
 ```yaml
 notifications:

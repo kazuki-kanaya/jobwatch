@@ -8,7 +8,7 @@ import (
 
 func TestGenerate_CreatesFile(t *testing.T) {
 	dir := t.TempDir()
-	path := filepath.Join(dir, "jobwatch.yaml")
+	path := filepath.Join(dir, "obsern.yaml")
 
 	if err := Generate(path, "foo", false); err != nil {
 		t.Fatalf("Generate failed: %v", err)
@@ -21,7 +21,7 @@ func TestGenerate_CreatesFile(t *testing.T) {
 
 func TestGenerate_FailsIfExists(t *testing.T) {
 	dir := t.TempDir()
-	path := filepath.Join(dir, "jobwatch.yaml")
+	path := filepath.Join(dir, "obsern.yaml")
 
 	if err := Generate(path, "foo", false); err != nil {
 		t.Fatalf("initial Generate failed: %v", err)

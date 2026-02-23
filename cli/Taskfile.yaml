@@ -23,7 +23,7 @@ tasks:
   build:
     desc: Build CLI binary
     cmds:
-      - go build -o dist/jobwatch .
+      - go build -o dist/obsern .
 
   ci:
     desc: Run CLI CI checks

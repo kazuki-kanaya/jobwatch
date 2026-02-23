@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-JOBS_TABLE_NAME=${JOBS_TABLE_NAME:-jobwatch-jobs}
-TABLE_NAME=${JOBWATCH_DDB_TABLE_NAME:-jobwatch-dev}
+JOBS_TABLE_NAME=${JOBS_TABLE_NAME:-obsern-jobs}
+TABLE_NAME=${OBSERN_DDB_TABLE_NAME:-obsern-dev}
 ENDPOINT=${DDB_ENDPOINT:-http://localhost:4566}
 REGION=${AWS_REGION:-ap-northeast-1}
 

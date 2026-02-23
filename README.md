@@ -1,8 +1,8 @@
-# Jobwatch
+# Obsern
 
 > Lightweight job monitoring for long-running ML/compute experiments.
 
-Jobwatch is a simple tool to monitor long-running scripts on GPU servers or cloud machines.
+Obsern is a simple tool to monitor long-running scripts on GPU servers or cloud machines.
 It helps you track whether jobs are running, finished, or failed — without constantly SSH-ing into servers.
 
 This project is in early development.
@@ -24,19 +24,19 @@ Existing tools like MLflow or TensorBoard are powerful, but often heavy if you j
 - Notifications
 - Lightweight monitoring across servers
 
-Jobwatch aims to be a minimal, easy-to-adopt solution.
+Obsern aims to be a minimal, easy-to-adopt solution.
 
 ---
 
 ## 🚀 Concept
 
-Wrap your command with Jobwatch:
+Wrap your command with obsern:
 
 ```bash
-jobwatch run python main.py
+obsern run python main.py
 ```
 
-Jobwatch tracks:
+Obsern tracks:
 
 - Running
 - Completed
@@ -70,7 +70,7 @@ Example future flow:
 
 ```bash
 # curl installer
-curl -fsSL https://example.com/jobwatch/install.sh | bash
+curl -fsSL https://example.com/obsern/install.sh | bash
 ```
 
 ---
@@ -86,7 +86,7 @@ Feedback and ideas are welcome.
 
 ## 🎯 Goals
 
-Jobwatch is designed to be:
+Obsern is designed to be:
 
 - Lightweight
 - Easy to adopt

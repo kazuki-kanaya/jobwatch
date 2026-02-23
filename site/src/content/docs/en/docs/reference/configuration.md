@@ -1,9 +1,9 @@
 ---
 title: Configuration
-description: Basic structure of jobwatch.yaml.
+description: Basic structure of obsern.yaml.
 ---
 
-Generate `jobwatch.yaml` with `jobwatch init`, then set notification and runtime metadata.
+Generate `obsern.yaml` with `obsern init`, then set notification and runtime metadata.
 
 Common keys:
 
