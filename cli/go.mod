@@ -1,4 +1,4 @@
-module github.com/kazuki-kanaya/jobwatch/cli
+module github.com/kazuki-kanaya/obsern/cli
 
 go 1.25.7
 

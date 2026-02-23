@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/notifier"
+	"github.com/kazuki-kanaya/obsern/cli/internal/notifier"
 )
 
 type formattedMessage struct {
@@ -24,7 +24,7 @@ func format(n notifier.Notification) formattedMessage {
 	}
 
 	command := strings.TrimSpace(strings.Join(append([]string{n.Command}, n.Args...), " "))
-	title := fmt.Sprintf("jobwatch / %s", n.Project)
+	title := fmt.Sprintf("obsern / %s", n.Project)
 	lines := []string{statusLabel}
 	if command != "" {
 		lines = append(lines, fmt.Sprintf("*Command*  `%s`", command))

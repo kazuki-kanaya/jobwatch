@@ -12,7 +12,7 @@ def create_app() -> FastAPI:
     settings = get_settings()
     configure_logging(settings.log_level)
 
-    app = FastAPI(title="Jobwatch API")
+    app = FastAPI(title="Obsern API")
     register_routers(app)
     register_middlewares(app, settings)
     register_exception_handlers(app)

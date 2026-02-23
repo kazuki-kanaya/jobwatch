@@ -43,7 +43,7 @@ export type LandingMessages = {
     featureColumn: string;
     rows: Array<{
       label: string;
-      jobwatch: string;
+      obsern: string;
       mlflow: string;
       tensorboard: string;
     }>;

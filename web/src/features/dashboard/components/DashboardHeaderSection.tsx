@@ -70,7 +70,7 @@ export default function DashboardHeaderSection({
     <Card className={cn("border-slate-700/60 bg-slate-900/80 py-4 backdrop-blur")}>
       <CardContent className={cn("flex flex-col gap-4 px-4 md:flex-row md:items-center md:justify-between")}>
         <div className={cn("space-y-1")}>
-          <p className={cn("font-mono text-sm tracking-[0.2em] text-cyan-300 uppercase")}>{missionControlLabel}</p>
+          <p className={cn("text-xs font-semibold tracking-[0.12em] text-cyan-300 uppercase")}>{missionControlLabel}</p>
           <div className={cn("flex items-center gap-3")}>
             <span
               className={cn(
@@ -81,7 +81,7 @@ export default function DashboardHeaderSection({
             </span>
             <h1 className={cn("text-3xl font-semibold text-slate-100 md:text-4xl")}>{title}</h1>
           </div>
-          <p className={cn("font-mono text-sm text-slate-500")}>
+          <p className={cn("text-sm text-slate-400")}>
             {updatedAtLabel}: {updatedAt} JST
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function DashboardHeaderSection({
                 <UserRound className={cn("size-4 text-cyan-200")} />
                 <span className={cn("font-semibold leading-none")}>{currentUserName}</span>
               </div>
-              <div className={cn("flex items-center gap-1.5 font-mono text-xs text-slate-300")}>
+              <div className={cn("flex items-center gap-1.5 text-xs text-slate-300")}>
                 <Fingerprint className={cn("size-3.5 text-slate-300")} />
                 <span className={cn("leading-none")}>{currentUserId}</span>
               </div>

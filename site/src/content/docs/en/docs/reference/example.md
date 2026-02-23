@@ -4,7 +4,7 @@ description: Frequently used command patterns.
 ---
 
 ```bash
-jobwatch init
-jobwatch run python train_model.py --epochs 100
-jobwatch run --tag experiment=ablation python train_model.py --epochs 50
+obsern init
+obsern run python train_model.py --epochs 100
+obsern run --tag experiment=ablation python train_model.py --epochs 50
 ```

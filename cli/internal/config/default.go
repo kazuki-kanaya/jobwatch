@@ -1,6 +1,6 @@
 package config
 
-const DefaultFilename = "jobwatch.yaml"
+const DefaultFilename = "obsern.yaml"
 
 const DefaultTemplate = `project:
   name: my_project
@@ -10,7 +10,7 @@ const DefaultTemplate = `project:
 api:
   enabled: false
   base_url: http://localhost:8000
-  token: ${JOBWATCH_HOST_TOKEN}
+  token: ${OBSERN_HOST_TOKEN}
 
 run:
   log_tail: 80
@@ -21,5 +21,5 @@ notify:
   channels:
     - kind: slack
       settings:
-        webhook_url: ${JOBWATCH_SLACK_WEBHOOK_URL}
+        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 `

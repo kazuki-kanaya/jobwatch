@@ -1,7 +1,7 @@
 import type { Messages } from "@/i18n/messages/types";
 
 export const enMessages = {
-  dashboard_title: "Jobwatch Control Deck",
+  dashboard_title: "Obsern Control Deck",
   dashboard_subtitle: "Monitor command processes (jobs) across workspaces and GPU hosts.",
   dashboard_filter_workspace: "Workspace",
   dashboard_filter_host: "Host",

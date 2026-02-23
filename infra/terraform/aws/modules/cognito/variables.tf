@@ -1,7 +1,7 @@
 variable "domain_prefix" {
   description = "The prefix for the Cognito User Pool domain"
   type        = string
-  default     = "jobwatch-app"
+  default     = "obsern-app"
 }
 
 variable "callback_urls" {

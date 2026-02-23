@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_prefix="JOBWATCH_",
+        env_prefix="OBSERN_",
         case_sensitive=False,
         env_file=".env",
         env_file_encoding="utf-8",
@@ -13,7 +13,7 @@ class Settings(BaseSettings):
 
     ddb_endpoint: str | None = None
     aws_region: str = "ap-northeast-1"
-    ddb_table_name: str = "jobwatch-dev"
+    ddb_table_name: str = "obsern-dev"
     log_level: str = "INFO"
     app_timezone: str = "Asia/Tokyo"
     invitation_expiry_hours: int = 168

@@ -6,10 +6,10 @@ import (
 )
 
 func TestLoad_LoadsWithSlackWebhook(t *testing.T) {
-	t.Setenv("JOBWATCH_SLACK_WEBHOOK_URL", "https://example.com/webhook")
+	t.Setenv("OBSERN_SLACK_WEBHOOK_URL", "https://example.com/webhook")
 
 	dir := t.TempDir()
-	path := filepath.Join(dir, "jobwatch.yaml")
+	path := filepath.Join(dir, "obsern.yaml")
 
 	yamlText := `project:
   name: my_project
@@ -18,7 +18,7 @@ func TestLoad_LoadsWithSlackWebhook(t *testing.T) {
 api:
   enabled: false
   endpoint: http://localhost:8000
-  token: ${JOBWATCH_HOST_TOKEN}
+  token: ${OBSERN_HOST_TOKEN}
 
 run:
   log_tail: 80
@@ -29,7 +29,7 @@ notify:
   channels:
     - kind: slack
       settings:
-        webhook_url: ${JOBWATCH_SLACK_WEBHOOK_URL}
+        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 `
 	if err := Generate(path, yamlText, false); err != nil {
 		t.Fatalf("WriteFile failed: %v", err)
@@ -52,7 +52,7 @@ notify:
 func TestLoad_FailsWhenSlackWebhookEnvMissing(t *testing.T) {
 
 	dir := t.TempDir()
-	path := filepath.Join(dir, "jobwatch.yaml")
+	path := filepath.Join(dir, "obsern.yaml")
 
 	yamlText := `project:
   name: my_project
@@ -61,7 +61,7 @@ func TestLoad_FailsWhenSlackWebhookEnvMissing(t *testing.T) {
 api:
   enabled: false
   base_url: http://localhost:8000
-  token: ${JOBWATCH_HOST_TOKEN}
+  token: ${OBSERN_HOST_TOKEN}
 
 run:
   log_tail: 80
@@ -72,7 +72,7 @@ notify:
   channels:
     - kind: slack
       settings:
-        webhook_url: ${JOBWATCH_SLACK_WEBHOOK_URL}
+        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 `
 	if err := Generate(path, yamlText, false); err != nil {
 		t.Fatalf("WriteFile failed: %v", err)

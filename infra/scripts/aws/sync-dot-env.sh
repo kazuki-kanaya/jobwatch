@@ -52,9 +52,9 @@ upsert_env "$WEB_ENV_FILE" "VITE_OIDC_CLIENT_ID" "$oidc_client_id"
 upsert_env "$WEB_ENV_FILE" "VITE_OIDC_COGNITO_DOMAIN" "$oidc_cognito_domain"
 upsert_env "$WEB_ENV_FILE" "VITE_API_BASE_URL" "$api_base_url"
 
-upsert_env "$API_ENV_FILE" "JOBWATCH_OIDC_JWKS_URL" "$oidc_jwks_url"
-upsert_env "$API_ENV_FILE" "JOBWATCH_OIDC_AUDIENCE" "$oidc_client_id"
-upsert_env "$API_ENV_FILE" "JOBWATCH_OIDC_ISSUER" "$oidc_issuer"
+upsert_env "$API_ENV_FILE" "OBSERN_OIDC_JWKS_URL" "$oidc_jwks_url"
+upsert_env "$API_ENV_FILE" "OBSERN_OIDC_AUDIENCE" "$oidc_client_id"
+upsert_env "$API_ENV_FILE" "OBSERN_OIDC_ISSUER" "$oidc_issuer"
 
 echo "Synced env files:"
 echo "- $WEB_ENV_FILE"

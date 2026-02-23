@@ -8,11 +8,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/config"
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/jobtracker"
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/notifier"
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/notifier/slack"
-	"github.com/kazuki-kanaya/jobwatch/cli/internal/runner"
+	"github.com/kazuki-kanaya/obsern/cli/internal/config"
+	"github.com/kazuki-kanaya/obsern/cli/internal/jobtracker"
+	"github.com/kazuki-kanaya/obsern/cli/internal/notifier"
+	"github.com/kazuki-kanaya/obsern/cli/internal/notifier/slack"
+	"github.com/kazuki-kanaya/obsern/cli/internal/runner"
 )
 
 type Runner struct {
@@ -58,7 +58,7 @@ func (r *Runner) Execute(ctx context.Context, command string, commandArgs []stri
 		StartedAt: startedAt,
 	})
 	if jobID != "" {
-		fmt.Fprintf(os.Stderr, "[Jobwatch] 🚀 Job started: %s\n", jobID)
+		fmt.Fprintf(os.Stderr, "[Obsern] 🚀 Job started: %s\n", jobID)
 	}
 
 	result := r.exec.Run(ctx, command, commandArgs)

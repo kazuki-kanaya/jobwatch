@@ -1,5 +1,5 @@
 locals {
-  api_name = "jobwatch-api"
+  api_name = "obsern-api"
 }
 
 resource "aws_apigatewayv2_api" "this" {

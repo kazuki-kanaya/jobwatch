@@ -23,17 +23,17 @@ export const jaMessages = {
     quickStartLines: [
       "# 通常通りに実行",
       "python train_model.py --epochs 100",
-      "# 一度だけ初期化 (jobwatch.yaml を作成)",
-      "jobwatch init",
-      "# jobwatch でラップして実行",
-      "jobwatch run python train_model.py --epochs 100",
+      "# 一度だけ初期化 (obsern.yaml を作成)",
+      "obsern init",
+      "# obsern でラップして実行",
+      "obsern run python train_model.py --epochs 100",
     ],
   },
   pain: {
     eyebrow: "開発現場の課題",
-    title: "Jobwatchが必要な理由",
+    title: "Obsernが必要な理由",
     subtitle:
-      "SSHでプロセスを都度確認する運用は、完了の見逃しや異常終了の発見遅れを生みます。Jobwatchはその “待ち時間と手戻り” を減らし、運用の負担を軽減します。",
+      "SSHでプロセスを都度確認する運用は、完了の見逃しや異常終了の発見遅れを生みます。Obsernはその “待ち時間と手戻り” を減らし、運用の負担を軽減します。",
     cards: [
       {
         title: "サイレント停止",
@@ -41,7 +41,7 @@ export const jaMessages = {
       },
       {
         title: "エラー原因の把握が遅い",
-        body: "異常終了しても、バックグラウンド実行のせいで原因は不明。Jobwatchなら、終了ステータスとエラー内容をすぐ確認できます。",
+        body: "異常終了しても、バックグラウンド実行のせいで原因は不明。Obsernなら、終了ステータスとエラー内容をすぐ確認できます。",
       },
       {
         title: "マルチサーバーの混乱",
@@ -54,7 +54,7 @@ export const jaMessages = {
     cards: [
       {
         title: "コード変更不要",
-        body: "既存コマンドを jobwatch でラップするだけ。SDK導入や計測コードは不要です。",
+        body: "既存コマンドを obsern でラップするだけ。SDK導入や計測コードは不要です。",
       },
       {
         title: "Slackに即時通知",
@@ -73,31 +73,31 @@ export const jaMessages = {
     rows: [
       {
         label: "主な目的",
-        jobwatch: "実行監視",
+        obsern: "実行監視",
         mlflow: "実験管理",
         tensorboard: "学習メトリクス可視化",
       },
       {
         label: "導入方法",
-        jobwatch: "CLIでラップ（コード変更なし）",
+        obsern: "CLIでラップ（コード変更なし）",
         mlflow: "SDK組み込み",
         tensorboard: "SDK組み込み",
       },
       {
         label: "監視対象",
-        jobwatch: "実行中のプロセス",
+        obsern: "実行中のプロセス",
         mlflow: "実験ログ",
         tensorboard: "学習ログ",
       },
       {
         label: "異常終了の通知",
-        jobwatch: "即時通知（Slack等）",
+        obsern: "即時通知（Slack等）",
         mlflow: "基本なし",
         tensorboard: "なし",
       },
       {
         label: "監視スコープ",
-        jobwatch: "複数サーバー横断",
+        obsern: "複数サーバー横断",
         mlflow: "プロジェクト単位",
         tensorboard: "ローカル中心",
       },
@@ -111,7 +111,7 @@ export const jaMessages = {
   },
   footer: {
     title: "役に立ったら、GitHubでStarを。",
-    subtitle: "JobwatchはOSSです。Starとフィードバックが開発の支えになります。",
+    subtitle: "ObsernはOSSです。Starとフィードバックが開発の支えになります。",
     button: "Star on GitHub",
   },
 } satisfies LandingMessages;

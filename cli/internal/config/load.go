@@ -10,7 +10,7 @@ import (
 func Load(path string) (Config, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return Config{}, fmt.Errorf("config not found. Run `jobwatch init` first.")
+		return Config{}, fmt.Errorf("config not found. Run `obsern init` first.")
 	}
 
 	expanded := os.ExpandEnv(string(b))

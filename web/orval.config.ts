@@ -1,7 +1,7 @@
 import { defineConfig } from "orval";
 
 export default defineConfig({
-  jobwatch: {
+  obsern: {
     input: "./openapi.json",
     output: {
       target: "./src/generated/api.ts",

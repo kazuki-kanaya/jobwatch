@@ -13,7 +13,7 @@ variable "aws_profile" {
 variable "cognito_domain_prefix" {
   description = "The prefix for the Cognito User Pool domain"
   type        = string
-  default     = "jobwatch-app"
+  default     = "obsern-app"
 }
 
 variable "callback_urls" {
@@ -31,7 +31,7 @@ variable "logout_urls" {
 variable "dynamodb_table_name" {
   description = "The name of the DynamoDB table"
   type        = string
-  default     = "jobwatch-table"
+  default     = "obsern-table"
 }
 
 variable "api_cors_allow_origins" {

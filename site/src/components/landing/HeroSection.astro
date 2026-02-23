@@ -16,13 +16,13 @@ const quickStartText =
   locale === "ja"
     ? {
         run: "# 通常の実行",
-        setup: "# 一度だけ初期化 (generate jobwatch.yaml)",
-        wrap: "# jobwatch でラップして実行",
+        setup: "# 一度だけ初期化 (generate obsern.yaml)",
+        wrap: "# obsern でラップして実行",
       }
     : {
         run: "# Run your training script normally",
-        setup: "# One-time setup (generate jobwatch.yaml)",
-        wrap: "# Wrap it with jobwatch",
+        setup: "# One-time setup (generate obsern.yaml)",
+        wrap: "# Wrap it with obsern",
       };
 ---
 
@@ -71,9 +71,9 @@ const quickStartText =
           <p>{quickStartText.run}</p>
           <p class="text-slate-500 line-through">python train_model.py --epochs 100</p>
           <p>{quickStartText.setup}</p>
-          <p class="text-amber-300"><span class="text-cyan-300">➜</span> jobwatch init</p>
+          <p class="text-amber-300"><span class="text-cyan-300">➜</span> obsern init</p>
           <p>{quickStartText.wrap}</p>
-          <p><span class="text-cyan-300">➜</span> <span class="text-amber-300">jobwatch run</span> python train_model.py --epochs 100</p>
+          <p><span class="text-cyan-300">➜</span> <span class="text-amber-300">obsern run</span> python train_model.py --epochs 100</p>
         </div>
       </div>
     </div>

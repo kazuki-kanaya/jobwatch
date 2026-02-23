@@ -23,7 +23,7 @@ const { messages } = Astro.props;
         <thead>
           <tr class="border-b border-[#233041] bg-[#111b2c] uppercase">
             <th class="px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-slate-300">{messages.comparison.featureColumn}</th>
-            <th class="bg-cyan-400/10 px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-white">Jobwatch</th>
+            <th class="bg-cyan-400/10 px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-white">Obsern</th>
             <th class="px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-slate-300">MLflow</th>
             <th class="px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-slate-300">TensorBoard</th>
           </tr>
@@ -32,7 +32,7 @@ const { messages } = Astro.props;
           {messages.comparison.rows.map((row) => (
             <tr class="border-b border-[#1f2b3b] last:border-b-0">
               <td class="px-4 py-4 text-slate-300 break-words">{row.label}</td>
-              <td class="bg-cyan-400/10 px-4 py-4 font-semibold text-cyan-200 break-words">{row.jobwatch}</td>
+              <td class="bg-cyan-400/10 px-4 py-4 font-semibold text-cyan-200 break-words">{row.obsern}</td>
               <td class="px-4 py-4 text-slate-400 break-words">{row.mlflow}</td>
               <td class="px-4 py-4 text-slate-400 break-words">{row.tensorboard}</td>
             </tr>

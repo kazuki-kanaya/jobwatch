@@ -17,8 +17,8 @@ export default defineConfig({
   integrations: [
     icon(),
     starlight({
-      title: "Jobwatch Docs",
-      social: [{ icon: "github", label: "GitHub", href: "https://github.com/kazuki-kanaya/jobwatch" }],
+      title: "Obsern Docs",
+      social: [{ icon: "github", label: "GitHub", href: "https://github.com/kazuki-kanaya/obsern" }],
       sidebar: [
         {
           label: "日本語",

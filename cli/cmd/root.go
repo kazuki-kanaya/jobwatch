@@ -7,8 +7,8 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "jobwatch",
-	Short: "Jobwatch wraps local commands and notifies about their completion or failure",
+	Use:   "obsern",
+	Short: "Obsern wraps local commands and notifies about their completion or failure",
 }
 
 func Execute() {

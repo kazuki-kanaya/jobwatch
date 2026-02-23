@@ -86,7 +86,7 @@ export const Loading: Story = {
 export const InviteReady: Story = {
   args: {
     isInviteDialogOpen: true,
-    invitationUrl: "https://jobwatch.example/invite?token=sample-token",
+    invitationUrl: "https://obsern.example/invite?token=sample-token",
   },
 };
 

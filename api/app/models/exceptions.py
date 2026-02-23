@@ -1,34 +1,34 @@
-class JobwatchException(Exception):
-    """Base exception for Jobwatch domain."""
+class ObsernException(Exception):
+    """Base exception for Obsern domain."""
 
     pass
 
 
-class NotFoundException(JobwatchException):
+class NotFoundException(ObsernException):
     """Raised when a resource is not found."""
 
     pass
 
 
-class RepositoryException(JobwatchException):
+class RepositoryException(ObsernException):
     """Raised when a repository operation fails."""
 
     pass
 
 
-class AuthenticationError(JobwatchException):
+class AuthenticationError(ObsernException):
     """Raised when authentication fails."""
 
     pass
 
 
-class PermissionDeniedError(JobwatchException):
+class PermissionDeniedError(ObsernException):
     """Raised when access is denied."""
 
     pass
 
 
-class ConditionalCheckFailedError(JobwatchException):
+class ConditionalCheckFailedError(ObsernException):
     """Raised when a conditional write check fails."""
 
     pass

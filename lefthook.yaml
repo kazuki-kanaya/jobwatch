@@ -2,19 +2,23 @@ pre-commit:
   parallel: true
   jobs:
     - name: api ci
-      glob: "api/**/*.py"
+      glob: "api/**"
       run: task api:ci
 
     - name: cli ci
-      glob: "cli/**/*.go"
+      glob: "cli/**"
       run: task cli:ci
 
     - name: web ci
-      glob: "web/**/*.{ts,tsx,js,jsx}"
+      glob: "web/**"
       run: task web:ci
 
+    - name: site ci
+      glob: "site/**"
+      run: task site:ci
+
     - name: infra ci
-      glob: "infra/terraform/**/*.tf"
+      glob: "infra/**"
       run: task infra:ci
 
 pre-push:
