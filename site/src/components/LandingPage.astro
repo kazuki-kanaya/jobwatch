@@ -1,0 +1,62 @@
+---
+import "../styles/global.css";
+import type { LandingLocale, LandingMessages } from "../i18n/messages";
+import ComparisonSection from "./landing/ComparisonSection.astro";
+import DocsCtaSection from "./landing/DocsCtaSection.astro";
+import FeaturesSection from "./landing/FeaturesSection.astro";
+import HeroSection from "./landing/HeroSection.astro";
+import LandingFooter from "./landing/LandingFooter.astro";
+import LandingHeader from "./landing/LandingHeader.astro";
+import PainSection from "./landing/PainSection.astro";
+
+type Props = {
+  locale: LandingLocale;
+  messages: LandingMessages;
+};
+
+const { locale, messages } = Astro.props;
+
+const githubUrl = "https://github.com/kazuki-kanaya/jobwatch";
+const dashboardUrl = "https://app.jobwatch.dev/dashboard";
+const docsHref = locale === "ja" ? "/docs/" : "/en/docs/";
+const curlCommand = "curl -fsSL https://github.com/kazuki-kanaya/jobwatch/releases/latest/download/install.sh | bash";
+---
+
+<main
+  class="landing-page min-h-screen text-slate-100"
+  style="background: radial-gradient(circle at 50% 12%, rgba(28,66,140,0.1), transparent 40%), radial-gradient(circle at 16% 24%, rgba(34,211,238,0.03), transparent 32%), radial-gradient(circle at 84% 20%, rgba(99,102,241,0.06), transparent 34%), #030712;"
+>
+  <LandingHeader locale={locale} messages={messages} githubUrl={githubUrl} dashboardUrl={dashboardUrl} docsHref={docsHref} />
+  <HeroSection locale={locale} messages={messages} dashboardUrl={dashboardUrl} docsHref={docsHref} curlCommand={curlCommand} />
+  <PainSection messages={messages} />
+  <FeaturesSection messages={messages} />
+  <ComparisonSection messages={messages} />
+  <DocsCtaSection messages={messages} dashboardUrl={dashboardUrl} docsHref={docsHref} />
+  <LandingFooter messages={messages} githubUrl={githubUrl} />
+
+  <style is:global>
+    .landing-page h1,
+    .landing-page h2,
+    .landing-page h3 {
+      font-family: "IBM Plex Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      letter-spacing: -0.01em;
+    }
+
+    .landing-page p,
+    .landing-page li,
+    .landing-page th,
+    .landing-page td,
+    .landing-page a,
+    .landing-page button {
+      font-family: "IBM Plex Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    }
+
+    .landing-lang summary {
+      list-style: none;
+    }
+
+    .landing-lang summary::-webkit-details-marker {
+      display: none;
+    }
+  </style>
+</main>

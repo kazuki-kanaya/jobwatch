@@ -1,0 +1,17 @@
+version: "3"
+
+tasks:
+  build:
+    desc: Build Astro site
+    cmds:
+      - pnpm build
+
+  ci:
+    desc: Run site CI checks
+    cmds:
+      - task: build
+
+  dev:
+    desc: Run Astro development server
+    cmds:
+      - pnpm dev

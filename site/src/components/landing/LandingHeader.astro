@@ -1,0 +1,70 @@
+---
+import { Icon } from "astro-icon/components";
+import type { LandingLocale, LandingMessages } from "../../i18n/messages";
+
+type Props = {
+  locale: LandingLocale;
+  messages: LandingMessages;
+  githubUrl: string;
+  dashboardUrl: string;
+  docsHref: string;
+};
+
+const { locale, messages, githubUrl, dashboardUrl, docsHref } = Astro.props;
+const localeOptions = [
+  { label: "English", href: "/", value: "en" },
+  { label: "日本語", href: "/ja/", value: "ja" },
+] as const;
+---
+
+<header class="sticky top-0 z-40 border-b border-[#253349]/80 bg-[#0a1020]/80 backdrop-blur-md">
+  <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-8">
+    <a href="#" class="flex items-center gap-2">
+      <span class="inline-flex size-7 items-center justify-center rounded-md bg-blue-500/90 text-white">
+        <Icon name="terminal" class="size-4" />
+      </span>
+      <p class="text-2xl font-semibold text-slate-100">Jobwatch</p>
+    </a>
+    <nav class="hidden items-center gap-8 text-base text-slate-300 md:flex">
+      <a href="#why-jobwatch" class="transition hover:text-cyan-300">{messages.nav.howItWorks}</a>
+      <a href="#features" class="transition hover:text-cyan-300">{messages.nav.features}</a>
+      <a href="#comparison" class="transition hover:text-cyan-300">{messages.nav.comparison}</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a
+        href={githubUrl}
+        target="_blank"
+        rel="noreferrer"
+        class="inline-flex size-9 items-center justify-center rounded-md border border-[#314760] bg-[#141c32] text-slate-300 hover:text-white"
+      >
+        <Icon name="github" class="size-4" />
+      </a>
+      <a href={dashboardUrl} class="inline-flex h-10 items-center rounded-md bg-blue-500 px-5 text-sm text-white hover:bg-blue-400">
+        {messages.nav.getStarted}
+      </a>
+      <a
+        href={docsHref}
+        class="hidden h-10 items-center rounded-md border border-[#365078] bg-[#141f33] px-4 text-sm text-slate-200 transition hover:bg-[#1a2940] hover:text-white md:inline-flex"
+      >
+        {messages.nav.docs}
+      </a>
+      <details class="landing-lang relative hidden lg:block">
+        <summary class="inline-flex h-8 min-w-24 cursor-pointer items-center justify-center gap-1 rounded-md border border-[#2c3c4f] bg-[#141c32] px-2 text-xs font-semibold">
+          <Icon name="language" class="size-3.5" />
+          {locale === "ja" ? "日本語" : "English"}
+          <Icon name="chevron-down" class="size-3.5 opacity-80" />
+        </summary>
+        <div class="absolute right-0 z-50 mt-2 w-28 overflow-hidden rounded-md border border-[#2c3c4f] bg-[#141c32] shadow-[0_10px_24px_rgba(2,6,23,0.45)]">
+          {localeOptions.map((option) => (
+            <a
+              href={option.href}
+              class={`block px-3 py-2 text-xs transition hover:bg-[#1c2942] ${locale === option.value ? "bg-[#1c2942] text-cyan-300" : "text-slate-200"}`}
+            >
+              {option.label}
+            </a>
+          ))}
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

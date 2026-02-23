@@ -1,32 +1,31 @@
-import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
-import { type Locale, type MessageKey, messages } from "@/i18n/messages";
+import { createContext, type PropsWithChildren, useContext, useMemo, useState } from "react";
+import { messages } from "@/i18n/messages";
+import type { Locale, MessagesKey } from "@/i18n/messages/types";
 
-type LocaleContextValue = {
+type LocaleContextType = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: MessageKey) => string;
+  t: (key: MessagesKey) => string;
 };
 
-const LocaleContext = createContext<LocaleContextValue | null>(null);
-const LOCALE_STORAGE_KEY = "jobwatch_locale";
-const isLocale = (value: string): value is Locale => value === "en" || value === "ja";
+const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
+
+const resolveLocale = (value: string): Locale => {
+  const normalized = value.toLowerCase();
+  if (normalized.startsWith("en")) return "en";
+  if (normalized.startsWith("ja")) return "ja";
+  return "en";
+};
+
 const getInitialLocale = (): Locale => {
   if (typeof window === "undefined") return "en";
-
-  const storedLocale = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-  if (storedLocale && isLocale(storedLocale)) return storedLocale;
-
-  return "en";
+  return resolveLocale(window.navigator.language);
 };
 
 export default function LocaleProvider({ children }: PropsWithChildren) {
   const [locale, setLocale] = useState<Locale>(getInitialLocale);
 
-  useEffect(() => {
-    window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
-  }, [locale]);
-
-  const value = useMemo<LocaleContextValue>(
+  const value = useMemo<LocaleContextType>(
     () => ({
       locale,
       setLocale,

@@ -10,6 +10,9 @@ includes:
   web:
     taskfile: ./web/Taskfile.yaml
     dir: ./web
+  site:
+    taskfile: ./site/Taskfile.yaml
+    dir: ./site
   infra:
     taskfile: ./infra/Taskfile.yaml
     dir: ./infra
@@ -27,11 +30,11 @@ tasks:
 
   all:ci:
     desc: Run CI checks for all modules
-    deps: [api:ci, cli:ci, web:ci, infra:ci]
+    deps: [api:ci, cli:ci, web:ci, site:ci, infra:ci]
 
   all:build:
     desc: Build all modules for production
-    deps: [api:build, cli:build, web:build]
+    deps: [api:build, cli:build, web:build, site:build]
   
   deploy:
     desc: Deploy all modules to production
@@ -43,4 +46,4 @@ tasks:
     desc: Run development environment with API and web servers
     deps: [infra:aws:sync-dot-env]
     cmds:
-      - task --parallel api:dev web:dev infra:ddb:up
+      - task --parallel api:dev web:dev site:dev infra:db:up

@@ -1,0 +1,30 @@
+---
+import { Icon } from "astro-icon/components";
+import type { LandingMessages } from "../../i18n/messages";
+
+type Props = {
+  messages: LandingMessages;
+};
+
+const { messages } = Astro.props;
+const painTones = ["bg-cyan-400/15 text-cyan-300", "bg-rose-400/15 text-rose-300", "bg-slate-300/15 text-slate-200"] as const;
+---
+
+<section id="why-jobwatch" class="border-y border-[#1e2937] bg-[#0a1220] py-16 md:py-20">
+  <div class="mx-auto w-full max-w-7xl px-4 md:px-8">
+    <p class="text-xs font-bold tracking-[0.18em] text-cyan-300 uppercase">{messages.pain.eyebrow}</p>
+    <h2 class="mt-3 text-3xl font-bold leading-tight text-white md:text-4xl">{messages.pain.title}</h2>
+    <p class="mt-5 max-w-4xl border-l-2 border-cyan-300/55 pl-4 text-base leading-8 text-slate-300 md:pl-5 md:text-lg">{messages.pain.subtitle}</p>
+    <div class="mt-10 grid gap-5 md:grid-cols-3">
+      {messages.pain.cards.map((card, index) => (
+        <article class="flex h-full flex-col rounded-xl border border-[#2c3947] bg-[#151c26] p-6 shadow-[0_10px_30px_rgba(2,6,23,0.25)]">
+          <div class={`mb-4 inline-flex size-10 items-center justify-center rounded-lg border border-white/10 ${painTones[index] ?? "bg-slate-300/15 text-slate-200"}`}>
+            <Icon name="pain" class="size-4" />
+          </div>
+          <p class="text-lg font-semibold text-white">{card.title}</p>
+          <p class="mt-3 text-sm leading-7 text-slate-300">{card.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
