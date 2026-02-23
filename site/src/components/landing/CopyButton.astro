@@ -1,0 +1,51 @@
+---
+import { Icon } from "astro-icon/components";
+
+type Props = {
+  text: string;
+  copyLabel: string;
+  copiedLabel: string;
+};
+
+const { text, copyLabel, copiedLabel } = Astro.props;
+const buttonId = `copy-${Math.random().toString(36).slice(2, 9)}`;
+const copyIconId = `${buttonId}-icon-copy`;
+const copiedIconId = `${buttonId}-icon-check`;
+---
+
+<button
+  type="button"
+  id={buttonId}
+  aria-label={copyLabel}
+  title={copyLabel}
+  class="inline-flex items-center rounded-md px-2 py-1 text-slate-400 transition hover:text-cyan-300"
+>
+  <Icon id={copyIconId} name="copy" class="size-4" />
+  <Icon id={copiedIconId} name="check" class="hidden size-4 text-cyan-300" />
+</button>
+
+<script is:inline define:vars={{ buttonId, copyIconId, copiedIconId, text, copyLabel, copiedLabel }}>
+  const copyButton = document.getElementById(buttonId);
+  const copyIcon = document.getElementById(copyIconId);
+  const copiedIcon = document.getElementById(copiedIconId);
+  let copyResetTimer;
+
+  copyButton?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      copyButton.setAttribute("title", copiedLabel);
+      copyIcon?.classList.add("hidden");
+      copiedIcon?.classList.remove("hidden");
+      copyButton?.classList.add("text-cyan-300");
+      if (copyResetTimer) window.clearTimeout(copyResetTimer);
+      copyResetTimer = window.setTimeout(() => {
+        copyButton.setAttribute("title", copyLabel);
+        copyIcon?.classList.remove("hidden");
+        copiedIcon?.classList.add("hidden");
+        copyButton?.classList.remove("text-cyan-300");
+      }, 1200);
+    } catch {
+      copyButton.setAttribute("title", copyLabel);
+    }
+  });
+</script>

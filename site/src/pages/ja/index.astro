@@ -1,0 +1,15 @@
+---
+import LandingPage from "../../components/LandingPage.astro";
+import { getLandingMessages } from "../../i18n/messages/index";
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jobwatch</title>
+  </head>
+  <body>
+    <LandingPage locale="ja" messages={getLandingMessages("ja")} />
+  </body>
+</html>

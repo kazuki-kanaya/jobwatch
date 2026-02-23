@@ -34,7 +34,8 @@ export const jaMessages = {
   landing_pain_subtitle:
     "SSHでターミナルを何度も確認する日々。バックグラウンドで走らせたプロセスは、開始5分で止まっていた。気づいたのは翌朝。",
   landing_pain_card_1_title: "サイレント停止",
-  landing_pain_card_1_body: "バックグラウンドで流したジョブが、開始5分で止まっていた。気づいたのは翌朝。",
+  landing_pain_card_1_body:
+    "バックグラウンドで流したジョブが、開始5分で止まっていた。気づいたのは翌朝。失敗通知があればもっと時間を有効に使えたのに。",
   landing_pain_card_2_title: "エラーの原因が分からない",
   landing_pain_card_2_body:
     "異常終了しても、バックグラウンド実行のせいで原因は不明。Jobwatchなら、終了ステータスとエラー内容をすぐ確認できます。",

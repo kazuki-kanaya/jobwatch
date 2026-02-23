@@ -1,0 +1,44 @@
+---
+import type { LandingMessages } from "../../i18n/messages";
+
+type Props = {
+  messages: LandingMessages;
+};
+
+const { messages } = Astro.props;
+---
+
+<section id="comparison" class="bg-[#060d1a] py-16 md:py-20">
+  <div class="mx-auto w-full max-w-5xl px-4 md:px-8">
+    <h2 class="text-center text-3xl font-bold text-white md:text-4xl">{messages.comparison.title}</h2>
+    <p class="mx-auto mt-3 max-w-2xl text-center text-sm leading-7 text-slate-300 md:text-base">{messages.comparison.subtitle}</p>
+    <div class="mt-10 overflow-x-auto rounded-xl border border-[#243246] bg-[#0d1625]">
+      <table class="w-full min-w-[680px] table-fixed border-collapse text-left text-sm">
+        <colgroup>
+          <col class="w-[19%]" />
+          <col class="w-[27%]" />
+          <col class="w-[27%]" />
+          <col class="w-[27%]" />
+        </colgroup>
+        <thead>
+          <tr class="border-b border-[#233041] bg-[#111b2c] uppercase">
+            <th class="px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-slate-300">{messages.comparison.featureColumn}</th>
+            <th class="bg-cyan-400/10 px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-white">Jobwatch</th>
+            <th class="px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-slate-300">MLflow</th>
+            <th class="px-4 py-3 text-[11px] font-semibold tracking-[0.08em] text-slate-300">TensorBoard</th>
+          </tr>
+        </thead>
+        <tbody>
+          {messages.comparison.rows.map((row) => (
+            <tr class="border-b border-[#1f2b3b] last:border-b-0">
+              <td class="px-4 py-4 text-slate-300 break-words">{row.label}</td>
+              <td class="bg-cyan-400/10 px-4 py-4 font-semibold text-cyan-200 break-words">{row.jobwatch}</td>
+              <td class="px-4 py-4 text-slate-400 break-words">{row.mlflow}</td>
+              <td class="px-4 py-4 text-slate-400 break-words">{row.tensorboard}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

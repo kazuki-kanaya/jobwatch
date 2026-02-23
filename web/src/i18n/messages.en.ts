@@ -34,7 +34,8 @@ export const enMessages = {
   landing_pain_title: "Why Jobwatch?",
   landing_pain_subtitle: "A background job died after five minutes. You found out the next morning.",
   landing_pain_card_1_title: "Silent Stops",
-  landing_pain_card_1_body: "A background job exited early — but nothing told you. You only noticed hours later.",
+  landing_pain_card_1_body:
+    "The background job stopped after five minutes, and I didn’t realize until the next morning. A failure alert would have saved me hours.",
   landing_pain_card_2_title: "Hard to Debug",
   landing_pain_card_2_body:
     "When jobs fail in the background, the cause is unclear. Jobwatch captures exit status and error output for faster diagnosis.",

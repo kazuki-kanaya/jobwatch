@@ -90,6 +90,39 @@ jobs:
       - name: Task CI
         run: task ci
 
+  site:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: site
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: site/package.json
+          cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: site/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Task CI
+        run: task ci
+
   infra:
     runs-on: ubuntu-latest
 
