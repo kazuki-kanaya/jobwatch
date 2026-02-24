@@ -1,4 +1,4 @@
-import { Fingerprint, LogOut, PenLine, RefreshCw, SquareTerminal, UserRound } from "lucide-react";
+import { Fingerprint, LogOut, PenLine, RefreshCw, UserRound } from "lucide-react";
 import LocaleSelect from "@/components/LocaleSelect";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -72,13 +72,6 @@ export default function DashboardHeaderSection({
         <div className={cn("space-y-1")}>
           <p className={cn("text-xs font-semibold tracking-[0.12em] text-cyan-300 uppercase")}>{missionControlLabel}</p>
           <div className={cn("flex items-center gap-3")}>
-            <span
-              className={cn(
-                "inline-flex size-8 items-center justify-center rounded-md border border-cyan-300/40 bg-cyan-500/10 text-cyan-300",
-              )}
-            >
-              <SquareTerminal className={cn("size-4.5")} />
-            </span>
             <h1 className={cn("text-3xl font-semibold text-slate-100 md:text-4xl")}>{title}</h1>
           </div>
           <p className={cn("text-sm text-slate-400")}>
