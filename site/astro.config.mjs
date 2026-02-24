@@ -20,6 +20,11 @@ export default defineConfig({
     icon(),
     starlight({
       title: "Obsern Docs",
+      description: "Lightweight job monitoring for long-running ML and compute experiments.",
+      logo: {
+        src: "./src/assets/logo.png",
+      },
+      favicon: "/favicon.ico",
       social: [{ icon: "github", label: "GitHub", href: "https://github.com/kazuki-kanaya/obsern" }],
       sidebar: [
         {
