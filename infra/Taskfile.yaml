@@ -15,16 +15,17 @@ tasks:
       - bash ./scripts/aws/dynamodb/wait.sh
       - bash ./scripts/aws/dynamodb/create-tables.sh
 
-  db:up:
-    desc: Start local DynamoDB services
-    cmds:
-      - docker compose up -d
-      - task: db:create-tables
-
   db:down:
     desc: Stop and remove local DynamoDB services
     cmds:
       - docker compose down -v
+
+  db:up:
+    desc: Start local DynamoDB services
+    cmds:
+      - task: db:down
+      - docker compose up -d
+      - task: db:create-tables
 
   fix:
     desc: Run Terraform formatting and validation for AWS and Cloudflare

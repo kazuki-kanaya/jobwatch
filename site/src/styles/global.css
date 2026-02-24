@@ -1,1 +1,133 @@
 @import "tailwindcss";
+
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@layer components {
+  .sl-markdown-content {
+    --docs-max-width: 76ch;
+    --docs-section-gap: 1.75rem;
+    --docs-block-gap: 1rem;
+    max-width: var(--docs-max-width);
+    line-height: 1.8;
+  }
+
+  .sl-markdown-content > :first-child {
+    margin-top: 0;
+  }
+
+  .sl-markdown-content > :last-child {
+    margin-bottom: 0;
+  }
+
+  .sl-markdown-content h2 {
+    margin-top: 2.25rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .sl-markdown-content h3 {
+    margin-top: var(--docs-section-gap);
+    margin-bottom: 0.65rem;
+  }
+
+  .sl-markdown-content p,
+  .sl-markdown-content ul,
+  .sl-markdown-content ol,
+  .sl-markdown-content blockquote,
+  .sl-markdown-content .expressive-code,
+  .sl-markdown-content table {
+    margin-block: var(--docs-block-gap);
+  }
+
+  .sl-markdown-content ul,
+  .sl-markdown-content ol {
+    padding-left: 1.25rem;
+  }
+
+  .sl-markdown-content li + li {
+    margin-top: 0.4rem;
+  }
+
+  .sl-markdown-content img {
+    display: block;
+    margin: 1rem 0 1.4rem;
+    border: 1px solid color-mix(in oklab, var(--sl-color-gray-5), transparent 25%);
+    border-radius: 0.75rem;
+    background: color-mix(in oklab, var(--sl-color-black), white 4%);
+  }
+
+  .sl-markdown-content hr {
+    margin: 1.6rem 0;
+    border-color: color-mix(in oklab, var(--sl-color-gray-5), transparent 40%);
+  }
+
+  .sl-markdown-content blockquote {
+    padding: 0.8rem 1rem;
+    border-left: 3px solid var(--sl-color-text-accent);
+    border-radius: 0.5rem;
+    background: color-mix(in oklab, var(--sl-color-bg-sidebar), transparent 20%);
+  }
+
+  .sl-markdown-content .step-flow {
+    list-style: none;
+    counter-reset: doc-step;
+    margin: 1rem 0 1.75rem;
+    padding: 0;
+  }
+
+  .sl-markdown-content .step-flow > li {
+    position: relative;
+    margin: 0;
+    padding: 0 0 1rem 2.6rem;
+    counter-increment: doc-step;
+  }
+
+  .sl-markdown-content .step-flow > li + li {
+    margin-top: 0.75rem;
+  }
+
+  .sl-markdown-content .step-flow > li::before {
+    content: counter(doc-step);
+    position: absolute;
+    top: 0.05rem;
+    left: 0;
+    display: inline-flex;
+    height: 1.5rem;
+    width: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--sl-color-gray-4), transparent 25%);
+    background: color-mix(in oklab, var(--sl-color-bg), white 3%);
+    color: var(--sl-color-text);
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .sl-markdown-content .step-flow > li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 1.78rem;
+    left: 0.73rem;
+    bottom: 0.05rem;
+    width: 1px;
+    background: color-mix(in oklab, var(--sl-color-gray-5), transparent 12%);
+  }
+
+  .sl-markdown-content .step-flow h3 {
+    margin-top: 0;
+    margin-bottom: 0.45rem;
+  }
+
+  .sl-markdown-content .step-flow p {
+    margin-top: 0.25rem;
+  }
+
+  .sl-markdown-content .step-flow img {
+    margin-top: 0.8rem;
+  }
+}

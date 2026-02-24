@@ -50,7 +50,7 @@ export const jaMessages = {
     ],
   },
   features: {
-    title: "開発者のための監視体験。",
+    title: "実行状況を、個人でもチームでも確実に把握。",
     cards: [
       {
         title: "コード変更不要",
@@ -58,11 +58,15 @@ export const jaMessages = {
       },
       {
         title: "Slackに即時通知",
-        body: "Webhook連携で、失敗や完了の通知をSlackのチャンネルへすぐに送れます。",
+        body: "Webhook連携で、失敗や完了、実行ログの通知をSlackのチャンネルへすぐに送れます。",
       },
       {
         title: "統合ダッシュボード",
-        body: "実行状況、ログ、実行サーバーをまとめて確認できます。",
+        body: "実行状況、ログ、実行サーバーをまとめて確認できます。エラーの原因特定もスムーズに。",
+      },
+      {
+        title: "チーム利用に最適",
+        body: "ワークスペース共有、メンバー招待、owner/editor/viewer 権限管理で、チームでの運用を安全かつ明確に進められます。",
       },
     ],
   },

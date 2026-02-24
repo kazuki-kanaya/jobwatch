@@ -50,19 +50,23 @@ export const enMessages = {
     ],
   },
   features: {
-    title: "Built for engineers who run real workloads.",
+    title: "Keep execution status clear for both individuals and teams.",
     cards: [
       {
         title: "Zero Code Changes",
-        body: "Wrap existing commands with obsern. No SDK imports, no instrumentation boilerplate.",
+        body: "Wrap existing commands with obsern. No SDK integration or instrumentation boilerplate required.",
       },
       {
         title: "Instant Slack Alerts",
-        body: "With webhook integration, failure and completion notifications are sent to your Slack channel right away.",
+        body: "With webhook integration, failure, completion, and runtime log notifications are sent to your Slack channel right away.",
       },
       {
         title: "Unified Dashboard",
-        body: "Inspect status, logs, and runtime context across your infrastructure in one place.",
+        body: "Check status, logs, and runtime hosts in one place, with smoother root-cause investigation.",
+      },
+      {
+        title: "Optimized for Team Use",
+        body: "Share workspaces, invite members, and control access with owner/editor/viewer roles so operations stay clear and secure.",
       },
     ],
   },
