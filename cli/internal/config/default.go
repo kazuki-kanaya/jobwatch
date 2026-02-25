@@ -8,7 +8,7 @@ const DefaultTemplate = `project:
     - monitoring
 
 api:
-  enabled: false
+  enabled: true
   base_url: http://localhost:8000
   token: ${OBSERN_HOST_TOKEN}
 
