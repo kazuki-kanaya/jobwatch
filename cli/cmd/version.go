@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version = "2026.1.11"
+var version = "v2026.02.26"
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
@@ -17,5 +17,7 @@ var versionCmd = &cobra.Command{
 }
 
 func init() {
+	rootCmd.Version = version
+	rootCmd.SetVersionTemplate("obsern version {{.Version}}\n")
 	rootCmd.AddCommand(versionCmd)
 }

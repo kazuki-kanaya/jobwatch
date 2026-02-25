@@ -64,13 +64,16 @@ And syncs job states to a web dashboard.
 
 ## 📦 Installation
 
-*(Coming soon)*
-
-Example future flow:
+Install latest:
 
 ```bash
-# curl installer
-curl -fsSL https://example.com/obsern/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh
+```
+
+Install a specific version:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh -s -- v2026.02.26
 ```
 
 ---
@@ -119,6 +122,7 @@ If you have ideas or pain points from ML experimentation workflows, please open 
 - **Task** (task runner): [taskfile.dev/installation](https://taskfile.dev/installation)
 - **Lefthook** (git hooks): [lefthook.dev/installation](https://lefthook.dev/installation)
 - **AWS CLI** (for LocalStack): [AWS CLI installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- **GoReleaser** (release automation): [goreleaser.com/install](https://goreleaser.com/install/)
 
 After installing Lefthook, run:
 

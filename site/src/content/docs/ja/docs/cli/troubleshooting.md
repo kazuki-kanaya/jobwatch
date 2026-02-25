@@ -33,7 +33,7 @@ description: よくある問題と対処方法。
 - 次で検証
 
 ```bash
-obsern version
+obsern --version
 ```
 
 ## 環境変数が反映されない

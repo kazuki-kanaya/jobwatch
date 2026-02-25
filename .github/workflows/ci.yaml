@@ -26,6 +26,13 @@ jobs:
       - name: Set up Task
         uses: go-task/setup-task@v1
 
+      - name: Set up GoReleaser
+        uses: goreleaser/goreleaser-action@v7
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          install-only: true
+
       - name: Task CI
         run: task ci
 

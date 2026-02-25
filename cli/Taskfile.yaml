@@ -25,10 +25,22 @@ tasks:
     cmds:
       - go build -o dist/obsern .
 
+  goreleaser:check:
+    desc: Validate GoReleaser config
+    cmds:
+      - cd .. && goreleaser check --config .goreleaser.yaml
+
+  goreleaser:build:
+    desc: Build GoReleaser snapshot artifacts
+    cmds:
+      - cd .. && goreleaser build --snapshot --clean --config .goreleaser.yaml
+
   ci:
     desc: Run CLI CI checks
     cmds:
       - task: fix
       - task: test
       - task: build
+      - task: goreleaser:check
+      - task: goreleaser:build
       - git diff --exit-code -- .
