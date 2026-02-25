@@ -33,7 +33,7 @@ Check in this order:
 - Verify with:
 
 ```bash
-obsern version
+obsern --version
 ```
 
 ## Environment Variables Not Applied

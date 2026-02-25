@@ -6,7 +6,7 @@ description: Main Obsern CLI commands.
 Common commands:
 
 ```bash
-obsern version
+obsern --version (or: obsern version)
 obsern init
 obsern run <command>
 obsern --help

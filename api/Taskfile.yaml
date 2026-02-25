@@ -46,5 +46,5 @@ tasks:
         --target build/packages
         -r build/requirements.txt
       - rsync -av --exclude "__pycache__" --exclude "*.pyc" app/ build/app
-      - (cd build/packages && zip -qr ../lambda.zip .)
-      - (cd build && zip -qr lambda.zip app)
+      - cd build/packages && zip -qr ../lambda.zip .
+      - cd build && zip -qr lambda.zip app

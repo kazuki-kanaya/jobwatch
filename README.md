@@ -64,13 +64,16 @@ And syncs job states to a web dashboard.
 
 ## 📦 Installation
 
-*(Coming soon)*
-
-Example future flow:
+Install latest:
 
 ```bash
-# curl installer
-curl -fsSL https://example.com/obsern/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh
+```
+
+Install a specific version:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh -s -- v2026.02.26
 ```
 
 ---

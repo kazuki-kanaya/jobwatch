@@ -6,7 +6,7 @@ description: Obsern CLI の主要コマンド。
 主要コマンド:
 
 ```bash
-obsern version
+obsern --version (or: obsern version)
 obsern init
 obsern run <command>
 obsern --help
