@@ -31,6 +31,7 @@ jobs:
         with:
           distribution: goreleaser
           version: "~> v2"
+          install-only: true
 
       - name: Task CI
         run: task ci
