@@ -4,7 +4,8 @@ set -eu
 REPO="kazuki-kanaya/obsern"
 BINARY="obsern"
 VERSION="${OBSERN_VERSION:-}"
-INSTALL_DIR="${OBSERN_INSTALL_DIR:-/usr/local/bin}"
+INSTALL_DIR="/usr/local/bin"
+FALLBACK_INSTALL_DIR="${HOME}/.local/bin"
 
 if [ $# -gt 0 ]; then
   VERSION="$1"
@@ -20,6 +21,7 @@ need_cmd() {
 need_cmd curl
 need_cmd tar
 need_cmd awk
+need_cmd sed
 
 if [ -z "$VERSION" ]; then
   VERSION="$(
@@ -103,8 +105,8 @@ if [ -d "$INSTALL_DIR" ] && [ ! -w "$INSTALL_DIR" ]; then
   if command -v sudo >/dev/null 2>&1; then
     SUDO="sudo"
   else
-    INSTALL_DIR="${HOME}/.local/bin"
-    echo "Info: no permission for /usr/local/bin and sudo is unavailable." >&2
+    echo "Info: no permission for ${INSTALL_DIR} and sudo is unavailable." >&2
+    INSTALL_DIR="${FALLBACK_INSTALL_DIR}"
     echo "Info: installing to ${INSTALL_DIR} instead." >&2
   fi
 fi
@@ -113,7 +115,17 @@ if [ ! -d "$INSTALL_DIR" ]; then
   if [ -n "$SUDO" ]; then
     $SUDO mkdir -p "$INSTALL_DIR"
   else
-    mkdir -p "$INSTALL_DIR"
+    if ! mkdir -p "$INSTALL_DIR" 2>/dev/null; then
+      if [ "$INSTALL_DIR" != "$FALLBACK_INSTALL_DIR" ]; then
+        echo "Info: failed to create ${INSTALL_DIR} without sudo." >&2
+        INSTALL_DIR="${FALLBACK_INSTALL_DIR}"
+        echo "Info: installing to ${INSTALL_DIR} instead." >&2
+        mkdir -p "$INSTALL_DIR"
+      else
+        echo "Error: failed to create install directory: ${INSTALL_DIR}" >&2
+        exit 1
+      fi
+    fi
   fi
 fi
 
@@ -126,6 +138,6 @@ else
 fi
 
 echo "Installed ${BINARY} ${VERSION} to ${INSTALL_DIR}/${BINARY}"
-if [ "$INSTALL_DIR" = "${HOME}/.local/bin" ]; then
-  echo "Add to PATH if needed: export PATH=\"${HOME}/.local/bin:\$PATH\""
+if [ "$INSTALL_DIR" = "$FALLBACK_INSTALL_DIR" ]; then
+  echo "Add to PATH if needed: export PATH=\"${FALLBACK_INSTALL_DIR}:\$PATH\""
 fi
