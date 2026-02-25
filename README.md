@@ -122,6 +122,7 @@ If you have ideas or pain points from ML experimentation workflows, please open 
 - **Task** (task runner): [taskfile.dev/installation](https://taskfile.dev/installation)
 - **Lefthook** (git hooks): [lefthook.dev/installation](https://lefthook.dev/installation)
 - **AWS CLI** (for LocalStack): [AWS CLI installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- **GoReleaser** (release automation): [goreleaser.com/install](https://goreleaser.com/install/)
 
 After installing Lefthook, run:
 
