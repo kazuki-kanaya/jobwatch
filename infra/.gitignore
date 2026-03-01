@@ -41,4 +41,4 @@ terraform.rc
 
 .wrangler
 
-*.hcl
+envs/prod/backend.s3.hcl

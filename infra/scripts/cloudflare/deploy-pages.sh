@@ -38,7 +38,7 @@ deploy_one() {
   project_name="$(terraform -chdir="$CF_PAGES_TF_DIR" output -raw "$project_output" 2>/dev/null || true)"
 
   if [[ -z "$project_name" ]]; then
-    echo "$project_output output was not found. Run: task infra:apply:cloudflare" >&2
+    echo "$project_output output was not found. Run: task -d infra apply" >&2
     exit 1
   fi
 
