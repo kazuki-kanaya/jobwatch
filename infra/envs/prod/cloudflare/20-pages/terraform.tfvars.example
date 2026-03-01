@@ -1,0 +1,5 @@
+cloudflare_api_token  = "your-cloudflare-pages-api-token"
+cloudflare_account_id = "your-cloudflare-account-id"
+
+site_project_name      = "obsern-site"
+dashboard_project_name = "obsern-dashboard"

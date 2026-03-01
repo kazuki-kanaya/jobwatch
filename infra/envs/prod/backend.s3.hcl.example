@@ -1,0 +1,8 @@
+bucket         = "obsern-terraform-state-prod"
+region         = "ap-northeast-1"
+profile        = "default"
+use_lockfile   = true
+encrypt        = true
+
+# Do not set `key` here.
+# Each stack has its own key in backend.tf.

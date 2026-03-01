@@ -41,3 +41,10 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload tagged install script
+        run: |
+          sed "s/__OBSERN_RELEASE_VERSION__/${GITHUB_REF_NAME}/g" install.sh > /tmp/install.sh
+          gh release upload "${GITHUB_REF_NAME}" /tmp/install.sh#install.sh --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

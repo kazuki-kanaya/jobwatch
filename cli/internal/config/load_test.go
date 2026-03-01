@@ -50,6 +50,7 @@ notify:
 }
 
 func TestLoad_FailsWhenSlackWebhookEnvMissing(t *testing.T) {
+	t.Setenv("OBSERN_SLACK_WEBHOOK_URL", "")
 
 	dir := t.TempDir()
 	path := filepath.Join(dir, "obsern.yaml")

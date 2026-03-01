@@ -40,3 +40,5 @@ terraform.rc
 # End of https://www.toptal.com/developers/gitignore/api/terraform
 
 .wrangler
+
+envs/prod/backend.s3.hcl

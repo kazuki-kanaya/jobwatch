@@ -1,0 +1,7 @@
+aws_profile                = "default"
+cognito_custom_domain_name = "auth.example.dev"
+
+tags = {
+  Project = "obsern"
+  Env     = "prod"
+}

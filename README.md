@@ -67,13 +67,13 @@ And syncs job states to a web dashboard.
 Install latest:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/install.sh | sh
 ```
 
 Install a specific version:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh -s -- v2026.02.26
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/v2026.02.26/install.sh | sh
 ```
 
 ---
@@ -123,6 +123,7 @@ If you have ideas or pain points from ML experimentation workflows, please open 
 - **Lefthook** (git hooks): [lefthook.dev/installation](https://lefthook.dev/installation)
 - **AWS CLI** (for LocalStack): [AWS CLI installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 - **GoReleaser** (release automation): [goreleaser.com/install](https://goreleaser.com/install/)
+- **TFLint** (Terraform linter): [github.com/terraform-linters/tflint](https://github.com/terraform-linters/tflint)
 
 After installing Lefthook, run:
 
