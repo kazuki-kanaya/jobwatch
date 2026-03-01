@@ -21,10 +21,10 @@ oidc_client_id="$(echo "$core_outputs_json" | jq -r '.cognito_user_pool_client_i
 api_default_invoke_url="$(echo "$core_outputs_json" | jq -r '.api_default_invoke_url.value // empty')"
 
 api_origin="$(terraform -chdir="$AWS_APIGW_DOMAIN_TF_DIR" output -raw api_origin 2>/dev/null || true)"
-oidc_cognito_domain="$(terraform -chdir="$AWS_COGNITO_DOMAIN_TF_DIR" output -raw cognito_hosted_ui_base_url 2>/dev/null || true)"
+oidc_auth_domain="$(terraform -chdir="$AWS_COGNITO_DOMAIN_TF_DIR" output -raw cognito_hosted_ui_base_url 2>/dev/null || true)"
 
-if [[ -z "$oidc_cognito_domain" ]]; then
-  oidc_cognito_domain="http://localhost:5173"
+if [[ -z "$oidc_auth_domain" ]]; then
+  oidc_auth_domain="http://localhost:5173"
 fi
 if [[ -n "$api_origin" ]]; then
   api_base_url="$api_origin"
@@ -61,9 +61,9 @@ upsert_env() {
   mv "$tmp" "$file"
 }
 
-upsert_env "$WEB_ENV_FILE" "VITE_OIDC_AUTHORITY" "$oidc_issuer"
+upsert_env "$WEB_ENV_FILE" "VITE_OIDC_ISSUER" "$oidc_issuer"
 upsert_env "$WEB_ENV_FILE" "VITE_OIDC_CLIENT_ID" "$oidc_client_id"
-upsert_env "$WEB_ENV_FILE" "VITE_OIDC_COGNITO_DOMAIN" "$oidc_cognito_domain"
+upsert_env "$WEB_ENV_FILE" "VITE_OIDC_AUTH_DOMAIN" "$oidc_auth_domain"
 upsert_env "$WEB_ENV_FILE" "VITE_API_BASE_URL" "$api_base_url"
 
 upsert_env "$API_ENV_FILE" "OBSERN_OIDC_JWKS_URL" "$oidc_jwks_url"

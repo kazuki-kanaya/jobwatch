@@ -8,8 +8,8 @@ const requiredEnv = (value: string | undefined, key: string): string => {
 };
 
 export const env = {
-  oidcAuthority: requiredEnv(import.meta.env.VITE_OIDC_AUTHORITY, "VITE_OIDC_AUTHORITY"),
+  oidcIssuer: requiredEnv(import.meta.env.VITE_OIDC_ISSUER, "VITE_OIDC_ISSUER"),
   oidcClientId: requiredEnv(import.meta.env.VITE_OIDC_CLIENT_ID, "VITE_OIDC_CLIENT_ID"),
-  oidcCognitoDomain: requiredEnv(import.meta.env.VITE_OIDC_COGNITO_DOMAIN, "VITE_OIDC_COGNITO_DOMAIN"),
+  oidcAuthDomain: requiredEnv(import.meta.env.VITE_OIDC_AUTH_DOMAIN, "VITE_OIDC_AUTH_DOMAIN"),
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL ?? defaultApiBaseUrl,
 } as const;
