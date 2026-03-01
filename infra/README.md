@@ -97,3 +97,30 @@ At the end of `task apply`, `task sync-dot-env` runs and updates the web/api env
 - Pages uploads are handled after infra apply by `scripts/cloudflare/deploy-pages.sh`.
 
 ## Local Development (Non-Terraform)
+
+For local development, Terraform is not required.  
+Use `docker compose` and Task commands to start the environment.
+
+The local stack uses:
+
+- Keycloak for authentication
+- LocalStack (DynamoDB) for data storage
+
+### Commands
+
+- Start (with initialization): `task infra:local:up`
+- Stop (including volume cleanup): `task infra:local:down`
+- Sync local env files only: `task infra:local:sync-dot-env`
+
+`task infra:local:up` runs the following steps in order:
+
+1. `docker compose down -v`
+2. `docker compose up -d`
+3. Create the DynamoDB table via `infra/scripts/local/up-localstack-ddb.sh`
+4. Sync local settings to `web/.env.local` and `api/.env`
+
+### Notes
+
+- Email send/receive is not enabled in local development.
+- Reset user passwords from the Keycloak admin console: `http://localhost:8080/admin/`
+- Admin credentials: `admin` / `admin`
