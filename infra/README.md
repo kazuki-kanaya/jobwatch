@@ -4,7 +4,7 @@ This directory contains Terraform infrastructure managed as staged environments 
 
 ## Layout
 
-- `envs/prod/aws/00-bootstrap`: Terraform backend bootstrap (S3 + DynamoDB lock table)
+- `envs/prod/aws/00-bootstrap`: Terraform backend bootstrap (S3 state bucket)
 - `envs/prod/aws/10-acm-apigw`: ACM certificate for API domain
 - `envs/prod/aws/11-acm-cognito`: ACM certificate for Cognito custom domain
 - `envs/prod/aws/20-core`: Cognito / DynamoDB / Lambda / API Gateway core
@@ -39,7 +39,7 @@ This directory contains Terraform infrastructure managed as staged environments 
   - `bucket`
   - `region`
   - `profile`
-  - `dynamodb_table`
+  - `use_lockfile`
 
 ### Cloudflare
 

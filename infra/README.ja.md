@@ -4,7 +4,7 @@
 
 ## 構成
 
-- `envs/prod/aws/00-bootstrap`: Terraform backend 用ブートストラップ（S3 + DynamoDB lock）
+- `envs/prod/aws/00-bootstrap`: Terraform backend 用ブートストラップ（S3 state bucket）
 - `envs/prod/aws/10-acm-apigw`: API ドメイン用 ACM 証明書
 - `envs/prod/aws/11-acm-cognito`: Cognito カスタムドメイン用 ACM 証明書
 - `envs/prod/aws/20-core`: Cognito / DynamoDB / Lambda / API Gateway
@@ -39,7 +39,7 @@
   - `bucket`
   - `region`
   - `profile`
-  - `dynamodb_table`
+  - `use_lockfile`
 
 ### Cloudflare
 

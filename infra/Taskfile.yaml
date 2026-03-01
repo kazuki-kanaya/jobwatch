@@ -44,7 +44,7 @@ tasks:
       - terraform -chdir=envs/prod/aws/00-bootstrap init
 
   apply:bootstrap:
-    desc: Create Terraform state S3 bucket and DynamoDB lock table
+    desc: Create Terraform state S3 bucket
     cmds:
       - terraform -chdir=envs/prod/aws/00-bootstrap apply -input=false -auto-approve
 

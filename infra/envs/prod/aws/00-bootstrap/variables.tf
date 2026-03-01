@@ -15,12 +15,6 @@ variable "terraform_state_bucket_name" {
   type        = string
 }
 
-variable "terraform_lock_table_name" {
-  description = "DynamoDB table name for Terraform state locking"
-  type        = string
-  default     = "obsern-terraform-locks"
-}
-
 variable "tags" {
   description = "Common tags"
   type        = map(string)
