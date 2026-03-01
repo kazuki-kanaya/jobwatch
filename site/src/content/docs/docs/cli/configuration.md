@@ -15,13 +15,14 @@ project:
 
 api:
   enabled: true
-  base_url: http://localhost:8000
+  base_url: https://api.obsern.dev
   token: ${OBSERN_HOST_TOKEN}
 
 run:
   log_tail: 80
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:
@@ -32,12 +33,12 @@ notify:
 
 ## Required Minimum
 
-Set at least one of the following:
+At least one of the following must be enabled:
 
-- `api.token`
-- `notify.channels[].settings.webhook_url`
+- `api.enabled`
+- `notify.enabled`
 
-If both are empty, Obsern cannot send events.
+If both are `false`, validation fails and `obsern run` stops.
 
 ## Field Reference
 
@@ -47,6 +48,7 @@ If both are empty, Obsern cannot send events.
 - `api.base_url`: API endpoint when API publishing is enabled.
 - `api.token`: Host token issued from the dashboard.
 - `run.log_tail`: Number of log lines included in final event payload.
+- `notify.enabled`: Enable/disable notifications entirely.
 - `notify.on_success`: Send notification on successful exit.
 - `notify.on_failure`: Send notification on failed exit.
 - `notify.channels`: Notification destinations.
@@ -64,6 +66,7 @@ api:
   token: ${OBSERN_HOST_TOKEN}
 
 notify:
+  enabled: false
   on_success: true
   on_failure: true
   channels: []
@@ -76,6 +79,7 @@ api:
   enabled: false
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:
@@ -93,6 +97,7 @@ api:
   token: ${OBSERN_HOST_TOKEN}
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:
@@ -116,5 +121,5 @@ export OBSERN_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
 Before running jobs:
 
 - `obsern.yaml` exists.
-- At least one of `api.token` or `webhook_url` is configured.
+- At least one of `api.enabled` or `notify.enabled` is `true`.
 - Environment variables are available in the same shell session.

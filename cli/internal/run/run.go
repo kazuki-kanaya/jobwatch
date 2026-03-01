@@ -139,6 +139,10 @@ func setupTracker(cfg config.Config, transport *http.Transport) (jobtracker.JobT
 }
 
 func setupNotifiers(cfg config.Config, transport *http.Transport) ([]notifier.Notifier, error) {
+	if !cfg.Notify.Enabled {
+		return nil, nil
+	}
+
 	var ns []notifier.Notifier
 
 	for i, ch := range cfg.Notify.Channels {
@@ -158,5 +162,8 @@ func setupNotifiers(cfg config.Config, transport *http.Transport) ([]notifier.No
 }
 
 func shouldNotify(cfg config.Config, success bool) bool {
+	if !cfg.Notify.Enabled {
+		return false
+	}
 	return (success && cfg.Notify.OnSuccess) || (!success && cfg.Notify.OnFailure)
 }
