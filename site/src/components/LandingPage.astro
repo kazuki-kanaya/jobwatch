@@ -19,7 +19,7 @@ const { locale, messages } = Astro.props;
 const githubUrl = "https://github.com/kazuki-kanaya/obsern";
 const dashboardUrl = "https://app.obsern.dev/dashboard";
 const docsHref = locale === "ja" ? "/ja/docs/" : "/docs/";
-const curlCommand = "curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh";
+const curlCommand = "curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/install.sh | sh";
 ---
 
 <main

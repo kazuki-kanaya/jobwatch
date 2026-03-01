@@ -67,13 +67,13 @@ And syncs job states to a web dashboard.
 Install latest:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/install.sh | sh
 ```
 
 Install a specific version:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kazuki-kanaya/obsern/main/install.sh | sh -s -- v2026.02.26
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/v2026.02.26/install.sh | sh
 ```
 
 ---
