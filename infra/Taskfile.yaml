@@ -4,22 +4,23 @@ vars:
   BACKEND_CONFIG: envs/prod/backend.s3.hcl
 
 tasks:
-  local:db:create-tables:
-    desc: Ensure local DynamoDB tables in LocalStack
+  local:sync-dot-env:
+    desc: Sync local web/api env files for Keycloak and local API
     cmds:
-      - bash ./scripts/aws/up-localstack-ddb.sh
+      - bash ./scripts/local/sync-dot-env.sh
 
-  local:db:down:
-    desc: Stop and remove local DynamoDB services
+  local:down:
+    desc: Stop and remove all local infra services and volumes
     cmds:
       - docker compose down -v
 
-  local:db:up:
-    desc: Start local DynamoDB services
+  local:up:
+    desc: Start all local infra services, create tables, and sync env files
     cmds:
-      - task: local:db:down
+      - task: local:down
       - docker compose up -d
-      - task: local:db:create-tables
+      - bash ./scripts/local/up-localstack-ddb.sh
+      - task: local:sync-dot-env
 
   sync-dot-env:
     desc: Sync web/api env files from AWS Terraform outputs

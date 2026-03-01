@@ -97,14 +97,3 @@ At the end of `task apply`, `task sync-dot-env` runs and updates the web/api env
 - Pages uploads are handled after infra apply by `scripts/cloudflare/deploy-pages.sh`.
 
 ## Local Development (Non-Terraform)
-
-For local API development, you can run DynamoDB on LocalStack.
-
-- Start (including table creation): `task local:db:up`
-- Stop (including volume cleanup): `task local:db:down`
-
-`local:db:up` runs the following steps:
-
-1. Stop and remove existing LocalStack containers
-2. `docker compose up -d`
-3. Create tables with `infra/scripts/aws/up-localstack-ddb.sh`

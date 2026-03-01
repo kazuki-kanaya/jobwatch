@@ -24,10 +24,17 @@ security = HTTPBearer(auto_error=False)
 def _validate_client_claim(payload: dict, expected_client_id: str) -> None:
     aud = payload.get("aud")
     client_id = payload.get("client_id")
-    if aud == expected_client_id or client_id == expected_client_id:
+    azp = payload.get("azp")
+
+    if isinstance(aud, str) and aud == expected_client_id:
         return
+    if isinstance(aud, list) and expected_client_id in aud:
+        return
+    if client_id == expected_client_id or azp == expected_client_id:
+        return
+
     raise AuthenticationError(
-        'Invalid OIDC token: expected "aud" or "client_id" to match configured client id'
+        'Invalid OIDC token: expected "aud", "client_id", or "azp" to match configured client id'
     )
 
 

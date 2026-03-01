@@ -44,5 +44,6 @@ tasks:
 
   dev:
     desc: Run development environment with API and web servers
+    deps: [infra:local:up]
     cmds:
-      - task --parallel api:dev web:dev site:dev infra:local:db:up
+      - task --parallel api:dev web:dev site:dev
