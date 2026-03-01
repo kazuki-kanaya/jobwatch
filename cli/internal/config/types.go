@@ -23,6 +23,7 @@ type Run struct {
 }
 
 type Notify struct {
+	Enabled   bool      `yaml:"enabled"`
 	OnSuccess bool      `yaml:"on_success"`
 	OnFailure bool      `yaml:"on_failure"`
 	Channels  []Channel `yaml:"channels"`

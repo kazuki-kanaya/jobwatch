@@ -24,6 +24,7 @@ run:
   log_tail: 80
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:
@@ -68,6 +69,7 @@ run:
   log_tail: 80
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:

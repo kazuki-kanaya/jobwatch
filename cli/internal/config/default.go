@@ -9,13 +9,14 @@ const DefaultTemplate = `project:
 
 api:
   enabled: true
-  base_url: http://localhost:8000
+  base_url: https://api.obsern.dev
   token: ${OBSERN_HOST_TOKEN}
 
 run:
   log_tail: 80
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:

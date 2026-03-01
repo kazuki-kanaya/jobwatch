@@ -5,15 +5,21 @@ import (
 	"fmt"
 )
 
-func (c Config) Validate() error {
-	if c.Project.Name == "" {
+func (cfg Config) Validate() error {
+	if cfg.Project.Name == "" {
 		return errors.New("project.name is required")
 	}
-	if c.Run.LogTail < 0 {
+	if cfg.Run.LogTail < 0 {
 		return errors.New("run.log_tail must be >= 0")
 	}
+	if !cfg.API.Enabled && !cfg.Notify.Enabled {
+		return errors.New("api.enabled and notify.enabled cannot both be false")
+	}
+	if !cfg.Notify.Enabled {
+		return nil
+	}
 
-	for i, ch := range c.Notify.Channels {
+	for i, ch := range cfg.Notify.Channels {
 		if ch.Kind == "" {
 			return fmt.Errorf("notify.channels[%d].kind is required", i)
 		}
