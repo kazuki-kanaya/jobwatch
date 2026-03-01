@@ -5,3 +5,4 @@ aws-dynamodb/
 skills-lock.json
 # Added by goreleaser init:
 dist/
+idea.md

@@ -182,7 +182,7 @@ export default function DashboardPageContainer() {
   const canManageJobsByRole = canManageJobs(currentMembershipRole);
   const signOut = () => {
     void removeUser();
-    const logoutUrl = new URL(`${env.oidcCognitoDomain}/logout`);
+    const logoutUrl = new URL(`${env.oidcAuthDomain}/logout`);
     logoutUrl.searchParams.set("client_id", env.oidcClientId);
     logoutUrl.searchParams.set("logout_uri", `${window.location.origin}/`);
     window.location.assign(logoutUrl.toString());

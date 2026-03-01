@@ -23,7 +23,7 @@ security = HTTPBearer(auto_error=False)
 
 def _validate_client_claim(payload: dict, expected_client_id: str) -> None:
     aud = payload.get("aud")
-    client_id = payload.get("client_id")  # for cognito
+    client_id = payload.get("client_id")
     if aud == expected_client_id or client_id == expected_client_id:
         return
     raise AuthenticationError(

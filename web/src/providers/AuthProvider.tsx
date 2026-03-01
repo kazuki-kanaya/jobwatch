@@ -5,7 +5,7 @@ import { AuthProvider as OidcAuthProvider } from "react-oidc-context";
 import { env } from "@/lib/env";
 
 const oidcSettings = {
-  authority: env.oidcAuthority,
+  authority: env.oidcIssuer,
   client_id: env.oidcClientId,
   redirect_uri: `${window.location.origin}/auth/callback`,
   post_logout_redirect_uri: `${window.location.origin}/`,
