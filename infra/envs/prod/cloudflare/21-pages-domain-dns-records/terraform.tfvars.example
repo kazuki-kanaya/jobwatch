@@ -3,8 +3,8 @@ cloudflare_dns_api_token   = "your-cloudflare-dns-api-token"
 cloudflare_account_id      = "your-cloudflare-account-id"
 cloudflare_zone_id         = "your-cloudflare-zone-id"
 
-site_domain_name           = "obsern.dev"
-dashboard_domain_name      = "app.obsern.dev"
+site_domain_name           = "example.dev"
+dashboard_domain_name      = "app.example.dev"
 pages_domain_record_proxied = true
 
 terraform_state_bucket  = "obsern-terraform-state-prod"

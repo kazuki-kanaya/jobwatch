@@ -141,11 +141,7 @@ tasks:
         "Skip cloudflare/10-dns-validation plan: required outputs are not ready."
         envs/prod/aws/10-acm-apigw:domain_validation_options
         envs/prod/aws/11-acm-cognito:domain_validation_options
-      - >
-        bash ./scripts/terraform/plan-if-ready.sh
-        envs/prod/cloudflare/20-pages
-        "Skip cloudflare/20-pages plan: required outputs are not ready."
-        envs/prod/aws/30-domain-apigw:api_origin
+      - terraform -chdir=envs/prod/cloudflare/20-pages plan -input=false
       - >
         bash ./scripts/terraform/plan-if-ready.sh
         envs/prod/cloudflare/21-pages-domain-dns-records

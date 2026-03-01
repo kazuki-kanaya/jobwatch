@@ -1,5 +1,5 @@
 aws_profile                = "default"
-cognito_custom_domain_name = "auth.obsern.dev"
+cognito_custom_domain_name = "auth.example.dev"
 
 tags = {
   Project = "obsern"

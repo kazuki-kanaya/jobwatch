@@ -25,7 +25,7 @@ locals {
 }
 
 module "apigw_custom_domain" {
-  source = "../../../../modules/aws/apigw-custom-domain"
+  source = "../../../../modules/aws/apigw-domain"
 
   custom_domain_name      = var.api_custom_domain_name
   certificate_arn         = data.terraform_remote_state.acm_apigw.outputs.certificate_arn

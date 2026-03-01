@@ -10,16 +10,9 @@ variable "aws_profile" {
   default     = "default"
 }
 
-variable "cognito_custom_domain_name" {
+variable "custom_domain_name" {
   description = "Custom domain for Cognito hosted UI"
   type        = string
-  default     = null
-}
-
-variable "cognito_domain_prefix" {
-  description = "Prefix for Cognito hosted UI domain when using default domain"
-  type        = string
-  default     = "obsern-app"
 }
 
 variable "terraform_state_bucket" {

@@ -3,7 +3,3 @@ cloudflare_account_id = "your-cloudflare-account-id"
 
 site_project_name      = "obsern-site"
 dashboard_project_name = "obsern-dashboard"
-
-terraform_state_bucket  = "obsern-terraform-state-prod"
-terraform_state_region  = "ap-northeast-1"
-terraform_state_profile = "default"
