@@ -4,7 +4,7 @@ import AuthCallbackPage from "@/pages/AuthCallbackPage";
 import DashboardPage from "@/pages/DashboardPage";
 import InvitationAcceptPage from "@/pages/InvitationAcceptPage";
 import NotFoundPage from "@/pages/NotFoundPage";
-import AppProvider from "./providers/AppProvider";
+import AppProvider from "@/providers/AppProvider";
 
 export default function App() {
   return (

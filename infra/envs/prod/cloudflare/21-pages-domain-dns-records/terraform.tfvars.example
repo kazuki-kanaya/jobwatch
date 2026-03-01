@@ -1,0 +1,12 @@
+cloudflare_pages_api_token = "your-cloudflare-pages-api-token"
+cloudflare_dns_api_token   = "your-cloudflare-dns-api-token"
+cloudflare_account_id      = "your-cloudflare-account-id"
+cloudflare_zone_id         = "your-cloudflare-zone-id"
+
+site_domain_name           = "obsern.dev"
+dashboard_domain_name      = "app.obsern.dev"
+pages_domain_record_proxied = true
+
+terraform_state_bucket  = "obsern-terraform-state-prod"
+terraform_state_region  = "ap-northeast-1"
+terraform_state_profile = "default"

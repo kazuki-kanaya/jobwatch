@@ -2,5 +2,6 @@
 .claude/
 .codex/
 aws-dynamodb/
+skills-lock.json
 # Added by goreleaser init:
 dist/

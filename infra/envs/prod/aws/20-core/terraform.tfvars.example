@@ -1,0 +1,24 @@
+aws_region  = "ap-northeast-1"
+aws_profile = "default"
+
+callback_urls = ["https://app.obsern.dev/auth/callback"]
+logout_urls   = ["https://app.obsern.dev/"]
+
+dynamodb_table_name = "obsern-prod"
+
+api_cors_allow_origins = [
+  "https://app.obsern.dev",
+  "https://obsern.dev",
+]
+
+lambda_zip_path = "../../../../../api/build/lambda.zip"
+
+lambda_environment = {
+  OBSERN_AWS_REGION = "ap-northeast-1"
+  OBSERN_LOG_LEVEL  = "INFO"
+}
+
+tags = {
+  Project = "obsern"
+  Env     = "prod"
+}

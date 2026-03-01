@@ -123,6 +123,7 @@ If you have ideas or pain points from ML experimentation workflows, please open 
 - **Lefthook** (git hooks): [lefthook.dev/installation](https://lefthook.dev/installation)
 - **AWS CLI** (for LocalStack): [AWS CLI installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 - **GoReleaser** (release automation): [goreleaser.com/install](https://goreleaser.com/install/)
+- **TFLint** (Terraform linter): [github.com/terraform-linters/tflint](https://github.com/terraform-linters/tflint)
 
 After installing Lefthook, run:
 
