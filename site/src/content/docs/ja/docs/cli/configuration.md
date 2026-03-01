@@ -22,6 +22,7 @@ run:
   log_tail: 80
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:
@@ -32,12 +33,12 @@ notify:
 
 ## 最低限必要な設定
 
-次のどちらかを必ず設定してください。
+次のどちらかを必ず有効にしてください。
 
-- `api.token`
-- `notify.channels[].settings.webhook_url`
+- `api.enabled`
+- `notify.enabled`
 
-両方未設定の場合、Obsern はイベントを送信できません。
+両方 `false` の場合、validation でエラーになり `obsern run` は停止します。
 
 ## 項目リファレンス
 
@@ -47,6 +48,7 @@ notify:
 - `api.base_url`: API 送信時のエンドポイント
 - `api.token`: Dashboard で発行したホストトークン
 - `run.log_tail`: 最終イベントに含めるログ末尾行数
+- `notify.enabled`: 通知機能全体の有効/無効
 - `notify.on_success`: 成功時通知の有無
 - `notify.on_failure`: 失敗時通知の有無
 - `notify.channels`: 通知先一覧
@@ -64,6 +66,7 @@ api:
   token: ${OBSERN_HOST_TOKEN}
 
 notify:
+  enabled: false
   on_success: true
   on_failure: true
   channels: []
@@ -76,6 +79,7 @@ api:
   enabled: false
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:
@@ -93,6 +97,7 @@ api:
   token: ${OBSERN_HOST_TOKEN}
 
 notify:
+  enabled: true
   on_success: true
   on_failure: true
   channels:
@@ -114,5 +119,5 @@ export OBSERN_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
 ## 実行前チェック
 
 - `obsern.yaml` が存在する
-- `api.token` か `webhook_url` のどちらかが設定済み
+- `api.enabled` か `notify.enabled` のどちらかが `true`
 - 同じシェルセッションで環境変数が有効
