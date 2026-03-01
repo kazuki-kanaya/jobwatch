@@ -10,5 +10,21 @@ services:
     volumes:
       - localstack_data:/var/lib/localstack
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: obsern_keycloak
+    command: ["start-dev", "--import-realm"]
+    ports:
+      - "8080:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HEALTH_ENABLED=true
+      - KC_HOSTNAME_STRICT=false
+    volumes:
+      - ./infra/envs/local/auth/keycloak/realm-obsern-local.json:/opt/keycloak/data/import/realm-obsern-local.json:ro
+      - keycloak_data:/opt/keycloak/data
+
 volumes:
   localstack_data:
+  keycloak_data:

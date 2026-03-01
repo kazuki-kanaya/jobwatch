@@ -98,13 +98,21 @@
 
 ## ローカル開発（Terraform外）
 
-ローカルで API を動かす場合は、LocalStack 上に DynamoDB を立ち上げて使えます。
+ローカル開発では Terraform を使わず、`docker compose` と Task で環境を起動します。  
+認証基盤には Keycloak、データストアには LocalStack（DynamoDB）を利用します。
 
-- 起動（テーブル作成まで実行）: `task local:db:up`
-- 停止（ボリューム削除を含む）: `task local:db:down`
+- 起動（初期化込み）: `task infra:local:up`
+- 停止（ボリューム削除込み）: `task infra:local:down`
 
-`local:db:up` は以下を順に実行します。
+`task infra:local:up` では、次の処理を順番に実行します。
 
-1. 既存 LocalStack コンテナを停止・削除
+1. `docker compose down -v`
 2. `docker compose up -d`
-3. `infra/scripts/aws/up-localstack-ddb.sh` でテーブル作成
+3. `infra/scripts/local/up-localstack-ddb.sh` で DynamoDB テーブルを作成
+4. `web/.env.local` と `api/.env` にローカル設定を同期
+
+### 補足
+
+- ローカル環境ではメール送受信は行いません。
+- パスワードの再設定は Keycloak 管理コンソール（`http://localhost:8080/admin/`）で行います。
+- 管理者ログインは `admin` / `admin` です。

@@ -98,13 +98,29 @@ At the end of `task apply`, `task sync-dot-env` runs and updates the web/api env
 
 ## Local Development (Non-Terraform)
 
-For local API development, you can run DynamoDB on LocalStack.
+For local development, Terraform is not required.  
+Use `docker compose` and Task commands to start the environment.
 
-- Start (including table creation): `task local:db:up`
-- Stop (including volume cleanup): `task local:db:down`
+The local stack uses:
 
-`local:db:up` runs the following steps:
+- Keycloak for authentication
+- LocalStack (DynamoDB) for data storage
 
-1. Stop and remove existing LocalStack containers
+### Commands
+
+- Start (with initialization): `task infra:local:up`
+- Stop (including volume cleanup): `task infra:local:down`
+- Sync local env files only: `task infra:local:sync-dot-env`
+
+`task infra:local:up` runs the following steps in order:
+
+1. `docker compose down -v`
 2. `docker compose up -d`
-3. Create tables with `infra/scripts/aws/up-localstack-ddb.sh`
+3. Create the DynamoDB table via `infra/scripts/local/up-localstack-ddb.sh`
+4. Sync local settings to `web/.env.local` and `api/.env`
+
+### Notes
+
+- Email send/receive is not enabled in local development.
+- Reset user passwords from the Keycloak admin console: `http://localhost:8080/admin/`
+- Admin credentials: `admin` / `admin`

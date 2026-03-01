@@ -13,7 +13,7 @@ export default function AuthGuard() {
     const returnTo = `${location.pathname}${location.search}${location.hash}`;
     window.sessionStorage.setItem(AUTH_RETURN_TO_KEY, returnTo);
     console.debug("AuthGuard: User not authenticated, redirecting to sign-in page", { returnTo });
-    void signinRedirect();
+    void signinRedirect({ extraQueryParams: { prompt: "login" } });
   }, [isAuthenticated, isLoading, location.hash, location.pathname, location.search, signinRedirect]);
 
   if (isLoading) return <div>Loading...</div>;

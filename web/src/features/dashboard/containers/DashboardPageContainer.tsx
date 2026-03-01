@@ -181,10 +181,15 @@ export default function DashboardPageContainer() {
   const canManageMembersByRole = canManageMembers(currentMembershipRole);
   const canManageJobsByRole = canManageJobs(currentMembershipRole);
   const signOut = () => {
-    void removeUser();
-    const logoutUrl = new URL(`${env.oidcAuthDomain}/logout`);
+    const redirectUri = `${window.location.origin}/`;
+    const isKeycloak = env.oidcIssuer.includes("/realms/");
+    const logoutUrl = isKeycloak
+      ? new URL(`${env.oidcIssuer.replace(/\/$/, "")}/protocol/openid-connect/logout`)
+      : new URL(`${env.oidcAuthDomain.replace(/\/$/, "")}/logout`);
     logoutUrl.searchParams.set("client_id", env.oidcClientId);
-    logoutUrl.searchParams.set("logout_uri", `${window.location.origin}/`);
+    logoutUrl.searchParams.set(isKeycloak ? "post_logout_redirect_uri" : "logout_uri", redirectUri);
+    if (user?.id_token) logoutUrl.searchParams.set("id_token_hint", user.id_token);
+    void removeUser();
     window.location.assign(logoutUrl.toString());
   };
   const handleWorkspaceChange = (nextWorkspaceId: string) => {
