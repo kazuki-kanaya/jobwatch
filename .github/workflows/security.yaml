@@ -124,13 +124,13 @@ jobs:
       - name: tfsec (AWS)
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
-          working_directory: infra/terraform/aws
+          working_directory: infra/envs/prod/aws
           soft_fail: false
 
       - name: tfsec (Cloudflare)
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
-          working_directory: infra/terraform/cloudflare
+          working_directory: infra/envs/prod/cloudflare
           soft_fail: false
 
   gitleaks:

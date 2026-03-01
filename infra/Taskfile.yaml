@@ -65,6 +65,7 @@ tasks:
   validate:
     desc: Validate Terraform configurations in staged infra stacks
     cmds:
+      - task: init:check
       - terraform -chdir=envs/prod/aws/10-acm-apigw validate
       - terraform -chdir=envs/prod/aws/11-acm-cognito validate
       - terraform -chdir=envs/prod/aws/20-core validate
@@ -78,6 +79,7 @@ tasks:
   lint:
     desc: Run tflint on staged infra stacks
     cmds:
+      - task: init:check
       - |
         if ! command -v tflint >/dev/null 2>&1; then
           echo "tflint is required. Install: https://github.com/terraform-linters/tflint" >&2
@@ -92,6 +94,19 @@ tasks:
       - tflint --chdir=envs/prod/cloudflare/20-pages
       - tflint --chdir=envs/prod/cloudflare/21-pages-domain-dns-records
       - tflint --chdir=envs/prod/cloudflare/30-dns-records-api-auth
+
+  init:check:
+    desc: Initialize stacks for validate/lint without backend
+    cmds:
+      - terraform -chdir=envs/prod/aws/10-acm-apigw init -backend=false
+      - terraform -chdir=envs/prod/aws/11-acm-cognito init -backend=false
+      - terraform -chdir=envs/prod/aws/20-core init -backend=false
+      - terraform -chdir=envs/prod/aws/30-domain-apigw init -backend=false
+      - terraform -chdir=envs/prod/aws/31-domain-cognito init -backend=false
+      - terraform -chdir=envs/prod/cloudflare/10-dns-validation init -backend=false
+      - terraform -chdir=envs/prod/cloudflare/20-pages init -backend=false
+      - terraform -chdir=envs/prod/cloudflare/21-pages-domain-dns-records init -backend=false
+      - terraform -chdir=envs/prod/cloudflare/30-dns-records-api-auth init -backend=false
 
   fix:
     desc: Run validate and lint for staged infra stacks
