@@ -4,7 +4,7 @@ const AUTH_CALLBACK_PATH = "/auth/callback";
 
 export const getPostAuthPath = () => {
   const returnTo = window.sessionStorage.getItem(AUTH_RETURN_TO_KEY);
-  if (!returnTo || !returnTo.startsWith("/") || returnTo.startsWith(AUTH_CALLBACK_PATH)) {
+  if (!returnTo || !returnTo.startsWith("/") || returnTo.startsWith("//") || returnTo.startsWith(AUTH_CALLBACK_PATH)) {
     return DEFAULT_POST_AUTH_PATH;
   }
   return returnTo;

@@ -23,7 +23,6 @@ services:
       - KC_HOSTNAME_STRICT=false
     volumes:
       - ./infra/envs/local/auth/keycloak/realm-obsern-local.json:/opt/keycloak/data/import/realm-obsern-local.json:ro
-      - ./infra/envs/local/auth/keycloak/themes:/opt/keycloak/themes:ro
       - keycloak_data:/opt/keycloak/data
 
 volumes:
