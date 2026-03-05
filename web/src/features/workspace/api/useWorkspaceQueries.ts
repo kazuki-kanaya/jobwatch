@@ -1,4 +1,9 @@
-import { useListUserWorkspacesUsersMeWorkspacesGet } from "@/generated/api";
+import { useQuery } from "@tanstack/react-query";
+import {
+  lookupUsersUsersLookupPost,
+  useListMembersWorkspacesWorkspaceIdMembersGet,
+  useListUserWorkspacesUsersMeWorkspacesGet,
+} from "@/generated/api";
 import { workspaceQueryKeys } from "./workspaceQueryKeys";
 
 type UseWorkspaceQueriesParams = {
@@ -17,8 +22,9 @@ const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
   };
 };
 
-export const useWorkspaceQueries = ({ accessToken, enabled }: UseWorkspaceQueriesParams) => {
+export const useWorkspaceQueries = ({ accessToken, enabled, workspaceId }: UseWorkspaceQueriesParams) => {
   const request = getAuthorizedRequestOptions(accessToken);
+  const safeWorkspaceId = workspaceId ?? "";
 
   const workspacesQuery = useListUserWorkspacesUsersMeWorkspacesGet({
     query: {
@@ -28,7 +34,33 @@ export const useWorkspaceQueries = ({ accessToken, enabled }: UseWorkspaceQuerie
     request,
   });
 
+  const membersQuery = useListMembersWorkspacesWorkspaceIdMembersGet(safeWorkspaceId, {
+    query: {
+      queryKey: workspaceQueryKeys.members(safeWorkspaceId),
+      enabled: enabled && Boolean(workspaceId),
+    },
+    request,
+  });
+  const memberUserIds = [...new Set((membersQuery.data?.members ?? []).map((member) => member.user_id))].sort();
+  const usersLookupQuery = useQuery({
+    queryKey: workspaceQueryKeys.usersLookup(memberUserIds),
+    enabled: enabled && Boolean(workspaceId) && memberUserIds.length > 0,
+    queryFn: async ({ signal }) => {
+      const response = await lookupUsersUsersLookupPost(
+        { user_ids: memberUserIds },
+        {
+          signal,
+          ...request,
+        },
+      );
+
+      return response;
+    },
+  });
+
   return {
     workspacesQuery,
+    membersQuery,
+    usersLookupQuery,
   };
 };

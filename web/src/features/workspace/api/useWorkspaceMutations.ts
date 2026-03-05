@@ -1,11 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { dashboardQueryKeys } from "@/features/dashboard/api/queryKeys";
 import {
   useCreateWorkspaceWorkspacesPost,
   useDeleteWorkspaceWorkspacesWorkspaceIdDelete,
   useTransferOwnerWorkspacesWorkspaceIdOwnerPost,
   useUpdateWorkspaceWorkspacesWorkspaceIdPatch,
 } from "@/generated/api";
+import { workspaceQueryKeys } from "./workspaceQueryKeys";
 
 type UseWorkspaceMutationsParams = {
   accessToken: string | undefined;
@@ -30,25 +30,25 @@ export const useWorkspaceMutations = ({ accessToken }: UseWorkspaceMutationsPara
   const deleteMutation = useDeleteWorkspaceWorkspacesWorkspaceIdDelete({ request });
   const transferOwnerMutation = useTransferOwnerWorkspacesWorkspaceIdOwnerPost({ request });
 
-  const invalidateDashboardQueries = async () => {
-    await queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.root });
+  const invalidateWorkspaceQueries = async () => {
+    await queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.root });
   };
 
   const createWorkspace = async (name: string) => {
     const response = await createMutation.mutateAsync({ data: { name } });
-    await invalidateDashboardQueries();
+    await invalidateWorkspaceQueries();
     return response;
   };
 
   const updateWorkspace = async (workspaceId: string, name: string) => {
     const response = await updateMutation.mutateAsync({ workspaceId, data: { name } });
-    await invalidateDashboardQueries();
+    await invalidateWorkspaceQueries();
     return response;
   };
 
   const deleteWorkspace = async (workspaceId: string) => {
     await deleteMutation.mutateAsync({ workspaceId });
-    await invalidateDashboardQueries();
+    await invalidateWorkspaceQueries();
   };
 
   const transferOwner = async (workspaceId: string, newOwnerUserId: string) => {
@@ -56,7 +56,7 @@ export const useWorkspaceMutations = ({ accessToken }: UseWorkspaceMutationsPara
       workspaceId,
       data: { new_owner_user_id: newOwnerUserId },
     });
-    await invalidateDashboardQueries();
+    await invalidateWorkspaceQueries();
     return response;
   };
 
