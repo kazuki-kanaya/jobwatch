@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import AuthGuard from "@/features/auth/components/AuthGuard";
+import { AuthGuard } from "@/features/auth";
 import AuthCallbackPage from "@/pages/AuthCallbackPage";
 import DashboardPage from "@/pages/DashboardPage";
 import InvitationAcceptPage from "@/pages/InvitationAcceptPage";
