@@ -2,6 +2,7 @@
   "realm": "obsern-local",
   "enabled": true,
   "displayName": "Obsern Local",
+  "loginTheme": "obsern",
 
   "registrationAllowed": true,
   "loginWithEmailAllowed": true,

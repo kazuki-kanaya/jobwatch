@@ -116,3 +116,4 @@
 - ローカル環境ではメール送受信は行いません。
 - パスワードの再設定は Keycloak 管理コンソール（`http://localhost:8080/admin/`）で行います。
 - 管理者ログインは `admin` / `admin` です。
+- Keycloak テーマや Realm seed を変更した場合は、`task infra:local:up` を実行して再反映してください。
