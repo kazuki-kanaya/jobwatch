@@ -1,5 +1,5 @@
-import AuthCallbackContainer from "@/features/auth/containers/AuthCallbackContainer";
+import { AuthCallback } from "@/features/auth/components/AuthCallback/AuthCallback";
 
 export default function AuthCallbackPage() {
-  return <AuthCallbackContainer />;
+  return <AuthCallback />;
 }
