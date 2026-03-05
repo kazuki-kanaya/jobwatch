@@ -36,7 +36,9 @@ export function WorkspaceItemMenu({
           type="button"
           variant="outline"
           size="icon-sm"
-          className={cn("h-11 w-11 rounded-xl border-[#48618f] bg-[#223358]/70 text-blue-100/90 hover:bg-[#2b3f6d]")}
+          className={cn(
+            "h-11 w-11 cursor-pointer rounded-xl border-[#48618f] bg-[#223358]/70 text-blue-100/90 hover:bg-[#2b3f6d] disabled:cursor-not-allowed",
+          )}
         >
           <MoreHorizontal className={cn("size-4")} />
         </Button>
@@ -44,15 +46,24 @@ export function WorkspaceItemMenu({
       <DropdownMenuContent
         className={cn("min-w-52 rounded-xl border-[#3e5687] bg-[#0d1a3a]/95 p-1 text-blue-50 backdrop-blur")}
       >
-        <DropdownMenuItem onSelect={() => canManage && onEditWorkspace(workspaceId)} disabled={!canManage}>
+        <DropdownMenuItem
+          className={cn("cursor-pointer disabled:cursor-not-allowed")}
+          onSelect={() => canManage && onEditWorkspace(workspaceId)}
+          disabled={!canManage}
+        >
           <PencilLine className={cn("size-4")} />
           {editLabel}
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => canManage && onTransferWorkspaceOwner(workspaceId)} disabled={!canManage}>
+        <DropdownMenuItem
+          className={cn("cursor-pointer disabled:cursor-not-allowed")}
+          onSelect={() => canManage && onTransferWorkspaceOwner(workspaceId)}
+          disabled={!canManage}
+        >
           <UserRoundCog className={cn("size-4")} />
           {transferOwnerLabel}
         </DropdownMenuItem>
         <DropdownMenuItem
+          className={cn("cursor-pointer disabled:cursor-not-allowed")}
           variant="destructive"
           onSelect={() => canManage && onDeleteWorkspace(workspaceId)}
           disabled={!canManage}

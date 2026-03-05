@@ -24,7 +24,7 @@ export function WorkspaceCreateButton({
         disabled={!canCreate}
         title={!canCreate ? noPermissionLabel : undefined}
         className={cn(
-          "h-11 rounded-xl bg-[linear-gradient(135deg,#5eead4_0%,#22d3ee_48%,#38bdf8_100%)] px-4 text-sm font-semibold text-[#04223a] shadow-[0_10px_20px_rgba(34,211,238,0.25)] transition hover:brightness-105",
+          "h-11 cursor-pointer rounded-xl bg-[linear-gradient(135deg,#5eead4_0%,#22d3ee_48%,#38bdf8_100%)] px-4 text-sm font-semibold text-[#04223a] shadow-[0_10px_20px_rgba(34,211,238,0.25)] transition hover:brightness-105 disabled:cursor-not-allowed",
         )}
       >
         <Plus className={cn("size-4")} />

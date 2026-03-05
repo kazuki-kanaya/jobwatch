@@ -59,7 +59,7 @@ export function WorkspaceFormDialog({
             type="button"
             variant="outline"
             onClick={onClose}
-            className={cn("border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
+            className={cn("cursor-pointer border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
           >
             {cancelLabel}
           </Button>
@@ -67,7 +67,7 @@ export function WorkspaceFormDialog({
             type="button"
             onClick={onSubmit}
             disabled={!workspaceDraftName.trim() || isSubmitting}
-            className={cn("bg-cyan-500 text-slate-950 hover:bg-cyan-400")}
+            className={cn("cursor-pointer bg-cyan-500 text-slate-950 hover:bg-cyan-400 disabled:cursor-not-allowed")}
           >
             {isEditing ? updateLabel : createLabel}
           </Button>

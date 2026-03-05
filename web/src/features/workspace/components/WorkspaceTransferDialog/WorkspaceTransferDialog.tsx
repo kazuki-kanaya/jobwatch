@@ -52,12 +52,12 @@ export function WorkspaceTransferDialog({
         <div className={cn("space-y-3")}>
           {workspaceId ? <p className={cn("text-xs text-slate-400")}>{workspaceId}</p> : null}
           <Select value={ownerUserId} onValueChange={onOwnerUserIdChange}>
-            <SelectTrigger className={cn("border-slate-600 bg-slate-800 text-slate-200")}>
+            <SelectTrigger className={cn("cursor-pointer border-slate-600 bg-slate-800 text-slate-200")}>
               <SelectValue placeholder={ownerUserIdLabel} />
             </SelectTrigger>
             <SelectContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
               {ownerOptions.map((option) => (
-                <SelectItem key={option.id} value={option.id}>
+                <SelectItem key={option.id} value={option.id} className={cn("cursor-pointer")}>
                   {option.name}
                 </SelectItem>
               ))}
@@ -69,7 +69,7 @@ export function WorkspaceTransferDialog({
             type="button"
             variant="outline"
             onClick={onClose}
-            className={cn("border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
+            className={cn("cursor-pointer border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
           >
             {cancelLabel}
           </Button>
@@ -77,7 +77,7 @@ export function WorkspaceTransferDialog({
             type="button"
             onClick={onSubmit}
             disabled={!ownerUserId.trim() || isSubmitting}
-            className={cn("bg-cyan-500 text-slate-950 hover:bg-cyan-400")}
+            className={cn("cursor-pointer bg-cyan-500 text-slate-950 hover:bg-cyan-400 disabled:cursor-not-allowed")}
           >
             {transferLabel}
           </Button>

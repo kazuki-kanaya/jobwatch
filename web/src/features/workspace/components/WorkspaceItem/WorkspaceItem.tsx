@@ -46,7 +46,7 @@ export function WorkspaceItem({
       <button
         type="button"
         onClick={() => onSelectWorkspace(workspace.id)}
-        className={cn("min-w-0 flex-1 text-left focus-visible:outline-none")}
+        className={cn("min-w-0 flex-1 cursor-pointer text-left focus-visible:outline-none")}
       >
         <div className={cn("min-w-0 space-y-1")}>
           <div className={cn("flex min-w-0 items-center gap-2.5")}>

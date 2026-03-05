@@ -41,14 +41,16 @@ export function WorkspaceDeleteDialog({
         <AlertDialogFooter>
           <AlertDialogCancel
             onClick={onClose}
-            className={cn("border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
+            className={cn(
+              "cursor-pointer border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700 disabled:cursor-not-allowed",
+            )}
           >
             {cancelLabel}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
             disabled={isSubmitting}
-            className={cn("bg-rose-600 text-white hover:bg-rose-500")}
+            className={cn("cursor-pointer bg-rose-600 text-white hover:bg-rose-500 disabled:cursor-not-allowed")}
           >
             {confirmLabel}
           </AlertDialogAction>
