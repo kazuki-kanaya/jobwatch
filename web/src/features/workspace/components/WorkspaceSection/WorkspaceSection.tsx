@@ -117,7 +117,6 @@ export function WorkspaceSection({
 }: WorkspaceSectionProps) {
   const isLoading = state === "loading";
   const isError = state === "error";
-  const listEmptyLabel = state === "empty" ? emptyLabel : "No workspaces found.";
 
   return (
     <Card
@@ -149,7 +148,7 @@ export function WorkspaceSection({
           activeWorkspaceId={activeWorkspaceId}
           isLoading={isLoading}
           isError={isError}
-          emptyLabel={listEmptyLabel}
+          emptyLabel={emptyLabel}
           errorLabel={errorLabel}
           editLabel={editLabel}
           transferOwnerLabel={transferOwnerLabel}

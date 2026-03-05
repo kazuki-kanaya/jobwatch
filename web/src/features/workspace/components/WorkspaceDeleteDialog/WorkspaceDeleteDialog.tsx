@@ -32,7 +32,7 @@ export function WorkspaceDeleteDialog({
   onConfirm,
 }: WorkspaceDeleteDialogProps) {
   return (
-    <AlertDialog open={isOpen}>
+    <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <AlertDialogContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

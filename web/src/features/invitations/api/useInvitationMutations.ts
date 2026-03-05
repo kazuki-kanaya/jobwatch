@@ -5,20 +5,11 @@ import {
   useCreateInvitationWorkspacesWorkspaceIdInvitationsPost,
   useRevokeInvitationWorkspacesWorkspaceIdInvitationsInvitationIdDelete,
 } from "@/generated/api";
+import { getAuthorizedRequestOptions } from "@/lib/api";
 
 type UseInvitationMutationsParams = {
   accessToken: string | undefined;
   workspaceId: string;
-};
-
-const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
-  if (!accessToken) return undefined;
-
-  return {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
 };
 
 export const useInvitationMutations = ({ accessToken, workspaceId }: UseInvitationMutationsParams) => {

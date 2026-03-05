@@ -11,12 +11,12 @@ export default function NewWorkspacePage() {
   const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { t } = useLocale();
   const accessToken = user?.access_token;
-  const canRequest = isAuthenticated && !isAuthLoading && Boolean(accessToken);
+  const canCreate = isAuthenticated && !isAuthLoading && Boolean(accessToken);
   const [workspaceId, setWorkspaceId] = useState("");
 
-  const { workspacesQuery, membersQuery, usersLookupQuery } = useWorkspaceQueries({
+  const { currentUserQuery, workspacesQuery, membersQuery, usersLookupQuery } = useWorkspaceQueries({
     accessToken,
-    enabled: canRequest,
+    enabled: canCreate,
     workspaceId,
   });
 
@@ -53,6 +53,12 @@ export default function NewWorkspacePage() {
     }));
   }, [membersQuery.data, userNameById]);
 
+  const currentMembershipRole =
+    currentUserQuery.data?.user_id && membersQuery.data?.members
+      ? (membersQuery.data.members.find((member) => member.user_id === currentUserQuery.data?.user_id)?.role ?? null)
+      : null;
+  const canManage = currentMembershipRole === "owner";
+
   const viewState: WorkspaceViewState = workspacesQuery.isLoading
     ? "loading"
     : workspacesQuery.isError
@@ -76,9 +82,6 @@ export default function NewWorkspacePage() {
       invitationCrudError: t("dashboard_invitation_crud_error"),
     },
   });
-
-  const canManage = canRequest;
-  const canCreate = canRequest;
 
   return (
     <main

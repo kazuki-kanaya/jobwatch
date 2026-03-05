@@ -3,7 +3,9 @@ import {
   lookupUsersUsersLookupPost,
   useListMembersWorkspacesWorkspaceIdMembersGet,
   useListUserWorkspacesUsersMeWorkspacesGet,
+  useReadCurrentUserUsersMeGet,
 } from "@/generated/api";
+import { getAuthorizedRequestOptions } from "@/lib/api";
 import { workspaceQueryKeys } from "./workspaceQueryKeys";
 
 type UseWorkspaceQueriesParams = {
@@ -12,19 +14,17 @@ type UseWorkspaceQueriesParams = {
   workspaceId?: string;
 };
 
-const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
-  if (!accessToken) return undefined;
-
-  return {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-};
-
 export const useWorkspaceQueries = ({ accessToken, enabled, workspaceId }: UseWorkspaceQueriesParams) => {
   const request = getAuthorizedRequestOptions(accessToken);
   const safeWorkspaceId = workspaceId ?? "";
+  // TODO: Move current-user query to features/user and inject userId into workspace flows.
+  const currentUserQuery = useReadCurrentUserUsersMeGet({
+    query: {
+      queryKey: workspaceQueryKeys.currentUser(),
+      enabled,
+    },
+    request,
+  });
 
   const workspacesQuery = useListUserWorkspacesUsersMeWorkspacesGet({
     query: {
@@ -59,6 +59,7 @@ export const useWorkspaceQueries = ({ accessToken, enabled, workspaceId }: UseWo
   });
 
   return {
+    currentUserQuery,
     workspacesQuery,
     membersQuery,
     usersLookupQuery,

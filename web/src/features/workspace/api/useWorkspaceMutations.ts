@@ -5,20 +5,11 @@ import {
   useTransferOwnerWorkspacesWorkspaceIdOwnerPost,
   useUpdateWorkspaceWorkspacesWorkspaceIdPatch,
 } from "@/generated/api";
+import { getAuthorizedRequestOptions } from "@/lib/api";
 import { workspaceQueryKeys } from "./workspaceQueryKeys";
 
 type UseWorkspaceMutationsParams = {
   accessToken: string | undefined;
-};
-
-const getAuthorizedRequestOptions = (accessToken: string | undefined) => {
-  if (!accessToken) return undefined;
-
-  return {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
 };
 
 export const useWorkspaceMutations = ({ accessToken }: UseWorkspaceMutationsParams) => {
