@@ -40,7 +40,7 @@ export function HostDeleteDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
-            onClick={onClose}
+            disabled={isSubmitting}
             className={cn(
               "cursor-pointer border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700 disabled:cursor-not-allowed",
             )}
