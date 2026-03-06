@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 
-type WorkspaceDeleteDialogProps = {
+type HostDeleteDialogProps = {
   title: string;
   description: string;
   cancelLabel: string;
@@ -21,7 +21,7 @@ type WorkspaceDeleteDialogProps = {
   onConfirm: () => void;
 };
 
-export function WorkspaceDeleteDialog({
+export function HostDeleteDialog({
   title,
   description,
   cancelLabel,
@@ -30,7 +30,7 @@ export function WorkspaceDeleteDialog({
   isOpen,
   onClose,
   onConfirm,
-}: WorkspaceDeleteDialogProps) {
+}: HostDeleteDialogProps) {
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <AlertDialogContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>

@@ -8,7 +8,7 @@ type UseWorkspaceCrudParams = {
   accessToken: string | undefined;
   workspaceId: string;
   workspaces: DashboardViewModel["filters"]["workspaceOptions"];
-  onWorkspaceChange: (workspaceId: string) => void;
+  onWorkspaceIdChange: (workspaceId: string) => void;
   texts: Pick<
     DashboardViewModel["texts"],
     | "workspaceCreated"
@@ -52,7 +52,7 @@ export const useWorkspaceCrud = ({
   accessToken,
   workspaceId,
   workspaces,
-  onWorkspaceChange,
+  onWorkspaceIdChange,
   texts,
 }: UseWorkspaceCrudParams): UseWorkspaceCrudResult => {
   const workspaceMutations = useWorkspaceMutations({ accessToken });
@@ -109,7 +109,7 @@ export const useWorkspaceCrud = ({
           toast.success(texts.workspaceUpdated);
         } else {
           const created = await workspaceMutations.createWorkspace(name);
-          onWorkspaceChange(created.workspace_id);
+          onWorkspaceIdChange(created.workspace_id);
           toast.success(texts.workspaceCreated);
         }
         setIsWorkspaceFormOpen(false);
@@ -169,7 +169,7 @@ export const useWorkspaceCrud = ({
         await workspaceMutations.deleteWorkspace(deletingWorkspaceId);
         const fallbackWorkspace = workspaces.find((workspace) => workspace.id !== deletingWorkspaceId);
         if (workspaceId === deletingWorkspaceId) {
-          onWorkspaceChange(fallbackWorkspace?.id ?? "");
+          onWorkspaceIdChange(fallbackWorkspace?.id ?? "");
         }
         toast.success(texts.workspaceDeleted);
       } catch (error) {
