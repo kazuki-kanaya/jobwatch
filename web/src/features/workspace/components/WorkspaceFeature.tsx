@@ -7,7 +7,7 @@ import { useWorkspaceCrud } from "@/features/workspace/hooks/useWorkspaceCrud";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 
-export default function NewWorkspacePage() {
+export function WorkspaceFeature() {
   const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { t } = useLocale();
   const accessToken = user?.access_token;
