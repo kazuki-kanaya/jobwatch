@@ -15,10 +15,6 @@ const meta = {
   },
   args: {
     title: "Hosts",
-    scopeLabel: "Current workspace",
-    scopeName: "Platform Infra",
-    scopeId: "ws_001",
-    scopeHint: "Hosts below belong to this workspace.",
     emptyLabel: "No hosts yet.",
     errorLabel: "Failed to load hosts.",
     state: "ready",

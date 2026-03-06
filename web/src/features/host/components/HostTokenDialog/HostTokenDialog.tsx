@@ -37,25 +37,25 @@ export function HostTokenDialog({
 }: HostTokenDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className={cn("border-amber-300/40 bg-[#1a1302] text-amber-50")}>
+      <DialogContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
         <DialogHeader>
-          <DialogTitle className={cn("text-amber-100")}>{title}</DialogTitle>
-          <DialogDescription className={cn("text-amber-100/75")}>{description}</DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription className={cn("text-slate-400")}>{description}</DialogDescription>
         </DialogHeader>
-        {tokenMessage ? <p className={cn("text-xs text-amber-100/90")}>{tokenMessage}</p> : null}
+        {tokenMessage ? <p className={cn("text-xs text-slate-300")}>{tokenMessage}</p> : null}
         <div
           className={cn(
-            "rounded-lg border border-amber-300/35 bg-black/20 px-3 py-2 font-mono text-xs break-all text-amber-50",
+            "rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 font-mono text-xs break-all text-slate-100",
           )}
         >
-          <span className={cn("font-semibold text-amber-200")}>{tokenLabel}:</span> {token ?? "-"}
+          <span className={cn("font-semibold text-cyan-300")}>{tokenLabel}:</span> {token ?? "-"}
         </div>
         <DialogFooter>
           <Button
             type="button"
             variant="outline"
             onClick={onClose}
-            className={cn("cursor-pointer border-amber-300/35 bg-transparent text-amber-100 hover:bg-amber-200/10")}
+            className={cn("cursor-pointer border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
           >
             <X className={cn("size-4")} />
             {closeLabel}
@@ -65,7 +65,7 @@ export function HostTokenDialog({
             onClick={onCopy}
             disabled={!token}
             className={cn(
-              "cursor-pointer bg-amber-400 text-[#2a1b00] hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-50",
+              "cursor-pointer bg-cyan-500 text-slate-950 hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50",
             )}
           >
             <Copy className={cn("size-4")} />

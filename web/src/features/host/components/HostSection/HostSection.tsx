@@ -9,10 +9,6 @@ import { cn } from "@/lib/utils";
 
 type HostSectionProps = {
   title: string;
-  scopeLabel: string;
-  scopeName: string;
-  scopeId: string;
-  scopeHint?: string;
   emptyLabel: string;
   errorLabel: string;
   state: HostViewState;
@@ -57,10 +53,6 @@ type HostSectionProps = {
 
 export function HostSection({
   title,
-  scopeLabel,
-  scopeName,
-  scopeId,
-  scopeHint,
   emptyLabel,
   errorLabel,
   state,
@@ -121,21 +113,6 @@ export function HostSection({
             onCreateHost={onCreateHost}
           />
         </div>
-        <Card
-          className={cn(
-            "rounded-2xl border border-[#33538b]/70 bg-[#0b1a3f]/70 py-4 shadow-[inset_0_1px_0_rgba(151,180,255,0.08)]",
-          )}
-        >
-          <CardContent className={cn("space-y-3 px-5")}>
-            <p className={cn("text-[11px] font-semibold tracking-[0.2em] text-blue-200/65 uppercase")}>{scopeLabel}</p>
-            <p className={cn("text-2xl font-semibold leading-tight text-blue-50 md:text-[2rem]")}>{scopeName}</p>
-            <p className={cn("truncate text-sm text-blue-100/75")} title={scopeId}>
-              <span className={cn("font-medium text-blue-100/80")}>Workspace ID:</span>{" "}
-              <span className={cn("font-mono text-base text-blue-50/95")}>{scopeId}</span>
-            </p>
-            {scopeHint ? <p className={cn("text-sm text-blue-100/65")}>{scopeHint}</p> : null}
-          </CardContent>
-        </Card>
       </CardHeader>
 
       <CardContent className={cn("space-y-5 px-6")}>
