@@ -21,6 +21,9 @@ type HeaderControlsProps = {
   onSignOut: () => Promise<void> | void;
 };
 
+const isHeaderTimeZone = (value: string, options: HeaderTimeZoneOption[]): value is HeaderTimeZone =>
+  options.some((option) => option.id === value);
+
 export function HeaderControls({
   languageLabel,
   refreshLabel,
@@ -58,7 +61,12 @@ export function HeaderControls({
         </Select>
       </div>
       <div className={cn("rounded-md border border-slate-600 bg-slate-800 px-2")}>
-        <Select value={timeZoneValue} onValueChange={(value) => onTimeZoneChange(value as HeaderTimeZone)}>
+        <Select
+          value={timeZoneValue}
+          onValueChange={(value) => {
+            if (isHeaderTimeZone(value, timeZoneOptions)) onTimeZoneChange(value);
+          }}
+        >
           <SelectTrigger
             aria-label={timeZoneLabel}
             className={cn("h-9 min-w-20 border-none bg-transparent text-slate-100 shadow-none focus-visible:ring-0")}

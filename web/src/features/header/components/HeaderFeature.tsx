@@ -116,7 +116,7 @@ export function HeaderFeature({ currentUser }: HeaderFeatureProps) {
           languageLabel={t("dashboard_language")}
           refreshLabel={t("dashboard_refresh")}
           signOutLabel={t("dashboard_sign_out")}
-          timeZoneLabel={locale === "ja" ? "タイムゾーン" : "Time zone"}
+          timeZoneLabel={t("dashboard_time_zone")}
           localeValue={locale}
           localeOptions={[
             { id: "ja", name: t("locale_ja") },

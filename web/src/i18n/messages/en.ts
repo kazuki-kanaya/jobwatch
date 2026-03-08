@@ -23,6 +23,7 @@ export const enMessages = {
   dashboard_refresh_success: "Dashboard refreshed.",
   dashboard_refresh_error: "Failed to refresh dashboard.",
   dashboard_sign_out: "Sign out",
+  dashboard_time_zone: "Time zone",
   dashboard_filters: "Filters",
   dashboard_apply: "Apply",
   dashboard_recent_jobs: "Recent Jobs",

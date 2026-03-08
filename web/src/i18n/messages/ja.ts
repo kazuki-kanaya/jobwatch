@@ -22,6 +22,7 @@ export const jaMessages = {
   dashboard_refresh_success: "ダッシュボードを更新しました。",
   dashboard_refresh_error: "ダッシュボードの更新に失敗しました。",
   dashboard_sign_out: "ログアウト",
+  dashboard_time_zone: "タイムゾーン",
   dashboard_filters: "フィルター",
   dashboard_apply: "適用",
   dashboard_recent_jobs: "最近のジョブ",
