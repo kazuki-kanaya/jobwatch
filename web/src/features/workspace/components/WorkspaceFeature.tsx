@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useAuth } from "react-oidc-context";
-import { useCurrentUser } from "@/features/user";
+import type { CurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import type { WorkspaceViewState } from "@/features/workspace/components/types";
 import { WorkspaceSection } from "@/features/workspace/components/WorkspaceSection/WorkspaceSection";
@@ -9,19 +9,16 @@ import { useLocale } from "@/i18n/LocaleProvider";
 
 type WorkspaceFeatureProps = {
   workspaceId: string;
+  currentUser: CurrentUser | null;
   onWorkspaceIdChange: (workspaceId: string) => void;
 };
 
-export function WorkspaceFeature({ workspaceId, onWorkspaceIdChange }: WorkspaceFeatureProps) {
+export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange }: WorkspaceFeatureProps) {
   const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { t } = useLocale();
   const accessToken = user?.access_token;
   const canCreate = isAuthenticated && !isAuthLoading && Boolean(accessToken);
 
-  const { currentUser } = useCurrentUser({
-    accessToken,
-    enabled: canCreate,
-  });
   const { workspacesQuery, membersQuery, usersLookupQuery } = useWorkspaceQueries({
     accessToken,
     enabled: canCreate,

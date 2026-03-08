@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { DisplayTimeZone } from "@/providers/DisplaySettingsProvider";
 
 export type HeaderLocaleOption = {
@@ -13,29 +14,8 @@ export type HeaderTimeZoneOption = {
 };
 
 export type HeaderSectionProps = {
-  missionControlLabel: string;
-  title: string;
-  updatedAtLabel: string;
-  updatedAtValue: string;
-  currentUserLabel: string;
-  currentUserName: string;
-  currentUserId: string;
-  editProfileLabel: string;
-  languageLabel: string;
-  refreshLabel: string;
-  signOutLabel: string;
-  timeZoneLabel: string;
-  localeValue: string;
-  localeOptions: HeaderLocaleOption[];
-  timeZoneValue: HeaderTimeZone;
-  timeZoneOptions: HeaderTimeZoneOption[];
-  isRefreshing: boolean;
-  isSigningOut: boolean;
-  onEditProfile: () => void;
-  onLocaleChange: (locale: string) => void;
-  onTimeZoneChange: (timeZone: HeaderTimeZone) => void;
-  onRefresh: () => Promise<void> | void;
-  onSignOut: () => Promise<void> | void;
+  brand: ReactNode;
+  userCard: ReactNode;
+  controls: ReactNode;
+  profileDialog: ReactNode;
 };
-
-export type HeaderFeatureProps = HeaderSectionProps;

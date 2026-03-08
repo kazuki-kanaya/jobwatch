@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useUserQueries } from "@/features/user/api/useUserQueries";
+import type { CurrentUser } from "@/features/user/types";
 
 type UseCurrentUserParams = {
   accessToken: string | undefined;
@@ -9,7 +10,7 @@ type UseCurrentUserParams = {
 export const useCurrentUser = ({ accessToken, enabled }: UseCurrentUserParams) => {
   const { currentUserQuery } = useUserQueries({ accessToken, enabled });
 
-  const currentUser = useMemo(() => {
+  const currentUser = useMemo<CurrentUser | null>(() => {
     const data = currentUserQuery.data;
     if (!data) return null;
 
