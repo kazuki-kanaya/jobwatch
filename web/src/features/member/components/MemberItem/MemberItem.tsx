@@ -1,4 +1,4 @@
-import { ShieldCheck, UserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import { MemberItemMenu } from "@/features/member/components/MemberItemMenu/MemberItemMenu";
 import type { MemberItemData } from "@/features/member/components/types";
 import { cn } from "@/lib/utils";
@@ -42,7 +42,6 @@ export function MemberItem({
             )}
             title={roleLabel}
           >
-            <ShieldCheck className={cn("size-3")} />
             {member.role}
           </span>
         </p>

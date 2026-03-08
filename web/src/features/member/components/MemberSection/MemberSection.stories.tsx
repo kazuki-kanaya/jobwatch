@@ -20,7 +20,7 @@ const meta = {
     headerActions: (
       <MemberCreateButton addLabel="Add" noPermissionLabel="No permission" canCreate={true} onCreateMember={() => {}} />
     ),
-    content: (
+    list: (
       <MemberList
         items={items}
         isLoading={false}

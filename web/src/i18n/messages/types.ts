@@ -87,6 +87,9 @@ export type Messages = {
   dashboard_member_updated: string;
   dashboard_member_removed: string;
   dashboard_member_crud_error: string;
+  dashboard_member_add_method_title: string;
+  dashboard_member_add_by_user_id: string;
+  dashboard_member_add_by_invitation: string;
   dashboard_invitation_link: string;
   dashboard_invitation_link_placeholder: string;
   dashboard_generate_invite: string;

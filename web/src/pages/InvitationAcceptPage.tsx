@@ -1,5 +1,5 @@
-import InvitationAcceptContainer from "@/features/invitations/containers/InvitationAcceptContainer";
+import { InvitationAcceptFeature } from "@/features/invitation/components/InvitationAcceptFeature";
 
 export default function InvitationAcceptPage() {
-  return <InvitationAcceptContainer />;
+  return <InvitationAcceptFeature />;
 }
