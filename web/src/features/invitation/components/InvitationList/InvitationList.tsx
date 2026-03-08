@@ -7,6 +7,7 @@ type InvitationListProps = {
   items: InvitationItemData[];
   isLoading: boolean;
   isError: boolean;
+  isForbidden: boolean;
   emptyLabel: string;
   forbiddenLabel: string;
   errorLabel: string;
@@ -26,6 +27,7 @@ export function InvitationList({
   items,
   isLoading,
   isError,
+  isForbidden,
   emptyLabel,
   forbiddenLabel,
   errorLabel,
@@ -50,7 +52,7 @@ export function InvitationList({
     );
   }
 
-  if (!canManage) {
+  if (isForbidden) {
     return (
       <p
         className={cn(

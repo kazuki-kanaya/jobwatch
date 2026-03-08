@@ -47,6 +47,8 @@ export function InvitationManagementFeature({
     currentUser,
     members: membersQuery.data?.members,
   });
+  const isPermissionLoading = membersQuery.isLoading;
+  const isForbidden = Boolean(workspaceId) && !isPermissionLoading && !canManage;
   const canAccessInvitations = canAccessFeature && canManage;
 
   const { invitationsQuery, usersLookupQuery } = useInvitationQueries({
@@ -57,7 +59,7 @@ export function InvitationManagementFeature({
   const { items, viewState } = useInvitationViewModel({
     invitations: invitationsQuery.data?.invitations,
     users: usersLookupQuery.data?.users,
-    isLoading: invitationsQuery.isLoading || usersLookupQuery.isLoading,
+    isLoading: invitationsQuery.isLoading || usersLookupQuery.isLoading || isPermissionLoading,
     isError: invitationsQuery.isError || usersLookupQuery.isError,
     formatDateTime,
   });
@@ -91,6 +93,7 @@ export function InvitationManagementFeature({
           items={items}
           isLoading={viewState === "loading"}
           isError={viewState === "error"}
+          isForbidden={isForbidden}
           emptyLabel={emptyLabel}
           forbiddenLabel={t("dashboard_no_permission")}
           errorLabel={t("dashboard_invitations_error")}
