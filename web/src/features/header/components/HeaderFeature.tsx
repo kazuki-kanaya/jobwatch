@@ -8,6 +8,7 @@ import { HeaderProfileEditDialog } from "@/features/header/components/HeaderProf
 import { HeaderSection } from "@/features/header/components/HeaderSection/HeaderSection";
 import { HeaderUserCard } from "@/features/header/components/HeaderUserCard/HeaderUserCard";
 import { hostQueryKeys } from "@/features/host/api/hostQueryKeys";
+import { jobQueryKeys } from "@/features/job/api/jobQueryKeys";
 import { snapshotQueryKeys } from "@/features/snapshot/api/snapshotQueryKeys";
 import type { CurrentUser } from "@/features/user";
 import { useUserMutations } from "@/features/user";
@@ -41,6 +42,7 @@ export function HeaderFeature({ currentUser }: HeaderFeatureProps) {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.root }),
         queryClient.invalidateQueries({ queryKey: hostQueryKeys.root }),
+        queryClient.invalidateQueries({ queryKey: jobQueryKeys.root }),
         queryClient.invalidateQueries({ queryKey: snapshotQueryKeys.root }),
       ]);
       setLastUpdatedAt(new Date());
