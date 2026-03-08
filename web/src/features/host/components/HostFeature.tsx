@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useAuth } from "react-oidc-context";
 import { useHostQueries } from "@/features/host/api/useHostQueries";
 import { HostCreateButton } from "@/features/host/components/HostCreateButton/HostCreateButton";
@@ -7,8 +6,9 @@ import { HostFormDialog } from "@/features/host/components/HostFormDialog/HostFo
 import { HostList } from "@/features/host/components/HostList/HostList";
 import { HostSection } from "@/features/host/components/HostSection/HostSection";
 import { HostTokenDialog } from "@/features/host/components/HostTokenDialog/HostTokenDialog";
-import type { HostViewState } from "@/features/host/components/types";
 import { useHostCrud } from "@/features/host/hooks/useHostCrud";
+import { useHostPermissions } from "@/features/host/hooks/useHostPermissions";
+import { useHostViewModel } from "@/features/host/hooks/useHostViewModel";
 import type { CurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import { useLocale } from "@/i18n/LocaleProvider";
@@ -35,32 +35,17 @@ export function HostFeature({ workspaceId, currentUser }: HostFeatureProps) {
     workspaceId,
   });
 
-  const currentMembershipRole =
-    currentUser?.id && membersQuery.data?.members
-      ? (membersQuery.data.members.find((member) => member.user_id === currentUser.id)?.role ?? null)
-      : null;
-  const canManage = currentMembershipRole === "owner" || currentMembershipRole === "editor";
-
-  const hosts = useMemo(() => {
-    const items = hostsQuery.data ?? [];
-    return items.map((host) => ({
-      id: host.host_id,
-      name: host.name,
-    }));
-  }, [hostsQuery.data]);
-
-  const workspaceName = useMemo(() => {
-    const workspaces = workspacesQuery.data?.workspaces ?? [];
-    return workspaces.find((workspace) => workspace.workspace_id === workspaceId)?.name ?? "";
-  }, [workspaceId, workspacesQuery.data]);
-
-  const viewState: HostViewState = hostsQuery.isLoading
-    ? "loading"
-    : hostsQuery.isError
-      ? "error"
-      : hosts.length === 0
-        ? "empty"
-        : "ready";
+  const { canManage } = useHostPermissions({
+    currentUser,
+    members: membersQuery.data?.members,
+  });
+  const { hosts, workspaceName, viewState } = useHostViewModel({
+    workspaceId,
+    hosts: hostsQuery.data,
+    workspaces: workspacesQuery.data?.workspaces,
+    isLoading: hostsQuery.isLoading,
+    isError: hostsQuery.isError,
+  });
   const isLoading = viewState === "loading";
   const isError = viewState === "error";
 
