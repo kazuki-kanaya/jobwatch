@@ -4,7 +4,6 @@ import DashboardFiltersSection from "@/features/dashboard/components/DashboardFi
 const meta = {
   title: "Features/Dashboard/DashboardFiltersSection",
   component: DashboardFiltersSection,
-
   args: {
     workspaceLabel: "Workspace",
     hostLabel: "Host",

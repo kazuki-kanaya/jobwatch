@@ -4,7 +4,6 @@ import { HeaderBrand } from "@/features/header/components/HeaderBrand/HeaderBran
 const meta = {
   title: "Features/Header/HeaderBrand",
   component: HeaderBrand,
-
   args: {
     missionControlLabel: "MISSION CONTROL",
     title: "Obsern Control Deck",

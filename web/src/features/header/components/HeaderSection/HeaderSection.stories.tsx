@@ -18,7 +18,6 @@ const timeZoneOptions = [
 const meta = {
   title: "Features/Header/HeaderSection",
   component: HeaderSection,
-
   args: {
     brand: (
       <HeaderBrand

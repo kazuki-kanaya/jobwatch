@@ -4,7 +4,6 @@ import { WorkspaceCreateButton } from "@/features/workspace/components/Workspace
 const meta = {
   title: "Features/Workspace/WorkspaceCreateButton",
   component: WorkspaceCreateButton,
-
   args: {
     addLabel: "Create",
     noPermissionLabel: "No permission",

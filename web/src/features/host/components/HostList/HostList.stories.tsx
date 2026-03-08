@@ -9,7 +9,6 @@ const items = [
 const meta = {
   title: "Features/Host/HostList",
   component: HostList,
-
   args: {
     items,
     isLoading: false,

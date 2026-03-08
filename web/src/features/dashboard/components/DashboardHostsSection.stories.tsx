@@ -4,7 +4,6 @@ import DashboardHostsSection from "@/features/dashboard/components/DashboardHost
 const meta = {
   title: "Features/Dashboard/DashboardHostsSection",
   component: DashboardHostsSection,
-
   args: {
     title: "Hosts",
     hostNameLabel: "Host name",

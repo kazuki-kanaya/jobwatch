@@ -4,7 +4,6 @@ import { WorkspaceItem } from "@/features/workspace/components/WorkspaceItem/Wor
 const meta = {
   title: "Features/Workspace/WorkspaceItem",
   component: WorkspaceItem,
-
   args: {
     workspace: { id: "ws_001", name: "Platform Infra" },
     isActive: true,

@@ -4,7 +4,6 @@ import DashboardMembersSection from "@/features/dashboard/components/DashboardMe
 const meta = {
   title: "Features/Dashboard/DashboardMembersSection",
   component: DashboardMembersSection,
-
   args: {
     title: "Members",
     userIdLabel: "User ID",

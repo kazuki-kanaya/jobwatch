@@ -4,7 +4,6 @@ import { HeaderControls } from "@/features/header/components/HeaderControls/Head
 const meta = {
   title: "Features/Header/HeaderControls",
   component: HeaderControls,
-
   args: {
     languageLabel: "Language",
     refreshLabel: "Refresh",

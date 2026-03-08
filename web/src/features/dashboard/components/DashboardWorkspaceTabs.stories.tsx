@@ -4,7 +4,6 @@ import DashboardWorkspaceTabs from "@/features/dashboard/components/DashboardWor
 const meta = {
   title: "Features/Dashboard/DashboardWorkspaceTabs",
   component: DashboardWorkspaceTabs,
-
   args: {
     value: "overview",
     overviewLabel: "Overview",

@@ -10,7 +10,6 @@ const items = [
 const meta = {
   title: "Features/Workspace/WorkspaceList",
   component: WorkspaceList,
-
   args: {
     items,
     activeWorkspaceId: "ws_001",

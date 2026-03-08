@@ -4,7 +4,6 @@ import { WorkspaceSummary } from "@/features/workspace/components/WorkspaceSumma
 const meta = {
   title: "Features/Workspace/WorkspaceSummary",
   component: WorkspaceSummary,
-
   args: {
     title: "Current Workspace",
     workspaceId: "ws_001",

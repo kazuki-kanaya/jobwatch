@@ -4,7 +4,6 @@ import DashboardJobsSection from "@/features/dashboard/components/DashboardJobsS
 const meta = {
   title: "Features/Dashboard/DashboardJobsSection",
   component: DashboardJobsSection,
-
   args: {
     jobs: [
       {

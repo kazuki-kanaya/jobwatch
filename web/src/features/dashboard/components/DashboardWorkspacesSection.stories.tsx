@@ -4,7 +4,6 @@ import DashboardWorkspacesSection from "@/features/dashboard/components/Dashboar
 const meta = {
   title: "Features/Dashboard/DashboardWorkspacesSection",
   component: DashboardWorkspacesSection,
-
   args: {
     title: "Workspaces",
     workspaceNameLabel: "Workspace name",
