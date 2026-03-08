@@ -1,4 +1,5 @@
 import { useAuth } from "react-oidc-context";
+import { useMemberQueries } from "@/features/member/api/useMemberQueries";
 import type { CurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import { WorkspaceCreateButton } from "@/features/workspace/components/WorkspaceCreateButton/WorkspaceCreateButton";
@@ -26,7 +27,11 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
   const accessToken = user?.access_token;
   const canCreate = isAuthenticated && !isAuthLoading && Boolean(accessToken);
 
-  const { workspacesQuery, membersQuery, usersLookupQuery } = useWorkspaceQueries({
+  const { workspacesQuery } = useWorkspaceQueries({
+    accessToken,
+    enabled: canCreate,
+  });
+  const { membersQuery, usersLookupQuery } = useMemberQueries({
     accessToken,
     enabled: canCreate,
     workspaceId,

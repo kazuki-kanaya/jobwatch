@@ -9,6 +9,7 @@ import { HostTokenDialog } from "@/features/host/components/HostTokenDialog/Host
 import { useHostCrud } from "@/features/host/hooks/useHostCrud";
 import { useHostPermissions } from "@/features/host/hooks/useHostPermissions";
 import { useHostViewModel } from "@/features/host/hooks/useHostViewModel";
+import { useMemberQueries } from "@/features/member/api/useMemberQueries";
 import type { CurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import { useLocale } from "@/i18n/LocaleProvider";
@@ -24,7 +25,11 @@ export function HostFeature({ workspaceId, currentUser }: HostFeatureProps) {
   const accessToken = user?.access_token;
   const canAccessFeature = isAuthenticated && !isAuthLoading && Boolean(accessToken);
 
-  const { workspacesQuery, membersQuery } = useWorkspaceQueries({
+  const { workspacesQuery } = useWorkspaceQueries({
+    accessToken,
+    enabled: canAccessFeature,
+  });
+  const { membersQuery } = useMemberQueries({
     accessToken,
     enabled: canAccessFeature,
     workspaceId,

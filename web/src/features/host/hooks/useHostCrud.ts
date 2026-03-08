@@ -55,6 +55,79 @@ export const useHostCrud = ({ accessToken, workspaceId, hosts, texts }: UseHostC
     setHostDraftName("");
   };
 
+  const openCreateHostForm = () => {
+    setHostToken(null);
+    setHostTokenMessage(null);
+    setEditingHostId(null);
+    setHostDraftName("");
+    setIsHostFormOpen(true);
+  };
+
+  const startEditHost = (hostId: string) => {
+    setHostToken(null);
+    setHostTokenMessage(null);
+    setEditingHostId(hostId);
+    setHostDraftName(hostById.get(hostId) ?? "");
+    setIsHostFormOpen(true);
+  };
+
+  const submitHost = async () => {
+    const normalizedName = hostDraftName.trim();
+    if (!normalizedName) return;
+
+    try {
+      if (editingHostId) {
+        await hostMutations.updateHost(editingHostId, normalizedName);
+        toast.success(texts.hostUpdated);
+      } else {
+        const created = await hostMutations.createHost(normalizedName);
+        setHostToken(created.token);
+        setHostTokenMessage(created.message);
+        toast.success(texts.hostCreated);
+      }
+
+      closeHostForm();
+    } catch (error) {
+      console.error(error);
+      toast.error(texts.hostCrudError);
+    }
+  };
+
+  const copyHostToken = async () => {
+    if (!hostToken) return;
+
+    try {
+      await navigator.clipboard.writeText(hostToken);
+      toast.success(texts.hostTokenCopied);
+    } catch (error) {
+      console.error(error);
+      toast.error(texts.hostTokenCopyError);
+    }
+  };
+
+  const dismissHostToken = () => {
+    setHostToken(null);
+    setHostTokenMessage(null);
+  };
+
+  const requestDeleteHost = (hostId: string) => setPendingDeleteHostId(hostId);
+
+  const cancelDeleteHost = () => setPendingDeleteHostId(null);
+
+  const confirmDeleteHost = async () => {
+    if (!pendingDeleteHostId) return;
+
+    try {
+      await hostMutations.deleteHost(pendingDeleteHostId);
+      toast.success(texts.hostDeleted);
+    } catch (error) {
+      console.error(error);
+      toast.error(texts.hostCrudError);
+    } finally {
+      setPendingDeleteHostId(null);
+    }
+  };
+
   return {
     hostDraftName,
     editingHostId,
@@ -64,71 +137,14 @@ export const useHostCrud = ({ accessToken, workspaceId, hosts, texts }: UseHostC
     pendingDeleteHostId,
     isHostSubmitting: hostMutations.isCreating || hostMutations.isUpdating || hostMutations.isDeleting,
     setHostDraftName,
-    openCreateHostForm: () => {
-      setHostToken(null);
-      setHostTokenMessage(null);
-      setEditingHostId(null);
-      setHostDraftName("");
-      setIsHostFormOpen(true);
-    },
-    startEditHost: (hostId) => {
-      setHostToken(null);
-      setHostTokenMessage(null);
-      setEditingHostId(hostId);
-      setHostDraftName(hostById.get(hostId) ?? "");
-      setIsHostFormOpen(true);
-    },
+    openCreateHostForm,
+    startEditHost,
     closeHostForm,
-    submitHost: async () => {
-      const normalizedName = hostDraftName.trim();
-      if (!normalizedName) return;
-
-      try {
-        if (editingHostId) {
-          await hostMutations.updateHost(editingHostId, normalizedName);
-          toast.success(texts.hostUpdated);
-        } else {
-          const created = await hostMutations.createHost(normalizedName);
-          setHostToken(created.token);
-          setHostTokenMessage(created.message);
-          toast.success(texts.hostCreated);
-        }
-
-        closeHostForm();
-      } catch (error) {
-        console.error(error);
-        toast.error(texts.hostCrudError);
-      }
-    },
-    copyHostToken: async () => {
-      if (!hostToken) return;
-
-      try {
-        await navigator.clipboard.writeText(hostToken);
-        toast.success(texts.hostTokenCopied);
-      } catch (error) {
-        console.error(error);
-        toast.error(texts.hostTokenCopyError);
-      }
-    },
-    dismissHostToken: () => {
-      setHostToken(null);
-      setHostTokenMessage(null);
-    },
-    requestDeleteHost: (hostId) => setPendingDeleteHostId(hostId),
-    cancelDeleteHost: () => setPendingDeleteHostId(null),
-    confirmDeleteHost: async () => {
-      if (!pendingDeleteHostId) return;
-
-      try {
-        await hostMutations.deleteHost(pendingDeleteHostId);
-        toast.success(texts.hostDeleted);
-      } catch (error) {
-        console.error(error);
-        toast.error(texts.hostCrudError);
-      } finally {
-        setPendingDeleteHostId(null);
-      }
-    },
+    submitHost,
+    copyHostToken,
+    dismissHostToken,
+    requestDeleteHost,
+    cancelDeleteHost,
+    confirmDeleteHost,
   };
 };

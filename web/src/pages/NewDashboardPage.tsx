@@ -3,6 +3,7 @@ import { useAuth } from "react-oidc-context";
 import { HeaderFeature } from "@/features/header";
 import { HostFeature } from "@/features/host";
 import { JobFeature } from "@/features/job";
+import { MemberFeature } from "@/features/member";
 import { SnapshotFeature } from "@/features/snapshot";
 import { useCurrentUser } from "@/features/user";
 import { WorkspaceFeature } from "@/features/workspace";
@@ -33,6 +34,7 @@ export default function NewDashboardPage() {
         />
         <SnapshotFeature workspaceId={selectedWorkspaceId} />
         <HostFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
+        <MemberFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
         <JobFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
       </div>
     </main>

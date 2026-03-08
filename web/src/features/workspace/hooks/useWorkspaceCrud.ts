@@ -66,6 +66,118 @@ export const useWorkspaceCrud = ({
   const [pendingDeleteWorkspaceId, setPendingDeleteWorkspaceId] = useState<string | null>(null);
   const [pendingRevokeInvitationId, setPendingRevokeInvitationId] = useState<string | null>(null);
 
+  const isWorkspaceSubmitting =
+    workspaceMutations.isCreating ||
+    workspaceMutations.isUpdating ||
+    workspaceMutations.isDeleting ||
+    workspaceMutations.isTransferringOwner ||
+    invitationMutations.isRevokingInvitation;
+
+  const openWorkspaceCreateForm = () => {
+    setEditingWorkspaceId(null);
+    setWorkspaceDraftName("");
+    setIsWorkspaceFormOpen(true);
+  };
+
+  const startEditWorkspace = (nextWorkspaceId: string) => {
+    const selectedWorkspace = workspaces.find((workspace) => workspace.id === nextWorkspaceId);
+    setEditingWorkspaceId(nextWorkspaceId);
+    setWorkspaceDraftName(selectedWorkspace?.name ?? "");
+    setIsWorkspaceFormOpen(true);
+  };
+
+  const closeWorkspaceForm = () => {
+    setIsWorkspaceFormOpen(false);
+    setEditingWorkspaceId(null);
+    setWorkspaceDraftName("");
+  };
+
+  const submitWorkspace = async () => {
+    const name = workspaceDraftName.trim();
+    if (!name) return;
+
+    try {
+      if (editingWorkspaceId) {
+        await workspaceMutations.updateWorkspace(editingWorkspaceId, name);
+        toast.success(texts.workspaceUpdated);
+      } else {
+        const created = await workspaceMutations.createWorkspace(name);
+        onWorkspaceIdChange(created.workspace_id);
+        toast.success(texts.workspaceCreated);
+      }
+      closeWorkspaceForm();
+    } catch (error) {
+      console.error(error);
+      toast.error(texts.workspaceCrudError);
+    }
+  };
+
+  const openTransferOwnerDialog = (nextWorkspaceId: string) => {
+    setTransferWorkspaceId(nextWorkspaceId);
+    setTransferOwnerUserId("");
+    setIsWorkspaceTransferDialogOpen(true);
+  };
+
+  const closeTransferOwnerDialog = () => {
+    setTransferWorkspaceId(null);
+    setTransferOwnerUserId("");
+    setIsWorkspaceTransferDialogOpen(false);
+  };
+
+  const submitTransferOwner = async () => {
+    const userId = transferOwnerUserId.trim();
+    if (!transferWorkspaceId || !userId) return;
+
+    try {
+      await workspaceMutations.transferOwner(transferWorkspaceId, userId);
+      toast.success(texts.workspaceOwnerTransferred);
+      closeTransferOwnerDialog();
+    } catch (error) {
+      console.error(error);
+      toast.error(texts.workspaceCrudError);
+    }
+  };
+
+  const requestRevokeInvitation = (invitationId: string) => setPendingRevokeInvitationId(invitationId);
+
+  const cancelRevokeInvitation = () => setPendingRevokeInvitationId(null);
+
+  const confirmRevokeInvitation = async () => {
+    if (!pendingRevokeInvitationId) return;
+    try {
+      await invitationMutations.revokeInvitation(pendingRevokeInvitationId);
+      toast.success(texts.invitationRevoked);
+    } catch (error) {
+      console.error(error);
+      toast.error(texts.invitationCrudError);
+    } finally {
+      setPendingRevokeInvitationId(null);
+    }
+  };
+
+  const requestDeleteWorkspace = (nextWorkspaceId: string) => setPendingDeleteWorkspaceId(nextWorkspaceId);
+
+  const cancelDeleteWorkspace = () => setPendingDeleteWorkspaceId(null);
+
+  const confirmDeleteWorkspace = async () => {
+    if (!pendingDeleteWorkspaceId) return;
+
+    const deletingWorkspaceId = pendingDeleteWorkspaceId;
+    try {
+      await workspaceMutations.deleteWorkspace(deletingWorkspaceId);
+      const fallbackWorkspace = workspaces.find((workspace) => workspace.id !== deletingWorkspaceId);
+      if (workspaceId === deletingWorkspaceId) {
+        onWorkspaceIdChange(fallbackWorkspace?.id ?? "");
+      }
+      toast.success(texts.workspaceDeleted);
+    } catch (error) {
+      console.error(error);
+      toast.error(texts.workspaceCrudError);
+    } finally {
+      setPendingDeleteWorkspaceId(null);
+    }
+  };
+
   return {
     workspaceDraftName,
     transferOwnerUserId,
@@ -75,109 +187,21 @@ export const useWorkspaceCrud = ({
     pendingRevokeInvitationId,
     isWorkspaceFormOpen,
     isWorkspaceTransferDialogOpen,
-    isWorkspaceSubmitting:
-      workspaceMutations.isCreating ||
-      workspaceMutations.isUpdating ||
-      workspaceMutations.isDeleting ||
-      workspaceMutations.isTransferringOwner ||
-      invitationMutations.isRevokingInvitation,
+    isWorkspaceSubmitting,
     setWorkspaceDraftName,
     setTransferOwnerUserId,
-    openWorkspaceCreateForm: () => {
-      setEditingWorkspaceId(null);
-      setWorkspaceDraftName("");
-      setIsWorkspaceFormOpen(true);
-    },
-    startEditWorkspace: (nextWorkspaceId) => {
-      const selectedWorkspace = workspaces.find((workspace) => workspace.id === nextWorkspaceId);
-      setEditingWorkspaceId(nextWorkspaceId);
-      setWorkspaceDraftName(selectedWorkspace?.name ?? "");
-      setIsWorkspaceFormOpen(true);
-    },
-    closeWorkspaceForm: () => {
-      setIsWorkspaceFormOpen(false);
-      setEditingWorkspaceId(null);
-      setWorkspaceDraftName("");
-    },
-    submitWorkspace: async () => {
-      const name = workspaceDraftName.trim();
-      if (!name) return;
-
-      try {
-        if (editingWorkspaceId) {
-          await workspaceMutations.updateWorkspace(editingWorkspaceId, name);
-          toast.success(texts.workspaceUpdated);
-        } else {
-          const created = await workspaceMutations.createWorkspace(name);
-          onWorkspaceIdChange(created.workspace_id);
-          toast.success(texts.workspaceCreated);
-        }
-        setIsWorkspaceFormOpen(false);
-        setEditingWorkspaceId(null);
-        setWorkspaceDraftName("");
-      } catch (error) {
-        console.error(error);
-        toast.error(texts.workspaceCrudError);
-      }
-    },
-    openTransferOwnerDialog: (nextWorkspaceId) => {
-      setTransferWorkspaceId(nextWorkspaceId);
-      setTransferOwnerUserId("");
-      setIsWorkspaceTransferDialogOpen(true);
-    },
-    closeTransferOwnerDialog: () => {
-      setTransferWorkspaceId(null);
-      setTransferOwnerUserId("");
-      setIsWorkspaceTransferDialogOpen(false);
-    },
-    submitTransferOwner: async () => {
-      const userId = transferOwnerUserId.trim();
-      if (!transferWorkspaceId || !userId) return;
-
-      try {
-        await workspaceMutations.transferOwner(transferWorkspaceId, userId);
-        toast.success(texts.workspaceOwnerTransferred);
-        setTransferWorkspaceId(null);
-        setTransferOwnerUserId("");
-        setIsWorkspaceTransferDialogOpen(false);
-      } catch (error) {
-        console.error(error);
-        toast.error(texts.workspaceCrudError);
-      }
-    },
-    requestRevokeInvitation: (invitationId) => setPendingRevokeInvitationId(invitationId),
-    cancelRevokeInvitation: () => setPendingRevokeInvitationId(null),
-    confirmRevokeInvitation: async () => {
-      if (!pendingRevokeInvitationId) return;
-      try {
-        await invitationMutations.revokeInvitation(pendingRevokeInvitationId);
-        toast.success(texts.invitationRevoked);
-      } catch (error) {
-        console.error(error);
-        toast.error(texts.invitationCrudError);
-      } finally {
-        setPendingRevokeInvitationId(null);
-      }
-    },
-    requestDeleteWorkspace: (nextWorkspaceId) => setPendingDeleteWorkspaceId(nextWorkspaceId),
-    cancelDeleteWorkspace: () => setPendingDeleteWorkspaceId(null),
-    confirmDeleteWorkspace: async () => {
-      if (!pendingDeleteWorkspaceId) return;
-
-      const deletingWorkspaceId = pendingDeleteWorkspaceId;
-      try {
-        await workspaceMutations.deleteWorkspace(deletingWorkspaceId);
-        const fallbackWorkspace = workspaces.find((workspace) => workspace.id !== deletingWorkspaceId);
-        if (workspaceId === deletingWorkspaceId) {
-          onWorkspaceIdChange(fallbackWorkspace?.id ?? "");
-        }
-        toast.success(texts.workspaceDeleted);
-      } catch (error) {
-        console.error(error);
-        toast.error(texts.workspaceCrudError);
-      } finally {
-        setPendingDeleteWorkspaceId(null);
-      }
-    },
+    openWorkspaceCreateForm,
+    startEditWorkspace,
+    closeWorkspaceForm,
+    submitWorkspace,
+    openTransferOwnerDialog,
+    closeTransferOwnerDialog,
+    submitTransferOwner,
+    requestRevokeInvitation,
+    cancelRevokeInvitation,
+    confirmRevokeInvitation,
+    requestDeleteWorkspace,
+    cancelDeleteWorkspace,
+    confirmDeleteWorkspace,
   };
 };
