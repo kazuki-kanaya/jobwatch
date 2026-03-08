@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useAuth } from "react-oidc-context";
-import { useSnapshotQueries } from "@/features/snapshot/api/useSnapshotQueries";
+import { useJobQueries } from "@/features/job/api/useJobQueries";
 import { SnapshotSection } from "@/features/snapshot/components/SnapshotSection/SnapshotSection";
 import type { SnapshotMetrics, SnapshotViewState } from "@/features/snapshot/components/types";
 import { JobStatus } from "@/generated/api";
@@ -23,7 +23,7 @@ export function SnapshotFeature({ workspaceId }: SnapshotFeatureProps) {
   const accessToken = user?.access_token;
   const canAccessFeature = isAuthenticated && !isAuthLoading && Boolean(accessToken);
 
-  const { jobsQuery } = useSnapshotQueries({
+  const { jobsQuery } = useJobQueries({
     accessToken,
     enabled: canAccessFeature,
     workspaceId,

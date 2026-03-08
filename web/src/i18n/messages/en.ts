@@ -101,6 +101,8 @@ export const enMessages = {
   dashboard_invitation_link: "Invitation link",
   dashboard_invitation_link_placeholder: "Generate a link to invite members.",
   dashboard_generate_invite: "Generate invite",
+  dashboard_copy: "Copy",
+  dashboard_copied: "Copied",
   dashboard_copy_link: "Copy link",
   dashboard_copy_token: "Copy token",
   dashboard_invitation_link_created: "Invitation link created.",

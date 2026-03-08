@@ -90,6 +90,8 @@ export type Messages = {
   dashboard_invitation_link: string;
   dashboard_invitation_link_placeholder: string;
   dashboard_generate_invite: string;
+  dashboard_copy: string;
+  dashboard_copied: string;
   dashboard_copy_link: string;
   dashboard_copy_token: string;
   dashboard_invitation_link_created: string;

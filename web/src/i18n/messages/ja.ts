@@ -92,6 +92,8 @@ export const jaMessages = {
   dashboard_invitation_link: "招待リンク",
   dashboard_invitation_link_placeholder: "メンバー招待リンクを生成してください。",
   dashboard_generate_invite: "招待リンクを生成",
+  dashboard_copy: "コピー",
+  dashboard_copied: "コピー済み",
   dashboard_copy_link: "リンクをコピー",
   dashboard_copy_token: "トークンをコピー",
   dashboard_invitation_link_created: "招待リンクを作成しました。",
