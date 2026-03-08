@@ -3,6 +3,7 @@ import { useAuth } from "react-oidc-context";
 import { useSnapshotQueries } from "@/features/snapshot/api/useSnapshotQueries";
 import { SnapshotSection } from "@/features/snapshot/components/SnapshotSection/SnapshotSection";
 import type { SnapshotMetrics, SnapshotViewState } from "@/features/snapshot/components/types";
+import { JobStatus } from "@/generated/api";
 import { useLocale } from "@/i18n/LocaleProvider";
 
 type SnapshotFeatureProps = {
@@ -32,12 +33,16 @@ export function SnapshotFeature({ workspaceId }: SnapshotFeatureProps) {
     if (!workspaceId) return EMPTY_SNAPSHOT;
 
     const jobs = jobsQuery.data ?? [];
-    return {
-      tracked: jobs.length,
-      running: jobs.filter((job) => job.status === "RUNNING").length,
-      completed: jobs.filter((job) => job.status === "FINISHED").length,
-      failed: jobs.filter((job) => job.status === "FAILED").length,
-    };
+    return jobs.reduce<SnapshotMetrics>(
+      (acc, job) => {
+        acc.tracked += 1;
+        if (job.status === JobStatus.RUNNING) acc.running += 1;
+        if (job.status === JobStatus.FINISHED) acc.completed += 1;
+        if (job.status === JobStatus.FAILED) acc.failed += 1;
+        return acc;
+      },
+      { tracked: 0, running: 0, completed: 0, failed: 0 },
+    );
   }, [workspaceId, jobsQuery.data]);
 
   const viewState: SnapshotViewState = !workspaceId
