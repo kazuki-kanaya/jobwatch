@@ -1,8 +1,6 @@
-import { useEffect, useMemo } from "react";
 import { useAuth } from "react-oidc-context";
 import type { CurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
-import type { WorkspaceViewState } from "@/features/workspace/components/types";
 import { WorkspaceCreateButton } from "@/features/workspace/components/WorkspaceCreateButton/WorkspaceCreateButton";
 import { WorkspaceDeleteDialog } from "@/features/workspace/components/WorkspaceDeleteDialog/WorkspaceDeleteDialog";
 import { WorkspaceFormDialog } from "@/features/workspace/components/WorkspaceFormDialog/WorkspaceFormDialog";
@@ -10,7 +8,10 @@ import { WorkspaceList } from "@/features/workspace/components/WorkspaceList/Wor
 import { WorkspaceSection } from "@/features/workspace/components/WorkspaceSection/WorkspaceSection";
 import { WorkspaceSummary } from "@/features/workspace/components/WorkspaceSummary/WorkspaceSummary";
 import { WorkspaceTransferDialog } from "@/features/workspace/components/WorkspaceTransferDialog/WorkspaceTransferDialog";
+import { useWorkspaceAutoSelect } from "@/features/workspace/hooks/useWorkspaceAutoSelect";
 import { useWorkspaceCrud } from "@/features/workspace/hooks/useWorkspaceCrud";
+import { useWorkspacePermissions } from "@/features/workspace/hooks/useWorkspacePermissions";
+import { useWorkspaceViewModel } from "@/features/workspace/hooks/useWorkspaceViewModel";
 import { useLocale } from "@/i18n/LocaleProvider";
 
 type WorkspaceFeatureProps = {
@@ -31,53 +32,19 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
     workspaceId,
   });
 
-  const workspaces = useMemo(() => {
-    const items = workspacesQuery.data?.workspaces ?? [];
-    return items.map((workspace) => ({
-      id: workspace.workspace_id,
-      name: workspace.name,
-    }));
-  }, [workspacesQuery.data]);
-
-  useEffect(() => {
-    if (!workspaceId && workspaces.length > 0) {
-      onWorkspaceIdChange(workspaces[0].id);
-    }
-  }, [onWorkspaceIdChange, workspaceId, workspaces]);
-
-  const activeWorkspace = workspaces.find((workspace) => workspace.id === workspaceId) ?? workspaces[0];
-  const activeWorkspaceId = activeWorkspace?.id ?? "";
-  const selectedWorkspaceName = activeWorkspace?.name ?? "-";
-
-  const userNameById = useMemo(() => {
-    const users = usersLookupQuery.data?.users ?? [];
-    return users.reduce<Record<string, string>>((acc, user) => {
-      acc[user.user_id] = user.name;
-      return acc;
-    }, {});
-  }, [usersLookupQuery.data]);
-
-  const ownerOptions = useMemo(() => {
-    const members = membersQuery.data?.members ?? [];
-    return members.map((member) => ({
-      id: member.user_id,
-      name: userNameById[member.user_id] ? `${userNameById[member.user_id]} (${member.user_id})` : member.user_id,
-    }));
-  }, [membersQuery.data, userNameById]);
-
-  const currentMembershipRole =
-    currentUser?.id && membersQuery.data?.members
-      ? (membersQuery.data.members.find((member) => member.user_id === currentUser.id)?.role ?? null)
-      : null;
-  const canManage = currentMembershipRole === "owner";
-
-  const viewState: WorkspaceViewState = workspacesQuery.isLoading
-    ? "loading"
-    : workspacesQuery.isError
-      ? "error"
-      : workspaces.length === 0
-        ? "empty"
-        : "ready";
+  const { workspaces, activeWorkspaceId, selectedWorkspaceName, ownerOptions, viewState } = useWorkspaceViewModel({
+    workspaceId,
+    workspaces: workspacesQuery.data?.workspaces,
+    members: membersQuery.data?.members,
+    users: usersLookupQuery.data?.users,
+    isLoading: workspacesQuery.isLoading,
+    isError: workspacesQuery.isError,
+  });
+  useWorkspaceAutoSelect({ workspaceId, workspaces, onWorkspaceIdChange });
+  const { canManage } = useWorkspacePermissions({
+    currentUser,
+    members: membersQuery.data?.members,
+  });
   const isLoading = viewState === "loading";
   const isError = viewState === "error";
 

@@ -1,19 +1,15 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { toast } from "sonner";
 import { HeaderBrand } from "@/features/header/components/HeaderBrand/HeaderBrand";
 import { HeaderControls } from "@/features/header/components/HeaderControls/HeaderControls";
 import { HeaderProfileEditDialog } from "@/features/header/components/HeaderProfileEditDialog/HeaderProfileEditDialog";
 import { HeaderSection } from "@/features/header/components/HeaderSection/HeaderSection";
 import { HeaderUserCard } from "@/features/header/components/HeaderUserCard/HeaderUserCard";
-import { hostQueryKeys } from "@/features/host/api/hostQueryKeys";
-import { jobQueryKeys } from "@/features/job/api/jobQueryKeys";
+import { useHeaderProfileEditor } from "@/features/header/hooks/useHeaderProfileEditor";
+import { useHeaderSessionActions } from "@/features/header/hooks/useHeaderSessionActions";
 import type { CurrentUser } from "@/features/user";
 import { useUserMutations } from "@/features/user";
-import { workspaceQueryKeys } from "@/features/workspace/api/workspaceQueryKeys";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { env } from "@/lib/env";
 import { useDisplaySettings } from "@/providers/DisplaySettingsProvider";
 
 const isLocale = (value: string): value is "en" | "ja" => value === "en" || value === "ja";
@@ -29,70 +25,24 @@ export function HeaderFeature({ currentUser }: HeaderFeatureProps) {
   const { timeZone, setTimeZone, formatDateTime } = useDisplaySettings();
   const accessToken = user?.access_token;
   const userMutations = useUserMutations({ accessToken });
-  const [lastUpdatedAt, setLastUpdatedAt] = useState(() => new Date());
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isSigningOut, setIsSigningOut] = useState(false);
-  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
-  const [profileDraftName, setProfileDraftName] = useState("");
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    try {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.root }),
-        queryClient.invalidateQueries({ queryKey: hostQueryKeys.root }),
-        queryClient.invalidateQueries({ queryKey: jobQueryKeys.root }),
-      ]);
-      setLastUpdatedAt(new Date());
-      toast.success(t("dashboard_refresh_success"));
-    } catch (error) {
-      console.error(error);
-      toast.error(t("dashboard_refresh_error"));
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-
-  const handleSignOut = async () => {
-    setIsSigningOut(true);
-    try {
-      const redirectUri = `${window.location.origin}/`;
-      const isKeycloak = env.oidcIssuer.includes("/realms/");
-      const logoutUrl = isKeycloak
-        ? new URL(`${env.oidcIssuer.replace(/\/$/, "")}/protocol/openid-connect/logout`)
-        : new URL(`${env.oidcAuthDomain.replace(/\/$/, "")}/logout`);
-      logoutUrl.searchParams.set("client_id", env.oidcClientId);
-      logoutUrl.searchParams.set(isKeycloak ? "post_logout_redirect_uri" : "logout_uri", redirectUri);
-      if (user?.id_token) logoutUrl.searchParams.set("id_token_hint", user.id_token);
-      await removeUser();
-      window.location.assign(logoutUrl.toString());
-    } finally {
-      setIsSigningOut(false);
-    }
-  };
-
-  const handleEditProfile = () => {
-    setProfileDraftName(currentUser?.name ?? "");
-    setIsProfileDialogOpen(true);
-  };
-
-  const handleCloseProfileDialog = () => {
-    setIsProfileDialogOpen(false);
-  };
-
-  const handleSubmitProfile = async () => {
-    const normalizedName = profileDraftName.trim();
-    if (!normalizedName) return;
-
-    try {
-      await userMutations.updateCurrentUserName(normalizedName);
-      toast.success(t("dashboard_profile_updated"));
-      setIsProfileDialogOpen(false);
-    } catch (error) {
-      console.error(error);
-      toast.error(t("dashboard_profile_update_error"));
-    }
-  };
+  const { lastUpdatedAt, isRefreshing, isSigningOut, handleRefresh, handleSignOut } = useHeaderSessionActions({
+    queryClient,
+    removeUser,
+    idToken: user?.id_token,
+    t,
+  });
+  const {
+    isProfileDialogOpen,
+    profileDraftName,
+    setProfileDraftName,
+    handleEditProfile,
+    handleCloseProfileDialog,
+    handleSubmitProfile,
+  } = useHeaderProfileEditor({
+    currentUser,
+    updateCurrentUserName: userMutations.updateCurrentUserName,
+    t,
+  });
 
   return (
     <HeaderSection
