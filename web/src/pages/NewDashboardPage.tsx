@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HeaderFeature } from "@/features/header";
 import { HostFeature } from "@/features/host";
 import { WorkspaceFeature } from "@/features/workspace";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ export default function NewDashboardPage() {
       )}
     >
       <div className={cn("mx-auto grid w-full max-w-7xl gap-4")}>
+        <HeaderFeature />
         <WorkspaceFeature workspaceId={selectedWorkspaceId} onWorkspaceIdChange={setSelectedWorkspaceId} />
         <HostFeature workspaceId={selectedWorkspaceId} />
       </div>
