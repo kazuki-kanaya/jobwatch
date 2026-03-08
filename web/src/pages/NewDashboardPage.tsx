@@ -1,10 +1,20 @@
 import { useState } from "react";
+import { useAuth } from "react-oidc-context";
+import { HeaderFeature } from "@/features/header";
 import { HostFeature } from "@/features/host";
+import { useCurrentUser } from "@/features/user";
 import { WorkspaceFeature } from "@/features/workspace";
 import { cn } from "@/lib/utils";
 
 export default function NewDashboardPage() {
+  const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState("");
+  const accessToken = user?.access_token;
+  const canAccessFeature = isAuthenticated && !isAuthLoading && Boolean(accessToken);
+  const { currentUser } = useCurrentUser({
+    accessToken,
+    enabled: canAccessFeature,
+  });
 
   return (
     <main
@@ -13,8 +23,13 @@ export default function NewDashboardPage() {
       )}
     >
       <div className={cn("mx-auto grid w-full max-w-7xl gap-4")}>
-        <WorkspaceFeature workspaceId={selectedWorkspaceId} onWorkspaceIdChange={setSelectedWorkspaceId} />
-        <HostFeature workspaceId={selectedWorkspaceId} />
+        <HeaderFeature currentUser={currentUser} />
+        <WorkspaceFeature
+          workspaceId={selectedWorkspaceId}
+          currentUser={currentUser}
+          onWorkspaceIdChange={setSelectedWorkspaceId}
+        />
+        <HostFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
       </div>
     </main>
   );

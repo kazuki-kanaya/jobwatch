@@ -100,7 +100,7 @@ export function HostSection({
   return (
     <Card
       className={cn(
-        "relative rounded-3xl border border-[#2a3d64]/80 bg-[radial-gradient(140%_120%_at_0%_0%,rgba(80,143,255,0.22)_0%,rgba(9,20,48,0.96)_45%,rgba(3,10,28,0.98)_100%)] py-5 shadow-[0_24px_64px_rgba(3,8,24,0.55)]",
+        "relative rounded-3xl border border-slate-700/70 bg-slate-900/80 py-5 shadow-[0_16px_40px_rgba(2,6,23,0.45)]",
       )}
     >
       <CardHeader className={cn("space-y-5 px-6 pb-4")}>

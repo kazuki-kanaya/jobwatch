@@ -20,6 +20,7 @@ export type Messages = {
   dashboard_refresh_success: string;
   dashboard_refresh_error: string;
   dashboard_sign_out: string;
+  dashboard_time_zone: string;
   dashboard_filters: string;
   dashboard_apply: string;
   dashboard_recent_jobs: string;

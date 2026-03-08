@@ -4,24 +4,21 @@ import { useHostQueries } from "@/features/host/api/useHostQueries";
 import { HostSection } from "@/features/host/components/HostSection/HostSection";
 import type { HostViewState } from "@/features/host/components/types";
 import { useHostCrud } from "@/features/host/hooks/useHostCrud";
-import { useCurrentUser } from "@/features/user";
+import type { CurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import { useLocale } from "@/i18n/LocaleProvider";
 
 type HostFeatureProps = {
   workspaceId: string;
+  currentUser: CurrentUser | null;
 };
 
-export function HostFeature({ workspaceId }: HostFeatureProps) {
+export function HostFeature({ workspaceId, currentUser }: HostFeatureProps) {
   const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { t } = useLocale();
   const accessToken = user?.access_token;
   const canAccessFeature = isAuthenticated && !isAuthLoading && Boolean(accessToken);
 
-  const { currentUser } = useCurrentUser({
-    accessToken,
-    enabled: canAccessFeature,
-  });
   const { workspacesQuery, membersQuery } = useWorkspaceQueries({
     accessToken,
     enabled: canAccessFeature,

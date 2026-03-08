@@ -32,7 +32,7 @@ export function WorkspaceItem({
       className={cn(
         "relative overflow-hidden group flex items-center justify-between gap-3 rounded-xl border px-4 py-3.5 transition-colors",
         isActive
-          ? "border-sky-300/80 bg-sky-500/16 shadow-[0_0_0_1px_rgba(125,211,252,0.35),inset_0_1px_0_rgba(224,242,254,0.18)]"
+          ? "border-cyan-300/80 bg-cyan-500/20 shadow-[0_0_0_1px_rgba(34,211,238,0.30),inset_0_1px_0_rgba(224,242,254,0.18)]"
           : "border-[#304a79] bg-[#1a2849]/65 hover:border-[#4668a6] hover:bg-[#1d2d54]",
       )}
     >
@@ -40,7 +40,7 @@ export function WorkspaceItem({
         aria-hidden="true"
         className={cn(
           "pointer-events-none absolute top-2 bottom-2 left-0 w-1 rounded-r-full transition-opacity",
-          isActive ? "bg-sky-300/95 opacity-100" : "opacity-0",
+          isActive ? "bg-cyan-300 opacity-100" : "opacity-0",
         )}
       />
       <button
@@ -50,12 +50,12 @@ export function WorkspaceItem({
       >
         <div className={cn("min-w-0 space-y-1")}>
           <div className={cn("flex min-w-0 items-center gap-2.5")}>
-            <span className={cn("truncate text-base font-semibold", isActive ? "text-sky-50" : "text-slate-100/90")}>
+            <span className={cn("truncate text-base font-semibold", isActive ? "text-cyan-50" : "text-slate-100/90")}>
               {workspace.name}
             </span>
           </div>
           <p
-            className={cn("truncate font-mono text-sm", isActive ? "text-sky-100/80" : "text-blue-100/55")}
+            className={cn("truncate font-mono text-sm", isActive ? "text-cyan-100/80" : "text-blue-100/55")}
             title={workspace.id}
           >
             {workspace.id}
