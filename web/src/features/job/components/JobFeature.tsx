@@ -11,8 +11,8 @@ import type { JobStatusUi } from "@/features/job/components/types";
 import { useJobPermissions } from "@/features/job/hooks/useJobPermissions";
 import { useJobSelection } from "@/features/job/hooks/useJobSelection";
 import { useJobViewModel } from "@/features/job/hooks/useJobViewModel";
+import { useMemberQueries } from "@/features/member/api/useMemberQueries";
 import type { CurrentUser } from "@/features/user";
-import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { useDisplaySettings } from "@/providers/DisplaySettingsProvider";
 
@@ -34,7 +34,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
     workspaceId,
   });
 
-  const { membersQuery } = useWorkspaceQueries({
+  const { membersQuery } = useMemberQueries({
     accessToken,
     enabled: canAccessFeature,
     workspaceId,
