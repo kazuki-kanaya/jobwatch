@@ -9,7 +9,6 @@ import { HeaderSection } from "@/features/header/components/HeaderSection/Header
 import { HeaderUserCard } from "@/features/header/components/HeaderUserCard/HeaderUserCard";
 import { hostQueryKeys } from "@/features/host/api/hostQueryKeys";
 import { jobQueryKeys } from "@/features/job/api/jobQueryKeys";
-import { snapshotQueryKeys } from "@/features/snapshot/api/snapshotQueryKeys";
 import type { CurrentUser } from "@/features/user";
 import { useUserMutations } from "@/features/user";
 import { workspaceQueryKeys } from "@/features/workspace/api/workspaceQueryKeys";
@@ -43,7 +42,6 @@ export function HeaderFeature({ currentUser }: HeaderFeatureProps) {
         queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.root }),
         queryClient.invalidateQueries({ queryKey: hostQueryKeys.root }),
         queryClient.invalidateQueries({ queryKey: jobQueryKeys.root }),
-        queryClient.invalidateQueries({ queryKey: snapshotQueryKeys.root }),
       ]);
       setLastUpdatedAt(new Date());
       toast.success(t("dashboard_refresh_success"));

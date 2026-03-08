@@ -28,7 +28,6 @@ const meta = {
   component: JobSection,
   args: {
     title: "Recent Jobs",
-    subtitle: "This data is scoped by selected workspace.",
     list: (
       <JobList
         jobs={jobs}
@@ -83,9 +82,3 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-
-export const WithoutSubtitle: Story = {
-  args: {
-    subtitle: undefined,
-  },
-};

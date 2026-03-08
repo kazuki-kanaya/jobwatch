@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CopyableCodeBlock } from "@/features/job/components/CopyableCodeBlock/CopyableCodeBlock";
 import { JobDetailHeaderCard } from "@/features/job/components/JobDetailHeaderCard/JobDetailHeaderCard";
 import { JobMetaGrid } from "@/features/job/components/JobMetaGrid/JobMetaGrid";
@@ -43,12 +43,20 @@ export function JobDetail({
   copiedLabel,
 }: JobDetailProps) {
   const [copiedTarget, setCopiedTarget] = useState<CopyTarget | null>(null);
+  const selectedJobId = selectedJob?.id ?? null;
+  const previousSelectedJobIdRef = useRef<string | null>(selectedJobId);
 
   useEffect(() => {
     if (!copiedTarget) return;
     const timer = window.setTimeout(() => setCopiedTarget(null), 1200);
     return () => window.clearTimeout(timer);
   }, [copiedTarget]);
+
+  useEffect(() => {
+    if (previousSelectedJobIdRef.current === selectedJobId) return;
+    previousSelectedJobIdRef.current = selectedJobId;
+    setCopiedTarget(null);
+  }, [selectedJobId]);
 
   const handleCopy = async (target: CopyTarget, text: string) => {
     if (!text) return;

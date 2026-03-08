@@ -86,7 +86,6 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
   return (
     <JobSection
       title={t("dashboard_recent_jobs")}
-      subtitle={workspaceId ? null : t("dashboard_workspace_scope_hint")}
       list={
         <JobList
           jobs={jobs}
