@@ -4,6 +4,7 @@ import { useHostQueries } from "@/features/host/api/useHostQueries";
 import { HostSection } from "@/features/host/components/HostSection/HostSection";
 import type { HostViewState } from "@/features/host/components/types";
 import { useHostCrud } from "@/features/host/hooks/useHostCrud";
+import { useCurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import { useLocale } from "@/i18n/LocaleProvider";
 
@@ -17,7 +18,11 @@ export function HostFeature({ workspaceId }: HostFeatureProps) {
   const accessToken = user?.access_token;
   const canAccessFeature = isAuthenticated && !isAuthLoading && Boolean(accessToken);
 
-  const { currentUserQuery, workspacesQuery, membersQuery } = useWorkspaceQueries({
+  const { currentUser } = useCurrentUser({
+    accessToken,
+    enabled: canAccessFeature,
+  });
+  const { workspacesQuery, membersQuery } = useWorkspaceQueries({
     accessToken,
     enabled: canAccessFeature,
     workspaceId,
@@ -29,8 +34,8 @@ export function HostFeature({ workspaceId }: HostFeatureProps) {
   });
 
   const currentMembershipRole =
-    currentUserQuery.data?.user_id && membersQuery.data?.members
-      ? (membersQuery.data.members.find((member) => member.user_id === currentUserQuery.data?.user_id)?.role ?? null)
+    currentUser?.id && membersQuery.data?.members
+      ? (membersQuery.data.members.find((member) => member.user_id === currentUser.id)?.role ?? null)
       : null;
   const canManage = currentMembershipRole === "owner" || currentMembershipRole === "editor";
 

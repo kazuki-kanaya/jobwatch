@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useAuth } from "react-oidc-context";
+import { useCurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import type { WorkspaceViewState } from "@/features/workspace/components/types";
 import { WorkspaceSection } from "@/features/workspace/components/WorkspaceSection/WorkspaceSection";
@@ -17,7 +18,11 @@ export function WorkspaceFeature({ workspaceId, onWorkspaceIdChange }: Workspace
   const accessToken = user?.access_token;
   const canCreate = isAuthenticated && !isAuthLoading && Boolean(accessToken);
 
-  const { currentUserQuery, workspacesQuery, membersQuery, usersLookupQuery } = useWorkspaceQueries({
+  const { currentUser } = useCurrentUser({
+    accessToken,
+    enabled: canCreate,
+  });
+  const { workspacesQuery, membersQuery, usersLookupQuery } = useWorkspaceQueries({
     accessToken,
     enabled: canCreate,
     workspaceId,
@@ -58,8 +63,8 @@ export function WorkspaceFeature({ workspaceId, onWorkspaceIdChange }: Workspace
   }, [membersQuery.data, userNameById]);
 
   const currentMembershipRole =
-    currentUserQuery.data?.user_id && membersQuery.data?.members
-      ? (membersQuery.data.members.find((member) => member.user_id === currentUserQuery.data?.user_id)?.role ?? null)
+    currentUser?.id && membersQuery.data?.members
+      ? (membersQuery.data.members.find((member) => member.user_id === currentUser.id)?.role ?? null)
       : null;
   const canManage = currentMembershipRole === "owner";
 
