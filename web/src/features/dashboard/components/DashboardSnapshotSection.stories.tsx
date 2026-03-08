@@ -4,10 +4,7 @@ import DashboardSnapshotSection from "@/features/dashboard/components/DashboardS
 const meta = {
   title: "Features/Dashboard/DashboardSnapshotSection",
   component: DashboardSnapshotSection,
-  parameters: {
-    layout: "padded",
-    backgrounds: { default: "dark" },
-  },
+
   args: {
     snapshot: {
       total: 10,

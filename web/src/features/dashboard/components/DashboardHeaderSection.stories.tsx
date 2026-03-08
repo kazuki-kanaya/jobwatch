@@ -4,10 +4,7 @@ import DashboardHeaderSection from "@/features/dashboard/components/DashboardHea
 const meta = {
   title: "Features/Dashboard/DashboardHeaderSection",
   component: DashboardHeaderSection,
-  parameters: {
-    layout: "padded",
-    backgrounds: { default: "dark" },
-  },
+
   args: {
     title: "Obsern Control Deck",
     subtitle: "GPU server jobs at a glance, with fast anomaly spotting.",

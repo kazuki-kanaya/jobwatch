@@ -1,208 +1,34 @@
+import type { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type {
-  WorkspaceItemData,
-  WorkspaceOwnerOption,
-  WorkspaceViewState,
-} from "@/features/workspace/components/types";
-import { WorkspaceCreateButton } from "@/features/workspace/components/WorkspaceCreateButton/WorkspaceCreateButton";
-import { WorkspaceDeleteDialog } from "@/features/workspace/components/WorkspaceDeleteDialog/WorkspaceDeleteDialog";
-import { WorkspaceFormDialog } from "@/features/workspace/components/WorkspaceFormDialog/WorkspaceFormDialog";
-import { WorkspaceList } from "@/features/workspace/components/WorkspaceList/WorkspaceList";
-import { WorkspaceSummary } from "@/features/workspace/components/WorkspaceSummary/WorkspaceSummary";
-import { WorkspaceTransferDialog } from "@/features/workspace/components/WorkspaceTransferDialog/WorkspaceTransferDialog";
 import { cn } from "@/lib/utils";
 
 type WorkspaceSectionProps = {
-  title: string;
-  summaryLabel: string;
-  summaryHint?: string;
-  emptyLabel: string;
-  errorLabel: string;
-  state: WorkspaceViewState;
-  activeWorkspaceId: string;
-  selectedWorkspaceName: string;
-  workspaces: WorkspaceItemData[];
-  ownerOptions: WorkspaceOwnerOption[];
-  canCreate: boolean;
-  canManage: boolean;
-  noPermissionLabel: string;
-  editLabel: string;
-  addLabel: string;
-  deleteLabel: string;
-  transferOwnerLabel: string;
-  formTitle: string;
-  formDescription: string;
-  workspaceNameLabel: string;
-  createLabel: string;
-  updateLabel: string;
-  transferDialogTitle: string;
-  transferDialogDescription: string;
-  ownerUserIdLabel: string;
-  deleteDialogTitle: string;
-  deleteDialogDescription: string;
-  cancelLabel: string;
-  isSubmitting: boolean;
-  isFormOpen: boolean;
-  isDeleteDialogOpen: boolean;
-  isTransferDialogOpen: boolean;
-  isEditing: boolean;
-  transferWorkspaceId: string | null;
-  workspaceDraftName: string;
-  transferOwnerUserId: string;
-  onSelectWorkspace: (workspaceId: string) => void;
-  onCreateWorkspace: () => void;
-  onEditWorkspace: (workspaceId: string) => void;
-  onDeleteWorkspace: (workspaceId: string) => void;
-  onTransferWorkspaceOwner: (workspaceId: string) => void;
-  onWorkspaceDraftNameChange: (value: string) => void;
-  onTransferOwnerUserIdChange: (value: string) => void;
-  onSubmitWorkspace: () => void;
-  onSubmitDeleteWorkspace: () => void;
-  onSubmitTransferWorkspaceOwner: () => void;
-  onCloseWorkspaceForm: () => void;
-  onCloseDeleteDialog: () => void;
-  onCloseTransferDialog: () => void;
+  title: ReactNode;
+  headerActions?: ReactNode;
+  summary?: ReactNode;
+  content: ReactNode;
+  dialogs?: ReactNode;
 };
 
-export function WorkspaceSection({
-  title,
-  summaryLabel,
-  summaryHint,
-  emptyLabel,
-  errorLabel,
-  state,
-  activeWorkspaceId,
-  selectedWorkspaceName,
-  workspaces,
-  ownerOptions,
-  canCreate,
-  canManage,
-  noPermissionLabel,
-  editLabel,
-  addLabel,
-  deleteLabel,
-  transferOwnerLabel,
-  formTitle,
-  formDescription,
-  workspaceNameLabel,
-  createLabel,
-  updateLabel,
-  transferDialogTitle,
-  transferDialogDescription,
-  ownerUserIdLabel,
-  deleteDialogTitle,
-  deleteDialogDescription,
-  cancelLabel,
-  isSubmitting,
-  isFormOpen,
-  isDeleteDialogOpen,
-  isTransferDialogOpen,
-  isEditing,
-  transferWorkspaceId,
-  workspaceDraftName,
-  transferOwnerUserId,
-  onSelectWorkspace,
-  onCreateWorkspace,
-  onEditWorkspace,
-  onDeleteWorkspace,
-  onTransferWorkspaceOwner,
-  onWorkspaceDraftNameChange,
-  onTransferOwnerUserIdChange,
-  onSubmitWorkspace,
-  onSubmitDeleteWorkspace,
-  onSubmitTransferWorkspaceOwner,
-  onCloseWorkspaceForm,
-  onCloseDeleteDialog,
-  onCloseTransferDialog,
-}: WorkspaceSectionProps) {
-  const isLoading = state === "loading";
-  const isError = state === "error";
-
+export function WorkspaceSection({ title, headerActions, summary, content, dialogs }: WorkspaceSectionProps) {
   return (
-    <Card
-      className={cn(
-        "relative rounded-3xl border border-slate-700/70 bg-slate-900/80 py-5 shadow-[0_16px_40px_rgba(2,6,23,0.45)]",
-      )}
-    >
-      <CardHeader className={cn("space-y-5 px-6 pb-4")}>
-        <div className={cn("flex flex-wrap items-center justify-between gap-3")}>
-          <CardTitle className={cn("text-2xl font-semibold tracking-tight text-slate-100")}>{title}</CardTitle>
-          <WorkspaceCreateButton
-            addLabel={addLabel}
-            noPermissionLabel={noPermissionLabel}
-            canCreate={canCreate}
-            onCreateWorkspace={onCreateWorkspace}
-          />
-        </div>
-        <WorkspaceSummary
-          title={summaryLabel}
-          workspaceId={activeWorkspaceId || "-"}
-          workspaceName={selectedWorkspaceName}
-          hint={summaryHint}
-        />
-      </CardHeader>
+    <>
+      <Card
+        className={cn(
+          "relative rounded-3xl border border-slate-700/70 bg-slate-900/80 py-5 shadow-[0_16px_40px_rgba(2,6,23,0.45)]",
+        )}
+      >
+        <CardHeader className={cn("space-y-5 px-6 pb-4")}>
+          <div className={cn("flex flex-wrap items-center justify-between gap-3")}>
+            <CardTitle className={cn("text-2xl font-semibold tracking-tight text-slate-100")}>{title}</CardTitle>
+            {headerActions}
+          </div>
+          {summary}
+        </CardHeader>
 
-      <CardContent className={cn("space-y-5 px-6")}>
-        <WorkspaceList
-          items={workspaces}
-          activeWorkspaceId={activeWorkspaceId}
-          isLoading={isLoading}
-          isError={isError}
-          emptyLabel={emptyLabel}
-          errorLabel={errorLabel}
-          editLabel={editLabel}
-          transferOwnerLabel={transferOwnerLabel}
-          deleteLabel={deleteLabel}
-          canManage={canManage}
-          onSelectWorkspace={onSelectWorkspace}
-          onEditWorkspace={onEditWorkspace}
-          onTransferWorkspaceOwner={onTransferWorkspaceOwner}
-          onDeleteWorkspace={onDeleteWorkspace}
-        />
-
-        <WorkspaceFormDialog
-          title={formTitle}
-          description={formDescription}
-          workspaceNameLabel={workspaceNameLabel}
-          createLabel={createLabel}
-          updateLabel={updateLabel}
-          cancelLabel={cancelLabel}
-          workspaceDraftName={workspaceDraftName}
-          isEditing={isEditing}
-          isSubmitting={isSubmitting}
-          isOpen={isFormOpen}
-          onClose={onCloseWorkspaceForm}
-          onWorkspaceDraftNameChange={onWorkspaceDraftNameChange}
-          onSubmit={onSubmitWorkspace}
-        />
-
-        <WorkspaceTransferDialog
-          title={transferDialogTitle}
-          description={transferDialogDescription}
-          ownerUserIdLabel={ownerUserIdLabel}
-          transferLabel={transferOwnerLabel}
-          cancelLabel={cancelLabel}
-          workspaceId={transferWorkspaceId}
-          ownerUserId={transferOwnerUserId}
-          ownerOptions={ownerOptions}
-          isSubmitting={isSubmitting}
-          isOpen={isTransferDialogOpen}
-          onClose={onCloseTransferDialog}
-          onOwnerUserIdChange={onTransferOwnerUserIdChange}
-          onSubmit={onSubmitTransferWorkspaceOwner}
-        />
-
-        <WorkspaceDeleteDialog
-          title={deleteDialogTitle}
-          description={deleteDialogDescription}
-          cancelLabel={cancelLabel}
-          confirmLabel={deleteLabel}
-          isSubmitting={isSubmitting}
-          isOpen={isDeleteDialogOpen}
-          onClose={onCloseDeleteDialog}
-          onConfirm={onSubmitDeleteWorkspace}
-        />
-      </CardContent>
-    </Card>
+        <CardContent className={cn("space-y-5 px-6")}>{content}</CardContent>
+      </Card>
+      {dialogs}
+    </>
   );
 }

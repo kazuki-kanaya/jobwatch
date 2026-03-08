@@ -10,10 +10,7 @@ const items = [
 const meta = {
   title: "Features/Workspace/WorkspaceList",
   component: WorkspaceList,
-  parameters: {
-    layout: "padded",
-    backgrounds: { default: "dark" },
-  },
+
   args: {
     items,
     activeWorkspaceId: "ws_001",

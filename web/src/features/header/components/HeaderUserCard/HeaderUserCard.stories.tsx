@@ -4,10 +4,7 @@ import { HeaderUserCard } from "@/features/header/components/HeaderUserCard/Head
 const meta = {
   title: "Features/Header/HeaderUserCard",
   component: HeaderUserCard,
-  parameters: {
-    layout: "padded",
-    backgrounds: { default: "dark" },
-  },
+
   args: {
     currentUserLabel: "Signed-in user",
     currentUserName: "no name",

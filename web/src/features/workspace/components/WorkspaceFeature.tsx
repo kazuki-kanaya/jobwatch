@@ -3,7 +3,13 @@ import { useAuth } from "react-oidc-context";
 import type { CurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import type { WorkspaceViewState } from "@/features/workspace/components/types";
+import { WorkspaceCreateButton } from "@/features/workspace/components/WorkspaceCreateButton/WorkspaceCreateButton";
+import { WorkspaceDeleteDialog } from "@/features/workspace/components/WorkspaceDeleteDialog/WorkspaceDeleteDialog";
+import { WorkspaceFormDialog } from "@/features/workspace/components/WorkspaceFormDialog/WorkspaceFormDialog";
+import { WorkspaceList } from "@/features/workspace/components/WorkspaceList/WorkspaceList";
 import { WorkspaceSection } from "@/features/workspace/components/WorkspaceSection/WorkspaceSection";
+import { WorkspaceSummary } from "@/features/workspace/components/WorkspaceSummary/WorkspaceSummary";
+import { WorkspaceTransferDialog } from "@/features/workspace/components/WorkspaceTransferDialog/WorkspaceTransferDialog";
 import { useWorkspaceCrud } from "@/features/workspace/hooks/useWorkspaceCrud";
 import { useLocale } from "@/i18n/LocaleProvider";
 
@@ -72,6 +78,8 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
       : workspaces.length === 0
         ? "empty"
         : "ready";
+  const isLoading = viewState === "loading";
+  const isError = viewState === "error";
 
   const workspaceCrud = useWorkspaceCrud({
     accessToken,
@@ -92,54 +100,86 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
   return (
     <WorkspaceSection
       title={t("dashboard_workspaces")}
-      summaryLabel={t("dashboard_current_workspace")}
-      summaryHint={t("dashboard_workspace_scope_hint")}
-      emptyLabel={t("dashboard_workspaces_empty")}
-      errorLabel={t("dashboard_workspaces_error")}
-      state={viewState}
-      activeWorkspaceId={activeWorkspaceId}
-      selectedWorkspaceName={selectedWorkspaceName}
-      workspaces={workspaces}
-      ownerOptions={ownerOptions}
-      canCreate={canCreate}
-      canManage={canManage}
-      noPermissionLabel={t("dashboard_no_permission")}
-      editLabel={t("dashboard_edit")}
-      addLabel={t("dashboard_add")}
-      deleteLabel={t("dashboard_delete")}
-      transferOwnerLabel={t("dashboard_workspace_transfer_owner")}
-      formTitle={workspaceCrud.editingWorkspaceId ? t("dashboard_edit") : t("dashboard_add")}
-      formDescription={t("dashboard_workspace_scope_hint")}
-      workspaceNameLabel={t("dashboard_workspace_name")}
-      createLabel={t("dashboard_add")}
-      updateLabel={t("dashboard_edit")}
-      transferDialogTitle={t("dashboard_workspace_transfer_owner")}
-      transferDialogDescription={t("dashboard_workspace_scope_hint")}
-      ownerUserIdLabel={t("dashboard_workspace_new_owner_user_id")}
-      deleteDialogTitle={t("dashboard_workspace_delete_confirm_title")}
-      deleteDialogDescription={t("dashboard_workspace_delete_confirm_description")}
-      cancelLabel={t("dashboard_cancel")}
-      isSubmitting={workspaceCrud.isWorkspaceSubmitting}
-      isFormOpen={workspaceCrud.isWorkspaceFormOpen}
-      isDeleteDialogOpen={workspaceCrud.pendingDeleteWorkspaceId !== null}
-      isTransferDialogOpen={workspaceCrud.isWorkspaceTransferDialogOpen}
-      isEditing={workspaceCrud.editingWorkspaceId !== null}
-      transferWorkspaceId={workspaceCrud.transferWorkspaceId}
-      workspaceDraftName={workspaceCrud.workspaceDraftName}
-      transferOwnerUserId={workspaceCrud.transferOwnerUserId}
-      onSelectWorkspace={onWorkspaceIdChange}
-      onCreateWorkspace={workspaceCrud.openWorkspaceCreateForm}
-      onEditWorkspace={workspaceCrud.startEditWorkspace}
-      onDeleteWorkspace={workspaceCrud.requestDeleteWorkspace}
-      onTransferWorkspaceOwner={workspaceCrud.openTransferOwnerDialog}
-      onWorkspaceDraftNameChange={workspaceCrud.setWorkspaceDraftName}
-      onTransferOwnerUserIdChange={workspaceCrud.setTransferOwnerUserId}
-      onSubmitWorkspace={workspaceCrud.submitWorkspace}
-      onSubmitDeleteWorkspace={workspaceCrud.confirmDeleteWorkspace}
-      onSubmitTransferWorkspaceOwner={workspaceCrud.submitTransferOwner}
-      onCloseWorkspaceForm={workspaceCrud.closeWorkspaceForm}
-      onCloseDeleteDialog={workspaceCrud.cancelDeleteWorkspace}
-      onCloseTransferDialog={workspaceCrud.closeTransferOwnerDialog}
+      headerActions={
+        <WorkspaceCreateButton
+          addLabel={t("dashboard_add")}
+          noPermissionLabel={t("dashboard_no_permission")}
+          canCreate={canCreate}
+          onCreateWorkspace={workspaceCrud.openWorkspaceCreateForm}
+        />
+      }
+      summary={
+        <WorkspaceSummary
+          title={t("dashboard_current_workspace")}
+          workspaceId={activeWorkspaceId || "-"}
+          workspaceName={selectedWorkspaceName}
+          hint={t("dashboard_workspace_scope_hint")}
+        />
+      }
+      content={
+        <WorkspaceList
+          items={workspaces}
+          activeWorkspaceId={activeWorkspaceId}
+          isLoading={isLoading}
+          isError={isError}
+          emptyLabel={t("dashboard_workspaces_empty")}
+          errorLabel={t("dashboard_workspaces_error")}
+          editLabel={t("dashboard_edit")}
+          transferOwnerLabel={t("dashboard_workspace_transfer_owner")}
+          deleteLabel={t("dashboard_delete")}
+          canManage={canManage}
+          onSelectWorkspace={onWorkspaceIdChange}
+          onEditWorkspace={workspaceCrud.startEditWorkspace}
+          onTransferWorkspaceOwner={workspaceCrud.openTransferOwnerDialog}
+          onDeleteWorkspace={workspaceCrud.requestDeleteWorkspace}
+        />
+      }
+      dialogs={
+        <>
+          <WorkspaceFormDialog
+            title={workspaceCrud.editingWorkspaceId ? t("dashboard_edit") : t("dashboard_add")}
+            description={t("dashboard_workspace_scope_hint")}
+            workspaceNameLabel={t("dashboard_workspace_name")}
+            createLabel={t("dashboard_add")}
+            updateLabel={t("dashboard_edit")}
+            cancelLabel={t("dashboard_cancel")}
+            workspaceDraftName={workspaceCrud.workspaceDraftName}
+            isEditing={workspaceCrud.editingWorkspaceId !== null}
+            isSubmitting={workspaceCrud.isWorkspaceSubmitting}
+            isOpen={workspaceCrud.isWorkspaceFormOpen}
+            onClose={workspaceCrud.closeWorkspaceForm}
+            onWorkspaceDraftNameChange={workspaceCrud.setWorkspaceDraftName}
+            onSubmit={workspaceCrud.submitWorkspace}
+          />
+
+          <WorkspaceTransferDialog
+            title={t("dashboard_workspace_transfer_owner")}
+            description={t("dashboard_workspace_scope_hint")}
+            ownerUserIdLabel={t("dashboard_workspace_new_owner_user_id")}
+            transferLabel={t("dashboard_workspace_transfer_owner")}
+            cancelLabel={t("dashboard_cancel")}
+            workspaceId={workspaceCrud.transferWorkspaceId}
+            ownerUserId={workspaceCrud.transferOwnerUserId}
+            ownerOptions={ownerOptions}
+            isSubmitting={workspaceCrud.isWorkspaceSubmitting}
+            isOpen={workspaceCrud.isWorkspaceTransferDialogOpen}
+            onClose={workspaceCrud.closeTransferOwnerDialog}
+            onOwnerUserIdChange={workspaceCrud.setTransferOwnerUserId}
+            onSubmit={workspaceCrud.submitTransferOwner}
+          />
+
+          <WorkspaceDeleteDialog
+            title={t("dashboard_workspace_delete_confirm_title")}
+            description={t("dashboard_workspace_delete_confirm_description")}
+            cancelLabel={t("dashboard_cancel")}
+            confirmLabel={t("dashboard_delete")}
+            isSubmitting={workspaceCrud.isWorkspaceSubmitting}
+            isOpen={workspaceCrud.pendingDeleteWorkspaceId !== null}
+            onClose={workspaceCrud.cancelDeleteWorkspace}
+            onConfirm={workspaceCrud.confirmDeleteWorkspace}
+          />
+        </>
+      }
     />
   );
 }

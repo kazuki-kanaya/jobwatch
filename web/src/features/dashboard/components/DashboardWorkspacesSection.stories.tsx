@@ -4,10 +4,7 @@ import DashboardWorkspacesSection from "@/features/dashboard/components/Dashboar
 const meta = {
   title: "Features/Dashboard/DashboardWorkspacesSection",
   component: DashboardWorkspacesSection,
-  parameters: {
-    layout: "padded",
-    backgrounds: { default: "dark" },
-  },
+
   args: {
     title: "Workspaces",
     workspaceNameLabel: "Workspace name",
