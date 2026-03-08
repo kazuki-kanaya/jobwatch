@@ -38,7 +38,7 @@ export function HeaderControls({
   onSignOut,
 }: HeaderControlsProps) {
   return (
-    <div className={cn("flex flex-wrap items-center gap-2")}>
+    <div className={cn("flex flex-wrap items-center gap-3")}>
       <div className={cn("flex items-center gap-2 rounded-md border border-slate-600 bg-slate-800 px-2")}>
         <Languages className={cn("size-4 text-slate-300")} />
         <Select value={localeValue} onValueChange={onLocaleChange}>
@@ -89,7 +89,7 @@ export function HeaderControls({
         variant="destructive"
         onClick={onSignOut}
         disabled={isSigningOut}
-        className={cn("cursor-pointer bg-rose-700 text-white hover:bg-rose-600")}
+        className={cn("cursor-pointer bg-rose-800 text-white hover:bg-rose-700")}
       >
         <LogOut className={cn("size-4")} />
         {signOutLabel}

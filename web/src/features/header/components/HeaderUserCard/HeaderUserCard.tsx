@@ -20,8 +20,8 @@ export function HeaderUserCard({
   return (
     <div
       className={cn(
-        "w-full max-w-[380px] rounded-md border border-cyan-300/35 bg-cyan-500/10 px-3 py-2",
-        "shadow-[inset_0_0_0_1px_rgba(34,211,238,0.12)]",
+        "w-full max-w-[380px] rounded-md border border-cyan-300/28 bg-cyan-500/8 px-3 py-2",
+        "shadow-[inset_0_0_0_1px_rgba(34,211,238,0.08)]",
       )}
     >
       <div className={cn("mb-1 flex items-center justify-between gap-2")}>
