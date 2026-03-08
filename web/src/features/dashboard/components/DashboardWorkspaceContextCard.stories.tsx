@@ -4,10 +4,6 @@ import DashboardWorkspaceContextCard from "@/features/dashboard/components/Dashb
 const meta = {
   title: "Features/Dashboard/DashboardWorkspaceContextCard",
   component: DashboardWorkspaceContextCard,
-  parameters: {
-    layout: "padded",
-    backgrounds: { default: "dark" },
-  },
   args: {
     label: "Current Workspace",
     name: "Production-Cluster-A",

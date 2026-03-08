@@ -3,6 +3,14 @@ import "../src/index.css";
 
 const preview: Preview = {
   parameters: {
+    layout: "padded",
+    backgrounds: {
+      default: "dark",
+      values: [
+        { name: "dark", value: "#020817" },
+        { name: "light", value: "#ffffff" },
+      ],
+    },
     controls: {
       matchers: {
        color: /(background|color)$/i,

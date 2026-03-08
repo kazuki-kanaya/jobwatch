@@ -4,10 +4,6 @@ import DashboardWorkspaceTabs from "@/features/dashboard/components/DashboardWor
 const meta = {
   title: "Features/Dashboard/DashboardWorkspaceTabs",
   component: DashboardWorkspaceTabs,
-  parameters: {
-    layout: "padded",
-    backgrounds: { default: "dark" },
-  },
   args: {
     value: "overview",
     overviewLabel: "Overview",

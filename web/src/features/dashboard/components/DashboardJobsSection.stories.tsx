@@ -4,10 +4,6 @@ import DashboardJobsSection from "@/features/dashboard/components/DashboardJobsS
 const meta = {
   title: "Features/Dashboard/DashboardJobsSection",
   component: DashboardJobsSection,
-  parameters: {
-    layout: "padded",
-    backgrounds: { default: "dark" },
-  },
   args: {
     jobs: [
       {
