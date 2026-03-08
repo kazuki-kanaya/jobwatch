@@ -18,6 +18,7 @@ type UseMemberCrudParams = {
 
 export const useMemberCrud = ({ accessToken, workspaceId, texts }: UseMemberCrudParams) => {
   const memberMutations = useMemberMutations({ accessToken, workspaceId });
+  const [isCreateEntryDialogOpen, setIsCreateEntryDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [draftUserId, setDraftUserId] = useState("");
   const [draftRole, setDraftRole] = useState<MembershipRole>("viewer");
@@ -39,6 +40,10 @@ export const useMemberCrud = ({ accessToken, workspaceId, texts }: UseMemberCrud
     setEditingUserId(null);
     setEditingRole("viewer");
   };
+
+  const openCreateEntryDialog = () => setIsCreateEntryDialogOpen(true);
+
+  const closeCreateEntryDialog = () => setIsCreateEntryDialogOpen(false);
 
   const openAddDialog = () => setIsAddDialogOpen(true);
 
@@ -99,12 +104,15 @@ export const useMemberCrud = ({ accessToken, workspaceId, texts }: UseMemberCrud
     editingUserId,
     editingRole,
     pendingDeleteUserId,
+    isCreateEntryDialogOpen,
     isAddDialogOpen,
     isRoleDialogOpen,
     isSubmitting,
     setDraftUserId,
     setDraftRole,
     setEditingRole,
+    openCreateEntryDialog,
+    closeCreateEntryDialog,
     openAddDialog,
     closeAddDialog,
     openRoleDialog,

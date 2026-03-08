@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { HeaderFeature } from "@/features/header";
 import { HostFeature } from "@/features/host";
+import { InvitationManagementFeature } from "@/features/invitation";
 import { JobFeature } from "@/features/job";
 import { MemberFeature } from "@/features/member";
 import { SnapshotFeature } from "@/features/snapshot";
@@ -12,6 +13,7 @@ import { cn } from "@/lib/utils";
 export default function NewDashboardPage() {
   const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState("");
+  const [invitationCreateRequestKey, setInvitationCreateRequestKey] = useState(0);
   const accessToken = user?.access_token;
   const canAccessFeature = isAuthenticated && !isAuthLoading && Boolean(accessToken);
   const { currentUser } = useCurrentUser({
@@ -34,7 +36,18 @@ export default function NewDashboardPage() {
         />
         <SnapshotFeature workspaceId={selectedWorkspaceId} />
         <HostFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
-        <MemberFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
+        <div className={cn("grid gap-4 xl:grid-cols-[1fr_1fr]")}>
+          <MemberFeature
+            workspaceId={selectedWorkspaceId}
+            currentUser={currentUser}
+            onRequestCreateInvitation={() => setInvitationCreateRequestKey((prev) => prev + 1)}
+          />
+          <InvitationManagementFeature
+            workspaceId={selectedWorkspaceId}
+            currentUser={currentUser}
+            createDialogRequestKey={invitationCreateRequestKey}
+          />
+        </div>
         <JobFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
       </div>
     </main>

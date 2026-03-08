@@ -10,7 +10,7 @@ export const useMemberPermissions = ({ currentUser, members }: UseMemberPermissi
   const currentMembershipRole =
     currentUser?.id && members ? (members.find((member) => member.user_id === currentUser.id)?.role ?? null) : null;
 
-  const canManage = currentMembershipRole === "owner" || currentMembershipRole === "editor";
+  const canManage = currentMembershipRole === "owner";
 
   return {
     canManage,

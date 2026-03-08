@@ -97,6 +97,9 @@ export const enMessages = {
   dashboard_member_updated: "Member role updated.",
   dashboard_member_removed: "Member removed.",
   dashboard_member_crud_error: "Member operation failed.",
+  dashboard_member_add_method_title: "How would you like to add a member?",
+  dashboard_member_add_by_user_id: "Add by user ID",
+  dashboard_member_add_by_invitation: "Create invitation link",
 
   dashboard_invitation_link: "Invitation link",
   dashboard_invitation_link_placeholder: "Generate a link to invite members.",
