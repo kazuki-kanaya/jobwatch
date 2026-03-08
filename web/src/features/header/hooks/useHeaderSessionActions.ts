@@ -1,11 +1,9 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { hostQueryKeys } from "@/features/host/api/hostQueryKeys";
-import { jobQueryKeys } from "@/features/job/api/jobQueryKeys";
-import { workspaceQueryKeys } from "@/features/workspace/api/workspaceQueryKeys";
 import type { MessagesKey } from "@/i18n/messages/types";
 import { env } from "@/lib/env";
+import { dashboardQueryKeys } from "@/lib/queryKeys";
 
 type UseHeaderSessionActionsParams = {
   queryClient: QueryClient;
@@ -22,11 +20,7 @@ export const useHeaderSessionActions = ({ queryClient, removeUser, idToken, t }:
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: workspaceQueryKeys.root }),
-        queryClient.invalidateQueries({ queryKey: hostQueryKeys.root }),
-        queryClient.invalidateQueries({ queryKey: jobQueryKeys.root }),
-      ]);
+      await queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.root });
       setLastUpdatedAt(new Date());
       toast.success(t("dashboard_refresh_success"));
     } catch (error) {
