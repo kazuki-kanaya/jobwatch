@@ -5,20 +5,26 @@ TABLE_NAME=${OBSERN_DDB_TABLE_NAME:-obsern-dev}
 ENDPOINT=${DDB_ENDPOINT:-http://localhost:4566}
 REGION=${AWS_REGION:-ap-northeast-1}
 
+aws_local() {
+  AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-dummy} \
+  AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-dummy} \
+  aws --no-cli-pager "$@"
+}
+
 # Wait for LocalStack DynamoDB to become available (max 30 seconds)
 for _ in {1..30}; do
-  if aws dynamodb list-tables --endpoint-url "$ENDPOINT" >/dev/null 2>&1; then
+  if aws_local dynamodb list-tables --endpoint-url "$ENDPOINT" --region "$REGION" >/dev/null 2>&1; then
     break
   fi
   sleep 1
 done
 
-if ! aws dynamodb list-tables --endpoint-url "$ENDPOINT" >/dev/null 2>&1; then
+if ! aws_local dynamodb list-tables --endpoint-url "$ENDPOINT" --region "$REGION" >/dev/null 2>&1; then
   echo "LocalStack DynamoDB not ready at $ENDPOINT" >&2
   exit 1
 fi
 
-aws dynamodb create-table \
+aws_local dynamodb create-table \
     --table-name "$TABLE_NAME" \
     --attribute-definitions \
         AttributeName=PK,AttributeType=S \
