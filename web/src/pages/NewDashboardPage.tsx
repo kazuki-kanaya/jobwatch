@@ -34,21 +34,29 @@ export default function NewDashboardPage() {
           currentUser={currentUser}
           onWorkspaceIdChange={setSelectedWorkspaceId}
         />
-        <SnapshotFeature workspaceId={selectedWorkspaceId} />
-        <HostFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
-        <div className={cn("grid gap-4 xl:grid-cols-[1fr_1fr]")}>
-          <MemberFeature
-            workspaceId={selectedWorkspaceId}
-            currentUser={currentUser}
-            onRequestCreateInvitation={() => setInvitationCreateRequestKey((prev) => prev + 1)}
-          />
-          <InvitationManagementFeature
-            workspaceId={selectedWorkspaceId}
-            currentUser={currentUser}
-            createDialogRequestKey={invitationCreateRequestKey}
-          />
-        </div>
-        <JobFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
+        <section
+          className={cn(
+            "rounded-[2rem] border border-slate-800/80 bg-slate-950/40 p-4 shadow-[0_20px_48px_rgba(2,6,23,0.3)] backdrop-blur-sm md:p-6",
+          )}
+        >
+          <div className={cn("grid gap-4")}>
+            <SnapshotFeature workspaceId={selectedWorkspaceId} />
+            <HostFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
+            <div className={cn("grid gap-4 xl:grid-cols-[1fr_1fr]")}>
+              <MemberFeature
+                workspaceId={selectedWorkspaceId}
+                currentUser={currentUser}
+                onRequestCreateInvitation={() => setInvitationCreateRequestKey((prev) => prev + 1)}
+              />
+              <InvitationManagementFeature
+                workspaceId={selectedWorkspaceId}
+                currentUser={currentUser}
+                createDialogRequestKey={invitationCreateRequestKey}
+              />
+            </div>
+            <JobFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
+          </div>
+        </section>
       </div>
     </main>
   );
