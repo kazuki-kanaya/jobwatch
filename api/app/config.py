@@ -1,4 +1,5 @@
 import logging
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -27,6 +28,16 @@ class Settings(BaseSettings):
     oidc_jwks_url: str
     oidc_audience: str
     oidc_issuer: str
+
+    @model_validator(mode="after")
+    def validate_aws_credentials(self) -> "Settings":
+        has_access_key = bool(self.aws_access_key)
+        has_secret_key = bool(self.aws_secret_key)
+        if has_access_key != has_secret_key:
+            raise ValueError(
+                "aws_access_key and aws_secret_key must be provided together"
+            )
+        return self
 
     @property
     def dynamodb_kwargs(self) -> dict[str, object]:
