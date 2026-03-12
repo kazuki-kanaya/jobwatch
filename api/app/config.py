@@ -1,5 +1,4 @@
 import logging
-from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,10 +11,10 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    ddb_endpoint: str | None = None
     aws_region: str = "ap-northeast-1"
-    aws_access_key: str | None = None
-    aws_secret_key: str | None = None
+    ddb_endpoint: str
+    aws_access_key: str
+    aws_secret_key: str
     ddb_table_name: str = "obsern-dev"
     log_level: str = "INFO"
     app_timezone: str = "Asia/Tokyo"
@@ -29,26 +28,14 @@ class Settings(BaseSettings):
     oidc_audience: str
     oidc_issuer: str
 
-    @model_validator(mode="after")
-    def validate_aws_credentials(self) -> "Settings":
-        has_access_key = bool(self.aws_access_key)
-        has_secret_key = bool(self.aws_secret_key)
-        if has_access_key != has_secret_key:
-            raise ValueError(
-                "aws_access_key and aws_secret_key must be provided together"
-            )
-        return self
-
     @property
     def dynamodb_kwargs(self) -> dict[str, object]:
-        kwargs: dict[str, object] = {"region_name": self.aws_region}
-        if self.ddb_endpoint:
-            kwargs["endpoint_url"] = self.ddb_endpoint
-        if self.aws_access_key:
-            kwargs["aws_access_key_id"] = self.aws_access_key
-        if self.aws_secret_key:
-            kwargs["aws_secret_access_key"] = self.aws_secret_key
-        return kwargs
+        return {
+            "region_name": self.aws_region,
+            "endpoint_url": self.ddb_endpoint,
+            "aws_access_key_id": self.aws_access_key,
+            "aws_secret_access_key": self.aws_secret_key,
+        }
 
 
 def configure_logging(level: str) -> None:
