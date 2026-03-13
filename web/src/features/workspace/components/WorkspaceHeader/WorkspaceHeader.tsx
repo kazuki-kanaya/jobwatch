@@ -1,14 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-type WorkspaceSummaryProps = {
+type WorkspaceHeaderProps = {
   title: string;
   workspaceId: string;
   workspaceName: string;
   hint?: string;
 };
 
-export function WorkspaceSummary({ title, workspaceId, workspaceName, hint }: WorkspaceSummaryProps) {
+export function WorkspaceHeader({ title, workspaceId, workspaceName, hint }: WorkspaceHeaderProps) {
   return (
     <Card
       className={cn(

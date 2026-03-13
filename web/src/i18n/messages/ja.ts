@@ -77,6 +77,8 @@ export const jaMessages = {
   dashboard_workspace_delete_confirm_description: "関連するデータも削除されます。",
   dashboard_current_workspace: "現在のワークスペース",
   dashboard_workspace_scope_hint: "以下は現在のワークスペースの情報です。",
+  dashboard_tab_operations: "運用",
+  dashboard_tab_people: "メンバー管理",
   dashboard_hosts: "ホスト",
   dashboard_host_name: "ホスト名",
   dashboard_members: "メンバー",

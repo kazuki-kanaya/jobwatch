@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { WorkspaceCreateButton } from "@/features/workspace/components/WorkspaceCreateButton/WorkspaceCreateButton";
+import { WorkspaceHeader } from "@/features/workspace/components/WorkspaceHeader/WorkspaceHeader";
 import { WorkspaceSection } from "@/features/workspace/components/WorkspaceSection/WorkspaceSection";
-import { WorkspaceSummary } from "@/features/workspace/components/WorkspaceSummary/WorkspaceSummary";
 
 const meta = {
   title: "Features/Workspace/WorkspaceSection",
@@ -17,7 +17,7 @@ const meta = {
       />
     ),
     summary: (
-      <WorkspaceSummary
+      <WorkspaceHeader
         title="Current Workspace"
         workspaceName="Platform Infra"
         workspaceId="workspace-111111"
