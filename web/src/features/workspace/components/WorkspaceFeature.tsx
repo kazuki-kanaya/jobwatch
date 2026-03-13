@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 import { useMemberQueries } from "@/features/member/api/useMemberQueries";
 import type { CurrentUser } from "@/features/user";
@@ -7,7 +8,6 @@ import { WorkspaceDeleteDialog } from "@/features/workspace/components/Workspace
 import { WorkspaceFormDialog } from "@/features/workspace/components/WorkspaceFormDialog/WorkspaceFormDialog";
 import { WorkspaceList } from "@/features/workspace/components/WorkspaceList/WorkspaceList";
 import { WorkspaceSection } from "@/features/workspace/components/WorkspaceSection/WorkspaceSection";
-import { WorkspaceSummary } from "@/features/workspace/components/WorkspaceSummary/WorkspaceSummary";
 import { WorkspaceTransferDialog } from "@/features/workspace/components/WorkspaceTransferDialog/WorkspaceTransferDialog";
 import { useWorkspaceAutoSelect } from "@/features/workspace/hooks/useWorkspaceAutoSelect";
 import { useWorkspaceCrud } from "@/features/workspace/hooks/useWorkspaceCrud";
@@ -18,10 +18,10 @@ import { useLocale } from "@/i18n/LocaleProvider";
 type WorkspaceFeatureProps = {
   workspaceId: string;
   currentUser: CurrentUser | null;
-  onWorkspaceIdChange: (workspaceId: string) => void;
+  onWorkspaceChange: (workspace: { workspaceId: string; workspaceName: string }) => void;
 };
 
-export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange }: WorkspaceFeatureProps) {
+export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceChange }: WorkspaceFeatureProps) {
   const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { t } = useLocale();
   const accessToken = user?.access_token;
@@ -45,11 +45,27 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
     isLoading: workspacesQuery.isLoading,
     isError: workspacesQuery.isError,
   });
-  useWorkspaceAutoSelect({ workspaceId, workspaces, onWorkspaceIdChange });
+  useWorkspaceAutoSelect({
+    workspaceId,
+    workspaces,
+    onWorkspaceIdChange: (nextWorkspaceId) =>
+      onWorkspaceChange({
+        workspaceId: nextWorkspaceId,
+        workspaceName: workspaces.find((item) => item.id === nextWorkspaceId)?.name ?? "-",
+      }),
+  });
   const { canManage } = useWorkspacePermissions({
     currentUser,
     members: membersQuery.data?.members,
   });
+
+  useEffect(() => {
+    onWorkspaceChange({
+      workspaceId: activeWorkspaceId || "-",
+      workspaceName: selectedWorkspaceName,
+    });
+  }, [activeWorkspaceId, onWorkspaceChange, selectedWorkspaceName]);
+
   const isLoading = viewState === "loading";
   const isError = viewState === "error";
 
@@ -57,7 +73,11 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
     accessToken,
     workspaceId: activeWorkspaceId,
     workspaces,
-    onWorkspaceIdChange,
+    onWorkspaceIdChange: (nextWorkspaceId) =>
+      onWorkspaceChange({
+        workspaceId: nextWorkspaceId,
+        workspaceName: workspaces.find((item) => item.id === nextWorkspaceId)?.name ?? "-",
+      }),
     texts: {
       workspaceCreated: t("dashboard_workspace_created"),
       workspaceUpdated: t("dashboard_workspace_updated"),
@@ -69,6 +89,12 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
     },
   });
 
+  const onSelectWorkspace = (nextWorkspaceId: string) =>
+    onWorkspaceChange({
+      workspaceId: nextWorkspaceId,
+      workspaceName: workspaces.find((item) => item.id === nextWorkspaceId)?.name ?? "-",
+    });
+
   return (
     <WorkspaceSection
       title={t("dashboard_workspaces")}
@@ -78,14 +104,6 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
           noPermissionLabel={t("dashboard_no_permission")}
           canCreate={canCreate}
           onCreateWorkspace={workspaceCrud.openWorkspaceCreateForm}
-        />
-      }
-      summary={
-        <WorkspaceSummary
-          title={t("dashboard_current_workspace")}
-          workspaceId={activeWorkspaceId || "-"}
-          workspaceName={selectedWorkspaceName}
-          hint={t("dashboard_workspace_scope_hint")}
         />
       }
       content={
@@ -100,7 +118,7 @@ export function WorkspaceFeature({ workspaceId, currentUser, onWorkspaceIdChange
           transferOwnerLabel={t("dashboard_workspace_transfer_owner")}
           deleteLabel={t("dashboard_delete")}
           canManage={canManage}
-          onSelectWorkspace={onWorkspaceIdChange}
+          onSelectWorkspace={onSelectWorkspace}
           onEditWorkspace={workspaceCrud.startEditWorkspace}
           onTransferWorkspaceOwner={workspaceCrud.openTransferOwnerDialog}
           onDeleteWorkspace={workspaceCrud.requestDeleteWorkspace}

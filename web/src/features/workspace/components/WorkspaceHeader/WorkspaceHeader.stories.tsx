@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { WorkspaceSummary } from "@/features/workspace/components/WorkspaceSummary/WorkspaceSummary";
+import { WorkspaceHeader } from "@/features/workspace/components/WorkspaceHeader/WorkspaceHeader";
 
 const meta = {
-  title: "Features/Workspace/WorkspaceSummary",
-  component: WorkspaceSummary,
+  title: "Features/Workspace/WorkspaceHeader",
+  component: WorkspaceHeader,
   args: {
     title: "Current Workspace",
     workspaceId: "ws_001",
     workspaceName: "Platform Infra",
     hint: "Scope for hosts, jobs, and members.",
   },
-} satisfies Meta<typeof WorkspaceSummary>;
+} satisfies Meta<typeof WorkspaceHeader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

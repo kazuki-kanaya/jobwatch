@@ -75,6 +75,8 @@ export type Messages = {
   dashboard_workspace_delete_confirm_description: string;
   dashboard_current_workspace: string;
   dashboard_workspace_scope_hint: string;
+  dashboard_tab_operations: string;
+  dashboard_tab_people: string;
   dashboard_hosts: string;
   dashboard_host_name: string;
   dashboard_members: string;

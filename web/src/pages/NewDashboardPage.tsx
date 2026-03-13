@@ -8,12 +8,17 @@ import { MemberFeature } from "@/features/member";
 import { SnapshotFeature } from "@/features/snapshot";
 import { useCurrentUser } from "@/features/user";
 import { WorkspaceFeature } from "@/features/workspace";
+import { WorkspaceContentTabs } from "@/features/workspace/components/WorkspaceContentTabs/WorkspaceContentTabs";
+import { WorkspaceHeader } from "@/features/workspace/components/WorkspaceHeader/WorkspaceHeader";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 
 export default function NewDashboardPage() {
   const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState("");
+  const [selectedWorkspaceName, setSelectedWorkspaceName] = useState("-");
   const [invitationCreateRequestKey, setInvitationCreateRequestKey] = useState(0);
+  const { t } = useLocale();
   const accessToken = user?.access_token;
   const canAccessFeature = isAuthenticated && !isAuthLoading && Boolean(accessToken);
   const { currentUser } = useCurrentUser({
@@ -32,16 +37,30 @@ export default function NewDashboardPage() {
         <WorkspaceFeature
           workspaceId={selectedWorkspaceId}
           currentUser={currentUser}
-          onWorkspaceIdChange={setSelectedWorkspaceId}
+          onWorkspaceChange={({ workspaceId, workspaceName }) => {
+            setSelectedWorkspaceId(workspaceId === "-" ? "" : workspaceId);
+            setSelectedWorkspaceName(workspaceName);
+          }}
         />
-        <section
-          className={cn(
-            "rounded-[2rem] border border-slate-800/80 bg-slate-950/40 p-4 shadow-[0_20px_48px_rgba(2,6,23,0.3)] backdrop-blur-sm md:p-6",
-          )}
-        >
-          <div className={cn("grid gap-4")}>
-            <SnapshotFeature workspaceId={selectedWorkspaceId} />
-            <HostFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
+        <WorkspaceContentTabs
+          hint={t("dashboard_workspace_scope_hint")}
+          workspaceHeader={
+            <WorkspaceHeader
+              title={t("dashboard_current_workspace")}
+              workspaceId={selectedWorkspaceId || "-"}
+              workspaceName={selectedWorkspaceName}
+            />
+          }
+          snapshot={<SnapshotFeature workspaceId={selectedWorkspaceId} />}
+          operationsLabel={t("dashboard_tab_operations")}
+          peopleLabel={t("dashboard_tab_people")}
+          operationsContent={
+            <div className={cn("grid gap-4")}>
+              <HostFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
+              <JobFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
+            </div>
+          }
+          peopleContent={
             <div className={cn("grid gap-4 xl:grid-cols-[1fr_1fr]")}>
               <MemberFeature
                 workspaceId={selectedWorkspaceId}
@@ -54,9 +73,8 @@ export default function NewDashboardPage() {
                 createDialogRequestKey={invitationCreateRequestKey}
               />
             </div>
-            <JobFeature workspaceId={selectedWorkspaceId} currentUser={currentUser} />
-          </div>
-        </section>
+          }
+        />
       </div>
     </main>
   );

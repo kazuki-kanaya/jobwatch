@@ -83,6 +83,8 @@ export const enMessages = {
 
   dashboard_current_workspace: "Current workspace",
   dashboard_workspace_scope_hint: "The information below belongs to this workspace.",
+  dashboard_tab_operations: "Operations",
+  dashboard_tab_people: "People",
 
   dashboard_hosts: "Hosts",
   dashboard_host_name: "Host name",
