@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ type WorkspaceContentTabsProps = {
   peopleLabel: string;
   operationsContent: ReactNode;
   peopleContent: ReactNode;
-  hint?: ReactNode;
+  hint?: string;
 };
 
 export function WorkspaceContentTabs({
@@ -24,6 +24,11 @@ export function WorkspaceContentTabs({
   hint,
 }: WorkspaceContentTabsProps) {
   const [activeTab, setActiveTab] = useState<WorkspaceContentTab>("operations");
+  const id = useId();
+  const operationsTabId = `${id}-operations-tab`;
+  const peopleTabId = `${id}-people-tab`;
+  const operationsPanelId = `${id}-operations-panel`;
+  const peoplePanelId = `${id}-people-panel`;
 
   return (
     <section
@@ -33,7 +38,7 @@ export function WorkspaceContentTabs({
     >
       <div className={cn("grid gap-4")}>
         <div className={cn("space-y-3")}>
-          {hint ? <p className={cn("text-sm text-slate-300/80")}>{hint}</p> : null}
+          {hint ? <div className={cn("text-sm text-slate-300/80")}>{hint}</div> : null}
           {workspaceHeader}
         </div>
 
@@ -41,12 +46,19 @@ export function WorkspaceContentTabs({
 
         <div
           className={cn("flex flex-wrap items-center gap-2 rounded-2xl border border-slate-800/60 bg-slate-950/40 p-2")}
+          role="tablist"
+          aria-orientation="horizontal"
         >
           <Button
             type="button"
             variant="ghost"
             size="sm"
             onClick={() => setActiveTab("operations")}
+            role="tab"
+            id={operationsTabId}
+            aria-selected={activeTab === "operations"}
+            aria-controls={operationsPanelId}
+            tabIndex={activeTab === "operations" ? 0 : -1}
             className={cn(
               "rounded-xl px-4 text-sm font-semibold",
               activeTab === "operations"
@@ -61,6 +73,11 @@ export function WorkspaceContentTabs({
             variant="ghost"
             size="sm"
             onClick={() => setActiveTab("people")}
+            role="tab"
+            id={peopleTabId}
+            aria-selected={activeTab === "people"}
+            aria-controls={peoplePanelId}
+            tabIndex={activeTab === "people" ? 0 : -1}
             className={cn(
               "rounded-xl px-4 text-sm font-semibold",
               activeTab === "people"
@@ -72,7 +89,14 @@ export function WorkspaceContentTabs({
           </Button>
         </div>
 
-        <div className={cn("min-w-0")}>{activeTab === "operations" ? operationsContent : peopleContent}</div>
+        <div
+          className={cn("min-w-0")}
+          role="tabpanel"
+          id={activeTab === "operations" ? operationsPanelId : peoplePanelId}
+          aria-labelledby={activeTab === "operations" ? operationsTabId : peopleTabId}
+        >
+          {activeTab === "operations" ? operationsContent : peopleContent}
+        </div>
       </div>
     </section>
   );

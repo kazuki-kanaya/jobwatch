@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { HeaderFeature } from "@/features/header";
 import { HostFeature } from "@/features/host";
@@ -25,6 +25,13 @@ export default function NewDashboardPage() {
     accessToken,
     enabled: canAccessFeature,
   });
+  const handleWorkspaceChange = useCallback(
+    ({ workspaceId, workspaceName }: { workspaceId: string; workspaceName: string }) => {
+      setSelectedWorkspaceId(workspaceId === "-" ? "" : workspaceId);
+      setSelectedWorkspaceName(workspaceName);
+    },
+    [],
+  );
 
   return (
     <main
@@ -37,10 +44,7 @@ export default function NewDashboardPage() {
         <WorkspaceFeature
           workspaceId={selectedWorkspaceId}
           currentUser={currentUser}
-          onWorkspaceChange={({ workspaceId, workspaceName }) => {
-            setSelectedWorkspaceId(workspaceId === "-" ? "" : workspaceId);
-            setSelectedWorkspaceName(workspaceName);
-          }}
+          onWorkspaceChange={handleWorkspaceChange}
         />
         <WorkspaceContentTabs
           hint={t("dashboard_workspace_scope_hint")}
