@@ -25,13 +25,13 @@ func NewRunning(command string, tags []string, startedAt time.Time) (Job, error)
 	return Job{
 		Command:   command,
 		Status:    StatusRunning,
-		Tags:      tags,
+		Tags:      cloneStrings(tags), // Copy to keep the running job as an immutable snapshot.
 		StartedAt: startedAt,
 	}, nil
 }
 
 func (j *Job) Finish(status Status, tailLines []string, finishedAt time.Time) error {
-	if status.IsRunning() {
+	if !status.IsTerminal() {
 		return fmt.Errorf("status must be terminal: %q", status)
 	}
 

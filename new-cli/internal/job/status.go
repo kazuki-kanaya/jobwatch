@@ -18,9 +18,9 @@ func (s Status) IsValid() bool {
 	}
 }
 
-func (s Status) IsRunning() bool {
+func (s Status) IsTerminal() bool {
 	switch s {
-	case StatusRunning:
+	case StatusFinished, StatusFailed, StatusCanceled:
 		return true
 	default:
 		return false
