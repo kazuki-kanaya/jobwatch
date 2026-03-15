@@ -77,7 +77,7 @@ func validateNotify(cfg NotifyConfig) error {
 func validateURL(fieldName, value string) error {
 	parsed, err := url.ParseRequestURI(value)
 	if err != nil {
-		return fmt.Errorf("%s must be a valid URL", fieldName)
+		return fmt.Errorf("%s must be a valid URL: %w", fieldName, err)
 	}
 
 	if parsed.Scheme == "" || parsed.Host == "" {

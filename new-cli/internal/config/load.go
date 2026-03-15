@@ -1,6 +1,7 @@
 package config
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 
@@ -15,15 +16,18 @@ func Load(path string) (Config, error) {
 
 	expanded := []byte(os.ExpandEnv(string(data)))
 
+	dec := yaml.NewDecoder(bytes.NewReader(expanded))
+	dec.KnownFields(true)
+
 	var cfg Config
-	if err := yaml.Unmarshal(expanded, &cfg); err != nil {
+	if err := dec.Decode(&cfg); err != nil {
 		return Config{}, fmt.Errorf("decode config: %w", err)
 	}
 
 	normalize(&cfg)
 
 	if err := Validate(cfg); err != nil {
-		return Config{}, err
+		return Config{}, fmt.Errorf("validate config: %w", err)
 	}
 
 	return cfg, nil
