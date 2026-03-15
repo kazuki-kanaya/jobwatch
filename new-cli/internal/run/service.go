@@ -56,6 +56,7 @@ func (s *Service) Execute(ctx context.Context, req Request) (int, error) {
 	jobID, err := s.reporter.Start(ctx, runningJob)
 	if err != nil {
 		s.logger.Warnf("failed to create remote job: %v", err)
+		jobID = ""
 	}
 
 	execResult, err := s.executor.Execute(ctx, req)
