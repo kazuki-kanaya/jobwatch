@@ -48,7 +48,7 @@ func (s *Service) Execute(ctx context.Context, req Request) (int, error) {
 	}
 
 	startedAt := s.clock.Now()
-	runningJob, err := job.NewRunning(joinCommand(req.Command, req.Args), req.Tags, startedAt)
+	runningJob, err := job.NewRunning(joinCommand(req.Command), req.Tags, startedAt)
 	if err != nil {
 		return job.FailedExitCode, err
 	}
@@ -81,10 +81,6 @@ func (s *Service) Execute(ctx context.Context, req Request) (int, error) {
 	return execResult.ExitCode, nil
 }
 
-func joinCommand(command string, args []string) string {
-	if len(args) == 0 {
-		return command
-	}
-
-	return strings.Join(append([]string{command}, args...), " ")
+func joinCommand(command []string) string {
+	return strings.Join(command, " ")
 }
