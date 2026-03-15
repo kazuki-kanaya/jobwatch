@@ -17,7 +17,8 @@ type APIConfig struct {
 }
 
 type NotifyConfig struct {
-	Slack *SlackConfig `yaml:"slack"`
+	TimeZone string       `yaml:"time_zone"`
+	Slack    *SlackConfig `yaml:"slack"`
 }
 
 type SlackConfig struct {

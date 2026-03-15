@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+	"time"
 )
 
 const (
@@ -55,6 +56,11 @@ func validateAPI(cfg APIConfig) error {
 }
 
 func validateNotify(cfg NotifyConfig) error {
+	if strings.TrimSpace(cfg.TimeZone) != "" {
+		if _, err := time.LoadLocation(cfg.TimeZone); err != nil {
+			return fmt.Errorf("notify.time_zone must be a valid IANA time zone, got %q: %w", cfg.TimeZone, err)
+		}
+	}
 	if cfg.Slack != nil {
 		if strings.TrimSpace(cfg.Slack.WebhookURL) == "" {
 			return fmt.Errorf("notify.slack.webhook_url is required")
