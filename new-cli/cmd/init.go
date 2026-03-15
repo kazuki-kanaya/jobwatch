@@ -1,22 +1,43 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 
+	"github.com/kazuki-kanaya/obsern/new-cli/internal/config"
 	"github.com/spf13/cobra"
 )
 
+const defaultConfigFileName = "obsern.yaml"
+
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Create a default obsern.yaml config file",
+	Long: `Create a default obsern.yaml config file in the current directory.
+Existing files are not overwritten.`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		path := filepath.Join(".", defaultConfigFileName)
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init called")
+		file, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o644)
+		if err != nil {
+			if errors.Is(err, os.ErrExist) {
+				return fmt.Errorf("config file already exists: %s", path)
+			}
+
+			return fmt.Errorf("create config file: %w", err)
+		}
+		defer file.Close()
+
+		if _, err := file.Write([]byte(config.DefaultYAML())); err != nil {
+			return fmt.Errorf("write config file: %w", err)
+		}
+
+		cmd.Printf("✓ Created %s\n", path)
+		cmd.Printf("→ Next: edit %s and configure api or notify\n", path)
+
+		return nil
 	},
 }
 
