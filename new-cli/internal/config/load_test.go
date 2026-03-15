@@ -3,7 +3,6 @@ package config
 import (
 	"os"
 	"path/filepath"
-	"slices"
 	"strings"
 	"testing"
 )
@@ -30,7 +29,10 @@ notify:
 			t.Fatalf("Load() error = %v, want nil", err)
 		}
 
-		if !slices.Equal(cfg.Run.Tags, []string{}) {
+		if cfg.Run.Tags == nil {
+			t.Fatal("Run.Tags is nil, want non-nil empty slice")
+		}
+		if len(cfg.Run.Tags) != 0 {
 			t.Fatalf("Run.Tags = %#v, want empty slice", cfg.Run.Tags)
 		}
 		if cfg.Run.TailLines != 0 {
