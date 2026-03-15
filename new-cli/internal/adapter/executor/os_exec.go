@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os/exec"
 	"sync"
+	"syscall"
 
 	"github.com/kazuki-kanaya/obsern/new-cli/internal/domain/execution"
 	"github.com/kazuki-kanaya/obsern/new-cli/internal/domain/job"
@@ -70,10 +71,26 @@ func (e *Executor) Execute(ctx context.Context, req run.Request) (execution.Exec
 		return execution.New(job.StatusFinished, job.SuccessExitCode, tail.Lines())
 	}
 
+	if ctx.Err() != nil {
+		return execution.New(job.StatusCanceled, job.CanceledExitCode, tail.Lines())
+	}
+
 	var exitErr *exec.ExitError
 	if errors.As(err, &exitErr) {
-		status, exitCode := resolveExit(ctx, exitErr)
+		status, exitCode := resolveExit(exitErr)
 		return execution.New(status, exitCode, tail.Lines())
 	}
 	return execution.Execution{}, fmt.Errorf("observe command execution: %w", err)
+}
+
+func resolveExit(exitErr *exec.ExitError) (job.Status, int) {
+	waitStatus, ok := exitErr.Sys().(syscall.WaitStatus)
+	if ok && waitStatus.Signaled() {
+		switch waitStatus.Signal() {
+		case syscall.SIGINT, syscall.SIGTERM:
+			return job.StatusCanceled, job.CanceledExitCode
+		}
+	}
+
+	return job.StatusFailed, exitErr.ExitCode()
 }
