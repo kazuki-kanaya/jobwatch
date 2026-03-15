@@ -9,6 +9,12 @@ const (
 	StatusCanceled Status = "canceled"
 )
 
+const (
+	CanceledExitCode = 130
+	SuccessExitCode  = 0
+	FailedExitCode   = 1
+)
+
 func (s Status) IsValid() bool {
 	switch s {
 	case StatusRunning, StatusFinished, StatusFailed, StatusCanceled:
