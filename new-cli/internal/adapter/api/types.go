@@ -8,7 +8,7 @@ type createJobRequest struct {
 }
 
 type createJobResponse struct {
-	ID string `json:"id"`
+	ID string `json:"job_id"`
 }
 
 type updateJobRequest struct {

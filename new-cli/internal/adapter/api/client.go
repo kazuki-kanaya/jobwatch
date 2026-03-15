@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"time"
 )
 
 type Client struct {
@@ -38,14 +39,16 @@ func NewClient(baseURL, hostToken string) (*Client, error) {
 	}
 
 	return &Client{
-		baseURL:    parsed,
-		hostToken:  hostToken,
-		httpClient: &http.Client{},
+		baseURL:   parsed,
+		hostToken: hostToken,
+		httpClient: &http.Client{
+			Timeout: 10 * time.Second,
+		},
 	}, nil
 }
 
 func (c *Client) CreateJob(ctx context.Context, req createJobRequest) (createJobResponse, error) {
-	httpReq, err := c.newJSONRequest(ctx, http.MethodPost, "/jobs", req)
+	httpReq, err := c.newJSONRequest(ctx, http.MethodPost, "/cli/jobs", req)
 	if err != nil {
 		return createJobResponse{}, err
 	}
@@ -67,7 +70,7 @@ func (c *Client) UpdateJob(ctx context.Context, jobID string, req updateJobReque
 		return fmt.Errorf("jobID is required")
 	}
 
-	httpReq, err := c.newJSONRequest(ctx, http.MethodPatch, "/jobs/"+url.PathEscape(jobID), req)
+	httpReq, err := c.newJSONRequest(ctx, http.MethodPatch, "/cli/jobs/"+url.PathEscape(jobID), req)
 	if err != nil {
 		return err
 	}
