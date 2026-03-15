@@ -9,6 +9,7 @@ import (
 
 func copyOutput(src io.Reader, dst io.Writer, collector *lineCollector) error {
 	_, err := io.Copy(io.MultiWriter(dst, collector), src)
+	// Process shutdown can close the pipe while the copier is still draining it.
 	if errors.Is(err, os.ErrClosed) {
 		return nil
 	}

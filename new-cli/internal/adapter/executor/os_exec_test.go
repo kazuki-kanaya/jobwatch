@@ -3,7 +3,10 @@ package executor
 import (
 	"bytes"
 	"context"
+	"io"
 	"reflect"
+	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -89,7 +92,7 @@ func TestExecuteFailedCommand(t *testing.T) {
 func TestExecuteCanceledCommand(t *testing.T) {
 	t.Parallel()
 
-	stdout := &bytes.Buffer{}
+	stdout := &lockedBuffer{}
 	stderr := &bytes.Buffer{}
 	executor := mustNewExecutor(t, stdout, stderr)
 
@@ -97,8 +100,18 @@ func TestExecuteCanceledCommand(t *testing.T) {
 	defer cancel()
 
 	go func() {
-		time.Sleep(100 * time.Millisecond)
-		cancel()
+		deadline := time.Now().Add(5 * time.Second)
+		for {
+			if strings.Contains(stdout.String(), "start") {
+				cancel()
+				return
+			}
+			if time.Now().After(deadline) {
+				cancel()
+				return
+			}
+			time.Sleep(10 * time.Millisecond)
+		}
 	}()
 
 	result, err := executor.Execute(ctx, run.Request{
@@ -122,7 +135,7 @@ func TestExecuteCanceledCommand(t *testing.T) {
 	}
 }
 
-func mustNewExecutor(t *testing.T, stdout, stderr *bytes.Buffer) *Executor {
+func mustNewExecutor(t *testing.T, stdout, stderr io.Writer) *Executor {
 	t.Helper()
 
 	executor, err := New(stdout, stderr)
@@ -131,4 +144,23 @@ func mustNewExecutor(t *testing.T, stdout, stderr *bytes.Buffer) *Executor {
 	}
 
 	return executor
+}
+
+type lockedBuffer struct {
+	mu  sync.Mutex
+	buf bytes.Buffer
+}
+
+func (b *lockedBuffer) Write(p []byte) (int, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	return b.buf.Write(p)
+}
+
+func (b *lockedBuffer) String() string {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	return b.buf.String()
 }
