@@ -3,6 +3,7 @@ package config
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -21,6 +22,15 @@ func Load(path string) (Config, error) {
 
 	var cfg Config
 	if err := dec.Decode(&cfg); err != nil {
+		return Config{}, fmt.Errorf("decode config: %w", err)
+	}
+
+	var extra any
+	if err := dec.Decode(&extra); err != io.EOF {
+		if err == nil {
+			return Config{}, fmt.Errorf("decode config: multiple YAML documents are not supported")
+		}
+
 		return Config{}, fmt.Errorf("decode config: %w", err)
 	}
 

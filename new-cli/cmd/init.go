@@ -20,13 +20,17 @@ Existing files are not overwritten.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		path := filepath.Join(".", defaultConfigFileName)
 
-		if _, err := os.Stat(path); err == nil {
-			return fmt.Errorf("config file already exists: %s", path)
-		} else if !errors.Is(err, os.ErrNotExist) {
-			return fmt.Errorf("stat config file: %w", err)
-		}
+		file, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o644)
+		if err != nil {
+			if errors.Is(err, os.ErrExist) {
+				return fmt.Errorf("config file already exists: %s", path)
+			}
 
-		if err := os.WriteFile(path, []byte(config.DefaultYAML()), 0o644); err != nil {
+			return fmt.Errorf("create config file: %w", err)
+		}
+		defer file.Close()
+
+		if _, err := file.Write([]byte(config.DefaultYAML())); err != nil {
 			return fmt.Errorf("write config file: %w", err)
 		}
 
