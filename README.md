@@ -1,148 +1,286 @@
-# Obsern
+<p align="center">
+  <img src="./assets/logo.png" alt="Obsern Logo" width="120" />
+</p>
 
-> Lightweight job monitoring for long-running ML/compute experiments.
+<h1 align="center">Obsern</h1>
+<p align="center">
+  <a href="./README.md"><strong>English</strong></a> | <a href="./README.ja.md">日本語</a>
+</p>
+<p align="center">
+  Lightweight monitoring for long-running processes
+</p>
 
-Obsern is a simple tool to monitor long-running scripts on GPU servers or cloud machines.
-It helps you track whether jobs are running, finished, or failed — without constantly SSH-ing into servers.
+Obsern is a tool for lightweight monitoring of long-running jobs.
 
-This project is in early development.
+It is designed for processes that run from hours to days, such as machine learning training, inference batches, and data processing. The goal is to make the following easier to handle from a CLI-first workflow:
 
----
+- execution status tracking
+- stdout / stderr visibility
+- dashboard-based visibility
+- notifications
 
-## ✨ Motivation
+Obsern works by wrapping arbitrary commands.
 
-When running machine learning experiments on remote servers, common problems are:
+## Overview
 
-- Jobs fail (e.g., CUDA OOM) and you notice too late
-- You forget whether a job is still running
-- Results and logs are scattered across multiple servers
-- Checking status requires repeated SSH access
-
-Existing tools like MLflow or TensorBoard are powerful, but often heavy if you just want:
-
-- Simple status tracking
-- Notifications
-- Lightweight monitoring across servers
-
-Obsern aims to be a minimal, easy-to-adopt solution.
-
----
-
-## 🚀 Concept
-
-Wrap your command with obsern:
+- [Background](#background)
+- [What Obsern Solves](#what-obsern-solves)
+- [Key Features](#key-features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Comparison](#comparison)
+- [Repository Structure](#repository-structure)
+- [Tech Stack](#tech-stack)
+- [Development Status](#development-status)
+- [License](#license)
 
 ```bash
-obsern run python main.py
+obsern run python train.py
 ```
 
-Obsern tracks:
+No SDK integration or code changes are required.
 
-- Running
-- Completed
-- Failed
-- Cancelled
+## Background
 
-And syncs job states to a web dashboard.
+Obsern was born out of day-to-day GPU server operations in a research lab.
 
-**Deploy anywhere**: Works seamlessly in local Docker, cloud environments (AWS, GCP, Azure), or on-premise GPU servers.
+While running machine learning jobs in parallel across multiple GPU servers, the same problems kept coming up:
 
----
+- one training run could take a week
+- but some jobs failed within the first five minutes
+- because they ran in the background, the failure reason was not immediately visible
+- in practice, that meant SSH-ing into servers multiple times a day just to check processes
 
-## 🧩 Planned Features
+In other words, "SSH just to see whether a job is still alive" became routine.
 
-- CLI wrapper for any script
-- Job status tracking
-- Web dashboard for monitoring
-- Multi-server visibility
-- Flexible deployment (Docker, Kubernetes)
-- Cloud-native support (AWS, GCP, Azure)
-- Notifications (e.g., Slack)
-- Log collection for failures
+Obsern was created to reduce that wasted waiting time and manual checking in long-running job workflows.
 
----
+## What Obsern Solves
 
-## 📦 Installation
+Long-running jobs tend to create the same kinds of operational pain.
 
-Install latest:
+### You do not notice when a job dies
+
+GPU training jobs can fail almost immediately for reasons like:
+
+- CUDA OOM
+- data errors
+- wrong paths or environment setup
+
+### You SSH only to check status
+
+```bash
+ssh gpu-server
+ps aux | grep python
+```
+
+That kind of status-only check tends to happen over and over again.
+
+### State gets scattered across multiple servers
+
+- `gpu-server-1`
+- `gpu-server-2`
+- `gpu-server-3`
+
+It becomes hard to tell what is running where.
+
+Obsern aims to solve this through:
+
+- execution status tracking
+- stdout / stderr collection
+- dashboard visibility
+- notifications
+
+## Key Features
+
+### Wrap any command
+
+You can run arbitrary CLI commands as-is.
+
+```bash
+obsern run python train.py
+obsern run bash script.sh
+obsern run bash -lc 'echo hi && sleep 1'
+```
+
+### stdout / stderr visibility
+
+Obsern is designed to forward process output to the user terminal while retaining tail logs when execution ends.
+
+This helps reduce work such as:
+
+- checking `nohup` logs
+- SSH-ing in just to inspect logs
+
+### Execution status tracking
+
+Obsern tracks job state with the following statuses:
+
+- `running`
+- `finished`
+- `failed`
+- `canceled`
+
+### Dashboard
+
+The Web UI can be used to register hosts and inspect job state.
+It is also designed for team usage, including member invitations and permission management.
+
+<p align="center">
+  <img src="./assets/dashboard.png" alt="Obsern Dashboard" width="450" />
+</p>
+
+### Notifications
+
+Obsern can notify you when jobs finish or fail.
+
+Currently:
+
+- Slack
+
+Planned:
+
+- Discord
+
+Example notifications (Slack):
+
+<p align="center">
+  <img src="./assets/slack-success.png" alt="Slack Success Notification" width="500" />
+  <img src="./assets/slack-failed.png" alt="Slack Failed Notification" width="360" />
+</p>
+
+### Local and cloud-friendly
+
+Obsern is intended to work in environments such as:
+
+- local machines
+- on-premise servers
+- cloud environments such as AWS
+
+If you want dashboard integration, you need a server endpoint to connect to.
+
+- You can run your own server
+- Or use the hosted Obsern service when it becomes available
+
+If notifications are all you need, the goal is to make the CLI useful on its own.
+
+## Architecture
+
+Obsern is built around a flow like this:
+
+```text
+command
+   ↓
+obsern CLI
+   ↓
+stdout / stderr capture
+   ↓
+API
+   ↓
+Dashboard
+   ↓
+Notification
+```
+
+## Installation
+
+### Latest
 
 ```bash
 curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/install.sh | sh
 ```
 
-Install a specific version:
+### Specific version
 
 ```bash
 curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/v2026.02.26/install.sh | sh
 ```
 
----
+The current installation path assumes a Unix-like environment.
 
-## 🛠 Current Status
+## Quick Start
 
-⚠️ Early prototype
-
-Features and APIs may change.
-Feedback and ideas are welcome.
-
----
-
-## 🎯 Goals
-
-Obsern is designed to be:
-
-- Lightweight
-- Easy to adopt
-- Flexible deployment (local Docker, cloud, on-premise)
-- Focused on monitoring & notification
-- Complementary to MLflow/TensorBoard (not a replacement)
-
----
-
-## 🤝 Contributing
-
-Contributions, suggestions, and issues are welcome.
-
-If you have ideas or pain points from ML experimentation workflows, please open an issue.
-
----
-
-## 🛠️ Development Setup
-
-### Prerequisites
-
-- Python 3.11 (via [uv](https://docs.astral.sh/uv/))
-- Node.js 22+ (via [pnpm](https://pnpm.io/))
-- Go 1.25.7 (via [goenv](https://github.com/go-nv/goenv))
-- Terraform (via [tfenv](https://github.com/tfutils/tfenv))
-- Docker & Docker Compose 
-
-### Install Dependencies
-
-- **Task** (task runner): [taskfile.dev/installation](https://taskfile.dev/installation)
-- **Lefthook** (git hooks): [lefthook.dev/installation](https://lefthook.dev/installation)
-- **AWS CLI** (for LocalStack): [AWS CLI installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-- **GoReleaser** (release automation): [goreleaser.com/install](https://goreleaser.com/install/)
-- **TFLint** (Terraform linter): [github.com/terraform-linters/tflint](https://github.com/terraform-linters/tflint)
-
-After installing Lefthook, run:
+### Initialize config
 
 ```bash
-lefthook install
+obsern init
 ```
 
-Note: LocalStack emulates AWS services locally. See [docs.localstack.cloud](https://docs.localstack.cloud/) for details.
+Config file:
 
----
+```text
+obsern.yaml
+```
 
-## 📜 License
+### Run a command
+
+```bash
+obsern run python train.py
+```
+
+Examples:
+
+```bash
+obsern run python train.py --epochs 10
+obsern run -- python train.py --epochs 10
+obsern run bash -lc 'echo hi && sleep 1'
+```
+
+## Comparison
+
+Obsern focuses on execution monitoring rather than experiment management.
+
+| Tool | Primary Use |
+| --- | --- |
+| MLflow | Experiment management |
+| TensorBoard | Training metrics visualization |
+| Airflow | Workflow orchestration |
+| Obsern | Job monitoring and notifications |
+
+
+## Repository Structure
+
+This repository is organized as a monorepo.
+
+- `new-cli/`
+  - New CLI implementation. This is the current main focus.
+- `cli/`
+  - Existing CLI implementation.
+- `api/`
+  - Backend API.
+- `web/`
+  - Web application.
+- `site/`
+  - Landing page and documentation site.
+- `infra/`
+  - Infrastructure definitions such as Terraform.
+- `.github/`
+  - Repository operations such as GitHub Actions workflows for CI, releases, and security checks.
+
+## Tech Stack
+
+| Directory | Description | Tech |
+| --- | --- | --- |
+| `new-cli` | New CLI implementation | Go / Cobra |
+| `cli` | Existing CLI | Go / Cobra |
+| `api` | Backend API | Python / FastAPI / uv |
+| `web` | Web dashboard | pnpm / Vite / React |
+| `site` | Docs / landing page | pnpm / Astro |
+| `infra` | Infrastructure | Terraform |
+
+## Development Status
+
+Obsern is under active development.
+
+Current focus:
+
+- CLI redesign
+
+Planned next:
+
+- Discord notifications
+- dashboard improvements
+
+## License
 
 MIT
-
----
-
-## 🙌 Author
-
-Built by ML practitioners for ML practitioners.
-
-If this project helps you, a star ⭐ is appreciated.
