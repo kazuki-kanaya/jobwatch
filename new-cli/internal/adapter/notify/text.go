@@ -30,9 +30,9 @@ func buildText(j job.Job, loc *time.Location) (string, error) {
 	fmt.Fprintf(&b, "Finished: %s\n", formatNotifyTime(*j.FinishedAt, loc))
 
 	if len(j.TailLines) > 0 {
-		b.WriteString("\nTail:\n```")
+		b.WriteString("\nTail:\n```\n")
 		b.WriteString(strings.Join(j.TailLines, "\n"))
-		b.WriteString("```")
+		b.WriteString("\n```")
 	}
 
 	return strings.TrimRight(b.String(), "\n"), nil

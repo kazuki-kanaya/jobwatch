@@ -75,7 +75,11 @@ func (n *SlackNotifier) Notify(ctx context.Context, j job.Job) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
-		responseBody, _ := io.ReadAll(io.LimitReader(resp.Body, 4096))
+		responseBody, err := io.ReadAll(io.LimitReader(resp.Body, 4096))
+		if err != nil {
+			return fmt.Errorf("slack webhook failed with status %d", resp.StatusCode)
+		}
+
 		message := strings.TrimSpace(string(responseBody))
 		if message == "" {
 			return fmt.Errorf("slack webhook failed with status %d", resp.StatusCode)
@@ -83,6 +87,8 @@ func (n *SlackNotifier) Notify(ctx context.Context, j job.Job) error {
 		return fmt.Errorf("slack webhook failed with status %d: %s", resp.StatusCode, message)
 	}
 
+	// Drain the response body so the underlying HTTP connection can be reused.
+	io.Copy(io.Discard, resp.Body)
 	return nil
 }
 
