@@ -26,7 +26,7 @@ func TestNewReporter(t *testing.T) {
 func TestReporterStartRequiresRunningJob(t *testing.T) {
 	t.Parallel()
 
-	client := newReporterTestClient(t, func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
 		t.Fatal("transport should not be called")
 		return nil, nil
 	})
@@ -58,7 +58,7 @@ func TestReporterStartMapsJobToCreateRequest(t *testing.T) {
 
 	var gotBody string
 
-	client := newReporterTestClient(t, func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
 		body, err := io.ReadAll(req.Body)
 		if err != nil {
 			t.Fatalf("read request body: %v", err)
@@ -101,7 +101,7 @@ func TestReporterStartMapsJobToCreateRequest(t *testing.T) {
 func TestReporterFinishRequiresTerminalJob(t *testing.T) {
 	t.Parallel()
 
-	client := newReporterTestClient(t, func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
 		t.Fatal("transport should not be called")
 		return nil, nil
 	})
@@ -130,7 +130,7 @@ func TestReporterFinishMapsJobToUpdateRequest(t *testing.T) {
 
 	var gotBody string
 
-	client := newReporterTestClient(t, func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
 		body, err := io.ReadAll(req.Body)
 		if err != nil {
 			t.Fatalf("read request body: %v", err)
@@ -169,17 +169,4 @@ func TestReporterFinishMapsJobToUpdateRequest(t *testing.T) {
 	if !strings.Contains(gotBody, `"finished_at":"2026-03-16T10:05:00Z"`) {
 		t.Fatalf("body = %q, want finished_at", gotBody)
 	}
-}
-
-func newReporterTestClient(t *testing.T, fn func(*http.Request) (*http.Response, error)) *Client {
-	t.Helper()
-
-	client, err := NewClient("https://api.obsern.com", "host-token")
-	if err != nil {
-		t.Fatalf("NewClient() error = %v", err)
-	}
-
-	client.httpClient.Transport = roundTripFunc(fn)
-
-	return client
 }
