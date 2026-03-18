@@ -48,6 +48,8 @@ func (n *SlackNotifier) Notify(ctx context.Context, j job.Job) error {
 		return err
 	}
 
+	text = fmt.Sprintf("%s\n\n%s", slackStatusTitle(j.Status), text)
+
 	payload := slackWebhookPayload{
 		Attachments: []slackAttachment{
 			{
@@ -118,4 +120,17 @@ func NewSlackNotifier(webhookURL string, timeZone string) (*SlackNotifier, error
 		location:   loc,
 		httpClient: &http.Client{Timeout: 10 * time.Second},
 	}, nil
+}
+
+func slackStatusTitle(status job.Status) string {
+	switch status {
+	case job.StatusFinished:
+		return ":white_check_mark: *SUCCESS*"
+	case job.StatusFailed:
+		return ":x: *FAILED*"
+	case job.StatusCanceled:
+		return ":warning: *CANCELED*"
+	default:
+		return ":grey_question: *UNKNOWN*"
+	}
 }

@@ -24,10 +24,10 @@ func buildText(j job.Job, loc *time.Location) (string, error) {
 	fmt.Fprintf(&b, "*Obsern job %s*\n", j.Status)
 	fmt.Fprintf(&b, "Command: `%s`\n", j.Command)
 	if len(j.Tags) > 0 {
-		fmt.Fprintf(&b, "Tags: %s\n", strings.Join(j.Tags, ", "))
+		fmt.Fprintf(&b, "Tags: %s\n", formatTags(j.Tags))
 	}
-	fmt.Fprintf(&b, "Started: %s\n", formatNotifyTime(j.StartedAt, loc))
-	fmt.Fprintf(&b, "Finished: %s\n", formatNotifyTime(*j.FinishedAt, loc))
+	fmt.Fprintf(&b, "Started: %s\n", formatTime(j.StartedAt, loc))
+	fmt.Fprintf(&b, "Finished: %s\n", formatTime(*j.FinishedAt, loc))
 
 	if len(j.TailLines) > 0 {
 		b.WriteString("\nTail:\n```\n")
@@ -38,6 +38,14 @@ func buildText(j job.Job, loc *time.Location) (string, error) {
 	return strings.TrimRight(b.String(), "\n"), nil
 }
 
-func formatNotifyTime(value time.Time, loc *time.Location) string {
+func formatTime(value time.Time, loc *time.Location) string {
 	return value.In(loc).Format("2006-01-02 15:04:05 MST")
+}
+
+func formatTags(tags []string) string {
+	quoted := make([]string, len(tags))
+	for i, tag := range tags {
+		quoted[i] = "`" + tag + "`"
+	}
+	return strings.Join(quoted, ", ")
 }
