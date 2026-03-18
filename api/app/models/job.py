@@ -5,10 +5,10 @@ from pydantic import BaseModel, Field
 
 
 class JobStatus(str, Enum):
-    RUNNING = "RUNNING"
-    FINISHED = "FINISHED"
-    FAILED = "FAILED"
-    CANCELED = "CANCELED"
+    RUNNING = "running"
+    FINISHED = "finished"
+    FAILED = "failed"
+    CANCELED = "canceled"
 
 
 class Job(BaseModel):
@@ -16,11 +16,8 @@ class Job(BaseModel):
     workspace_id: str
     host_id: str
     status: JobStatus
-    project: str
     command: str
-    args: list[str] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)
-    err: str | None = None
     tail_lines: list[str] = Field(default_factory=list)
     created_at: datetime
     started_at: datetime
