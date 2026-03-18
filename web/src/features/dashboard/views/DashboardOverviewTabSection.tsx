@@ -91,7 +91,6 @@ export default function DashboardOverviewTabSection(props: DashboardOverviewTabS
           emptyLabel={model.texts.noJobs}
           errorLabel={model.texts.jobsError}
           jobIdLabel={model.texts.jobId}
-          projectLabel={model.texts.project}
           workspaceLabel={model.texts.workspaceName}
           hostLabel={model.texts.hostName}
           tagsLabel={model.texts.tags}
@@ -119,17 +118,14 @@ export default function DashboardOverviewTabSection(props: DashboardOverviewTabS
           title={model.texts.detail}
           selectedJobLabel={model.texts.selectedJob}
           jobIdLabel={model.texts.jobId}
-          projectLabel={model.texts.project}
           latestLogsLabel={model.texts.latestLogs}
           commandLabel={model.texts.command}
-          argsLabel={model.texts.args}
           tagsLabel={model.texts.tags}
           statusLabel={model.texts.status}
           statusLabels={model.texts.statusLabels}
           startedAtLabel={model.texts.startedAt}
           finishedAtLabel={model.texts.finishedAt}
           durationLabel={model.texts.duration}
-          errorLabel={model.texts.error}
           viewFullLabel={model.texts.viewFull}
           emptyLabel={model.texts.detailEmpty}
           logsEmptyLabel={model.texts.logsEmpty}

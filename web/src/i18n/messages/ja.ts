@@ -126,6 +126,7 @@ export const jaMessages = {
   dashboard_snapshot_tracked: "実行数",
   dashboard_snapshot_running: "実行中",
   dashboard_snapshot_completed: "完了",
+  dashboard_snapshot_canceled: "キャンセル",
   dashboard_snapshot_failed: "失敗",
   dashboard_all: "すべて",
   invite_title: "ワークスペースに参加",

@@ -26,7 +26,7 @@ export const useDashboardSelection = ({
     if (!normalizedKeyword) return jobs;
 
     return jobs.filter((job) => {
-      const searchable = `${job.title} ${job.workspace} ${job.host} ${job.status} ${job.command}`.toLowerCase();
+      const searchable = `${job.workspace} ${job.host} ${job.status} ${job.command}`.toLowerCase();
       return searchable.includes(normalizedKeyword);
     });
   }, [appliedQuery, jobs]);

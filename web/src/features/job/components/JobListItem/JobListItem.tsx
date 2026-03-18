@@ -7,7 +7,7 @@ const statusConfig: Record<JobStatusUi, { icon: typeof Clock3; badgeClass: strin
   running: { icon: Clock3, badgeClass: "border-cyan-300/35 bg-cyan-500/20 text-cyan-100" },
   completed: { icon: CheckCircle2, badgeClass: "border-emerald-300/35 bg-emerald-500/20 text-emerald-100" },
   failed: { icon: AlertCircle, badgeClass: "border-rose-300/35 bg-rose-500/20 text-rose-100" },
-  canceled: { icon: OctagonX, badgeClass: "border-slate-300/30 bg-slate-500/20 text-slate-100" },
+  canceled: { icon: OctagonX, badgeClass: "border-amber-300/35 bg-amber-500/20 text-amber-100" },
 };
 
 type JobListItemProps = {
@@ -52,7 +52,7 @@ export function JobListItem({
           className={cn("min-w-0 flex-1 cursor-pointer text-left")}
         >
           <div className={cn("flex items-center gap-2")}>
-            <p className={cn("truncate text-base font-semibold text-slate-100")}>{job.project}</p>
+            <p className={cn("truncate text-base font-semibold text-slate-100")}>{job.command}</p>
             <span
               className={cn(
                 "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium",
@@ -65,8 +65,8 @@ export function JobListItem({
           </div>
           <div className={cn("mt-1 space-y-1")}>
             <p className={cn("truncate font-mono text-xs text-slate-300/80")}>{job.id}</p>
-            <p className={cn("truncate font-mono text-xs text-slate-300/70")} title={job.fullCommand}>
-              {job.fullCommand}
+            <p className={cn("truncate font-mono text-xs text-slate-300/70")} title={job.command}>
+              {job.command}
             </p>
             <p className={cn("truncate text-xs text-slate-400")}>
               {startedAtLabel}: {job.startedAt} / {durationLabel}: {job.duration}

@@ -69,6 +69,7 @@ export default function DashboardPageView(props: DashboardPageViewProps) {
             tracked: model.texts.snapshotTracked,
             running: model.texts.snapshotRunning,
             completed: model.texts.snapshotCompleted,
+            canceled: model.texts.snapshotCanceled,
             failed: model.texts.snapshotFailed,
           }}
         />

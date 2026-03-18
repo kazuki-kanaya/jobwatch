@@ -114,16 +114,12 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
           statusLabel={selectedJob ? statusLabels[selectedJob.status] : null}
           labels={{
             jobId: t("dashboard_job_id"),
-            project: t("dashboard_project"),
             status: t("dashboard_status"),
-            command: t("dashboard_command"),
-            args: t("dashboard_args"),
             tags: t("dashboard_tags"),
             startedAt: t("dashboard_started_at"),
             finishedAt: t("dashboard_finished_at"),
             duration: t("dashboard_duration"),
             latestLogs: t("dashboard_latest_logs"),
-            error: t("dashboard_error"),
           }}
         />
       }

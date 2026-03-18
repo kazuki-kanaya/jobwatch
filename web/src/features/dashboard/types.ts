@@ -7,8 +7,6 @@ export type JobListItem = {
   jobId: string;
   workspaceId: string;
   hostId: string;
-  title: string;
-  project: string;
   workspace: string;
   host: string;
   startedAtIso: string;
@@ -18,9 +16,7 @@ export type JobListItem = {
   duration: string;
   status: JobStatus;
   command: string;
-  args: string[];
   tags: string[];
-  errorMessage: string | null;
   tailLines: string[];
 };
 
@@ -28,6 +24,7 @@ export type DashboardSnapshot = {
   total: number;
   running: number;
   completed: number;
+  canceled: number;
   failed: number;
   updatedAt: string;
 };
@@ -174,6 +171,7 @@ export type DashboardViewModel = {
     snapshotTracked: string;
     snapshotRunning: string;
     snapshotCompleted: string;
+    snapshotCanceled: string;
     snapshotFailed: string;
     statusLabels: Record<JobStatus, string>;
   };

@@ -26,10 +26,10 @@ export type HostOption = {
 };
 
 const statusMap: Record<JobResponse["status"], JobStatus> = {
-  RUNNING: "running",
-  FINISHED: "completed",
-  FAILED: "failed",
-  CANCELED: "canceled",
+  running: "running",
+  finished: "completed",
+  failed: "failed",
+  canceled: "canceled",
 };
 
 const toReadableDateTime = (value: string, localeTag: string) => {
@@ -140,8 +140,6 @@ export const toJobListItems = (
     jobId: job.job_id,
     workspaceId: job.workspace_id,
     hostId: job.host_id,
-    title: job.project,
-    project: job.project,
     workspace: workspaceLabel,
     host: hostNameById.get(job.host_id) ?? job.host_id,
     startedAtIso: job.started_at,
@@ -151,9 +149,7 @@ export const toJobListItems = (
     duration: toDurationLabel(job.started_at, job.finished_at ?? null),
     status: statusMap[job.status],
     command: job.command,
-    args: job.args ?? [],
     tags: job.tags ?? [],
-    errorMessage: job.err ?? null,
     tailLines: job.tail_lines ?? [],
   }));
 };

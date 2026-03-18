@@ -36,6 +36,7 @@ export function SnapshotFeature({ workspaceId }: SnapshotFeatureProps) {
         tracked: t("dashboard_snapshot_tracked"),
         running: t("dashboard_snapshot_running"),
         completed: t("dashboard_snapshot_completed"),
+        canceled: t("dashboard_snapshot_canceled"),
         failed: t("dashboard_snapshot_failed"),
       }}
     />

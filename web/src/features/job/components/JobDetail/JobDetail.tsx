@@ -12,16 +12,12 @@ type JobDetailProps = {
   emptyLabel: string;
   labels: {
     jobId: string;
-    project: string;
     status: string;
-    command: string;
-    args: string;
     tags: string;
     startedAt: string;
     finishedAt: string;
     duration: string;
     latestLogs: string;
-    error: string;
   };
   statusLabel: string | null;
   logsEmptyLabel: string;
@@ -29,7 +25,7 @@ type JobDetailProps = {
   copiedLabel: string;
 };
 
-type CopyTarget = "error" | "logs";
+type CopyTarget = "logs";
 
 export function JobDetail({
   selectedJob,
@@ -81,42 +77,20 @@ export function JobDetail({
         </div>
       ) : (
         <div className={cn("mt-4 space-y-4")}>
-          <JobDetailHeaderCard
-            selectedJob={selectedJob}
-            selectedJobLabel={selectedJobLabel}
-            commandLabel={labels.command}
-          />
+          <JobDetailHeaderCard selectedJob={selectedJob} selectedJobLabel={selectedJobLabel} />
 
           <JobMetaGrid
             selectedJob={selectedJob}
             statusLabel={statusLabel ?? "-"}
             labels={{
-              project: labels.project,
               status: labels.status,
               duration: labels.duration,
               startedAt: labels.startedAt,
               finishedAt: labels.finishedAt,
-              command: labels.command,
               jobId: labels.jobId,
-              args: labels.args,
               tags: labels.tags,
             }}
           />
-
-          <div className={cn("space-y-1")}>
-            <p className={cn("text-[11px] font-semibold tracking-[0.08em] text-slate-400 uppercase")}>{labels.error}</p>
-            {selectedJob.errorMessage ? (
-              <CopyableCodeBlock
-                content={selectedJob.errorMessage}
-                copyLabel={copyLabel}
-                copiedLabel={copiedLabel}
-                copied={copiedTarget === "error"}
-                onCopy={() => void handleCopy("error", selectedJob.errorMessage ?? "")}
-              />
-            ) : (
-              <p className={cn("break-all text-sm text-slate-100")}>-</p>
-            )}
-          </div>
 
           <div className={cn("space-y-1")}>
             <p className={cn("text-[11px] font-semibold tracking-[0.08em] text-slate-400 uppercase")}>

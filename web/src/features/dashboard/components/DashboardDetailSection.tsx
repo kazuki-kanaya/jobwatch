@@ -11,17 +11,14 @@ type DashboardDetailSectionProps = {
   title: string;
   selectedJobLabel: string;
   jobIdLabel: string;
-  projectLabel: string;
   latestLogsLabel: string;
   commandLabel: string;
-  argsLabel: string;
   tagsLabel: string;
   statusLabel: string;
   statusLabels: Record<JobStatus, string>;
   startedAtLabel: string;
   finishedAtLabel: string;
   durationLabel: string;
-  errorLabel: string;
   viewFullLabel: string;
   emptyLabel: string;
   logsEmptyLabel: string;
@@ -33,30 +30,25 @@ export default function DashboardDetailSection({
   title,
   selectedJobLabel,
   jobIdLabel,
-  projectLabel,
   latestLogsLabel,
   commandLabel,
-  argsLabel,
   tagsLabel,
   statusLabel,
   statusLabels,
   startedAtLabel,
   finishedAtLabel,
   durationLabel,
-  errorLabel,
   viewFullLabel,
   emptyLabel,
   logsEmptyLabel,
   isLoading,
   selectedJob,
 }: DashboardDetailSectionProps) {
-  const commandWithArgs = selectedJob ? [selectedJob.command, ...selectedJob.args].join(" ").trim() : "";
   const [modalContent, setModalContent] = useState<{ title: string; body: string } | null>(null);
   const latestLogsText = useMemo(() => {
     if (!selectedJob || selectedJob.tailLines.length === 0) return "";
     return selectedJob.tailLines.join("\n");
   }, [selectedJob]);
-  const errorText = selectedJob?.errorMessage?.trim() ?? "";
   const openModal = (title: string, body: string) => {
     if (!body.trim()) return;
     setModalContent({ title, body });
@@ -86,46 +78,17 @@ export default function DashboardDetailSection({
                     "break-all rounded-md border border-slate-700 bg-slate-800/70 p-3 font-mono text-base text-slate-100",
                   )}
                 >
-                  {commandWithArgs || "-"}
+                  {selectedJob.command || "-"}
                 </p>
                 <div className={cn("space-y-2 text-sm text-slate-200")}>
                   <DetailRow label={jobIdLabel} value={selectedJob.jobId} mono />
-                  <DetailRow label={projectLabel} value={selectedJob.project} />
                   <DetailRow label={commandLabel} value={selectedJob.command} mono />
-                  <DetailRow label={argsLabel} value={selectedJob.args.join(" ") || "-"} mono />
                   <DetailRow label={tagsLabel} value={selectedJob.tags.join(", ") || "-"} />
                   <DetailRow label={statusLabel} value={statusLabels[selectedJob.status]} />
                   <DetailRow label={startedAtLabel} value={selectedJob.startedAt} />
                   <DetailRow label={finishedAtLabel} value={selectedJob.finishedAt ?? "-"} />
                   <DetailRow label={durationLabel} value={selectedJob.duration} />
                 </div>
-              </section>
-              <Separator className={cn("bg-slate-700")} />
-              <section className={cn("space-y-3")}>
-                <div className={cn("flex items-center justify-between gap-2")}>
-                  <p className={cn("font-mono text-sm tracking-[0.12em] text-slate-400 uppercase")}>{errorLabel}</p>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    className={cn("h-7 border-slate-600 bg-slate-900/60 text-xs text-slate-200 hover:bg-slate-800")}
-                    onClick={() => openModal(errorLabel, errorText)}
-                    disabled={!errorText}
-                  >
-                    {viewFullLabel}
-                  </Button>
-                </div>
-                {!errorText ? (
-                  <p className={cn("text-sm text-slate-400")}>-</p>
-                ) : (
-                  <pre
-                    className={cn(
-                      "max-h-24 overflow-hidden whitespace-pre-wrap break-all rounded-md border border-slate-700 bg-slate-800/60 p-3 font-mono text-sm text-slate-200",
-                    )}
-                  >
-                    {errorText}
-                  </pre>
-                )}
               </section>
               <Separator className={cn("bg-slate-700")} />
               <section className={cn("space-y-3")}>

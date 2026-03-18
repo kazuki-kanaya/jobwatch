@@ -145,6 +145,7 @@ export const buildDashboardViewModel = ({
       snapshotTracked: t("dashboard_snapshot_tracked"),
       snapshotRunning: t("dashboard_snapshot_running"),
       snapshotCompleted: t("dashboard_snapshot_completed"),
+      snapshotCanceled: t("dashboard_snapshot_canceled"),
       snapshotFailed: t("dashboard_snapshot_failed"),
       statusLabels: {
         running: t("status_running"),
@@ -175,6 +176,7 @@ export const buildDashboardViewModel = ({
       total: jobs.length,
       running: jobs.filter((job) => job.status === "running").length,
       completed: jobs.filter((job) => job.status === "completed").length,
+      canceled: jobs.filter((job) => job.status === "canceled").length,
       failed: jobs.filter((job) => job.status === "failed").length,
       updatedAt,
     },
