@@ -15,6 +15,7 @@ var rootCmd = &cobra.Command{
 	Short:        "Track long-running jobs from the CLI",
 	Long:         "Obsern wraps commands, captures tail logs, and reports results to configured backends.",
 	SilenceUsage: true,
+	Version:      version,
 }
 
 func Execute() {

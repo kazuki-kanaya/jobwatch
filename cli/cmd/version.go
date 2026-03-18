@@ -6,7 +6,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version = "v1.0.0"
+// version is set at build time via ldflags.
+// Development builds use "dev" by default.
+var version = "dev"
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
@@ -18,6 +20,5 @@ var versionCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.Version = version
 	rootCmd.AddCommand(versionCmd)
 }

@@ -195,7 +195,8 @@ curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/inst
 ### 特定バージョン
 
 ```bash
-curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/v1.0.0/install.sh | sh
+# vX.Y.Z をインストールしたいバージョンタグに置き換えてください
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/vX.Y.Z/install.sh | sh
 ```
 
 現在の配布導線は Unix 系環境を前提としています。

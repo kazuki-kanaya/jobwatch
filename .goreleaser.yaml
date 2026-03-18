@@ -9,6 +9,8 @@ before:
 builds:
   - id: cli
     dir: ./cli
+    ldflags:
+      - -s -w -X github.com/kazuki-kanaya/obsern/cli/cmd.version={{.Version}}
     main: .
     binary: obsern
     env:

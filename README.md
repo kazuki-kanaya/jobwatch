@@ -193,7 +193,8 @@ curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/inst
 ### Specific version
 
 ```bash
-curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/v1.0.0/install.sh | sh
+# Replace vX.Y.Z with the desired release tag (for example, v1.2.3)
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/vX.Y.Z/install.sh | sh
 ```
 
 The current installation path assumes a Unix-like environment.
