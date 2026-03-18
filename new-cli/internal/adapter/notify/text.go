@@ -43,9 +43,5 @@ func formatTime(value time.Time, loc *time.Location) string {
 }
 
 func formatTags(tags []string) string {
-	quoted := make([]string, len(tags))
-	for i, tag := range tags {
-		quoted[i] = "`" + tag + "`"
-	}
-	return strings.Join(quoted, ", ")
+	return strings.Join(tags, ", ")
 }
