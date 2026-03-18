@@ -69,5 +69,6 @@ func (e exitCodeError) Error() string {
 }
 
 func init() {
+	runCmd.Flags().SetInterspersed(false)
 	rootCmd.AddCommand(runCmd)
 }
