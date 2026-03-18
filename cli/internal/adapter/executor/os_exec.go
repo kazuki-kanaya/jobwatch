@@ -8,9 +8,9 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/domain/execution"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/domain/job"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/run"
+	"github.com/kazuki-kanaya/obsern/cli/internal/domain/execution"
+	"github.com/kazuki-kanaya/obsern/cli/internal/domain/job"
+	"github.com/kazuki-kanaya/obsern/cli/internal/run"
 )
 
 func (e *Executor) Execute(ctx context.Context, req run.Request) (execution.Execution, error) {

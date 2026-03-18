@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"log"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/run"
+	"github.com/kazuki-kanaya/obsern/cli/internal/run"
 )
 
 type stdLogger struct{}

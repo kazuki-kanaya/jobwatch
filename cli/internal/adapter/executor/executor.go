@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/run"
+	"github.com/kazuki-kanaya/obsern/cli/internal/run"
 )
 
 type Executor struct {

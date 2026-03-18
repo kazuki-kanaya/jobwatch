@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/domain/job"
+	"github.com/kazuki-kanaya/obsern/cli/internal/domain/job"
 )
 
 func buildText(j job.Job, loc *time.Location) (string, error) {

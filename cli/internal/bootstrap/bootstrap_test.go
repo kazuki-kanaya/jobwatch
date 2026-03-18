@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/adapter/api"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/adapter/notify"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/config"
+	"github.com/kazuki-kanaya/obsern/cli/internal/adapter/api"
+	"github.com/kazuki-kanaya/obsern/cli/internal/adapter/notify"
+	"github.com/kazuki-kanaya/obsern/cli/internal/config"
 )
 
 func TestBuildReporter(t *testing.T) {

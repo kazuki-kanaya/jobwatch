@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/domain/job"
+	"github.com/kazuki-kanaya/obsern/cli/internal/domain/job"
 )
 
 func TestNewReporter(t *testing.T) {

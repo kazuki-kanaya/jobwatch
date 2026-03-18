@@ -1,4 +1,4 @@
-module github.com/kazuki-kanaya/obsern/new-cli
+module github.com/kazuki-kanaya/obsern/cli
 
 go 1.26.1
 

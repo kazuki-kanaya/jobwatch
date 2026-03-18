@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/bootstrap"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/config"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/run"
+	"github.com/kazuki-kanaya/obsern/cli/internal/bootstrap"
+	"github.com/kazuki-kanaya/obsern/cli/internal/config"
+	"github.com/kazuki-kanaya/obsern/cli/internal/run"
 	"github.com/spf13/cobra"
 )
 

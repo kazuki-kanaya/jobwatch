@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/config"
+	"github.com/kazuki-kanaya/obsern/cli/internal/config"
 	"github.com/spf13/cobra"
 )
 

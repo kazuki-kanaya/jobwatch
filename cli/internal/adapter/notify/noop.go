@@ -3,8 +3,8 @@ package notify
 import (
 	"context"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/domain/job"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/run"
+	"github.com/kazuki-kanaya/obsern/cli/internal/domain/job"
+	"github.com/kazuki-kanaya/obsern/cli/internal/run"
 )
 
 type NoopNotifier struct{}

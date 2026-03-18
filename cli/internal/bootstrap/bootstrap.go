@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/adapter/api"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/adapter/executor"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/adapter/notify"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/config"
-	"github.com/kazuki-kanaya/obsern/new-cli/internal/run"
+	"github.com/kazuki-kanaya/obsern/cli/internal/adapter/api"
+	"github.com/kazuki-kanaya/obsern/cli/internal/adapter/executor"
+	"github.com/kazuki-kanaya/obsern/cli/internal/adapter/notify"
+	"github.com/kazuki-kanaya/obsern/cli/internal/config"
+	"github.com/kazuki-kanaya/obsern/cli/internal/run"
 )
 
 type RunDependencies struct {
