@@ -4,8 +4,14 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/kazuki-kanaya/obsern/new-cli/internal/domain/job"
+)
+
+const (
+	reportFinishTimeout = 2 * time.Second
+	notifyTimeout       = 2 * time.Second
 )
 
 type Service struct {
@@ -69,13 +75,20 @@ func (s *Service) Execute(ctx context.Context, req Request) (int, error) {
 		return job.FailedExitCode, err
 	}
 
+	// If the command context is already canceled, switch to a short-lived
+	// background context so final reporting and notifications can still run.
+	finishCtx, finishCancel := newPostProcessContext(ctx, reportFinishTimeout)
+	defer finishCancel()
+
 	if jobID != "" {
-		if err := s.reporter.Finish(ctx, jobID, runningJob); err != nil {
+		if err := s.reporter.Finish(finishCtx, jobID, runningJob); err != nil {
 			s.logger.Warnf("failed to update remote job: %v", err)
 		}
 	}
 
-	if err := s.notifier.Notify(ctx, runningJob); err != nil {
+	notifyCtx, notifyCancel := newPostProcessContext(ctx, notifyTimeout)
+	defer notifyCancel()
+	if err := s.notifier.Notify(notifyCtx, runningJob); err != nil {
 		s.logger.Warnf("failed to notify job result: %v", err)
 	}
 
@@ -84,4 +97,12 @@ func (s *Service) Execute(ctx context.Context, req Request) (int, error) {
 
 func joinCommand(command []string) string {
 	return strings.Join(command, " ")
+}
+
+func newPostProcessContext(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc) {
+	if ctx.Err() == nil {
+		return ctx, func() {}
+	}
+
+	return context.WithTimeout(context.Background(), timeout)
 }

@@ -1,28 +1,35 @@
 package cmd
 
 import (
+	"context"
+	"errors"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/spf13/cobra"
 )
-var rootCmd = &cobra.Command{
-	Use:   "new-cli",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+var rootCmd = &cobra.Command{
+	Use:          "obsern",
+	Short:        "Track long-running jobs from the CLI",
+	Long:         "Obsern wraps commands, captures tail logs, and reports results to configured backends.",
+	SilenceUsage: true,
 }
 
 func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
-		os.Exit(1)
-	}
-}
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
 
-func init() {
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	err := rootCmd.ExecuteContext(ctx)
+	if err == nil {
+		return
+	}
+
+	var exitErr exitCodeError
+	if errors.As(err, &exitErr) {
+		os.Exit(exitErr.code)
+	}
+
+	os.Exit(1)
 }
