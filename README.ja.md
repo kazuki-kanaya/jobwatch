@@ -7,7 +7,7 @@
   <a href="./README.md">English</a> | <a href="./README.ja.md"><strong>日本語</strong></a>
 </p>
 <p align="center">
-  長時間プロセスの実行状態を軽量に追跡するツール
+  監視と通知に特化した、軽量で導入しやすいプロセス監視ツール。プロセス生存確認のための SSH を不要にします。
 </p>
 
 Obsern は、長時間ジョブの実行状態を軽量に追跡するためのツールです。
@@ -195,7 +195,8 @@ curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/inst
 ### 特定バージョン
 
 ```bash
-curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/v2026.02.26/install.sh | sh
+# vX.Y.Z をインストールしたいバージョンタグに置き換えてください
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/vX.Y.Z/install.sh | sh
 ```
 
 現在の配布導線は Unix 系環境を前提としています。

@@ -7,7 +7,7 @@
   <a href="./README.md"><strong>English</strong></a> | <a href="./README.ja.md">日本語</a>
 </p>
 <p align="center">
-  Lightweight monitoring for long-running processes
+A lightweight, easy-to-adopt process monitoring tool focused on execution tracking and notifications. It eliminates the need to SSH in just to check whether a process is still running.
 </p>
 
 Obsern is a tool for lightweight monitoring of long-running jobs.
@@ -193,7 +193,8 @@ curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/inst
 ### Specific version
 
 ```bash
-curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/v2026.02.26/install.sh | sh
+# Replace vX.Y.Z with the desired release tag (for example, v1.2.3)
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/vX.Y.Z/install.sh | sh
 ```
 
 The current installation path assumes a Unix-like environment.
