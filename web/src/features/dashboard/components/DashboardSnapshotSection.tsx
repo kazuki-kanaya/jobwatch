@@ -1,4 +1,4 @@
-import { Activity, CheckCircle2, CircleAlert, TimerReset } from "lucide-react";
+import { Activity, Ban, CheckCircle2, CircleAlert, TimerReset } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { DashboardSnapshot } from "@/features/dashboard/types";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ type DashboardSnapshotSectionProps = {
     tracked: string;
     running: string;
     completed: string;
+    canceled: string;
     failed: string;
   };
 };
@@ -40,6 +41,14 @@ export default function DashboardSnapshotSection({ snapshot, labels }: Dashboard
       labelClassName: "text-emerald-100",
     },
     {
+      key: "canceled",
+      label: labels.canceled,
+      icon: Ban,
+      iconClassName: "text-amber-200",
+      cardClassName: "border-amber-400/35 bg-amber-500/10",
+      labelClassName: "text-amber-100",
+    },
+    {
       key: "failed",
       label: labels.failed,
       icon: CircleAlert,
@@ -50,7 +59,7 @@ export default function DashboardSnapshotSection({ snapshot, labels }: Dashboard
   ] as const;
 
   return (
-    <section className={cn("grid gap-3 sm:grid-cols-2 xl:grid-cols-4")}>
+    <section className={cn("grid gap-3 sm:grid-cols-2 xl:grid-cols-5")}>
       {cards.map((item) => {
         const value = snapshot[item.key];
         const Icon = item.icon;

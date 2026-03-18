@@ -124,6 +124,7 @@ export type Messages = {
   dashboard_snapshot_tracked: string;
   dashboard_snapshot_running: string;
   dashboard_snapshot_completed: string;
+  dashboard_snapshot_canceled: string;
   dashboard_snapshot_failed: string;
   dashboard_all: string;
   invite_title: string;

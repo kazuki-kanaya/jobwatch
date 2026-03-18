@@ -15,10 +15,10 @@ type UseJobViewModelParams = {
 };
 
 const statusMap: Record<JobResponse["status"], JobStatusUi> = {
-  RUNNING: "running",
-  FINISHED: "completed",
-  FAILED: "failed",
-  CANCELED: "canceled",
+  running: "running",
+  finished: "completed",
+  failed: "failed",
+  canceled: "canceled",
 };
 
 const toDurationLabel = (startedAt: string, finishedAt: string | null) => {
@@ -45,19 +45,15 @@ export const useJobViewModel = ({ workspaceId, jobsQuery, formatDateTime }: UseJ
     return payload
       .map((job) => ({
         id: job.job_id,
-        project: job.project,
         workspaceId: job.workspace_id,
         hostId: job.host_id,
         startedAtIso: job.started_at,
-        fullCommand: [job.command, ...(job.args ?? [])].join(" "),
         command: job.command,
-        args: job.args ?? [],
         tags: job.tags ?? [],
         status: statusMap[job.status],
         startedAt: formatDateTime(new Date(job.started_at)),
         finishedAt: job.finished_at ? formatDateTime(new Date(job.finished_at)) : null,
         duration: toDurationLabel(job.started_at, job.finished_at ?? null),
-        errorMessage: job.err ?? null,
         logs: job.tail_lines ?? [],
       }))
       .sort((a, b) => new Date(b.startedAtIso).getTime() - new Date(a.startedAtIso).getTime());

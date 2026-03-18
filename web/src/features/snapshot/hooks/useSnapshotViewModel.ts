@@ -17,6 +17,7 @@ const EMPTY_SNAPSHOT: SnapshotMetrics = {
   tracked: 0,
   running: 0,
   completed: 0,
+  canceled: 0,
   failed: 0,
 };
 
@@ -28,12 +29,13 @@ export const useSnapshotViewModel = ({ workspaceId, jobs, isLoading, isError }: 
     return jobItems.reduce<SnapshotMetrics>(
       (acc, job) => {
         acc.tracked += 1;
-        if (job.status === JobStatus.RUNNING) acc.running += 1;
-        if (job.status === JobStatus.FINISHED) acc.completed += 1;
-        if (job.status === JobStatus.FAILED) acc.failed += 1;
+        if (job.status === JobStatus.running) acc.running += 1;
+        if (job.status === JobStatus.finished) acc.completed += 1;
+        if (job.status === JobStatus.canceled) acc.canceled += 1;
+        if (job.status === JobStatus.failed) acc.failed += 1;
         return acc;
       },
-      { tracked: 0, running: 0, completed: 0, failed: 0 },
+      { tracked: 0, running: 0, completed: 0, canceled: 0, failed: 0 },
     );
   }, [workspaceId, jobs]);
 

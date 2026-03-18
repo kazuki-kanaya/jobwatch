@@ -20,35 +20,24 @@ type JobMetaGridProps = {
   selectedJob: JobListItem;
   statusLabel: string;
   labels: {
-    project: string;
     status: string;
     duration: string;
     startedAt: string;
     finishedAt: string;
-    command: string;
     jobId: string;
-    args: string;
     tags: string;
   };
 };
 
 export function JobMetaGrid({ selectedJob, statusLabel, labels }: JobMetaGridProps) {
   return (
-    <>
-      <div className={cn("grid gap-3 md:grid-cols-2")}>
-        <MetaRow label={labels.project} value={selectedJob.project} />
-        <MetaRow label={labels.status} value={statusLabel} />
-        <MetaRow label={labels.duration} value={selectedJob.duration} />
-        <MetaRow label={labels.startedAt} value={selectedJob.startedAt} />
-        <MetaRow label={labels.finishedAt} value={selectedJob.finishedAt ?? "-"} />
-        <MetaRow label={labels.command} value={selectedJob.command} />
-        <MetaRow label={labels.jobId} value={selectedJob.id} />
-      </div>
-
-      <div className={cn("space-y-2")}>
-        <MetaRow label={labels.args} value={selectedJob.args.length > 0 ? selectedJob.args.join(" ") : "-"} />
-        <MetaRow label={labels.tags} value={selectedJob.tags.length > 0 ? selectedJob.tags.join(", ") : "-"} />
-      </div>
-    </>
+    <div className={cn("grid gap-3 md:grid-cols-2")}>
+      <MetaRow label={labels.jobId} value={selectedJob.id} />
+      <MetaRow label={labels.status} value={statusLabel} />
+      <MetaRow label={labels.duration} value={selectedJob.duration} />
+      <MetaRow label={labels.startedAt} value={selectedJob.startedAt} />
+      <MetaRow label={labels.finishedAt} value={selectedJob.finishedAt ?? "-"} />
+      <MetaRow label={labels.tags} value={selectedJob.tags.length > 0 ? selectedJob.tags.join(", ") : "-"} />
+    </div>
   );
 }

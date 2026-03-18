@@ -4,7 +4,12 @@ from app.database.job_repository import JobRepository
 from app.models.exceptions import NotFoundException, PermissionDeniedError
 from app.models.host import Host
 from app.models.job import Job, JobStatus
-from app.schemas.job import JobCreateRequest, JobResponse, JobUpdateRequest
+from app.schemas.job import (
+    JobCreateRequest,
+    JobCreateResponse,
+    JobResponse,
+    JobUpdateRequest,
+)
 from app.utils.datetime import now
 
 
@@ -17,7 +22,7 @@ class JobService:
         workspace_id: str,
         request: JobCreateRequest,
         current_host: Host,
-    ) -> JobResponse:
+    ) -> JobCreateResponse:
         if current_host.workspace_id != workspace_id:
             raise PermissionDeniedError("Host does not belong to this workspace")
         job = Job(
@@ -25,27 +30,14 @@ class JobService:
             workspace_id=workspace_id,
             host_id=current_host.host_id,
             status=JobStatus.RUNNING,
-            project=request.project,
             command=request.command,
-            args=request.args,
             tags=request.tags,
             created_at=now(),
             started_at=request.started_at,
         )
         created = self._job_repository.create(job)
-        return JobResponse(
+        return JobCreateResponse(
             job_id=created.job_id,
-            workspace_id=created.workspace_id,
-            host_id=created.host_id,
-            project=created.project,
-            command=created.command,
-            args=created.args,
-            tags=created.tags,
-            status=created.status,
-            err=created.err,
-            tail_lines=created.tail_lines,
-            started_at=created.started_at,
-            finished_at=created.finished_at,
         )
 
     def list_jobs_by_workspace(self, workspace_id: str) -> list[JobResponse]:
@@ -59,12 +51,9 @@ class JobService:
                 job_id=job.job_id,
                 workspace_id=job.workspace_id,
                 host_id=job.host_id,
-                project=job.project,
                 command=job.command,
-                args=job.args,
                 tags=job.tags,
                 status=job.status,
-                err=job.err,
                 tail_lines=job.tail_lines,
                 started_at=job.started_at,
                 finished_at=job.finished_at,
@@ -83,12 +72,9 @@ class JobService:
                 job_id=job.job_id,
                 workspace_id=job.workspace_id,
                 host_id=job.host_id,
-                project=job.project,
                 command=job.command,
-                args=job.args,
                 tags=job.tags,
                 status=job.status,
-                err=job.err,
                 tail_lines=job.tail_lines,
                 started_at=job.started_at,
                 finished_at=job.finished_at,
@@ -104,12 +90,9 @@ class JobService:
             job_id=job.job_id,
             workspace_id=job.workspace_id,
             host_id=job.host_id,
-            project=job.project,
             command=job.command,
-            args=job.args,
             tags=job.tags,
             status=job.status,
-            err=job.err,
             tail_lines=job.tail_lines,
             started_at=job.started_at,
             finished_at=job.finished_at,
@@ -125,12 +108,9 @@ class JobService:
             job_id=job.job_id,
             workspace_id=job.workspace_id,
             host_id=job.host_id,
-            project=job.project,
             command=job.command,
-            args=job.args,
             tags=job.tags,
             status=job.status,
-            err=job.err,
             tail_lines=job.tail_lines,
             started_at=job.started_at,
             finished_at=job.finished_at,
@@ -149,9 +129,7 @@ class JobService:
             raise PermissionDeniedError("This job does not belong to your host")
         if request.status is not None:
             job.status = request.status
-        if request.err is not None:
-            job.err = request.err
-        if request.tail_lines:
+        if request.tail_lines is not None:
             job.tail_lines = request.tail_lines
         if request.finished_at is not None:
             job.finished_at = request.finished_at
@@ -160,12 +138,9 @@ class JobService:
             job_id=updated.job_id,
             workspace_id=updated.workspace_id,
             host_id=updated.host_id,
-            project=updated.project,
             command=updated.command,
-            args=updated.args,
             tags=updated.tags,
             status=updated.status,
-            err=updated.err,
             tail_lines=updated.tail_lines,
             started_at=updated.started_at,
             finished_at=updated.finished_at,

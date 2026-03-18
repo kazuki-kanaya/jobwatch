@@ -8,13 +8,12 @@ const statusClassMap: Record<JobStatus, string> = {
   running: "bg-cyan-400/20 text-cyan-200 border-cyan-300/40",
   completed: "bg-emerald-400/20 text-emerald-200 border-emerald-300/40",
   failed: "bg-rose-400/20 text-rose-200 border-rose-300/40",
-  canceled: "bg-slate-400/20 text-slate-200 border-slate-300/40",
+  canceled: "bg-amber-400/20 text-amber-200 border-amber-300/40",
 };
 
 type DashboardJobRowProps = {
   job: JobListItem;
   jobIdLabel: string;
-  projectLabel: string;
   workspaceLabel: string;
   hostLabel: string;
   tagsLabel: string;
@@ -36,7 +35,6 @@ type DashboardJobRowProps = {
 function DashboardJobRow({
   job,
   jobIdLabel,
-  projectLabel,
   workspaceLabel,
   hostLabel,
   tagsLabel,
@@ -54,8 +52,6 @@ function DashboardJobRow({
   onSelectPreviousJob,
   onSelectNextJob,
 }: DashboardJobRowProps) {
-  const commandWithArgs = [job.command, ...job.args].join(" ").trim();
-
   return (
     <div
       className={cn(
@@ -82,13 +78,12 @@ function DashboardJobRow({
         <div className={cn("flex items-start justify-between gap-3")}>
           <div className={cn("min-w-0 space-y-2")}>
             <p className={cn("break-all font-mono text-base font-medium leading-6 text-slate-100")}>
-              {commandWithArgs || "-"}
+              {job.command || "-"}
             </p>
             <div className={cn("flex flex-wrap items-center gap-2 text-sm text-slate-200")}>
               <MetaPill label={jobIdLabel} value={job.jobId} mono />
               <MetaPill label={workspaceLabel} value={job.workspace} />
               <MetaPill label={hostLabel} value={job.host} />
-              <MetaPill label={projectLabel} value={job.project} />
             </div>
           </div>
           <span

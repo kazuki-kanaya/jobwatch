@@ -139,6 +139,7 @@ export const enMessages = {
   dashboard_snapshot_tracked: "Total",
   dashboard_snapshot_running: "Running",
   dashboard_snapshot_completed: "Completed",
+  dashboard_snapshot_canceled: "Canceled",
   dashboard_snapshot_failed: "Failed",
   dashboard_all: "All",
 

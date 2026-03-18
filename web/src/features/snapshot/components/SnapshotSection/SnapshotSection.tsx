@@ -1,4 +1,4 @@
-import { Activity, CheckCircle2, CircleAlert, TimerReset } from "lucide-react";
+import { Activity, Ban, CheckCircle2, CircleAlert, TimerReset } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { SnapshotMetrics, SnapshotViewState } from "@/features/snapshot/components/types";
@@ -12,6 +12,7 @@ type SnapshotSectionProps = {
     tracked: string;
     running: string;
     completed: string;
+    canceled: string;
     failed: string;
   };
 };
@@ -27,7 +28,7 @@ export function SnapshotSection({ snapshot, state, errorLabel, labels }: Snapsho
 
   if (state === "loading") {
     return (
-      <section className={cn("grid gap-3 sm:grid-cols-2 xl:grid-cols-4")}>
+      <section className={cn("grid gap-3 sm:grid-cols-2 xl:grid-cols-5")}>
         <Card className={cn("border-slate-700/60 bg-slate-900/80 py-4")}>
           <CardContent className={cn("space-y-2 px-4")}>
             <Skeleton className={cn("h-4 w-20 bg-slate-700")} />
@@ -44,6 +45,12 @@ export function SnapshotSection({ snapshot, state, errorLabel, labels }: Snapsho
           <CardContent className={cn("space-y-2 px-4")}>
             <Skeleton className={cn("h-4 w-16 bg-emerald-900/70")} />
             <Skeleton className={cn("h-8 w-12 bg-emerald-900/70")} />
+          </CardContent>
+        </Card>
+        <Card className={cn("border-amber-400/35 bg-amber-500/10 py-4")}>
+          <CardContent className={cn("space-y-2 px-4")}>
+            <Skeleton className={cn("h-4 w-16 bg-amber-900/70")} />
+            <Skeleton className={cn("h-8 w-12 bg-amber-900/70")} />
           </CardContent>
         </Card>
         <Card className={cn("border-rose-400/35 bg-rose-500/10 py-4")}>
@@ -85,6 +92,15 @@ export function SnapshotSection({ snapshot, state, errorLabel, labels }: Snapsho
       labelClassName: "text-emerald-100",
     },
     {
+      key: "canceled",
+      value: snapshot.canceled,
+      label: labels.canceled,
+      icon: Ban,
+      iconClassName: "text-amber-200",
+      cardClassName: "border-amber-400/35 bg-amber-500/10",
+      labelClassName: "text-amber-100",
+    },
+    {
       key: "failed",
       value: snapshot.failed,
       label: labels.failed,
@@ -96,7 +112,7 @@ export function SnapshotSection({ snapshot, state, errorLabel, labels }: Snapsho
   ] as const;
 
   return (
-    <section className={cn("grid gap-3 sm:grid-cols-2 xl:grid-cols-4")}>
+    <section className={cn("grid gap-3 sm:grid-cols-2 xl:grid-cols-5")}>
       {cards.map((item) => {
         const Icon = item.icon;
         return (

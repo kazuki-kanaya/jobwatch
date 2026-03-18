@@ -15,7 +15,6 @@ type DashboardJobsSectionProps = {
   emptyLabel: string;
   errorLabel: string;
   jobIdLabel: string;
-  projectLabel: string;
   workspaceLabel: string;
   hostLabel: string;
   tagsLabel: string;
@@ -47,7 +46,6 @@ export default function DashboardJobsSection({
   emptyLabel,
   errorLabel,
   jobIdLabel,
-  projectLabel,
   workspaceLabel,
   hostLabel,
   tagsLabel,
@@ -86,7 +84,6 @@ export default function DashboardJobsSection({
                 key={job.id}
                 job={job}
                 jobIdLabel={jobIdLabel}
-                projectLabel={projectLabel}
                 workspaceLabel={workspaceLabel}
                 hostLabel={hostLabel}
                 tagsLabel={tagsLabel}
