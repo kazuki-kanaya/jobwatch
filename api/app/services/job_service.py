@@ -3,7 +3,7 @@ from uuid import uuid4
 from app.database.job_repository import JobRepository
 from app.models.exceptions import NotFoundException, PermissionDeniedError
 from app.models.host import Host
-from app.models.job import Job
+from app.models.job import Job, JobStatus
 from app.schemas.job import (
     JobCreateRequest,
     JobCreateResponse,
@@ -29,7 +29,7 @@ class JobService:
             job_id=f"job-{uuid4().hex[:8]}",
             workspace_id=workspace_id,
             host_id=current_host.host_id,
-            status=request.status,
+            status=JobStatus.RUNNING,
             command=request.command,
             tags=request.tags,
             created_at=now(),
@@ -129,7 +129,7 @@ class JobService:
             raise PermissionDeniedError("This job does not belong to your host")
         if request.status is not None:
             job.status = request.status
-        if request.tail_lines:
+        if request.tail_lines is not None:
             job.tail_lines = request.tail_lines
         if request.finished_at is not None:
             job.finished_at = request.finished_at

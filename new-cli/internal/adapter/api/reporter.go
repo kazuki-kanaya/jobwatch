@@ -28,7 +28,6 @@ func (r *Reporter) Start(ctx context.Context, j job.Job) (string, error) {
 
 	resp, err := r.client.CreateJob(ctx, createJobRequest{
 		Command:   j.Command,
-		Status:    string(j.Status),
 		Tags:      cloneStrings(j.Tags),
 		StartedAt: formatTime(j.StartedAt),
 	})

@@ -2,7 +2,6 @@ package api
 
 type createJobRequest struct {
 	Command   string   `json:"command"`
-	Status    string   `json:"status"`
 	Tags      []string `json:"tags"`
 	StartedAt string   `json:"started_at"`
 }
