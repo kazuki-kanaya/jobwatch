@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Package-level hooks allow cmd/run unit tests to stub config loading,
+// dependency construction, and service execution without touching real I/O.
 var (
 	loadRunConfig     = config.Load
 	buildRunDeps      = bootstrap.BuildRunDependencies
