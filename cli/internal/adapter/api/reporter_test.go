@@ -90,9 +90,6 @@ func TestReporterStartMapsJobToCreateRequest(t *testing.T) {
 	if !strings.Contains(gotBody, `"command":"python train.py"`) {
 		t.Fatalf("body = %q, want command", gotBody)
 	}
-	if !strings.Contains(gotBody, `"status":"running"`) {
-		t.Fatalf("body = %q, want running status", gotBody)
-	}
 	if !strings.Contains(gotBody, `"started_at":"2026-03-16T10:00:00Z"`) {
 		t.Fatalf("body = %q, want started_at", gotBody)
 	}

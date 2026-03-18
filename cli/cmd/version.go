@@ -6,18 +6,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version = "v2026.02.26.2"
-
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version number of the obsern CLI",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("obsern version %s\n", version)
+		fmt.Println("version called")
 	},
 }
 
 func init() {
-	rootCmd.Version = version
-	rootCmd.SetVersionTemplate("obsern version {{.Version}}\n")
 	rootCmd.AddCommand(versionCmd)
 }

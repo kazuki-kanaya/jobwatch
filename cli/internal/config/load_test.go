@@ -1,88 +1,126 @@
 package config
 
 import (
+	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
-func TestLoad_LoadsWithSlackWebhook(t *testing.T) {
-	t.Setenv("OBSERN_SLACK_WEBHOOK_URL", "https://example.com/webhook")
+func TestLoad(t *testing.T) {
+	t.Run("loads and normalizes config", func(t *testing.T) {
+		t.Setenv("OBSERN_HOST_TOKEN", "host-token")
+		t.Setenv("OBSERN_SLACK_WEBHOOK_URL", "https://hooks.slack.com/services/a/b/c")
 
-	dir := t.TempDir()
-	path := filepath.Join(dir, "obsern.yaml")
-
-	yamlText := `project:
-  name: my_project
-  tags: [monitoring]
-
-api:
-  enabled: false
-  endpoint: http://localhost:8000
-  token: ${OBSERN_HOST_TOKEN}
-
+		path := writeTempConfig(t, `
 run:
-  log_tail: 80
-
+  tail_lines: 0
+api:
+  host_token: ${OBSERN_HOST_TOKEN}
+  base_url: https://api.obsern.com
 notify:
-  enabled: true
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
-`
-	if err := Generate(path, yamlText, false); err != nil {
-		t.Fatalf("WriteFile failed: %v", err)
-	}
+  time_zone: Asia/Tokyo
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+`)
 
-	cfg, err := Load(path)
-	if err != nil {
-		t.Fatalf("Load failed: %v", err)
-	}
+		cfg, err := Load(path)
+		if err != nil {
+			t.Fatalf("Load() error = %v, want nil", err)
+		}
 
-	if cfg.Project.Name != "my_project" {
-		t.Fatalf("project.name mismatch: got=%q", cfg.Project.Name)
-	}
+		if cfg.Run.Tags == nil {
+			t.Fatal("Run.Tags is nil, want non-nil empty slice")
+		}
+		if len(cfg.Run.Tags) != 0 {
+			t.Fatalf("Run.Tags = %#v, want empty slice", cfg.Run.Tags)
+		}
+		if cfg.Run.TailLines != 0 {
+			t.Fatalf("Run.TailLines = %d, want 0", cfg.Run.TailLines)
+		}
+		if cfg.API == nil || cfg.API.HostToken != "host-token" {
+			t.Fatalf("API = %#v, want expanded host token", cfg.API)
+		}
+		if cfg.Notify == nil || cfg.Notify.TimeZone != "Asia/Tokyo" {
+			t.Fatalf("Notify = %#v, want time zone", cfg.Notify)
+		}
+		if cfg.Notify == nil || cfg.Notify.Slack == nil || cfg.Notify.Slack.WebhookURL != "https://hooks.slack.com/services/a/b/c" {
+			t.Fatalf("Notify.Slack = %#v, want expanded webhook url", cfg.Notify)
+		}
+	})
 
-	if len(cfg.Notify.Channels) != 1 || cfg.Notify.Channels[0].Kind != "slack" {
-		t.Fatalf("channels mismatch: %+v", cfg.Notify.Channels)
-	}
+	t.Run("rejects unknown fields", func(t *testing.T) {
+		t.Parallel()
+
+		path := writeTempConfig(t, `
+run:
+  tail_line: 80
+api:
+  host_token: token
+  base_url: https://api.obsern.com
+`)
+
+		_, err := Load(path)
+		if err == nil {
+			t.Fatal("Load() error = nil, want unknown field error")
+		}
+		if !strings.Contains(err.Error(), "decode config:") {
+			t.Fatalf("Load() error = %q, want decode config context", err.Error())
+		}
+	})
+
+	t.Run("rejects multiple yaml documents", func(t *testing.T) {
+		t.Parallel()
+
+		path := writeTempConfig(t, `
+api:
+  host_token: token
+  base_url: https://api.obsern.com
+---
+notify:
+  slack:
+    webhook_url: https://hooks.slack.com/services/a/b/c
+`)
+
+		_, err := Load(path)
+		if err == nil {
+			t.Fatal("Load() error = nil, want multiple document error")
+		}
+		if !strings.Contains(err.Error(), "multiple YAML documents are not supported") {
+			t.Fatalf("Load() error = %q, want multiple document error", err.Error())
+		}
+	})
+
+	t.Run("returns validation context", func(t *testing.T) {
+		t.Parallel()
+
+		path := writeTempConfig(t, `
+run:
+  tail_lines: 201
+api:
+  host_token: token
+  base_url: https://api.obsern.com
+`)
+
+		_, err := Load(path)
+		if err == nil {
+			t.Fatal("Load() error = nil, want validation error")
+		}
+		if !strings.Contains(err.Error(), "validate config:") {
+			t.Fatalf("Load() error = %q, want validation context", err.Error())
+		}
+	})
 }
 
-func TestLoad_FailsWhenSlackWebhookEnvMissing(t *testing.T) {
-	t.Setenv("OBSERN_SLACK_WEBHOOK_URL", "")
+func writeTempConfig(t *testing.T, content string) string {
+	t.Helper()
 
 	dir := t.TempDir()
 	path := filepath.Join(dir, "obsern.yaml")
 
-	yamlText := `project:
-  name: my_project
-  tags: [monitoring]
-
-api:
-  enabled: false
-  base_url: http://localhost:8000
-  token: ${OBSERN_HOST_TOKEN}
-
-run:
-  log_tail: 80
-
-notify:
-  enabled: true
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
-`
-	if err := Generate(path, yamlText, false); err != nil {
-		t.Fatalf("WriteFile failed: %v", err)
+	if err := os.WriteFile(path, []byte(strings.TrimLeft(content, "\n")), 0o644); err != nil {
+		t.Fatalf("write temp config: %v", err)
 	}
 
-	_, err := Load(path)
-	if err == nil {
-		t.Fatalf("Load should fail when webhook env is missing")
-	}
+	return path
 }

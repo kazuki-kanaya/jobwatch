@@ -2,74 +2,72 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 
-	"github.com/kazuki-kanaya/obsern/cli/internal/config"
-	"github.com/kazuki-kanaya/obsern/cli/internal/run"
+	"github.com/kazuki-kanaya/obsern/new-cli/internal/bootstrap"
+	"github.com/kazuki-kanaya/obsern/new-cli/internal/config"
+	"github.com/kazuki-kanaya/obsern/new-cli/internal/run"
 	"github.com/spf13/cobra"
 )
 
-var configPath string
+// Package-level hooks allow cmd/run unit tests to stub config loading,
+// dependency construction, and service execution without touching real I/O.
+var (
+	loadRunConfig     = config.Load
+	buildRunDeps      = bootstrap.BuildRunDependencies
+	executeRunService = func(ctx context.Context, service *run.Service, req run.Request) (int, error) {
+		return service.Execute(ctx, req)
+	}
+)
 
 var runCmd = &cobra.Command{
-	Use:   "run <command...>",
-	Short: "Run a command with obsern notifications",
-	Args:  cobra.MinimumNArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
-		command := args[0]
-		commandArgs := args[1:]
+	Use:   "run [command...]",
+	Short: "Run a command with Obsern",
+	Long: `Run a command under Obsern observation.
 
-		path := configPath
-		if path == "" {
-			path = config.DefaultFilename
+Obsern tracks the job status, captures tail logs, and reports the
+result to configured backends such as the API server or Slack.`,
+	Args: cobra.ArbitraryArgs,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) == 0 {
+			return fmt.Errorf("command is required")
 		}
 
-		cfg, err := config.Load(path)
+		cfg, err := loadRunConfig(defaultConfigFileName)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to load config: %v\n", err)
-			os.Exit(1)
+			return fmt.Errorf("load config: %w", err)
 		}
 
-		runner, err := run.NewRunner(cfg, &http.Transport{})
+		deps, err := buildRunDeps(cfg, cmd.OutOrStdout(), cmd.ErrOrStderr())
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to prepare run service: %v\n", err)
-			os.Exit(1)
+			return fmt.Errorf("build run dependencies: %w", err)
 		}
 
-		runCtx, stop := signal.NotifyContext(cmd.Context(), os.Interrupt, syscall.SIGTERM)
-		defer stop()
-
-		report := runner.Execute(runCtx, command, commandArgs)
-		if report.TrackingStartError != nil {
-			fmt.Fprintf(os.Stderr, "Failed to start job tracking: %v\n", report.TrackingStartError)
-		}
-		if report.TrackingFinishError != nil {
-			fmt.Fprintf(os.Stderr, "Failed to finish job tracking: %v\n", report.TrackingFinishError)
-		}
-		if report.NotifyError != nil {
-			fmt.Fprintf(os.Stderr, "Notification errors: %v\n", report.NotifyError)
+		exitCode, err := executeRunService(cmd.Context(), deps.Service, run.Request{
+			Command:   args,
+			Tags:      cfg.Run.Tags,
+			TailLines: cfg.Run.TailLines,
+		})
+		if err != nil {
+			return err
 		}
 
-		if report.Result.Err != nil {
-			if errors.Is(runCtx.Err(), context.Canceled) {
-				fmt.Fprintln(os.Stderr, "Command canceled.")
-				os.Exit(130)
-			}
-			fmt.Fprintf(os.Stderr, "Command failed: %v\n", report.Result.Err)
-			os.Exit(1)
+		if exitCode != 0 {
+			return exitCodeError{code: exitCode}
 		}
+
+		return nil
 	},
+}
+
+type exitCodeError struct {
+	code int
+}
+
+func (e exitCodeError) Error() string {
+	return fmt.Sprintf("command exited with status %d", e.code)
 }
 
 func init() {
 	rootCmd.AddCommand(runCmd)
-	runCmd.Flags().StringVarP(&configPath, "config", "c", "", "config file path")
-	// Treat everything after the first positional arg as command args.
-	// This allows `obsern run ls -la` without requiring `--`.
-	runCmd.Flags().SetInterspersed(false)
 }

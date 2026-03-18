@@ -242,10 +242,8 @@ Obsern focuses on execution monitoring rather than experiment management.
 
 This repository is organized as a monorepo.
 
-- `new-cli/`
-  - New CLI implementation. This is the current main focus.
 - `cli/`
-  - Existing CLI implementation.
+  - CLI implementation.
 - `api/`
   - Backend API.
 - `web/`
@@ -261,8 +259,7 @@ This repository is organized as a monorepo.
 
 | Directory | Description | Tech |
 | --- | --- | --- |
-| `new-cli` | New CLI implementation | Go / Cobra |
-| `cli` | Existing CLI | Go / Cobra |
+| `cli` | CLI | Go / Cobra |
 | `api` | Backend API | Python / FastAPI / uv |
 | `web` | Web dashboard | pnpm / Vite / React |
 | `site` | Docs / landing page | pnpm / Astro |

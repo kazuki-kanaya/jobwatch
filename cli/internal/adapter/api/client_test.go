@@ -73,7 +73,6 @@ func TestClientCreateJob(t *testing.T) {
 
 	resp, err := client.CreateJob(context.Background(), createJobRequest{
 		Command:   "python train.py",
-		Status:    "running",
 		Tags:      []string{"ml"},
 		StartedAt: "2026-03-16T10:00:00Z",
 	})

@@ -1,28 +1,50 @@
 package config
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 
 	"gopkg.in/yaml.v3"
 )
 
 func Load(path string) (Config, error) {
-	b, err := os.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
-		return Config{}, fmt.Errorf("config not found. Run `obsern init` first.")
+		return Config{}, fmt.Errorf("read config: %w", err)
 	}
 
-	expanded := os.ExpandEnv(string(b))
+	expanded := []byte(os.ExpandEnv(string(data)))
+
+	dec := yaml.NewDecoder(bytes.NewReader(expanded))
+	dec.KnownFields(true)
 
 	var cfg Config
-	if err := yaml.Unmarshal([]byte(expanded), &cfg); err != nil {
-		return Config{}, fmt.Errorf("failed to parse config file: %w", err)
+	if err := dec.Decode(&cfg); err != nil {
+		return Config{}, fmt.Errorf("decode config: %w", err)
 	}
 
-	if err := cfg.Validate(); err != nil {
-		return Config{}, fmt.Errorf("validation failed: %w", err)
+	var extra any
+	if err := dec.Decode(&extra); err != io.EOF {
+		if err == nil {
+			return Config{}, fmt.Errorf("decode config: multiple YAML documents are not supported")
+		}
+
+		return Config{}, fmt.Errorf("decode config: %w", err)
+	}
+
+	normalize(&cfg)
+
+	if err := Validate(cfg); err != nil {
+		return Config{}, fmt.Errorf("validate config: %w", err)
 	}
 
 	return cfg, nil
+}
+
+func normalize(cfg *Config) {
+	if cfg.Run.Tags == nil {
+		cfg.Run.Tags = []string{}
+	}
 }
