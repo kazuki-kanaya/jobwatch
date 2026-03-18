@@ -1,24 +1,29 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import type { DashboardViewModel } from "@/features/dashboard/types";
-import { useInvitationMutations } from "@/features/invitations/api/useInvitationMutations";
+import { useInvitationMutations } from "@/features/invitation/api/useInvitationMutations";
 import { useWorkspaceMutations } from "@/features/workspace/api/useWorkspaceMutations";
+
+type WorkspaceOption = {
+  id: string;
+  name: string;
+};
+
+type WorkspaceCrudTexts = {
+  workspaceCreated: string;
+  workspaceUpdated: string;
+  workspaceDeleted: string;
+  workspaceOwnerTransferred: string;
+  workspaceCrudError: string;
+  invitationRevoked: string;
+  invitationCrudError: string;
+};
 
 type UseWorkspaceCrudParams = {
   accessToken: string | undefined;
   workspaceId: string;
-  workspaces: DashboardViewModel["filters"]["workspaceOptions"];
+  workspaces: WorkspaceOption[];
   onWorkspaceIdChange: (workspaceId: string) => void;
-  texts: Pick<
-    DashboardViewModel["texts"],
-    | "workspaceCreated"
-    | "workspaceUpdated"
-    | "workspaceDeleted"
-    | "workspaceOwnerTransferred"
-    | "workspaceCrudError"
-    | "invitationRevoked"
-    | "invitationCrudError"
-  >;
+  texts: WorkspaceCrudTexts;
 };
 
 type UseWorkspaceCrudResult = {
@@ -71,7 +76,7 @@ export const useWorkspaceCrud = ({
     workspaceMutations.isUpdating ||
     workspaceMutations.isDeleting ||
     workspaceMutations.isTransferringOwner ||
-    invitationMutations.isRevokingInvitation;
+    invitationMutations.isRevoking;
 
   const openWorkspaceCreateForm = () => {
     setEditingWorkspaceId(null);

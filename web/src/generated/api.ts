@@ -87,6 +87,16 @@ export interface InvitationAcceptResponse {
   role: MembershipRole;
 }
 
+export interface JobCreateRequest {
+  command: string;
+  tags?: string[];
+  started_at: string;
+}
+
+export interface JobCreateResponse {
+  job_id: string;
+}
+
 export type JobStatus = typeof JobStatus[keyof typeof JobStatus];
 
 
@@ -96,17 +106,6 @@ export const JobStatus = {
   failed: 'failed',
   canceled: 'canceled',
 } as const;
-
-export interface JobCreateRequest {
-  command: string;
-  status: JobStatus;
-  tags?: string[];
-  started_at: string;
-}
-
-export interface JobCreateResponse {
-  job_id: string;
-}
 
 export interface JobResponse {
   job_id: string;
@@ -122,7 +121,7 @@ export interface JobResponse {
 
 export interface JobUpdateRequest {
   status?: JobStatus | null;
-  tail_lines?: string[];
+  tail_lines?: string[] | null;
   finished_at?: string | null;
 }
 

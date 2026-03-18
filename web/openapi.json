@@ -1626,9 +1626,6 @@
             "type": "string",
             "title": "Command"
           },
-          "status": {
-            "$ref": "#/components/schemas/JobStatus"
-          },
           "tags": {
             "items": {
               "type": "string"
@@ -1645,7 +1642,6 @@
         "type": "object",
         "required": [
           "command",
-          "status",
           "started_at"
         ],
         "title": "JobCreateRequest"
@@ -1750,10 +1746,17 @@
             ]
           },
           "tail_lines": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Tail Lines"
           },
           "finished_at": {

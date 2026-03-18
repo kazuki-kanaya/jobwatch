@@ -31,7 +31,7 @@ export const useInvitationAccept = ({ accessToken }: UseInvitationAcceptParams) 
     }
   };
 
-  const goDashboard = () => navigate("/new/dashboard");
+  const goDashboard = () => navigate("/dashboard");
 
   return {
     isTokenMissing,
