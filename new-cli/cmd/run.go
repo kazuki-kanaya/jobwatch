@@ -1,12 +1,21 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/kazuki-kanaya/obsern/new-cli/internal/bootstrap"
 	"github.com/kazuki-kanaya/obsern/new-cli/internal/config"
 	"github.com/kazuki-kanaya/obsern/new-cli/internal/run"
 	"github.com/spf13/cobra"
+)
+
+var (
+	loadRunConfig     = config.Load
+	buildRunDeps      = bootstrap.BuildRunDependencies
+	executeRunService = func(ctx context.Context, service *run.Service, req run.Request) (int, error) {
+		return service.Execute(ctx, req)
+	}
 )
 
 var runCmd = &cobra.Command{
@@ -22,17 +31,17 @@ result to configured backends such as the API server or Slack.`,
 			return fmt.Errorf("command is required")
 		}
 
-		cfg, err := config.Load(defaultConfigFileName)
+		cfg, err := loadRunConfig(defaultConfigFileName)
 		if err != nil {
 			return fmt.Errorf("load config: %w", err)
 		}
 
-		deps, err := bootstrap.BuildRunDependencies(cfg, cmd.OutOrStdout(), cmd.ErrOrStderr())
+		deps, err := buildRunDeps(cfg, cmd.OutOrStdout(), cmd.ErrOrStderr())
 		if err != nil {
 			return fmt.Errorf("build run dependencies: %w", err)
 		}
 
-		exitCode, err := deps.Service.Execute(cmd.Context(), run.Request{
+		exitCode, err := executeRunService(cmd.Context(), deps.Service, run.Request{
 			Command:   args,
 			Tags:      cfg.Run.Tags,
 			TailLines: cfg.Run.TailLines,
