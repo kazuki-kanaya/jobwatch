@@ -11,6 +11,8 @@ body:
 
         短くても大丈夫なので、再現に必要な情報を教えてください。
 
+        セキュリティに関する問題や脆弱性の報告は、公開 Issue ではなく `SECURITY.md` の案内に従ってご連絡ください。
+
   - type: textarea
     id: summary
     attributes:

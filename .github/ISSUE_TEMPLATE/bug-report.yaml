@@ -11,6 +11,8 @@ body:
 
         Please keep it as short as possible, but include enough detail for us to reproduce it.
 
+        If you want to report a security vulnerability, do not use a public GitHub issue. Please follow the instructions in `SECURITY.md`.
+
   - type: textarea
     id: summary
     attributes:
