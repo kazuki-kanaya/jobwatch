@@ -28,7 +28,7 @@ const { messages } = Astro.props;
     <input id="feature-tab-dashboard" type="radio" name="feature-preview" class="sr-only" checked />
     <input id="feature-tab-slack" type="radio" name="feature-preview" class="sr-only" />
 
-    <div class="mb-4 flex gap-2 rounded-xl border border-[#233347] bg-[#0b1321]/85 p-1.5">
+    <div class="feature-tab-triggers mb-4 flex gap-2 rounded-xl border border-[#233347] bg-[#0b1321]/85 p-1.5">
       <label
         for="feature-tab-dashboard"
         class="feature-tab-trigger flex-1 rounded-lg border border-transparent px-4 py-2 text-center text-sm font-semibold text-slate-300 transition-[background-color,border-color,color,box-shadow] duration-200 hover:text-white"
@@ -101,8 +101,8 @@ const { messages } = Astro.props;
     height: 100%;
   }
 
-  #feature-tab-dashboard:checked ~ .mb-4 label[for="feature-tab-dashboard"],
-  #feature-tab-slack:checked ~ .mb-4 label[for="feature-tab-slack"] {
+  #feature-tab-dashboard:checked ~ .feature-tab-triggers label[for="feature-tab-dashboard"],
+  #feature-tab-slack:checked ~ .feature-tab-triggers label[for="feature-tab-slack"] {
     border-color: rgba(96, 165, 250, 0.42);
     background:
       linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(59, 130, 246, 0.12));
