@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,9 +13,9 @@ class Settings(BaseSettings):
     )
 
     aws_region: str = "ap-northeast-1"
-    ddb_endpoint: str
-    aws_access_key: str
-    aws_secret_key: str
+    ddb_endpoint: str | None = None
+    aws_access_key: str | None = None
+    aws_secret_key: str | None = None
     ddb_table_name: str = "obsern-dev"
     log_level: str = "INFO"
     app_timezone: str = "Asia/Tokyo"
@@ -29,13 +30,17 @@ class Settings(BaseSettings):
     oidc_issuer: str
 
     @property
-    def dynamodb_kwargs(self) -> dict[str, object]:
-        return {
+    def dynamodb_kwargs(self) -> dict[str, Any]:
+        kwargs: dict[str, Any] = {
             "region_name": self.aws_region,
-            "endpoint_url": self.ddb_endpoint,
-            "aws_access_key_id": self.aws_access_key,
-            "aws_secret_access_key": self.aws_secret_key,
         }
+        if self.ddb_endpoint:
+            kwargs["endpoint_url"] = self.ddb_endpoint
+        if self.aws_access_key:
+            kwargs["aws_access_key_id"] = self.aws_access_key
+        if self.aws_secret_key:
+            kwargs["aws_secret_access_key"] = self.aws_secret_key
+        return kwargs
 
 
 def configure_logging(level: str) -> None:

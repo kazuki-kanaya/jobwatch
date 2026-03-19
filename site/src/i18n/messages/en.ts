@@ -8,7 +8,7 @@ export const enMessages = {
     howItWorks: "Why Obsern",
     comparison: "Comparison",
     docs: "Docs",
-    getStarted: "Get Started",
+    getStarted: "Go to Dashboard",
   },
   hero: {
     releaseBadge: "Now in Beta",
@@ -114,7 +114,7 @@ export const enMessages = {
   cta: {
     title: "Ready to automate your monitoring?",
     subtitle: "Get started in a few minutes.",
-    primary: "Get Started for Free",
+    primary: "Go to Dashboard",
     secondary: "Documentation",
   },
   footer: {

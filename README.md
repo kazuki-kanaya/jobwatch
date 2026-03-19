@@ -9,6 +9,12 @@
 <p align="center">
 A lightweight, easy-to-adopt process monitoring tool focused on execution tracking and notifications. It eliminates the need to SSH in just to check whether a process is still running.
 </p>
+<p align="center">
+  <a href="https://obsern.dev">Website</a> | <a href="https://app.obsern.dev">Dashboard</a> | <a href="https://obsern.dev/docs">Documentation</a>
+</p>
+<p align="center">
+  <sub>The hosted Obsern service is currently available as an experimental beta and may change or become unavailable without notice.</sub>
+</p>
 
 Obsern is a tool for lightweight monitoring of long-running jobs.
 
@@ -162,7 +168,7 @@ Obsern is intended to work in environments such as:
 If you want dashboard integration, you need a server endpoint to connect to.
 
 - You can run your own server
-- Or use the hosted Obsern service when it becomes available
+- Or use the hosted Obsern service, which is currently available as an experimental beta and may change or become unavailable without notice
 
 If notifications are all you need, the goal is to make the CLI useful on its own.
 
@@ -285,7 +291,7 @@ This repository is organized as a monorepo.
 | `api` | Backend API | Python / FastAPI / uv |
 | `web` | Web dashboard | pnpm / Vite / React |
 | `site` | Docs / landing page | pnpm / Astro |
-| `infra` | Infrastructure | Terraform |
+| `infra` | Infrastructure | Terraform / AWS / Cloudflare |
 
 ## Development Status
 
