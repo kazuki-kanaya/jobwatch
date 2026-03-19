@@ -26,7 +26,7 @@ func TestNewReporter(t *testing.T) {
 func TestReporterStartRequiresRunningJob(t *testing.T) {
 	t.Parallel()
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		t.Fatal("transport should not be called")
 		return nil, nil
 	})
@@ -58,7 +58,7 @@ func TestReporterStartMapsJobToCreateRequest(t *testing.T) {
 
 	var gotBody string
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		body, err := io.ReadAll(req.Body)
 		if err != nil {
 			t.Fatalf("read request body: %v", err)
@@ -98,7 +98,7 @@ func TestReporterStartMapsJobToCreateRequest(t *testing.T) {
 func TestReporterFinishRequiresTerminalJob(t *testing.T) {
 	t.Parallel()
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		t.Fatal("transport should not be called")
 		return nil, nil
 	})
@@ -127,7 +127,7 @@ func TestReporterFinishMapsJobToUpdateRequest(t *testing.T) {
 
 	var gotBody string
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		body, err := io.ReadAll(req.Body)
 		if err != nil {
 			t.Fatalf("read request body: %v", err)

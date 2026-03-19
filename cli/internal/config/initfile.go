@@ -12,7 +12,7 @@ run:
 # Uncomment to report jobs to the Obsern API.
 # api:
 #   host_token: ${OBSERN_HOST_TOKEN}
-#   base_url: https://api.obsern.com
+#   base_url: https://api.obsern.dev
 
 # Uncomment to enable notifications.
 # notify:

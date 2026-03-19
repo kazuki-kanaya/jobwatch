@@ -28,7 +28,7 @@ func TestBuildReporter(t *testing.T) {
 			name: "uses api reporter when api config is present",
 			cfg: config.Config{
 				API: &config.APIConfig{
-					BaseURL:   "https://api.obsern.com",
+					BaseURL:   "https://api.obsern.dev",
 					HostToken: "host-token",
 				},
 			},

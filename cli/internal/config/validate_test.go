@@ -19,7 +19,7 @@ func TestValidate(t *testing.T) {
 				Run: RunConfig{Tags: []string{}, TailLines: 80},
 				API: &APIConfig{
 					HostToken: "token",
-					BaseURL:   "https://api.obsern.com",
+					BaseURL:   "https://api.obsern.dev",
 				},
 			},
 		},
@@ -48,7 +48,7 @@ func TestValidate(t *testing.T) {
 				Run: RunConfig{Tags: []string{}, TailLines: -1},
 				API: &APIConfig{
 					HostToken: "token",
-					BaseURL:   "https://api.obsern.com",
+					BaseURL:   "https://api.obsern.dev",
 				},
 			},
 			wantErr: "run.tail_lines must be between 0 and 200",
@@ -59,7 +59,7 @@ func TestValidate(t *testing.T) {
 				Run: RunConfig{Tags: []string{}, TailLines: 201},
 				API: &APIConfig{
 					HostToken: "token",
-					BaseURL:   "https://api.obsern.com",
+					BaseURL:   "https://api.obsern.dev",
 				},
 			},
 			wantErr: "run.tail_lines must be between 0 and 200",
@@ -69,7 +69,7 @@ func TestValidate(t *testing.T) {
 			cfg: Config{
 				Run: RunConfig{Tags: []string{}, TailLines: 80},
 				API: &APIConfig{
-					BaseURL: "https://api.obsern.com",
+					BaseURL: "https://api.obsern.dev",
 				},
 			},
 			wantErr: "api.host_token is required",

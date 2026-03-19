@@ -14,7 +14,7 @@ run:
 
 api:
   host_token: ${OBSERN_HOST_TOKEN}
-  base_url: https://api.obsern.com
+  base_url: https://api.obsern.dev
 
 notify:
   time_zone: "Asia/Tokyo"
@@ -51,7 +51,7 @@ run:
 
 api:
   host_token: ${OBSERN_HOST_TOKEN}
-  base_url: https://api.obsern.com
+  base_url: https://api.obsern.dev
 ```
 
 Slack only:
@@ -76,7 +76,7 @@ run:
 
 api:
   host_token: ${OBSERN_HOST_TOKEN}
-  base_url: https://api.obsern.com
+  base_url: https://api.obsern.dev
 
 notify:
   time_zone: "Asia/Tokyo"
