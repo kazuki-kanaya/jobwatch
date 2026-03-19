@@ -26,6 +26,7 @@ Obsern works by wrapping arbitrary commands.
 - [Background](#background)
 - [What Obsern Solves](#what-obsern-solves)
 - [Key Features](#key-features)
+- [Architecture](#architecture)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Comparison](#comparison)
@@ -167,21 +168,40 @@ If notifications are all you need, the goal is to make the CLI useful on its own
 
 ## Architecture
 
-Obsern is built around a flow like this:
+Obsern is centered around the `CLI`, which wraps arbitrary commands and can optionally be connected to the dashboard and API when you want centralized visibility.
 
-```text
-command
-   ↓
-obsern CLI
-   ↓
-stdout / stderr capture
-   ↓
-API
-   ↓
-Dashboard
-   ↓
-Notification
-```
+- The `CLI` uses `obsern run` to wrap arbitrary commands, stream output back to the terminal, keep tail logs, report status, and send notifications.
+- Slack notifications are part of the basic CLI-only flow.
+- The `Web Dashboard` and `API` are optional integrations you add when you want to aggregate and manage job state centrally.
+- Reporting job state from the `CLI` to the `API` requires a host connection token, and that token is only needed when dashboard integration is enabled.
+- `DynamoDB` is the main persistence layer and stores not only jobs but also workspace and host data.
+- OIDC JWT validation is handled inside the FastAPI application rather than at API Gateway. This keeps the authentication logic consistent between the production AWS setup and the local development environment.
+
+### Production
+
+<p align="center">
+  <img src="./assets/architecture.prod.drawio.svg" alt="Obsern Production Architecture Overview" width="900" />
+</p>
+
+<p align="center">
+  draw.io source: <a href="./assets/architecture.prod.drawio">assets/architecture.prod.drawio</a>
+</p>
+
+- In production, the API runs on AWS and the Web Dashboard is served from Cloudflare Pages.
+- Authentication is integrated with an OIDC provider, and JWTs are verified by FastAPI itself.
+
+### Local
+
+<p align="center">
+  <img src="./assets/architecture.local.drawio.svg" alt="Obsern Local Architecture Overview" width="900" />
+</p>
+
+<p align="center">
+  draw.io source: <a href="./assets/architecture.local.drawio">assets/architecture.local.drawio</a>
+</p>
+
+- In local development, the API, dashboard, auth provider, and data store run in a development-friendly setup.
+- JWT validation still happens inside FastAPI, matching the production authentication path.
 
 ## Installation
 
@@ -195,7 +215,7 @@ curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/inst
 
 ```bash
 # Replace vX.Y.Z with the desired release tag (for example, v1.2.3)
-curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/vX.Y.Z/install.sh | sh
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/vX.Y.Z/download/install.sh | sh
 ```
 
 The current installation path assumes a Unix-like environment.

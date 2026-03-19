@@ -26,6 +26,7 @@ Obsern は任意のコマンドをラップするだけで利用できます。
 - [背景](#背景)
 - [Obsern が解決したいこと](#obsern-が解決したいこと)
 - [主な機能](#主な機能)
+- [アーキテクチャ](#アーキテクチャ)
 - [インストール](#インストール)
 - [クイックスタート](#クイックスタート)
 - [他ツールとの比較](#他ツールとの比較)
@@ -169,21 +170,40 @@ Obsern は次のような環境で利用できます。
 
 ## アーキテクチャ
 
-Obsern は次のような構成を想定しています。
+Obsern は、`CLI` を中心に任意コマンドをラップ実行し、必要に応じて Dashboard / API 連携を追加できる構成です。
 
-```text
-command
-   ↓
-obsern CLI
-   ↓
-stdout / stderr capture
-   ↓
-API
-   ↓
-Dashboard
-   ↓
-Notification
-```
+- `CLI` は `obsern run` で任意コマンドをラップ実行し、出力中継、末尾ログ保持、状態送信、通知を担当します。
+- `Slack` 通知までは `CLI` 単体で使える基本フローです。
+- `Web Dashboard` と `API` は、ジョブ状態を集約して見たいときに追加する任意の連携です。
+- `CLI` から `API` への状態送信にはホスト接続トークンが必要ですが、これはダッシュボード連携を使う場合だけ必要です。
+- 永続化の中心は `DynamoDB` で、ジョブだけでなくワークスペースやホスト情報もここで管理します。
+- OIDC の JWT 検証は API Gateway ではなく FastAPI 本体で行います。これにより、本番の AWS 構成だけでなく、ローカル実行環境でも同じ認証ロジックを保てます。
+
+### 本番構成
+
+<p align="center">
+  <img src="./assets/architecture.prod.drawio.svg" alt="Obsern Production Architecture Overview" width="900" />
+</p>
+
+<p align="center">
+  draw.io source: <a href="./assets/architecture.prod.drawio">assets/architecture.prod.drawio</a>
+</p>
+
+- API は AWS 上で動作し、Web Dashboard は Cloudflare Pages から配信されます。
+- 認証は OIDC プロバイダと連携し、FastAPI が JWT を検証します。
+
+### ローカル構成
+
+<p align="center">
+  <img src="./assets/architecture.local.drawio.svg" alt="Obsern Local Architecture Overview" width="900" />
+</p>
+
+<p align="center">
+  draw.io source: <a href="./assets/architecture.local.drawio">assets/architecture.local.drawio</a>
+</p>
+
+- ローカルでは API / Dashboard / 認証基盤 / データストアを開発用構成で起動します。
+- 本番と同じく、JWT 検証は FastAPI 側で行います。
 
 ## インストール
 
@@ -197,7 +217,7 @@ curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/inst
 
 ```bash
 # vX.Y.Z をインストールしたいバージョンタグに置き換えてください
-curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/download/vX.Y.Z/install.sh | sh
+curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/vX.Y.Z/download/install.sh | sh
 ```
 
 現在の配布導線は Unix 系環境を前提としています。
