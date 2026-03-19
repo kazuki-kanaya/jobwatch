@@ -32,6 +32,10 @@ export type LandingMessages = {
   };
   features: {
     title: string;
+    tabs: {
+      dashboard: string;
+      slackAlerts: string;
+    };
     cards: Array<{
       title: string;
       body: string;

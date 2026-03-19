@@ -17,7 +17,7 @@ export const enMessages = {
     titleTail: " just to see if it is still running",
     subtitle:
       "Track long-running processes in real time. Get notified on failures and manage everything from a unified dashboard with no code changes.",
-    installHeading: "Install",
+    installHeading: "Installation",
     copyLabel: "Copy",
     copiedLabel: "Copied",
     quickStartLines: [
@@ -51,6 +51,10 @@ export const enMessages = {
   },
   features: {
     title: "Keep execution status clear for both individuals and teams.",
+    tabs: {
+      dashboard: "Dashboard",
+      slackAlerts: "Slack Alerts",
+    },
     cards: [
       {
         title: "Zero Code Changes",
