@@ -9,6 +9,8 @@ type CopyableCodeBlockProps = {
   copied: boolean;
   isCopyDisabled?: boolean;
   onCopy: () => void;
+  className?: string;
+  contentClassName?: string;
 };
 
 export function CopyableCodeBlock({
@@ -18,9 +20,11 @@ export function CopyableCodeBlock({
   copied,
   isCopyDisabled,
   onCopy,
+  className,
+  contentClassName,
 }: CopyableCodeBlockProps) {
   return (
-    <div className={cn("rounded-xl border border-slate-700/80 bg-slate-950/55")}>
+    <div className={cn("rounded-xl border border-slate-700/80 bg-slate-950/55", className)}>
       <div className={cn("flex justify-end p-1")}>
         <Button
           type="button"
@@ -36,7 +40,9 @@ export function CopyableCodeBlock({
           {copied ? copiedLabel : copyLabel}
         </Button>
       </div>
-      <pre className={cn("max-h-52 max-w-full overflow-auto px-3 pb-3 font-mono text-xs text-slate-200")}>
+      <pre
+        className={cn("max-h-52 max-w-full overflow-auto px-3 pb-3 font-mono text-xs text-slate-200", contentClassName)}
+      >
         {content}
       </pre>
     </div>

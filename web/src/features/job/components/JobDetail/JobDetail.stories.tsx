@@ -40,6 +40,7 @@ const meta = {
       finishedAt: "Finished At",
       duration: "Duration",
       latestLogs: "Latest Logs",
+      viewFull: "View full",
     },
   },
 } satisfies Meta<typeof JobDetail>;
