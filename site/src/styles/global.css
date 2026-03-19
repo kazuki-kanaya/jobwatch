@@ -7,6 +7,11 @@
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 @layer components {
+  .site-title {
+    --sl-color-text-accent: #000;
+    font-weight: 700;
+  }
+
   .sl-markdown-content {
     --docs-max-width: 76ch;
     --docs-section-gap: 1.75rem;

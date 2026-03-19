@@ -27,9 +27,8 @@ When host creation completes, a host token is shown once.
 
 ```yaml
 api:
-  enabled: true
+  host_token: ${OBSERN_HOST_TOKEN}
   base_url: https://api.obsern.dev
-  token: ${OBSERN_HOST_TOKEN}
 ```
 
 ```bash

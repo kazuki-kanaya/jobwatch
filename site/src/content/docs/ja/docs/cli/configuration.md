@@ -8,108 +8,85 @@ description: obsern.yaml の設定方法。
 ## 基本テンプレート
 
 ```yaml
-project:
-  name: my_project
-  tags:
-    - monitoring
+run:
+  tags: ["default"]
+  tail_lines: 80
 
 api:
-  enabled: true
-  base_url: https://api.obsern.dev
-  token: ${OBSERN_HOST_TOKEN}
-
-run:
-  log_tail: 80
+  host_token: ${OBSERN_HOST_TOKEN}
+  base_url: https://api.obsern.com
 
 notify:
-  enabled: true
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  time_zone: "Asia/Tokyo"
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
 ## 最低限必要な設定
 
-次のどちらかを必ず有効にしてください。
+次のどちらかを必ず設定してください。
 
-- `api.enabled`
-- `notify.enabled`
+- `api`
+- `notify.slack`
 
-両方 `false` の場合、validation でエラーになり `obsern run` は停止します。
+どちらも未設定の場合、バリデーションエラーになり `obsern run` は停止します。
 
 ## 項目リファレンス
 
-- `project.name`: 通知やダッシュボードで識別するプロジェクト名
-- `project.tags`: ジョブ分類用の任意タグ
-- `api.enabled`: API 送信を有効/無効化
-- `api.base_url`: API 送信時のエンドポイント
-- `api.token`: Dashboard で発行したホストトークン
-- `run.log_tail`: 最終イベントに含めるログ末尾行数
-- `notify.enabled`: 通知機能全体の有効/無効
-- `notify.on_success`: 成功時通知の有無
-- `notify.on_failure`: 失敗時通知の有無
-- `notify.channels`: 通知先一覧
-- `notify.channels[].kind`: チャンネル種別（Slack は `slack`）
-- `notify.channels[].settings.webhook_url`: Incoming Webhook URL
+- `run.tags`: ジョブや通知に付与するタグ
+- `run.tail_lines`: 最終的に保持するログ末尾行数。指定可能範囲は `0` から `200`
+- `api.host_token`: ダッシュボードで発行したホストトークン
+- `api.base_url`: ジョブ状態を送信する API の絶対 URL
+- `notify.time_zone`: 通知時刻の表示に使う IANA タイムゾーン。例: `Asia/Tokyo`
+- `notify.slack.webhook_url`: Slack Incoming Webhook の URL
 
 ## よく使う設定パターン
 
-API トークンのみ:
+API のみ:
 
 ```yaml
-api:
-  enabled: true
-  base_url: https://api.obsern.dev
-  token: ${OBSERN_HOST_TOKEN}
+run:
+  tags: ["default"]
+  tail_lines: 80
 
-notify:
-  enabled: false
-  on_success: true
-  on_failure: true
-  channels: []
+api:
+  host_token: ${OBSERN_HOST_TOKEN}
+  base_url: https://api.obsern.com
 ```
 
-Slack Webhook のみ:
+Slack のみ:
 
 ```yaml
-api:
-  enabled: false
+run:
+  tags: ["default"]
+  tail_lines: 80
 
 notify:
-  enabled: true
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  time_zone: "Asia/Tokyo"
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
-併用（推奨）:
+API + Slack:
 
 ```yaml
+run:
+  tags: ["default"]
+  tail_lines: 80
+
 api:
-  enabled: true
-  base_url: https://api.obsern.dev
-  token: ${OBSERN_HOST_TOKEN}
+  host_token: ${OBSERN_HOST_TOKEN}
+  base_url: https://api.obsern.com
 
 notify:
-  enabled: true
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  time_zone: "Asia/Tokyo"
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
 ## 環境変数の設定
 
 秘密情報は `obsern.yaml` に直書きせず、環境変数を使うことを推奨します。
-直書きする場合は、`obsern.yaml` を Git などの管理対象から外すなど、取り扱いに注意してください。
 
 ```bash
 export OBSERN_HOST_TOKEN="<your-host-token>"
@@ -119,5 +96,6 @@ export OBSERN_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
 ## 実行前チェック
 
 - `obsern.yaml` が存在する
-- `api.enabled` か `notify.enabled` のどちらかが `true`
+- `api` か `notify.slack` のどちらかが設定されている
+- `run.tail_lines` が `0` から `200` の範囲にある
 - 同じシェルセッションで環境変数が有効

@@ -19,7 +19,7 @@ export default defineConfig({
   [
     icon(),
     starlight({
-      title: "Obsern Docs",
+      title: "Obsern",
       description: "Lightweight job monitoring for long-running ML and compute experiments.",
       logo: {
         src: "./src/assets/logo.png",
