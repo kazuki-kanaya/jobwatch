@@ -8,7 +8,6 @@
 
 @layer components {
   .site-title {
-    --sl-color-text-accent: #000;
     font-weight: 700;
   }
 

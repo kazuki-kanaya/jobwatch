@@ -1,6 +1,6 @@
 ---
-title: Notifications (Slack/Webhook)
-description: Slack 通知の設定。
+title: Notifications
+description: 通知の設定。
 ---
 
 ## 設定例（Slack）

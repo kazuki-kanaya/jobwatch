@@ -54,40 +54,40 @@ const { messages } = Astro.props;
         </div>
       </div>
       <div class="relative feature-tab-panel feature-tab-panel-slack h-full overflow-hidden rounded-xl border border-[#223247] bg-[#0b1321] shadow-[0_12px_28px_rgba(2,6,23,0.32)]">
+        <div class="relative h-full min-h-[30rem] overflow-hidden rounded-2xl border border-[#1e2d42] bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_48%),#09111d] p-4 md:min-h-[36rem] md:p-6">
+          <div class="flex min-h-[24rem] items-center justify-center md:absolute md:inset-0 md:min-h-0 md:p-6">
+            <div class="grid w-fit max-w-3xl grid-cols-1 gap-6 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+              <div class="flex justify-center md:col-span-2">
+                <div class="w-full max-w-[400px] overflow-hidden rounded-2xl border border-emerald-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
+                  <img
+                    src="/landing/slack-success.png"
+                    alt="Slack notification showing a successful job run"
+                    class="block w-full h-auto"
+                  />
+                </div>
+              </div>
 
-      <div class="relative h-full min-h-[30rem] overflow-hidden rounded-2xl border border-[#1e2d42] bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_48%),#09111d] p-4 md:min-h-[36rem] md:p-6">
-        <div class="flex min-h-[24rem] items-center justify-center md:absolute md:inset-0 md:min-h-0 md:p-6">
-          <div class="grid w-fit max-w-3xl grid-cols-1 gap-6 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-            <!-- success -->
-            <div class="flex justify-center md:col-span-2">
-              <div class="w-full max-w-[400px] overflow-hidden rounded-2xl border border-emerald-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
+              <div class="overflow-hidden rounded-2xl border border-amber-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
                 <img
-                  src="/landing/slack-success.png"
+                  src="/landing/slack-canceled.png"
+                  alt="Slack notification showing a canceled job run"
+                  class="block w-full h-auto"
+                />
+              </div>
+
+              <div class="overflow-hidden rounded-2xl border border-rose-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
+                <img
+                  src="/landing/slack-failed.png"
+                  alt="Slack notification showing a failed job run"
                   class="block w-full h-auto"
                 />
               </div>
             </div>
-
-            <!-- canceled -->
-            <div class="overflow-hidden rounded-2xl border border-amber-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
-              <img
-                src="/landing/slack-canceled.png"
-                class="block w-full h-auto"
-              />
-            </div>
-
-            <!-- failed -->
-            <div class="overflow-hidden rounded-2xl border border-rose-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
-              <img
-                src="/landing/slack-failed.png"
-                class="block w-full h-auto"
-              />
-            </div>
           </div>
         </div>
       </div>
-
     </div>
+  </div>
 </section>
 
 <style>

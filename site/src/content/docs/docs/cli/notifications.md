@@ -1,6 +1,6 @@
 ---
-title: Notifications (Slack/Webhook)
-description: Configure Slack/Webhook notifications.
+title: Notifications
+description: Configure notifications.
 ---
 
 ## Configuration Example (Slack)
