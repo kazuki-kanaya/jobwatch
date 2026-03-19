@@ -8,7 +8,7 @@ export const jaMessages = {
     howItWorks: "導入理由",
     comparison: "比較",
     docs: "ドキュメント",
-    getStarted: "始める",
+    getStarted: "ダッシュボードへ",
   },
   hero: {
     releaseBadge: "ベータ公開中",
@@ -114,7 +114,7 @@ export const jaMessages = {
   cta: {
     title: "今すぐバックグラウンドジョブを可視化。",
     subtitle: "数分でセットアップできます。",
-    primary: "無料で始める",
+    primary: "ダッシュボードへ",
     secondary: "ドキュメント",
   },
   footer: {
