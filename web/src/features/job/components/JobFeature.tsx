@@ -120,6 +120,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
             finishedAt: t("dashboard_finished_at"),
             duration: t("dashboard_duration"),
             latestLogs: t("dashboard_latest_logs"),
+            viewFull: t("dashboard_view_full"),
           }}
         />
       }

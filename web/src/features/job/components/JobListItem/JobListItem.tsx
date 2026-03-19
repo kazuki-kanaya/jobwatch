@@ -65,9 +65,6 @@ export function JobListItem({
           </div>
           <div className={cn("mt-1 space-y-1")}>
             <p className={cn("truncate font-mono text-xs text-slate-300/80")}>{job.id}</p>
-            <p className={cn("truncate font-mono text-xs text-slate-300/70")} title={job.command}>
-              {job.command}
-            </p>
             <p className={cn("truncate text-xs text-slate-400")}>
               {startedAtLabel}: {job.startedAt} / {durationLabel}: {job.duration}
             </p>
