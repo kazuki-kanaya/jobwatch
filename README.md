@@ -145,8 +145,9 @@ Planned:
 Example notifications (Slack):
 
 <p align="center">
-  <img src="./assets/slack-success.png" alt="Slack Success Notification" width="500" />
-  <img src="./assets/slack-failed.png" alt="Slack Failed Notification" width="360" />
+  <img src="./assets/slack-success.png" alt="Slack Success Notification" width="290" />
+  <img src="./assets/slack-canceled.png" alt="Slack Canceled Notification" width="330" />
+  <img src="./assets/slack-failed.png" alt="Slack Failed Notification" width="330" />
 </p>
 
 ### Local and cloud-friendly
@@ -268,16 +269,10 @@ This repository is organized as a monorepo.
 
 ## Development Status
 
-Obsern is under active development.
+Planned next steps:
 
-Current focus:
-
-- CLI redesign
-
-Planned next:
-
-- Discord notifications
-- dashboard improvements
+- Add Discord notifications
+- Set up a Docker-based local development environment
 
 ## License
 
