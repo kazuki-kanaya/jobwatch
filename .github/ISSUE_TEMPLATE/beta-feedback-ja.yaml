@@ -1,0 +1,55 @@
+name: β 版フィードバック
+description: Obsern β版の感想や使いづらかった点を共有する
+title: "[β 版フィードバック] "
+labels:
+  - beta-feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obsern β 版を試していただきありがとうございます。
+
+        短くても大丈夫なので、気になったことを教えてください。
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: どんな用途で使いましたか？
+      placeholder: 学習ジョブの監視、ダッシュボードの確認、Slack 通知の確認など
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: 分かりにくかった点、不便だった点、壊れていた点はありますか？
+      placeholder: セットアップが分かりにくかった、最初の API リクエストが遅かった、ログが見づらかった、など
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement
+    attributes:
+      label: どう改善されると嬉しいですか？
+      placeholder: Teams の通知手段を増やしてほしい、ログをリアルタイムで更新してほしい、など
+    validations:
+      required: false
+
+  - type: dropdown
+    id: use-again
+    attributes:
+      label: 今の状態でもまた使いたいですか？
+      options:
+        - "はい"
+        - "たぶん"
+        - "いいえ"
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: その他あれば教えてください
+      placeholder: ログ、スクリーンショット、補足情報など
+    validations:
+      required: false

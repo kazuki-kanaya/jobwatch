@@ -1,0 +1,55 @@
+name: Beta Feedback
+description: Share quick feedback on the Obsern beta
+title: "[Beta Feedback] "
+labels:
+  - beta-feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying the Obsern beta.
+
+        A few short answers are enough.
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: What did you use Obsern for?
+      placeholder: Monitoring a training job, checking the dashboard, trying Slack notifications, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: What felt confusing, inconvenient, or broken?
+      placeholder: Setup was confusing, the first API request was slow, the logs were hard to read, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement
+    attributes:
+      label: What would make it better?
+      placeholder: More notification options such as Teams, real-time log updates, etc.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: use-again
+    attributes:
+      label: Would you use it again?
+      options:
+        - "Yes"
+        - "Maybe"
+        - "No"
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      placeholder: Logs, screenshots, or any extra context.
+    validations:
+      required: false

@@ -1,0 +1,60 @@
+name: Bug Report
+description: Report a reproducible bug in Obsern
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug.
+
+        Please keep it as short as possible, but include enough detail for us to reproduce it.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      placeholder: The first API request timed out, the dashboard failed to load, Slack notifications did not arrive, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can we reproduce it?
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. Click ...
+        4. See error ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: The job should appear in the dashboard, the notification should be delivered, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: |
+        - OS:
+        - CLI version:
+        - Browser:
+        - API / Dashboard / CLI:
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      placeholder: Paste logs, screenshots, or error messages here.
+    validations:
+      required: false
