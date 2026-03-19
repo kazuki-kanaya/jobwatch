@@ -119,13 +119,27 @@ export function JobDetail({
                 {labels.viewFull}
               </Button>
             </div>
-            <div className={cn("rounded-xl border border-slate-700/80 bg-slate-950/55 px-3 py-3")}>
-              <pre className={cn("max-h-32 overflow-auto font-mono text-xs text-slate-200")}>{previewContent}</pre>
+            <div
+              className={cn(
+                "min-w-0 w-full max-w-full rounded-xl border border-slate-700/80 bg-slate-950/55 px-3 py-3",
+              )}
+            >
+              <pre
+                className={cn(
+                  "max-h-32 min-w-0 max-w-full overflow-hidden whitespace-pre font-mono text-xs text-slate-200",
+                )}
+              >
+                <code className={cn("block min-w-max")}>{previewContent}</code>
+              </pre>
             </div>
           </div>
 
           <Dialog open={isLogsDialogOpen} onOpenChange={setIsLogsDialogOpen}>
-            <DialogContent className={cn("border-slate-700 bg-slate-900 text-slate-100 sm:max-w-3xl")}>
+            <DialogContent
+              className={cn(
+                "min-w-0 w-full max-w-[calc(100vw-2rem)] border-slate-700 bg-slate-900 text-slate-100 sm:max-w-5xl",
+              )}
+            >
               <DialogHeader>
                 <DialogTitle>{labels.latestLogs}</DialogTitle>
               </DialogHeader>

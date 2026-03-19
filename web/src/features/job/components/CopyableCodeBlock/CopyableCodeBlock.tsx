@@ -24,7 +24,7 @@ export function CopyableCodeBlock({
   contentClassName,
 }: CopyableCodeBlockProps) {
   return (
-    <div className={cn("rounded-xl border border-slate-700/80 bg-slate-950/55", className)}>
+    <div className={cn("min-w-0 w-full max-w-full rounded-xl border border-slate-700/80 bg-slate-950/55", className)}>
       <div className={cn("flex justify-end p-1")}>
         <Button
           type="button"
@@ -41,9 +41,12 @@ export function CopyableCodeBlock({
         </Button>
       </div>
       <pre
-        className={cn("max-h-52 max-w-full overflow-auto px-3 pb-3 font-mono text-xs text-slate-200", contentClassName)}
+        className={cn(
+          "max-h-52 min-w-0 max-w-full overflow-x-auto overflow-y-auto whitespace-pre px-3 pb-3 font-mono text-xs text-slate-200",
+          contentClassName,
+        )}
       >
-        {content}
+        <code className={cn("block min-w-max")}>{content}</code>
       </pre>
     </div>
   );
