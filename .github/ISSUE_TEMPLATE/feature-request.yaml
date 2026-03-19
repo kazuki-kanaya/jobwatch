@@ -1,0 +1,44 @@
+name: Feature Request
+description: Suggest a new feature or improvement for Obsern
+title: "[Feature] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing an idea.
+
+        A short description is enough.
+
+  - type: textarea
+    id: request
+    attributes:
+      label: What would you like to add or improve?
+      placeholder: Support Teams notifications, show live logs in the dashboard, provide more kinds of monitoring data, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      placeholder: Explain what feels missing, inconvenient, or difficult today.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative
+    attributes:
+      label: How are you handling it today?
+      placeholder: Describe your current workaround, if any.
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      placeholder: Mockups, examples, links, or extra context.
+    validations:
+      required: false

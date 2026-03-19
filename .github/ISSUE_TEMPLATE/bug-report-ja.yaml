@@ -1,0 +1,62 @@
+name: バグ報告
+description: Obsern で発生した不具合を報告する
+title: "[バグ] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグ報告ありがとうございます。
+
+        短くても大丈夫なので、再現に必要な情報を教えてください。
+
+        セキュリティに関する問題や脆弱性の報告は、公開 Issue ではなく `SECURITY.md` の案内に従ってご連絡ください。
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 何が起きましたか？
+      placeholder: 最初の API リクエストがタイムアウトした、ダッシュボードが開けない、Slack 通知が届かない、など
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: どうすれば再現できますか？
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 本来はどうなるはずでしたか？
+      placeholder: ジョブがダッシュボードに表示される、通知が送られる、正常に画面が開く、など
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 環境
+      placeholder: |
+        - OS:
+        - CLI version:
+        - Browser:
+        - API / Dashboard / CLI:
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: ログやスクリーンショット
+      placeholder: エラーメッセージ、ログ、スクリーンショットなどがあれば貼ってください。
+    validations:
+      required: false

@@ -1,0 +1,44 @@
+name: 機能要望
+description: Obsern に追加してほしい機能や改善案を共有する
+title: "[機能要望] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        アイデアの共有ありがとうございます。
+
+        短くても大丈夫なので、気軽に書いてください。
+
+  - type: textarea
+    id: request
+    attributes:
+      label: どんな機能や改善がほしいですか？
+      placeholder: Teams 通知に対応してほしい、ダッシュボードでログをリアルタイム表示してほしい、監視できる情報の種類を増やしてほしい、など
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: それが必要な理由を教えてください
+      placeholder: 今どんな点が不便か、何が足りないと感じているかを書いてください。
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative
+    attributes:
+      label: 今はどうやって対応していますか？
+      placeholder: 回避方法や代替手段があれば教えてください。
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: その他あれば教えてください
+      placeholder: 参考例、リンク、画面イメージなど
+    validations:
+      required: false

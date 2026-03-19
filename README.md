@@ -300,6 +300,12 @@ Planned next steps:
 - Add Discord notifications
 - Set up a Docker-based local development environment
 
+If you try the beta, we would appreciate your feedback through GitHub Issues:
+
+- [Beta Feedback](https://github.com/kazuki-kanaya/obsern/issues/new?template=beta-feedback.yaml)
+- [Bug Report](https://github.com/kazuki-kanaya/obsern/issues/new?template=bug-report.yaml)
+- [Feature Request](https://github.com/kazuki-kanaya/obsern/issues/new?template=feature-request.yaml)
+
 ## License
 
 MIT
