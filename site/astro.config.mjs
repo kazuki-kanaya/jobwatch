@@ -19,7 +19,7 @@ export default defineConfig({
   [
     icon(),
     starlight({
-      title: "Obsern Docs",
+      title: "Obsern",
       description: "Lightweight job monitoring for long-running ML and compute experiments.",
       logo: {
         src: "./src/assets/logo.png",
@@ -36,7 +36,7 @@ export default defineConfig({
             { slug: "docs/cli/quickstart", label: "Quickstart" },
             { slug: "docs/cli/configuration", label: "Configuration" },
             { slug: "docs/cli/cli-reference", label: "CLI Reference" },
-            { slug: "docs/cli/notifications", label: "Notifications (Slack/Webhook)" },
+            { slug: "docs/cli/notifications", label: "Notifications" },
             { slug: "docs/cli/troubleshooting", label: "Troubleshooting" },
             { slug: "docs/cli/faq", label: "FAQ" },
           ],

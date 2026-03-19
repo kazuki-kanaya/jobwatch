@@ -3,7 +3,7 @@ title: Quickstart
 description: Initialize config and run your first monitoring flow.
 ---
 
-This guide gets you from zero to first notification in a few minutes.
+This guide gets you from zero to your first dashboard update or Slack notification in just a few steps.
 
 ## 1. Initialize Config
 
@@ -17,39 +17,40 @@ This creates `obsern.yaml`.
 
 Edit `obsern.yaml` and set at least one:
 
-- `api.token` for dashboard/API delivery
-- `notify.channels[].settings.webhook_url` for Slack/Webhook delivery
+- `api.host_token` and `api.base_url` for dashboard/API delivery
+- `notify.slack.webhook_url` for Slack delivery
 
 Minimal Slack example:
 
 ```yaml
+run:
+  tags: ["default"]
+  tail_lines: 80
+
 notify:
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  time_zone: "Asia/Tokyo"
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
 ## 3. Run a Command Through Obsern
 
 ```bash
-obsern run "echo start && sleep 2 && echo done"
+obsern run sh -c "echo start && sleep 2 && echo done"
 ```
 
 ## 4. Confirm Result
 
-- If Slack webhook is configured, confirm a message is posted.
-- If API token is configured, confirm the run appears in your dashboard.
+- If Slack is configured, confirm that a message is posted.
+- If the API is configured, confirm that the run appears in the dashboard.
 
 ## 5. Try a Failure Case
 
 ```bash
-obsern run "echo failing && exit 1"
+obsern run sh -c "echo failing && exit 1"
 ```
 
-If `notify.on_failure` is `true`, you should receive a failure notification.
+If Slack is configured, you should receive a failure notification. If the API is configured, the job should appear with a failed status in the dashboard.
 
 ## Next Step
 

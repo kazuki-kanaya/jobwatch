@@ -17,7 +17,7 @@ run:
   tail_lines: 0
 api:
   host_token: ${OBSERN_HOST_TOKEN}
-  base_url: https://api.obsern.com
+  base_url: https://api.obsern.dev
 notify:
   time_zone: Asia/Tokyo
   slack:
@@ -57,7 +57,7 @@ run:
   tail_line: 80
 api:
   host_token: token
-  base_url: https://api.obsern.com
+  base_url: https://api.obsern.dev
 `)
 
 		_, err := Load(path)
@@ -75,7 +75,7 @@ api:
 		path := writeTempConfig(t, `
 api:
   host_token: token
-  base_url: https://api.obsern.com
+  base_url: https://api.obsern.dev
 ---
 notify:
   slack:
@@ -99,7 +99,7 @@ run:
   tail_lines: 201
 api:
   host_token: token
-  base_url: https://api.obsern.com
+  base_url: https://api.obsern.dev
 `)
 
 		_, err := Load(path)

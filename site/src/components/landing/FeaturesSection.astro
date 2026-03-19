@@ -9,10 +9,10 @@ type Props = {
 const { messages } = Astro.props;
 ---
 
-<section id="features" class="mx-auto grid w-full max-w-7xl gap-8 px-4 py-16 md:grid-cols-2 md:px-8 md:py-20">
-  <div class="rounded-2xl border border-[#243448] bg-[#0f1928]/75 p-6 md:p-8">
+<section id="features" class="mx-auto grid w-full max-w-7xl gap-8 px-4 py-16 md:grid-cols-2 md:items-stretch md:px-8 md:py-20">
+  <div class="flex h-full flex-col rounded-2xl border border-[#243448] bg-[#0f1928]/75 p-6 md:p-8">
     <h2 class="text-3xl font-bold leading-tight text-white md:text-4xl">{messages.features.title}</h2>
-    <ul class="mt-8 space-y-6">
+    <ul class="mt-8 flex-1 space-y-6">
       {messages.features.cards.map((card) => (
         <li class="rounded-xl border border-[#2d3d52] bg-[#121f31] p-4">
           <p class="flex items-center gap-2 text-lg font-semibold text-white">
@@ -24,15 +24,94 @@ const { messages } = Astro.props;
       ))}
     </ul>
   </div>
-  <div class="relative overflow-visible rounded-2xl border border-[#2d3948] bg-[#0f1726] p-3 shadow-[0_20px_40px_rgba(2,6,23,0.28)] md:p-4">
-    <div class="overflow-hidden rounded-xl border border-[#223247] bg-[#0b1321] shadow-[0_12px_28px_rgba(2,6,23,0.32)]">
-      <img alt="Obsern dashboard preview" src="/landing/dashboard.png" class="h-full w-full object-contain object-center opacity-92" />
+  <div class="feature-tabs flex h-full flex-col rounded-2xl border border-[#2d3948] bg-[#0f1726] p-3 shadow-[0_20px_40px_rgba(2,6,23,0.28)] md:p-4">
+    <input id="feature-tab-dashboard" type="radio" name="feature-preview" class="sr-only" checked />
+    <input id="feature-tab-slack" type="radio" name="feature-preview" class="sr-only" />
+
+    <div class="feature-tab-triggers mb-4 flex gap-2 rounded-xl border border-[#233347] bg-[#0b1321]/85 p-1.5">
+      <label
+        for="feature-tab-dashboard"
+        class="feature-tab-trigger flex-1 rounded-lg border border-transparent px-4 py-2 text-center text-sm font-semibold text-slate-300 transition-[background-color,border-color,color,box-shadow] duration-200 hover:text-white"
+      >
+        {messages.features.tabs.dashboard}
+      </label>
+      <label
+        for="feature-tab-slack"
+        class="feature-tab-trigger flex-1 rounded-lg border border-transparent px-4 py-2 text-center text-sm font-semibold text-slate-300 transition-[background-color,border-color,color,box-shadow] duration-200 hover:text-white"
+      >
+        {messages.features.tabs.slackAlerts}
+      </label>
     </div>
-    <div class="absolute bottom-8 left-4 z-[9] -rotate-[6deg] overflow-hidden rounded-2xl border border-rose-300/65 bg-white/94 shadow-[0_18px_34px_rgba(2,6,23,0.42)] backdrop-blur-sm md:bottom-10 md:left-8 w-[50%]">
-      <img alt="Obsern slack success notification preview" src="/landing/slack-success.png" class="h-full w-full object-contain object-center" />
-    </div>
-    <div class="absolute bottom-2 right-2 z-10 rotate-[6deg] overflow-hidden rounded-2xl border border-[#a7f3d0]/60 bg-white/96 shadow-[0_22px_40px_rgba(2,6,23,0.52)] backdrop-blur-sm md:bottom-4 md:right-4 md:w-[40%]">
-      <img alt="Obsern slack failed notification preview" src="/landing/slack-failed.png" class="h-full w-full object-contain object-center" />
+
+    <div class="feature-tab-panels flex-1">
+      <div class="relative feature-tab-panel feature-tab-panel-dashboard h-full overflow-hidden rounded-xl border border-[#223247] bg-[#0b1321] shadow-[0_12px_28px_rgba(2,6,23,0.32)]">
+        <div class="flex min-h-[18rem] items-center justify-center p-3 md:absolute md:inset-0 md:min-h-0 md:p-4">
+          <img
+            alt="Obsern dashboard preview"
+            src="/landing/dashboard.png"
+            class="h-auto max-h-[24rem] w-full max-w-full rounded-lg object-contain object-center opacity-92 md:max-h-full"
+          />
+        </div>
+      </div>
+      <div class="relative feature-tab-panel feature-tab-panel-slack h-full overflow-hidden rounded-xl border border-[#223247] bg-[#0b1321] shadow-[0_12px_28px_rgba(2,6,23,0.32)]">
+        <div class="relative h-full min-h-[30rem] overflow-hidden rounded-2xl border border-[#1e2d42] bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_48%),#09111d] p-4 md:min-h-[36rem] md:p-6">
+          <div class="flex min-h-[24rem] items-center justify-center md:absolute md:inset-0 md:min-h-0 md:p-6">
+            <div class="grid w-fit max-w-3xl grid-cols-1 gap-6 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+              <div class="flex justify-center md:col-span-2">
+                <div class="w-full max-w-[400px] overflow-hidden rounded-2xl border border-emerald-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
+                  <img
+                    src="/landing/slack-success.png"
+                    alt="Slack notification showing a successful job run"
+                    class="block w-full h-auto"
+                  />
+                </div>
+              </div>
+
+              <div class="overflow-hidden rounded-2xl border border-amber-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
+                <img
+                  src="/landing/slack-canceled.png"
+                  alt="Slack notification showing a canceled job run"
+                  class="block w-full h-auto"
+                />
+              </div>
+
+              <div class="overflow-hidden rounded-2xl border border-rose-300/55 bg-white shadow-[0_18px_36px_rgba(2,6,23,0.35)]">
+                <img
+                  src="/landing/slack-failed.png"
+                  alt="Slack notification showing a failed job run"
+                  class="block w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .feature-tab-panels {
+    position: relative;
+    height: 100%;
+  }
+
+  .feature-tab-panel {
+    display: none;
+    height: 100%;
+  }
+
+  #feature-tab-dashboard:checked ~ .feature-tab-triggers label[for="feature-tab-dashboard"],
+  #feature-tab-slack:checked ~ .feature-tab-triggers label[for="feature-tab-slack"] {
+    border-color: rgba(96, 165, 250, 0.42);
+    background:
+      linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(59, 130, 246, 0.12));
+    color: white;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  #feature-tab-dashboard:checked ~ .feature-tab-panels .feature-tab-panel-dashboard,
+  #feature-tab-slack:checked ~ .feature-tab-panels .feature-tab-panel-slack {
+    display: block;
+  }
+</style>

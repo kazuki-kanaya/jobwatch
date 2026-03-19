@@ -8,8 +8,8 @@ description: よくある問題と対処方法。
 次の順に確認してください。
 
 1. `obsern.yaml` に次のどちらかがある
-   - `api.token`
-   - `notify.channels[].settings.webhook_url`
+   - `api.host_token`
+   - `notify.slack.webhook_url`
 2. 環境変数が正しく展開されている
 3. 実行コマンドが終了している（イベントは終了時に送信）
 
@@ -18,13 +18,13 @@ description: よくある問題と対処方法。
 - `webhook_url` の形式を確認
 - Webhook が有効な状態か確認
 - 実行環境の外向き通信が許可されているか確認
-- `notify.on_failure` が `true` か確認して失敗コマンドで再現
+- 失敗コマンドで再現して通知が届くか確認
 
-## Dashboard に実行が出ない
+## ダッシュボードに実行が出ない
 
-- `api.enabled: true` を確認
+- `api.host_token` が設定されているか確認
 - `api.base_url` が正しい環境を指しているか確認
-- `api.token` が対象ワークスペース/ホストのものか確認
+- `api.host_token` が対象ワークスペース/ホストのものか確認
 
 ## `obsern` コマンドが見つからない
 

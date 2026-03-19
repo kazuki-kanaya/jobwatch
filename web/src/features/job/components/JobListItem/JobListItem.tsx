@@ -51,11 +51,11 @@ export function JobListItem({
           onClick={() => onSelect(job.id)}
           className={cn("min-w-0 flex-1 cursor-pointer text-left")}
         >
-          <div className={cn("flex items-center gap-2")}>
-            <p className={cn("truncate text-base font-semibold text-slate-100")}>{job.command}</p>
+          <div className={cn("flex min-w-0 items-start gap-2")}>
+            <p className={cn("min-w-0 flex-1 truncate text-base font-semibold text-slate-100")}>{job.command}</p>
             <span
               className={cn(
-                "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium",
+                "shrink-0 inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium",
                 config.badgeClass,
               )}
             >
@@ -70,7 +70,9 @@ export function JobListItem({
             </p>
           </div>
         </button>
-        <JobListItemMenu jobId={job.id} canManage={canManage} deleteLabel={deleteLabel} onDeleteJob={onDelete} />
+        <div className={cn("shrink-0")}>
+          <JobListItemMenu jobId={job.id} canManage={canManage} deleteLabel={deleteLabel} onDeleteJob={onDelete} />
+        </div>
       </div>
     </article>
   );

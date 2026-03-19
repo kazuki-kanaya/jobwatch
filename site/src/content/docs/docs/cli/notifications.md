@@ -1,33 +1,35 @@
 ---
-title: Notifications (Slack/Webhook)
-description: Configure Slack/Webhook notifications.
+title: Notifications
+description: Configure notifications.
 ---
 
-## Configuration Example
+## Configuration Example (Slack)
 
 ```yaml
 notify:
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  time_zone: "Asia/Tokyo"
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
-Set `webhook_url` to your incoming webhook endpoint.
+Set `webhook_url` to your Slack Incoming Webhook URL.
 
 ## Behavior
 
-- `on_success: true`: send notification on success.
-- `on_failure: true`: send notification on failure.
+- Notifications are sent when a job reaches a terminal state.
+- Slack notifications include the command, tags, start and end times, and trailing log lines.
+- If `notify.time_zone` is set, timestamps are rendered in that time zone.
 
 ## Slack Examples
 
-<div class="grid grid-cols-1 gap-4 md:grid-cols-2 items-start">
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 items-start">
   <div class="!m-0">
     <p class="!m-0 !mb-2 font-semibold">Success</p>
     <img src="/docs/cli/slack-success.png" alt="Slack success notification example" class="block w-full h-auto !m-0 rounded border border-slate-200" />
+  </div>
+  <div class="!m-0">
+    <p class="!m-0 !mb-2 font-semibold">Canceled</p>
+    <img src="/docs/cli/slack-canceled.png" alt="Slack canceled notification example" class="block w-full h-auto !m-0 rounded border border-slate-200" />
   </div>
   <div class="!m-0">
     <p class="!m-0 !mb-2 font-semibold">Failure</p>

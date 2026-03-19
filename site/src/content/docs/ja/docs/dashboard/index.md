@@ -1,13 +1,13 @@
 ---
 title: Dashboard Guide
-description: Dashboard の全体フローと主要機能。
+description: ダッシュボードの全体フローと主要機能。
 ---
 
 ## 基本概念
 
 - `Workspace`: チーム運用の単位です。メンバー、ホスト、ジョブはワークスペースごとに管理されます。ワークスペースは複数作成できます。
-- `Host`: 1つのワークスペースに紐づく実行元マシンです。Dashboard でホストを作成し、一度きり表示されるトークンを `obsern.yaml` に設定します。
-- `Job`: `obsern run <command>` で送信される1プロセス分の実行記録です。プロセスのステータス、実行時間、ログ、コマンド情報を含みます。
+- `Host`: 1つのワークスペースに紐づく実行元マシンです。ダッシュボードでホストを作成し、一度きり表示されるトークンを `obsern.yaml` に設定します。
+- `Job`: `obsern run <command>` で送信される1プロセス分の実行記録です。ステータス、コマンド、タグ、時刻、ログ末尾を含みます。
 
 関係性:
 
@@ -20,7 +20,7 @@ description: Dashboard の全体フローと主要機能。
 <ol class="step-flow">
   <li>
     <h3>初期画面（ワークスペース作成前）</h3>
-    <p>アカウント作成後に Dashboard を開き、ログイン状態を確認します。</p>
+    <p>アカウント作成後にダッシュボードを開き、ログイン状態を確認します。</p>
     <img src="/docs/dashboard/flow-01-initial.png" alt="ワークスペース作成前の初期ダッシュボード画面" width="1100" />
   </li>
   <li>
@@ -36,7 +36,7 @@ description: Dashboard の全体フローと主要機能。
   </li>
   <li>
     <h3>ジョブ一覧と詳細</h3>
-    <p>Obsern 経由で実行した結果が届くことを確認し、詳細ログを確認します。</p>
+    <p>Obsern 経由で実行した結果が届くことを確認し、ステータス、タグ、時刻、詳細ログを確認します。</p>
     <img src="/docs/dashboard/flow-05-jobs-detail.png" alt="ジョブ一覧と詳細パネル" width="920" />
   </li>
   <li>

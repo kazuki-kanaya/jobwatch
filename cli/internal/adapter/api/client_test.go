@@ -17,9 +17,9 @@ func TestNewClient(t *testing.T) {
 		token   string
 		wantErr string
 	}{
-		{name: "valid base url", baseURL: "https://api.obsern.com/", token: "token"},
+		{name: "valid base url", baseURL: "https://api.obsern.dev/", token: "token"},
 		{name: "missing base url", baseURL: "", token: "token", wantErr: "baseURL is required"},
-		{name: "missing host token", baseURL: "https://api.obsern.com", token: "", wantErr: "hostToken is required"},
+		{name: "missing host token", baseURL: "https://api.obsern.dev", token: "", wantErr: "hostToken is required"},
 		{name: "relative base url", baseURL: "/api", token: "token", wantErr: "baseURL must be an absolute URL"},
 	}
 
@@ -57,7 +57,7 @@ func TestClientCreateJob(t *testing.T) {
 		gotBody   string
 	)
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		gotMethod = req.Method
 		gotPath = req.URL.Path
 		gotAuth = req.Header.Get("Authorization")
@@ -100,7 +100,7 @@ func TestClientCreateJob(t *testing.T) {
 func TestClientCreateJobRequiresResponseID(t *testing.T) {
 	t.Parallel()
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		return jsonResponse(http.StatusCreated, `{}`), nil
 	})
 
@@ -122,7 +122,7 @@ func TestClientUpdateJob(t *testing.T) {
 		gotBody   string
 	)
 
-	client := newClientWithTransport(t, "https://api.obsern.com/api/", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev/api/", func(req *http.Request) (*http.Response, error) {
 		gotMethod = req.Method
 		gotPath = req.URL.Path
 
@@ -158,7 +158,7 @@ func TestClientUpdateJob(t *testing.T) {
 func TestClientUpdateJobRequiresJobID(t *testing.T) {
 	t.Parallel()
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		t.Fatal("transport should not be called")
 		return nil, nil
 	})
@@ -175,7 +175,7 @@ func TestClientUpdateJobRequiresJobID(t *testing.T) {
 func TestClientReturnsHTTPError(t *testing.T) {
 	t.Parallel()
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		return jsonResponse(http.StatusBadRequest, `bad request`), nil
 	})
 
@@ -191,7 +191,7 @@ func TestClientReturnsHTTPError(t *testing.T) {
 func TestClientReturnsHTTPErrorWithoutBody(t *testing.T) {
 	t.Parallel()
 
-	client := newClientWithTransport(t, "https://api.obsern.com", func(req *http.Request) (*http.Response, error) {
+	client := newClientWithTransport(t, "https://api.obsern.dev", func(req *http.Request) (*http.Response, error) {
 		return jsonResponse(http.StatusInternalServerError, ``), nil
 	})
 

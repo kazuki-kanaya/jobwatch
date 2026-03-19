@@ -8,118 +8,94 @@ description: Configure Obsern in obsern.yaml.
 ## Base Template
 
 ```yaml
-project:
-  name: my_project
-  tags:
-    - monitoring
+run:
+  tags: ["default"]
+  tail_lines: 80
 
 api:
-  enabled: true
+  host_token: ${OBSERN_HOST_TOKEN}
   base_url: https://api.obsern.dev
-  token: ${OBSERN_HOST_TOKEN}
-
-run:
-  log_tail: 80
 
 notify:
-  enabled: true
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  time_zone: "Asia/Tokyo"
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
 ## Required Minimum
 
-At least one of the following must be enabled:
+Set at least one of the following:
 
-- `api.enabled`
-- `notify.enabled`
+- `api`
+- `notify.slack`
 
-If both are `false`, validation fails and `obsern run` stops.
+If both are missing, validation fails and `obsern run` stops.
 
 ## Field Reference
 
-- `project.name`: Project identifier shown in notifications and dashboard.
-- `project.tags`: Optional tags for grouping jobs.
-- `api.enabled`: Enable/disable API publishing.
-- `api.base_url`: API endpoint when API publishing is enabled.
-- `api.token`: Host token issued from the dashboard.
-- `run.log_tail`: Number of log lines included in final event payload.
-- `notify.enabled`: Enable/disable notifications entirely.
-- `notify.on_success`: Send notification on successful exit.
-- `notify.on_failure`: Send notification on failed exit.
-- `notify.channels`: Notification destinations.
-- `notify.channels[].kind`: Channel type. Use `slack` for Slack webhook.
-- `notify.channels[].settings.webhook_url`: Incoming webhook URL.
+- `run.tags`: Tags added to jobs and notifications.
+- `run.tail_lines`: Number of trailing log lines to keep. Allowed range: `0` to `200`.
+- `api.host_token`: Host token issued from the dashboard.
+- `api.base_url`: Absolute API URL used to publish job status.
+- `notify.time_zone`: IANA time zone used when rendering notification timestamps, for example `Asia/Tokyo`.
+- `notify.slack.webhook_url`: Slack Incoming Webhook URL.
 
 ## Common Setup Patterns
 
-API token only:
+API only:
 
 ```yaml
-api:
-  enabled: true
-  base_url: https://api.obsern.dev
-  token: ${OBSERN_HOST_TOKEN}
+run:
+  tags: ["default"]
+  tail_lines: 80
 
-notify:
-  enabled: false
-  on_success: true
-  on_failure: true
-  channels: []
+api:
+  host_token: ${OBSERN_HOST_TOKEN}
+  base_url: https://api.obsern.dev
 ```
 
-Slack webhook only:
+Slack only:
 
 ```yaml
-api:
-  enabled: false
+run:
+  tags: ["default"]
+  tail_lines: 80
 
 notify:
-  enabled: true
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  time_zone: "Asia/Tokyo"
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
-Hybrid (recommended):
+API + Slack:
 
 ```yaml
+run:
+  tags: ["default"]
+  tail_lines: 80
+
 api:
-  enabled: true
+  host_token: ${OBSERN_HOST_TOKEN}
   base_url: https://api.obsern.dev
-  token: ${OBSERN_HOST_TOKEN}
 
 notify:
-  enabled: true
-  on_success: true
-  on_failure: true
-  channels:
-    - kind: slack
-      settings:
-        webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  time_zone: "Asia/Tokyo"
+  slack:
+    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
 ## Environment Variables
 
-Prefer environment variables for secrets instead of hardcoding them in `obsern.yaml`.
-If you do hardcode them, handle the file carefully, for example by excluding `obsern.yaml` from Git.
+Use environment variables for secrets instead of hardcoding them in `obsern.yaml`.
 
 ```bash
 export OBSERN_HOST_TOKEN="<your-host-token>"
 export OBSERN_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
 ```
 
-## Validation Checklist
-
-Before running jobs:
+## Pre-run Checklist
 
 - `obsern.yaml` exists.
-- At least one of `api.enabled` or `notify.enabled` is `true`.
+- Either `api` or `notify.slack` is configured.
+- `run.tail_lines` is within the range `0` to `200`.
 - Environment variables are available in the same shell session.

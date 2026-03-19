@@ -3,13 +3,13 @@ title: Jobs
 description: Verify and manage job history.
 ---
 
-Use dashboard to check execution status and inspect failures.
+Use the dashboard to review execution results and inspect job details.
 
 ## What to Check
 
-- Success/failure status
+- Running / completed / failed / canceled status
 - Duration and timestamps
-- Error field and recent logs
+- Tags and recent logs
 
 <img src="/docs/dashboard/flow-05-jobs-detail.png" alt="Job list with status and detail panel" width="920" />
 

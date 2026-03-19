@@ -7,7 +7,7 @@ description: Dashboard overview and core workflow.
 
 - `Workspace`: A team boundary. Members, hosts, and jobs are managed per workspace. You can create multiple workspaces.
 - `Host`: A machine/execution source that belongs to one workspace. Create a host in the dashboard and use its one-time token in `obsern.yaml`.
-- `Job`: One process execution record sent by `obsern run <command>`. Each job includes process status, duration, logs, and command context.
+- `Job`: One process execution record sent by `obsern run <command>`. Each job includes status, command, tags, timestamps, and trailing logs.
 
 Relationship:
 
@@ -36,7 +36,7 @@ Use this flow when onboarding a new workspace:
   </li>
   <li>
     <h3>Jobs and details</h3>
-    <p>Run commands via Obsern and confirm status, metadata, and logs in the jobs panel.</p>
+    <p>Run commands through Obsern, then review status, tags, timestamps, and trailing logs in the jobs panel.</p>
     <img src="/docs/dashboard/flow-05-jobs-detail.png" alt="Job list and job detail view" width="920" />
   </li>
   <li>

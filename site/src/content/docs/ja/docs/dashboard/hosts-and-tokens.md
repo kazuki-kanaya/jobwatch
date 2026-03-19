@@ -27,9 +27,8 @@ description: ホスト作成とトークン発行。
 
 ```yaml
 api:
-  enabled: true
+  host_token: ${OBSERN_HOST_TOKEN}
   base_url: https://api.obsern.dev
-  token: ${OBSERN_HOST_TOKEN}
 ```
 
 ```bash

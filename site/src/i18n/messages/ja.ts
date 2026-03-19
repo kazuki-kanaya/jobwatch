@@ -5,7 +5,7 @@ export const jaMessages = {
   languageSwitchLabel: "English",
   nav: {
     features: "機能",
-    howItWorks: "必要な理由",
+    howItWorks: "導入理由",
     comparison: "比較",
     docs: "ドキュメント",
     getStarted: "始める",
@@ -17,7 +17,7 @@ export const jaMessages = {
     titleTail: "での生存確認に時間を使わない。",
     subtitle:
       "機械学習などの長時間プロセスをリアルタイムで追跡。完了・失敗の通知と実行状況を、コード変更なしで一元管理。",
-    installHeading: "Install",
+    installHeading: "Installation",
     copyLabel: "コピー",
     copiedLabel: "コピー済み",
     quickStartLines: [
@@ -31,7 +31,7 @@ export const jaMessages = {
   },
   pain: {
     eyebrow: "開発現場の課題",
-    title: "Obsernが必要な理由",
+    title: "Obsernがなぜ必要か？",
     subtitle:
       "SSHでプロセスを都度確認する運用は、完了の見逃しや異常終了の発見遅れを生みます。Obsernはその “待ち時間と手戻り” を減らし、運用の負担を軽減します。",
     cards: [
@@ -51,6 +51,10 @@ export const jaMessages = {
   },
   features: {
     title: "実行状況を、個人でもチームでも確実に把握。",
+    tabs: {
+      dashboard: "ダッシュボード",
+      slackAlerts: "Slack通知",
+    },
     cards: [
       {
         title: "コード変更不要",
