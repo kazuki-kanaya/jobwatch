@@ -14,6 +14,7 @@ type HostItemProps = {
     completed: string;
     canceled: string;
     failed: string;
+    unavailable: string;
   };
   onEditHost: (hostId: string) => void;
   onDeleteHost: (hostId: string) => void;
@@ -97,13 +98,24 @@ export function HostItem({
               </div>
             ))}
           </div>
+        ) : host.snapshotState === "error" ? (
+          <div className={cn("flex min-w-0 flex-wrap gap-2 pt-0.5 xl:max-w-[720px] xl:justify-end")}>
+            <span
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-full border border-rose-400/20 bg-rose-500/8 px-2.5 py-1 text-xs font-medium",
+              )}
+            >
+              <CircleAlert className={cn("size-3.5 text-rose-200/90")} />
+              <span className={cn("text-rose-100/85")}>{snapshotLabels.unavailable}</span>
+            </span>
+          </div>
         ) : (
           <div className={cn("flex min-w-0 flex-wrap gap-2 pt-0.5 xl:max-w-[720px] xl:justify-end")}>
             {snapshotItems.map((item) => (
               <span
                 key={item.key}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",
+                  "inline-flex min-w-[92px] items-center justify-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",
                   item.chipClassName,
                 )}
               >

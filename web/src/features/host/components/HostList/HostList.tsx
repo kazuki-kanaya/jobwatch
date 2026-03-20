@@ -17,6 +17,7 @@ type HostListProps = {
     completed: string;
     canceled: string;
     failed: string;
+    unavailable: string;
   };
   canManage: boolean;
   onEditHost: (hostId: string) => void;

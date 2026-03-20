@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import type { HostViewState } from "@/features/host/components/types";
 import type { SnapshotMetrics, SnapshotViewState } from "@/features/snapshot";
-import { JobStatus } from "@/generated/api";
+import { buildSnapshotMetrics, EMPTY_SNAPSHOT } from "@/features/snapshot";
+import type { JobStatus } from "@/generated/api";
 
 type HostSummaryItem = {
   host_id: string;
@@ -29,27 +30,6 @@ type UseHostViewModelParams = {
   isSnapshotError: boolean;
 };
 
-const EMPTY_SNAPSHOT: SnapshotMetrics = {
-  tracked: 0,
-  running: 0,
-  completed: 0,
-  canceled: 0,
-  failed: 0,
-};
-
-const createSnapshot = (jobs: SnapshotJob[]): SnapshotMetrics =>
-  jobs.reduce<SnapshotMetrics>(
-    (acc, job) => {
-      acc.tracked += 1;
-      if (job.status === JobStatus.running) acc.running += 1;
-      if (job.status === JobStatus.finished) acc.completed += 1;
-      if (job.status === JobStatus.canceled) acc.canceled += 1;
-      if (job.status === JobStatus.failed) acc.failed += 1;
-      return acc;
-    },
-    { tracked: 0, running: 0, completed: 0, canceled: 0, failed: 0 },
-  );
-
 export const useHostViewModel = ({
   workspaceId,
   hosts: hostItems,
@@ -74,7 +54,7 @@ export const useHostViewModel = ({
       buckets.set(job.host_id, [job]);
     }
 
-    return new Map(Array.from(buckets.entries()).map(([hostId, jobs]) => [hostId, createSnapshot(jobs)]));
+    return new Map(Array.from(buckets.entries()).map(([hostId, jobs]) => [hostId, buildSnapshotMetrics(jobs)]));
   }, [jobItems, workspaceId]);
 
   const hosts = useMemo(() => {

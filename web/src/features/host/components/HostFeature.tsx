@@ -103,6 +103,7 @@ export function HostFeature({ workspaceId, currentUser }: HostFeatureProps) {
             completed: t("dashboard_snapshot_completed"),
             canceled: t("dashboard_snapshot_canceled"),
             failed: t("dashboard_snapshot_failed"),
+            unavailable: t("dashboard_snapshot_unavailable"),
           }}
           canManage={canManage}
           onEditHost={hostCrud.startEditHost}

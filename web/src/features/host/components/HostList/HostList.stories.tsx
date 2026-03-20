@@ -33,6 +33,7 @@ const meta = {
       completed: "Completed",
       canceled: "Canceled",
       failed: "Failed",
+      unavailable: "Unavailable",
     },
     canManage: true,
     onEditHost: () => {},

@@ -140,6 +140,7 @@ export const enMessages = {
   dashboard_snapshot_completed: "Completed",
   dashboard_snapshot_canceled: "Canceled",
   dashboard_snapshot_failed: "Failed",
+  dashboard_snapshot_unavailable: "Snapshot unavailable",
   dashboard_all: "All",
 
   invite_title: "Join workspace",

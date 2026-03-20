@@ -125,6 +125,7 @@ export type Messages = {
   dashboard_snapshot_completed: string;
   dashboard_snapshot_canceled: string;
   dashboard_snapshot_failed: string;
+  dashboard_snapshot_unavailable: string;
   dashboard_all: string;
   invite_title: string;
   invite_subtitle: string;

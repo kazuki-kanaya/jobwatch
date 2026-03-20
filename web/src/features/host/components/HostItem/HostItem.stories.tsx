@@ -26,6 +26,7 @@ const meta = {
       completed: "Completed",
       canceled: "Canceled",
       failed: "Failed",
+      unavailable: "Snapshot Unavailable",
     },
     onEditHost: () => {},
     onDeleteHost: () => {},
@@ -73,6 +74,23 @@ export const SnapshotLoading: Story = {
         failed: 0,
       },
       snapshotState: "loading",
+    },
+  },
+};
+
+export const SnapshotError: Story = {
+  args: {
+    host: {
+      id: "host-21f9c329",
+      name: "runner-tokyo-01",
+      snapshot: {
+        tracked: 0,
+        running: 0,
+        completed: 0,
+        canceled: 0,
+        failed: 0,
+      },
+      snapshotState: "error",
     },
   },
 };
