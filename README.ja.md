@@ -23,6 +23,10 @@
   <sub>※ Obsern 公式サーバーは現在 β 版として試験的に提供中であり、予告なく停止・変更される場合があります。</sub>
 </p>
 
+<p align="center">
+  <img src="./assets/demo.gif" alt="Obsern Demo" width="800" />
+</p>
+
 Obsern は、長時間ジョブの実行状態を軽量に追跡するためのツールです。
 
 数時間から数日かかるプロセスを対象に、次のことをCLIで扱いやすくします。

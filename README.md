@@ -23,6 +23,10 @@
   <sub>The hosted Obsern service is currently available as an experimental beta and may change or become unavailable without notice.</sub>
 </p>
 
+<p align="center">
+  <img src="./assets/demo.gif" alt="Obsern Demo" width="800" />
+</p>
+
 Obsern is a lightweight tool for tracking long-running jobs.
 
 It is designed to make the following easier to handle from the CLI for processes that run from hours to days.
