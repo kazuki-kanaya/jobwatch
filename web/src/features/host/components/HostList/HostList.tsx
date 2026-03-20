@@ -11,6 +11,13 @@ type HostListProps = {
   errorLabel: string;
   editLabel: string;
   deleteLabel: string;
+  snapshotLabels: {
+    tracked: string;
+    running: string;
+    completed: string;
+    canceled: string;
+    failed: string;
+  };
   canManage: boolean;
   onEditHost: (hostId: string) => void;
   onDeleteHost: (hostId: string) => void;
@@ -24,6 +31,7 @@ export function HostList({
   errorLabel,
   editLabel,
   deleteLabel,
+  snapshotLabels,
   canManage,
   onEditHost,
   onDeleteHost,
@@ -66,6 +74,7 @@ export function HostList({
           canManage={canManage}
           editLabel={editLabel}
           deleteLabel={deleteLabel}
+          snapshotLabels={snapshotLabels}
           onEditHost={onEditHost}
           onDeleteHost={onDeleteHost}
         />

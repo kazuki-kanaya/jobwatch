@@ -9,9 +9,10 @@ import { HostTokenDialog } from "@/features/host/components/HostTokenDialog/Host
 import { useHostCrud } from "@/features/host/hooks/useHostCrud";
 import { useHostPermissions } from "@/features/host/hooks/useHostPermissions";
 import { useHostViewModel } from "@/features/host/hooks/useHostViewModel";
-import { useMemberQueries } from "@/features/member/api/useMemberQueries";
+import { useJobQueries } from "@/features/job";
+import { useMemberQueries } from "@/features/member";
 import type { CurrentUser } from "@/features/user";
-import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
+import { useWorkspaceQueries } from "@/features/workspace";
 import { useLocale } from "@/i18n/LocaleProvider";
 
 type HostFeatureProps = {
@@ -34,6 +35,11 @@ export function HostFeature({ workspaceId, currentUser }: HostFeatureProps) {
     enabled: canAccessFeature,
     workspaceId,
   });
+  const { jobsQuery } = useJobQueries({
+    accessToken,
+    enabled: canAccessFeature,
+    workspaceId,
+  });
   const { hostsQuery } = useHostQueries({
     accessToken,
     enabled: canAccessFeature,
@@ -47,9 +53,12 @@ export function HostFeature({ workspaceId, currentUser }: HostFeatureProps) {
   const { hosts, workspaceName, viewState } = useHostViewModel({
     workspaceId,
     hosts: hostsQuery.data,
+    jobs: jobsQuery.data,
     workspaces: workspacesQuery.data?.workspaces,
     isLoading: hostsQuery.isLoading,
     isError: hostsQuery.isError,
+    isSnapshotLoading: jobsQuery.isLoading,
+    isSnapshotError: jobsQuery.isError,
   });
   const isLoading = viewState === "loading";
   const isError = viewState === "error";
@@ -88,6 +97,13 @@ export function HostFeature({ workspaceId, currentUser }: HostFeatureProps) {
           errorLabel={t("dashboard_hosts_error")}
           editLabel={t("dashboard_edit")}
           deleteLabel={t("dashboard_delete")}
+          snapshotLabels={{
+            tracked: t("dashboard_snapshot_tracked"),
+            running: t("dashboard_snapshot_running"),
+            completed: t("dashboard_snapshot_completed"),
+            canceled: t("dashboard_snapshot_canceled"),
+            failed: t("dashboard_snapshot_failed"),
+          }}
           canManage={canManage}
           onEditHost={hostCrud.startEditHost}
           onDeleteHost={hostCrud.requestDeleteHost}

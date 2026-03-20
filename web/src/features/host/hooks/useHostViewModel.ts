@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import type { HostViewState } from "@/features/host/components/types";
+import type { SnapshotMetrics, SnapshotViewState } from "@/features/snapshot";
+import { JobStatus } from "@/generated/api";
 
 type HostSummaryItem = {
   host_id: string;
@@ -11,28 +13,79 @@ type WorkspaceSummaryItem = {
   name: string;
 };
 
+type SnapshotJob = {
+  host_id: string;
+  status: JobStatus;
+};
+
 type UseHostViewModelParams = {
   workspaceId: string;
   hosts: HostSummaryItem[] | undefined;
+  jobs: SnapshotJob[] | undefined;
   workspaces: WorkspaceSummaryItem[] | undefined;
   isLoading: boolean;
   isError: boolean;
+  isSnapshotLoading: boolean;
+  isSnapshotError: boolean;
 };
+
+const EMPTY_SNAPSHOT: SnapshotMetrics = {
+  tracked: 0,
+  running: 0,
+  completed: 0,
+  canceled: 0,
+  failed: 0,
+};
+
+const createSnapshot = (jobs: SnapshotJob[]): SnapshotMetrics =>
+  jobs.reduce<SnapshotMetrics>(
+    (acc, job) => {
+      acc.tracked += 1;
+      if (job.status === JobStatus.running) acc.running += 1;
+      if (job.status === JobStatus.finished) acc.completed += 1;
+      if (job.status === JobStatus.canceled) acc.canceled += 1;
+      if (job.status === JobStatus.failed) acc.failed += 1;
+      return acc;
+    },
+    { tracked: 0, running: 0, completed: 0, canceled: 0, failed: 0 },
+  );
 
 export const useHostViewModel = ({
   workspaceId,
   hosts: hostItems,
+  jobs: jobItems,
   workspaces: workspaceItems,
   isLoading,
   isError,
+  isSnapshotLoading,
+  isSnapshotError,
 }: UseHostViewModelParams) => {
+  const snapshotState: SnapshotViewState = isSnapshotLoading ? "loading" : isSnapshotError ? "error" : "ready";
+  const snapshotByHostId = useMemo(() => {
+    if (!workspaceId) return new Map<string, SnapshotMetrics>();
+
+    const buckets = new Map<string, SnapshotJob[]>();
+    for (const job of jobItems ?? []) {
+      const current = buckets.get(job.host_id);
+      if (current) {
+        current.push(job);
+        continue;
+      }
+      buckets.set(job.host_id, [job]);
+    }
+
+    return new Map(Array.from(buckets.entries()).map(([hostId, jobs]) => [hostId, createSnapshot(jobs)]));
+  }, [jobItems, workspaceId]);
+
   const hosts = useMemo(() => {
     const items = hostItems ?? [];
     return items.map((host) => ({
       id: host.host_id,
       name: host.name,
+      snapshot: snapshotByHostId.get(host.host_id) ?? EMPTY_SNAPSHOT,
+      snapshotState,
     }));
-  }, [hostItems]);
+  }, [hostItems, snapshotByHostId, snapshotState]);
 
   const workspaceName = useMemo(() => {
     const workspaces = workspaceItems ?? [];

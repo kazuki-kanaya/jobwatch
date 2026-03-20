@@ -1,5 +1,5 @@
 import { useAuth } from "react-oidc-context";
-import { useJobQueries } from "@/features/job/api/useJobQueries";
+import { useJobQueries } from "@/features/job";
 import { SnapshotSection } from "@/features/snapshot/components/SnapshotSection/SnapshotSection";
 import { useSnapshotViewModel } from "@/features/snapshot/hooks/useSnapshotViewModel";
 import { useLocale } from "@/i18n/LocaleProvider";

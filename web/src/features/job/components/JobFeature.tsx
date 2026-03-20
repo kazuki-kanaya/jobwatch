@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { toast } from "sonner";
-import { useHostQueries } from "@/features/host/api/useHostQueries";
+import { useHostQueries } from "@/features/host";
 import { useJobMutations } from "@/features/job/api/useJobMutations";
 import { useJobQueries } from "@/features/job/api/useJobQueries";
 import { JobDeleteDialog } from "@/features/job/components/JobDeleteDialog/JobDeleteDialog";
@@ -12,7 +12,7 @@ import type { JobStatusUi } from "@/features/job/components/types";
 import { useJobPermissions } from "@/features/job/hooks/useJobPermissions";
 import { useJobSelection } from "@/features/job/hooks/useJobSelection";
 import { useJobViewModel } from "@/features/job/hooks/useJobViewModel";
-import { useMemberQueries } from "@/features/member/api/useMemberQueries";
+import { useMemberQueries } from "@/features/member";
 import type { CurrentUser } from "@/features/user";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { useDisplaySettings } from "@/providers/DisplaySettingsProvider";
