@@ -8,6 +8,7 @@ const jobs = [
     id: "job-fc2a7a37",
     workspaceId: "workspace-6876ae4f",
     hostId: "host-92cba371",
+    hostName: "gpu-server-1",
     startedAtIso: "2026-03-08T09:38:00.000Z",
     command: "python train_model.py --epochs 20",
     tags: ["monitoring", "cli", "testing"],
@@ -33,6 +34,7 @@ const meta = {
         errorLabel="Failed to load jobs."
         deleteLabel="Delete"
         canManage={true}
+        hostLabel="Host"
         startedAtLabel="Started At"
         durationLabel="Duration"
         statusLabels={{
@@ -57,6 +59,7 @@ const meta = {
         copiedLabel="Copied"
         labels={{
           jobId: "Job ID",
+          hostId: "Host ID",
           status: "Status",
           tags: "Tags",
           startedAt: "Started At",

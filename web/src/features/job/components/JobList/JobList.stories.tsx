@@ -6,6 +6,7 @@ const baseJobs = [
     id: "job-fc2a7a37",
     workspaceId: "workspace-6876ae4f",
     hostId: "host-92cba371",
+    hostName: "gpu-server-1",
     startedAtIso: "2026-03-08T09:38:00.000Z",
     command: "python train_model.py --epochs 20",
     tags: ["monitoring", "cli", "testing"],
@@ -19,6 +20,7 @@ const baseJobs = [
     id: "job-ab12cd34",
     workspaceId: "workspace-6876ae4f",
     hostId: "host-92cba371",
+    hostName: "gpu-server-1",
     startedAtIso: "2026-03-08T08:10:00.000Z",
     command: "node dist/index.js --sync",
     tags: ["batch"],
@@ -41,6 +43,7 @@ const meta = {
     errorLabel: "Failed to load jobs.",
     deleteLabel: "Delete",
     canManage: true,
+    hostLabel: "Host",
     startedAtLabel: "Started At",
     durationLabel: "Duration",
     statusLabels: {

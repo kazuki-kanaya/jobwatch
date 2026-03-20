@@ -25,6 +25,7 @@ type JobMetaGridProps = {
     startedAt: string;
     finishedAt: string;
     jobId: string;
+    hostId: string;
     tags: string;
   };
 };
@@ -33,6 +34,7 @@ export function JobMetaGrid({ selectedJob, statusLabel, labels }: JobMetaGridPro
   return (
     <div className={cn("grid gap-3 md:grid-cols-2")}>
       <MetaRow label={labels.jobId} value={selectedJob.id} />
+      <MetaRow label={labels.hostId} value={selectedJob.hostId} />
       <MetaRow label={labels.status} value={statusLabel} />
       <MetaRow label={labels.duration} value={selectedJob.duration} />
       <MetaRow label={labels.startedAt} value={selectedJob.startedAt} />

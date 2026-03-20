@@ -15,6 +15,7 @@ type JobListItemProps = {
   isSelected: boolean;
   canManage: boolean;
   deleteLabel: string;
+  hostLabel: string;
   statusLabel: string;
   startedAtLabel: string;
   durationLabel: string;
@@ -27,6 +28,7 @@ export function JobListItem({
   isSelected,
   canManage,
   deleteLabel,
+  hostLabel,
   statusLabel,
   startedAtLabel,
   durationLabel,
@@ -65,6 +67,9 @@ export function JobListItem({
           </div>
           <div className={cn("mt-1 space-y-1")}>
             <p className={cn("truncate font-mono text-xs text-slate-300/80")}>{job.id}</p>
+            <p className={cn("truncate text-xs text-slate-400")}>
+              {hostLabel}: {job.hostName}
+            </p>
             <p className={cn("truncate text-xs text-slate-400")}>
               {startedAtLabel}: {job.startedAt} / {durationLabel}: {job.duration}
             </p>

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { toast } from "sonner";
+import { useHostQueries } from "@/features/host/api/useHostQueries";
 import { useJobMutations } from "@/features/job/api/useJobMutations";
 import { useJobQueries } from "@/features/job/api/useJobQueries";
 import { JobDeleteDialog } from "@/features/job/components/JobDeleteDialog/JobDeleteDialog";
@@ -33,6 +34,11 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
     enabled: canAccessFeature,
     workspaceId,
   });
+  const { hostsQuery } = useHostQueries({
+    accessToken,
+    enabled: canAccessFeature,
+    workspaceId,
+  });
 
   const { membersQuery } = useMemberQueries({
     accessToken,
@@ -44,6 +50,10 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
     currentUser,
     members: membersQuery.data?.members,
   });
+  const hostNameById = useMemo(
+    () => new Map((hostsQuery.data ?? []).map((host) => [host.host_id, host.name])),
+    [hostsQuery.data],
+  );
 
   const { jobs, viewState } = useJobViewModel({
     workspaceId,
@@ -52,6 +62,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
       isLoading: jobsQuery.isLoading,
       isError: jobsQuery.isError,
     },
+    hostNameById,
     formatDateTime,
   });
 
@@ -95,6 +106,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
           errorLabel={t("dashboard_jobs_error")}
           deleteLabel={t("dashboard_delete")}
           canManage={canManage}
+          hostLabel={t("dashboard_host")}
           startedAtLabel={t("dashboard_started_at")}
           durationLabel={t("dashboard_duration")}
           statusLabels={statusLabels}
@@ -114,6 +126,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
           statusLabel={selectedJob ? statusLabels[selectedJob.status] : null}
           labels={{
             jobId: t("dashboard_job_id"),
+            hostId: t("dashboard_job_host_id"),
             status: t("dashboard_status"),
             tags: t("dashboard_tags"),
             startedAt: t("dashboard_started_at"),

@@ -4,6 +4,7 @@ export type JobListItem = {
   id: string;
   workspaceId: string;
   hostId: string;
+  hostName: string;
   startedAtIso: string;
   command: string;
   tags: string[];

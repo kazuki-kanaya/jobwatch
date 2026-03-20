@@ -3,9 +3,7 @@ import type { Messages } from "@/i18n/messages/types";
 export const enMessages = {
   dashboard_title: "Obsern Control Deck",
   dashboard_subtitle: "Monitor command processes (jobs) across workspaces and GPU hosts.",
-  dashboard_filter_workspace: "Workspace",
-  dashboard_filter_host: "Host",
-  dashboard_filter_query: "Search",
+  dashboard_host: "Host",
   dashboard_updated_at_label: "Last updated",
   dashboard_mission_control: "Mission Control",
   dashboard_current_user: "Signed-in user",
@@ -37,6 +35,7 @@ export const enMessages = {
   dashboard_detail: "Details",
   dashboard_selected_job: "Selected job",
   dashboard_job_id: "Job ID",
+  dashboard_job_host_id: "Host ID",
   dashboard_project: "Project",
   dashboard_latest_logs: "Latest logs",
   dashboard_command: "Command",
