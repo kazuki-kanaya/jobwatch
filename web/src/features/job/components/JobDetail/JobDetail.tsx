@@ -14,6 +14,7 @@ type JobDetailProps = {
   emptyLabel: string;
   labels: {
     jobId: string;
+    hostId: string;
     status: string;
     tags: string;
     startedAt: string;
@@ -97,6 +98,7 @@ export function JobDetail({
               startedAt: labels.startedAt,
               finishedAt: labels.finishedAt,
               jobId: labels.jobId,
+              hostId: labels.hostId,
               tags: labels.tags,
             }}
           />

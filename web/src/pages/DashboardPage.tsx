@@ -7,9 +7,7 @@ import { JobFeature } from "@/features/job";
 import { MemberFeature } from "@/features/member";
 import { SnapshotFeature } from "@/features/snapshot";
 import { useCurrentUser } from "@/features/user";
-import { WorkspaceFeature } from "@/features/workspace";
-import { WorkspaceContentTabs } from "@/features/workspace/components/WorkspaceContentTabs/WorkspaceContentTabs";
-import { WorkspaceHeader } from "@/features/workspace/components/WorkspaceHeader/WorkspaceHeader";
+import { WorkspaceContentTabs, WorkspaceFeature, WorkspaceHeader } from "@/features/workspace";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 

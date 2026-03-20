@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { useInvitationMutations } from "@/features/invitation/api/useInvitationMutations";
+import { useInvitationMutations } from "@/features/invitation";
 import { useWorkspaceMutations } from "@/features/workspace/api/useWorkspaceMutations";
 
 type WorkspaceOption = {

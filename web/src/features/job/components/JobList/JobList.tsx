@@ -12,6 +12,7 @@ type JobListProps = {
   errorLabel: string;
   deleteLabel: string;
   canManage: boolean;
+  hostLabel: string;
   startedAtLabel: string;
   durationLabel: string;
   statusLabels: Record<JobStatusUi, string>;
@@ -27,6 +28,7 @@ export function JobList({
   errorLabel,
   deleteLabel,
   canManage,
+  hostLabel,
   startedAtLabel,
   durationLabel,
   statusLabels,
@@ -75,6 +77,7 @@ export function JobList({
           isSelected={job.id === selectedJobId}
           canManage={canManage}
           deleteLabel={deleteLabel}
+          hostLabel={hostLabel}
           statusLabel={statusLabels[job.status]}
           startedAtLabel={startedAtLabel}
           durationLabel={durationLabel}

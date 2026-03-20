@@ -11,6 +11,7 @@ type JobsQueryState = {
 type UseJobViewModelParams = {
   workspaceId: string;
   jobsQuery: JobsQueryState;
+  hostNameById: Map<string, string>;
   formatDateTime: (date: Date) => string;
 };
 
@@ -39,7 +40,7 @@ const toDurationLabel = (startedAt: string, finishedAt: string | null) => {
   return `${seconds}s`;
 };
 
-export const useJobViewModel = ({ workspaceId, jobsQuery, formatDateTime }: UseJobViewModelParams) => {
+export const useJobViewModel = ({ workspaceId, jobsQuery, hostNameById, formatDateTime }: UseJobViewModelParams) => {
   const jobs = useMemo<JobListItem[]>(() => {
     const payload = jobsQuery.data ?? [];
     return payload
@@ -47,6 +48,7 @@ export const useJobViewModel = ({ workspaceId, jobsQuery, formatDateTime }: UseJ
         id: job.job_id,
         workspaceId: job.workspace_id,
         hostId: job.host_id,
+        hostName: hostNameById.get(job.host_id) ?? job.host_id,
         startedAtIso: job.started_at,
         command: job.command,
         tags: job.tags ?? [],
@@ -57,7 +59,7 @@ export const useJobViewModel = ({ workspaceId, jobsQuery, formatDateTime }: UseJ
         logs: job.tail_lines ?? [],
       }))
       .sort((a, b) => new Date(b.startedAtIso).getTime() - new Date(a.startedAtIso).getTime());
-  }, [formatDateTime, jobsQuery.data]);
+  }, [formatDateTime, hostNameById, jobsQuery.data]);
 
   const viewState: JobViewState = !workspaceId
     ? "empty"

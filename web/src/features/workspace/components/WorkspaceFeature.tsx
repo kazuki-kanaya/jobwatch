@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useAuth } from "react-oidc-context";
-import { useMemberQueries } from "@/features/member/api/useMemberQueries";
+import { useMemberQueries } from "@/features/member";
 import type { CurrentUser } from "@/features/user";
 import { useWorkspaceQueries } from "@/features/workspace/api/useWorkspaceQueries";
 import { WorkspaceCreateButton } from "@/features/workspace/components/WorkspaceCreateButton/WorkspaceCreateButton";

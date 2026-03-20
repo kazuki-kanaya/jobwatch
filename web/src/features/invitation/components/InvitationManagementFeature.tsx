@@ -7,8 +7,7 @@ import { InvitationManagementSection } from "@/features/invitation/components/In
 import { InvitationRevokeDialog } from "@/features/invitation/components/InvitationRevokeDialog/InvitationRevokeDialog";
 import { useInvitationCrud } from "@/features/invitation/hooks/useInvitationCrud";
 import { useInvitationViewModel } from "@/features/invitation/hooks/useInvitationViewModel";
-import { useMemberQueries } from "@/features/member/api/useMemberQueries";
-import { useMemberPermissions } from "@/features/member/hooks/useMemberPermissions";
+import { useMemberPermissions, useMemberQueries } from "@/features/member";
 import type { CurrentUser } from "@/features/user";
 import { MembershipRole } from "@/generated/api";
 import { useLocale } from "@/i18n/LocaleProvider";

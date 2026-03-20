@@ -1,9 +1,7 @@
 export type Messages = {
   dashboard_title: string;
   dashboard_subtitle: string;
-  dashboard_filter_workspace: string;
-  dashboard_filter_host: string;
-  dashboard_filter_query: string;
+  dashboard_host: string;
   dashboard_updated_at_label: string;
   dashboard_mission_control: string;
   dashboard_current_user: string;
@@ -33,6 +31,7 @@ export type Messages = {
   dashboard_detail: string;
   dashboard_selected_job: string;
   dashboard_job_id: string;
+  dashboard_job_host_id: string;
   dashboard_project: string;
   dashboard_latest_logs: string;
   dashboard_command: string;
@@ -126,6 +125,7 @@ export type Messages = {
   dashboard_snapshot_completed: string;
   dashboard_snapshot_canceled: string;
   dashboard_snapshot_failed: string;
+  dashboard_snapshot_unavailable: string;
   dashboard_all: string;
   invite_title: string;
   invite_subtitle: string;
