@@ -30,12 +30,12 @@ const localeOptions = [
       <a href="#features" class="transition hover:text-cyan-300">{messages.nav.features}</a>
       <a href="#comparison" class="transition hover:text-cyan-300">{messages.nav.comparison}</a>
     </nav>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-3">
       <a
         href={githubUrl}
         target="_blank"
         rel="noreferrer"
-        class="inline-flex size-9 items-center justify-center rounded-md border border-[#314760] bg-[#141c32] text-slate-300 hover:text-white"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#365078] bg-[#141f33] text-slate-300 transition hover:bg-[#1a2940] hover:text-white"
       >
         <Icon name="github" class="size-4" />
       </a>
@@ -49,10 +49,10 @@ const localeOptions = [
         {messages.nav.docs}
       </a>
       <details class="landing-lang relative hidden lg:block">
-        <summary class="inline-flex h-8 min-w-24 cursor-pointer items-center justify-center gap-1 rounded-md border border-[#2c3c4f] bg-[#141c32] px-2 text-xs font-semibold">
-          <Icon name="language" class="size-3.5" />
+        <summary class="inline-flex h-10 min-w-24 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-[#365078] bg-[#141f33] px-4 text-sm text-slate-200 transition hover:bg-[#1a2940] hover:text-white">
+          <Icon name="language" class="size-4" />
           {locale === "ja" ? "日本語" : "English"}
-          <Icon name="chevron-down" class="size-3.5 opacity-80" />
+          <Icon name="chevron-down" class="size-4 opacity-80" />
         </summary>
         <div class="absolute right-0 z-50 mt-2 w-28 overflow-hidden rounded-md border border-[#2c3c4f] bg-[#141c32] shadow-[0_10px_24px_rgba(2,6,23,0.45)]">
           {localeOptions.map((option) => (

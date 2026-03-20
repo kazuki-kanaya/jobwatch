@@ -29,6 +29,12 @@ export const enMessages = {
       "obsern run python train_model.py --epochs 100",
     ],
   },
+  demo: {
+    eyebrow: "HOW IT WORKS",
+    title: "No SDK required. Lightweight and ready to use.",
+    subtitle: "Just wrap your existing command and start monitoring in minutes.",
+    alt: "Animated demo of the Obsern dashboard",
+  },
   pain: {
     eyebrow: "The pain",
     title: "Why Obsern?",
