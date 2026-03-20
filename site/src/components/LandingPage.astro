@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import type { LandingLocale, LandingMessages } from "../i18n/messages";
 import ComparisonSection from "./landing/ComparisonSection.astro";
+import DemoSection from "./landing/DemoSection.astro";
 import DocsCtaSection from "./landing/DocsCtaSection.astro";
 import FeaturesSection from "./landing/FeaturesSection.astro";
 import HeroSection from "./landing/HeroSection.astro";
@@ -28,6 +29,7 @@ const curlCommand = "curl -fsSL https://github.com/kazuki-kanaya/obsern/releases
 >
   <LandingHeader locale={locale} messages={messages} githubUrl={githubUrl} dashboardUrl={dashboardUrl} docsHref={docsHref} />
   <HeroSection locale={locale} messages={messages} dashboardUrl={dashboardUrl} docsHref={docsHref} curlCommand={curlCommand} />
+  <DemoSection messages={messages} />
   <PainSection messages={messages} />
   <FeaturesSection messages={messages} />
   <ComparisonSection messages={messages} />

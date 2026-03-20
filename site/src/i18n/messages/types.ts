@@ -21,6 +21,12 @@ export type LandingMessages = {
     copiedLabel: string;
     quickStartLines: string[];
   };
+  demo: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    alt: string;
+  };
   pain: {
     eyebrow: string;
     title: string;

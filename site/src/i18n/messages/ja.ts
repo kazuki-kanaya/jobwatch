@@ -29,8 +29,14 @@ export const jaMessages = {
       "obsern run python train_model.py --epochs 100",
     ],
   },
+  demo: {
+    eyebrow: "HOW IT WORKS",
+    title: "SDK統合不要。軽量ですぐに使える。",
+    subtitle: "既存コマンドをラップするだけ。数分で監視を始められます。",
+    alt: "Obsern ダッシュボードのアニメーションデモ",
+  },
   pain: {
-    eyebrow: "開発現場の課題",
+    eyebrow: "PROBLEM",
     title: "Obsernがなぜ必要か？",
     subtitle:
       "SSHでプロセスを都度確認する運用は、完了の見逃しや異常終了の発見遅れを生みます。Obsernはその “待ち時間と手戻り” を減らし、運用の負担を軽減します。",
@@ -112,7 +118,7 @@ export const jaMessages = {
     ],
   },
   cta: {
-    title: "今すぐバックグラウンドジョブを可視化。",
+    title: "今すぐバックグラウンドジョブを監視。",
     subtitle: "数分でセットアップできます。",
     primary: "ダッシュボードへ",
     secondary: "ドキュメント",
