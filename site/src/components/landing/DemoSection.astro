@@ -18,12 +18,16 @@ const { messages } = Astro.props;
       </div>
       <div class="relative overflow-hidden rounded-2xl border border-[#2a3d57] bg-[#0a1322] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
         <div class="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-cyan-300/8 to-transparent"></div>
-        <img
-          src="/landing/demo.gif"
-          alt={messages.demo.alt}
-          class="block h-auto w-full rounded-[1rem] border border-[#1f2c40] object-cover"
-          loading="eager"
-        />
+          <img
+            src="/landing/demo.gif"
+            alt={messages.demo.alt}
+            width="1280"
+            height="720"
+            class="block h-auto w-full rounded-[1rem] border border-[#1f2c40] object-cover"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+          />
       </div>
     </div>
   </div>
