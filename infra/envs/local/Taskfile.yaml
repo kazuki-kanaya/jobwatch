@@ -14,12 +14,12 @@ tasks:
   down:
     desc: Stop and remove all local infra services and volumes
     cmds:
-      - docker compose -f ../../docker-compose.yml down -v
+      - docker compose -f ../../../docker-compose.yaml down -v
 
   up:
     desc: Start all local infra services, create tables, and sync env files
     cmds:
       - task: down
-      - docker compose -f ../../docker-compose.yml up -d
+      - docker compose -f ../../../docker-compose.yaml up -d
       - bash ../../scripts/local/up-localstack-ddb.sh
       - task: sync-dot-env

@@ -122,6 +122,7 @@ tasks:
       - terraform -chdir=aws/20-core init -reconfigure -backend-config=../../backend.s3.hcl
       - terraform -chdir=aws/30-domain-apigw init -reconfigure -backend-config=../../backend.s3.hcl
       - terraform -chdir=aws/31-domain-cognito init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=cloudflare/00-zone-foundation init -reconfigure -backend-config=../../backend.s3.hcl
       - terraform -chdir=cloudflare/10-dns-validation init -reconfigure -backend-config=../../backend.s3.hcl
       - terraform -chdir=cloudflare/20-pages init -reconfigure -backend-config=../../backend.s3.hcl
       - terraform -chdir=cloudflare/21-pages-domain-dns-records init -reconfigure -backend-config=../../backend.s3.hcl

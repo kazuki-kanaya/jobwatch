@@ -24,17 +24,17 @@ Tasks are split between `envs/prod` and `envs/local`, and composed through `infr
 ## First-Time Setup
 
 1. Create and edit `terraform.tfvars`:
-   - `task infra:init:tfvars`
+   - `task infra:prod:init:tfvars`
 2. Create backend resources (one time):
-   - `task infra:init:bootstrap`
-   - `task infra:apply:bootstrap`
+   - `task infra:prod:init:bootstrap`
+   - `task infra:prod:apply:bootstrap`
 3. Create and edit the backend config:
    - `cp infra/envs/prod/backend.s3.hcl.example infra/envs/prod/backend.s3.hcl`
 4. Initialize each stage:
-   - `task infra:init`
+   - `task infra:prod:init`
 5. Apply the Cloudflare zone foundation when needed:
-   - `task infra:plan:foundation`
-   - `task infra:apply:foundation`
+   - `task infra:prod:plan:foundation`
+   - `task infra:prod:apply:foundation`
 
 ## Required Credentials and Keys
 
@@ -66,13 +66,13 @@ Set tokens in `terraform.tfvars`, and do not commit them to the repository.
 
 ## Main Commands
 
-- Plan: `task infra:plan`
-- Apply (in dependency order): `task infra:apply`
-- Deploy Pages artifacts: `task infra:deploy:pages`
-- Apply + deploy: `task infra:deploy`
-- Destroy (in reverse order): `task infra:destroy`
+- Plan: `task infra:prod:plan`
+- Apply (in dependency order): `task infra:prod:apply`
+- Deploy Pages artifacts: `task infra:prod:deploy:pages`
+- Apply + deploy: `task infra:prod:deploy`
+- Destroy (in reverse order): `task infra:prod:destroy`
 
-At the end of `task infra:apply`, `task infra:sync-dot-env` runs and updates the web/api env files from Terraform outputs.
+At the end of `task infra:prod:apply`, `task infra:prod:sync-dot-env` runs and updates the web/api env files from Terraform outputs.
 
 `00-zone-foundation` is not part of the regular `apply` / `destroy` flow.  
 It manages zone-wide posture and should be applied only when those baseline settings need to change.
@@ -107,7 +107,7 @@ It has no stack dependencies and is operated separately from the normal applicat
 
 - Cross-stage dependencies are handled via `terraform_remote_state`.
 - Avoid parallel execution unless all dependencies are already satisfied.
-- Pages uploads are handled after `task infra:apply` by `scripts/cloudflare/deploy-pages.sh`.
+- Pages uploads are handled after `task infra:prod:apply` by `scripts/cloudflare/deploy-pages.sh`.
 
 ## Local Development (Non-Terraform)
 
