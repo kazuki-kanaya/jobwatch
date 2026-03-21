@@ -36,7 +36,7 @@ export const jaMessages = {
     alt: "Obsern ダッシュボードのアニメーションデモ",
   },
   pain: {
-    eyebrow: "PROBLEM",
+    eyebrow: "The pain",
     title: "Obsernがなぜ必要か？",
     subtitle:
       "SSHでプロセスを都度確認する運用は、完了の見逃しや異常終了の発見遅れを生みます。Obsernはその “待ち時間と手戻り” を減らし、運用の負担を軽減します。",

@@ -1,5 +1,5 @@
 cloudflare_pages_api_token = "your-cloudflare-pages-api-token"
-cloudflare_dns_api_token   = "your-cloudflare-dns-api-token"
+cloudflare_dns_api_token   = "your-cloudflare-zone-api-token"
 cloudflare_account_id      = "your-cloudflare-account-id"
 cloudflare_zone_id         = "your-cloudflare-zone-id"
 

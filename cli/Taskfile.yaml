@@ -1,6 +1,11 @@
 version: "3"
 
 tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
   fmt:
     desc: Format CLI code
     cmds:

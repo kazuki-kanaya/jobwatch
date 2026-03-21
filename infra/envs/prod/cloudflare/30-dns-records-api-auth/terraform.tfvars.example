@@ -1,8 +1,8 @@
-cloudflare_api_token = "your-cloudflare-dns-api-token"
+cloudflare_api_token = "your-cloudflare-zone-api-token"
 cloudflare_zone_id   = "your-cloudflare-zone-id"
 api_domain_name      = "api.example.dev"
 cognito_auth_domain_name = "auth.example.dev"
-api_record_proxied   = false
+api_record_proxied   = true
 
 terraform_state_bucket  = "obsern-terraform-state-prod"
 terraform_state_region  = "ap-northeast-1"
