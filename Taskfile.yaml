@@ -18,6 +18,11 @@ includes:
     dir: ./infra
 
 tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
   sync-api:
     desc: Sync OpenAPI and regenerate web API client
     cmds:
@@ -26,7 +31,7 @@ tasks:
 
   all:fix:
     desc: Run fix tasks for all modules
-    deps: [api:fix, cli:fix, web:fix, infra:fix]
+    deps: [api:fix, cli:fix, web:fix, infra:prod:fix]
 
   all:ci:
     desc: Run CI checks for all modules
@@ -40,7 +45,12 @@ tasks:
     desc: Deploy all modules to production
     cmds:
       - task: all:build
-      - task: infra:deploy
+      - task: infra:prod:deploy
+
+  destroy:
+    desc: Destroy all modules in production
+    cmds:
+      - task: infra:prod:destroy
 
   dev:
     desc: Run development environment with API and web servers

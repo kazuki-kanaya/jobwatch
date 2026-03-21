@@ -1,0 +1,25 @@
+version: "3"
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  sync-dot-env:
+    desc: Sync local web/api env files for Keycloak and local API
+    cmds:
+      - bash ../../scripts/local/sync-dot-env.sh
+
+  down:
+    desc: Stop and remove all local infra services and volumes
+    cmds:
+      - docker compose -f ../../../docker-compose.yaml down -v
+
+  up:
+    desc: Start all local infra services, create tables, and sync env files
+    cmds:
+      - task: down
+      - docker compose -f ../../../docker-compose.yaml up -d
+      - bash ../../scripts/local/up-localstack-ddb.sh
+      - task: sync-dot-env

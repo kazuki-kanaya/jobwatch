@@ -23,7 +23,7 @@ variable "cognito_auth_domain_name" {
 variable "api_record_proxied" {
   description = "Whether the API CNAME is proxied by Cloudflare"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "terraform_state_bucket" {

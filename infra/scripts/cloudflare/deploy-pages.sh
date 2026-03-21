@@ -14,23 +14,26 @@ deploy_one() {
   local dist_dir=""
   local work_dir=""
   local project_output=""
+  local build_task=""
 
   case "$target" in
     site)
       dist_dir="$ROOT_DIR/site/dist"
       work_dir="$ROOT_DIR/site"
       project_output="site_pages_project_name"
+      build_task="site:build"
       ;;
     dashboard)
       dist_dir="$ROOT_DIR/web/dist"
       work_dir="$ROOT_DIR/web"
       project_output="dashboard_pages_project_name"
+      build_task="web:build"
       ;;
   esac
 
   if [[ ! -d "$dist_dir" ]]; then
     echo "$target build output not found: $dist_dir" >&2
-    echo "Run: task ${target}:build" >&2
+    echo "Run: task -d \"$ROOT_DIR\" $build_task" >&2
     exit 1
   fi
 
@@ -38,7 +41,7 @@ deploy_one() {
   project_name="$(terraform -chdir="$CF_PAGES_TF_DIR" output -raw "$project_output" 2>/dev/null || true)"
 
   if [[ -z "$project_name" ]]; then
-    echo "$project_output output was not found. Run: task -d infra apply" >&2
+    echo "$project_output output was not found. Run: task -d \"$ROOT_DIR\" infra:prod:apply" >&2
     exit 1
   fi
 

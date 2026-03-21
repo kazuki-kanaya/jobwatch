@@ -1,0 +1,8 @@
+cloudflare_api_token = "your-cloudflare-zone-api-token"
+cloudflare_zone_id   = "your-cloudflare-zone-id"
+
+always_use_https         = true
+automatic_https_rewrites = true
+bot_fight_mode           = true
+dnssec_enabled           = true
+security_level           = "medium"

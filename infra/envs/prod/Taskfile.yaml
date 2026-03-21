@@ -1,0 +1,214 @@
+version: "3"
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  sync-dot-env:
+    desc: Sync web/api env files from AWS Terraform outputs
+    cmds:
+      - bash ../../scripts/terraform/sync-dot-env.sh
+
+  init:tfvars:
+    desc: Create missing terraform.tfvars from terraform.tfvars.example
+    cmds:
+      - |
+        for example in $(find aws cloudflare -name 'terraform.tfvars.example' | sort); do
+          target="${example%.example}"
+          if [ ! -f "$target" ]; then
+            cp "$example" "$target"
+            echo "Created: $target"
+          fi
+        done
+
+  init:bootstrap:
+    desc: Initialize bootstrap stack (local backend)
+    cmds:
+      - terraform -chdir=aws/00-bootstrap init
+
+  apply:bootstrap:
+    desc: Create Terraform state S3 bucket
+    cmds:
+      - terraform -chdir=aws/00-bootstrap apply -input=false -auto-approve
+
+  plan:foundation:
+    desc: Plan zone foundation stack
+    cmds:
+      - terraform -chdir=cloudflare/00-zone-foundation plan -input=false
+
+  apply:foundation:
+    desc: Apply zone foundation stack
+    cmds:
+      - terraform -chdir=cloudflare/00-zone-foundation apply -input=false -auto-approve
+
+  fmt:
+    desc: Format Terraform files in staged infra stacks
+    cmds:
+      - terraform -chdir=aws/00-bootstrap fmt -recursive
+      - terraform -chdir=aws/10-acm-apigw fmt -recursive
+      - terraform -chdir=aws/11-acm-cognito fmt -recursive
+      - terraform -chdir=aws/20-core fmt -recursive
+      - terraform -chdir=aws/30-domain-apigw fmt -recursive
+      - terraform -chdir=aws/31-domain-cognito fmt -recursive
+      - terraform -chdir=cloudflare/00-zone-foundation fmt -recursive
+      - terraform -chdir=cloudflare/10-dns-validation fmt -recursive
+      - terraform -chdir=cloudflare/20-pages fmt -recursive
+      - terraform -chdir=cloudflare/21-pages-domain-dns-records fmt -recursive
+      - terraform -chdir=cloudflare/30-dns-records-api-auth fmt -recursive
+
+  validate:
+    desc: Validate Terraform configurations in staged infra stacks
+    cmds:
+      - task: init:check
+      - terraform -chdir=aws/10-acm-apigw validate
+      - terraform -chdir=aws/11-acm-cognito validate
+      - terraform -chdir=aws/20-core validate
+      - terraform -chdir=aws/30-domain-apigw validate
+      - terraform -chdir=aws/31-domain-cognito validate
+      - terraform -chdir=cloudflare/00-zone-foundation validate
+      - terraform -chdir=cloudflare/10-dns-validation validate
+      - terraform -chdir=cloudflare/20-pages validate
+      - terraform -chdir=cloudflare/21-pages-domain-dns-records validate
+      - terraform -chdir=cloudflare/30-dns-records-api-auth validate
+
+  lint:
+    desc: Run tflint on staged infra stacks
+    cmds:
+      - task: init:check
+      - |
+        if ! command -v tflint >/dev/null 2>&1; then
+          echo "tflint is required. Install: https://github.com/terraform-linters/tflint" >&2
+          exit 1
+        fi
+      - tflint --chdir=aws/10-acm-apigw
+      - tflint --chdir=aws/11-acm-cognito
+      - tflint --chdir=aws/20-core
+      - tflint --chdir=aws/30-domain-apigw
+      - tflint --chdir=aws/31-domain-cognito
+      - tflint --chdir=cloudflare/00-zone-foundation
+      - tflint --chdir=cloudflare/10-dns-validation
+      - tflint --chdir=cloudflare/20-pages
+      - tflint --chdir=cloudflare/21-pages-domain-dns-records
+      - tflint --chdir=cloudflare/30-dns-records-api-auth
+
+  init:check:
+    desc: Initialize stacks for validate/lint without backend
+    cmds:
+      - terraform -chdir=aws/10-acm-apigw init -backend=false
+      - terraform -chdir=aws/11-acm-cognito init -backend=false
+      - terraform -chdir=aws/20-core init -backend=false
+      - terraform -chdir=aws/30-domain-apigw init -backend=false
+      - terraform -chdir=aws/31-domain-cognito init -backend=false
+      - terraform -chdir=cloudflare/00-zone-foundation init -backend=false
+      - terraform -chdir=cloudflare/10-dns-validation init -backend=false
+      - terraform -chdir=cloudflare/20-pages init -backend=false
+      - terraform -chdir=cloudflare/21-pages-domain-dns-records init -backend=false
+      - terraform -chdir=cloudflare/30-dns-records-api-auth init -backend=false
+
+  fix:
+    desc: Run validate and lint for staged infra stacks
+    cmds:
+      - task: fmt
+      - task: validate
+      - task: lint
+
+  init:
+    desc: Initialize all staged Terraform stacks (S3 backend)
+    cmds:
+      - terraform -chdir=aws/10-acm-apigw init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=aws/11-acm-cognito init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=aws/20-core init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=aws/30-domain-apigw init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=aws/31-domain-cognito init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=cloudflare/00-zone-foundation init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=cloudflare/10-dns-validation init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=cloudflare/20-pages init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=cloudflare/21-pages-domain-dns-records init -reconfigure -backend-config=../../backend.s3.hcl
+      - terraform -chdir=cloudflare/30-dns-records-api-auth init -reconfigure -backend-config=../../backend.s3.hcl
+
+  plan:
+    desc: Plan all staged stacks in order
+    cmds:
+      - terraform -chdir=aws/10-acm-apigw plan -input=false
+      - terraform -chdir=aws/11-acm-cognito plan -input=false
+      - terraform -chdir=aws/20-core plan -input=false
+      - >
+        bash ../../scripts/terraform/plan-if-ready.sh
+        aws/30-domain-apigw
+        "Skip aws/30-domain-apigw plan: required outputs are not ready."
+        aws/10-acm-apigw:certificate_arn
+        aws/10-acm-apigw:domain_validation_options
+        aws/20-core:api_id
+        aws/20-core:api_stage_name
+      - >
+        bash ../../scripts/terraform/plan-if-ready.sh
+        aws/31-domain-cognito
+        "Skip aws/31-domain-cognito plan: required outputs are not ready."
+        aws/11-acm-cognito:certificate_arn
+        aws/11-acm-cognito:domain_validation_options
+        aws/20-core:cognito_user_pool_id
+        aws/20-core:cognito_user_pool_client_id
+      - >
+        bash ../../scripts/terraform/plan-if-ready.sh
+        cloudflare/10-dns-validation
+        "Skip cloudflare/10-dns-validation plan: required outputs are not ready."
+        aws/10-acm-apigw:domain_validation_options
+        aws/11-acm-cognito:domain_validation_options
+      - terraform -chdir=cloudflare/20-pages plan -input=false
+      - >
+        bash ../../scripts/terraform/plan-if-ready.sh
+        cloudflare/21-pages-domain-dns-records
+        "Skip cloudflare/21-pages-domain-dns-records plan: required outputs are not ready."
+        cloudflare/20-pages:site_pages_project_name
+        cloudflare/20-pages:site_pages_subdomain
+        cloudflare/20-pages:dashboard_pages_project_name
+        cloudflare/20-pages:dashboard_pages_subdomain
+      - >
+        bash ../../scripts/terraform/plan-if-ready.sh
+        cloudflare/30-dns-records-api-auth
+        "Skip cloudflare/30-dns-records-api-auth plan: required outputs are not ready."
+        aws/30-domain-apigw:apigw_domain_target
+        aws/31-domain-cognito:cognito_custom_domain_cloudfront_distribution
+
+  apply:
+    desc: Apply all staged stacks in dependency order and sync env files
+    cmds:
+      - terraform -chdir=aws/10-acm-apigw apply -input=false -auto-approve
+      - terraform -chdir=aws/11-acm-cognito apply -input=false -auto-approve
+      - terraform -chdir=cloudflare/10-dns-validation apply -input=false -auto-approve
+      - terraform -chdir=aws/20-core apply -input=false -auto-approve
+      - terraform -chdir=aws/30-domain-apigw apply -input=false -auto-approve
+      - terraform -chdir=cloudflare/20-pages apply -input=false -auto-approve
+      - terraform -chdir=cloudflare/21-pages-domain-dns-records apply -input=false -auto-approve
+      - terraform -chdir=aws/31-domain-cognito apply -input=false -auto-approve
+      - terraform -chdir=cloudflare/30-dns-records-api-auth apply -input=false -auto-approve
+      - task: sync-dot-env
+
+  deploy:pages:
+    desc: Build and deploy site and dashboard to Cloudflare Pages
+    cmds:
+      - task -d ../../.. site:build
+      - task -d ../../.. web:build
+      - bash ../../scripts/cloudflare/deploy-pages.sh
+
+  deploy:
+    desc: Apply infra and deploy Pages
+    cmds:
+      - task: apply
+      - task: deploy:pages
+
+  destroy:
+    desc: Destroy staged stacks in reverse order
+    cmds:
+      - terraform -chdir=cloudflare/30-dns-records-api-auth destroy -input=false -auto-approve
+      - terraform -chdir=cloudflare/21-pages-domain-dns-records destroy -input=false -auto-approve
+      - terraform -chdir=cloudflare/20-pages destroy -input=false -auto-approve
+      - terraform -chdir=cloudflare/10-dns-validation destroy -input=false -auto-approve
+      - terraform -chdir=aws/31-domain-cognito destroy -input=false -auto-approve
+      - terraform -chdir=aws/30-domain-apigw destroy -input=false -auto-approve
+      - terraform -chdir=aws/20-core destroy -input=false -auto-approve
+      - terraform -chdir=aws/11-acm-cognito destroy -input=false -auto-approve
+      - terraform -chdir=aws/10-acm-apigw destroy -input=false -auto-approve
+

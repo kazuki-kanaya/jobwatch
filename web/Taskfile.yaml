@@ -1,6 +1,11 @@
 version: "3"
 
 tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
   gen-api:
     desc: Generate web API client from OpenAPI
     cmds:

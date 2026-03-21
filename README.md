@@ -140,7 +140,7 @@ No SDK integration or code changes are required.
 Running long machine learning jobs on GPU servers creates a lot of operational overhead.
 
 In my research lab, I was running training jobs in parallel across multiple GPU servers.
-A single experiment could take anywhere from several days to a full week.
+A single experiment could take anywhere from one to two weeks.
 
 In practice, the following problems came up all the time:
 

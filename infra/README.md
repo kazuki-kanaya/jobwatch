@@ -1,6 +1,7 @@
 # Infra
 
-This directory contains Terraform infrastructure managed as staged environments under `envs/prod`.
+This directory manages Terraform infrastructure as staged stacks under `envs/prod`.  
+Tasks are split between `envs/prod` and `envs/local`, and composed through `infra/Taskfile.yaml`.
 
 ## Layout
 
@@ -10,24 +11,30 @@ This directory contains Terraform infrastructure managed as staged environments 
 - `envs/prod/aws/20-core`: Cognito / DynamoDB / Lambda / API Gateway core
 - `envs/prod/aws/30-domain-apigw`: API Gateway custom domain and mapping
 - `envs/prod/aws/31-domain-cognito`: Cognito custom domain
+- `envs/prod/cloudflare/00-zone-foundation`: Cloudflare zone-wide baseline settings (Bot Fight Mode / HTTPS / DNSSEC / Security Level)
 - `envs/prod/cloudflare/10-dns-validation`: DNS records for ACM validation
 - `envs/prod/cloudflare/20-pages`: Cloudflare Pages projects
 - `envs/prod/cloudflare/21-pages-domain-dns-records`: Pages custom domains and DNS records (`obsern.dev`, `app.obsern.dev`)
 - `envs/prod/cloudflare/30-dns-records-api-auth`: DNS records for `api` / `auth`
+- `envs/prod/Taskfile.yaml`: Tasks for production infrastructure
+- `envs/local/Taskfile.yaml`: Tasks for local development
 - `modules/`: Shared Terraform modules
 - `scripts/`: Helper scripts
 
 ## First-Time Setup
 
 1. Create and edit `terraform.tfvars`:
-   - `task init:tfvars`
+   - `task infra:prod:init:tfvars`
 2. Create backend resources (one time):
-   - `task init:bootstrap`
-   - `task apply:bootstrap`
+   - `task infra:prod:init:bootstrap`
+   - `task infra:prod:apply:bootstrap`
 3. Create and edit the backend config:
    - `cp infra/envs/prod/backend.s3.hcl.example infra/envs/prod/backend.s3.hcl`
 4. Initialize each stage:
-   - `task init`
+   - `task infra:prod:init`
+5. Apply the Cloudflare zone foundation when needed:
+   - `task infra:prod:plan:foundation`
+   - `task infra:prod:apply:foundation`
 
 ## Required Credentials and Keys
 
@@ -48,24 +55,27 @@ This directory contains Terraform infrastructure managed as staged environments 
 - A custom domain you control (required, e.g. `example.dev`)
 - API tokens by purpose:
   - Pages token (for Pages operations in `20-pages` and `21-pages-domain-dns-records`)
-  - DNS token (for DNS operations in `10-dns-validation`, `21-pages-domain-dns-records`, and `30-dns-records-api-auth`)
+  - Zone token (for `00-zone-foundation`, DNS operations in `10-dns-validation` and `21-pages-domain-dns-records`, and `30-dns-records-api-auth`)
 
 Recommended permissions:
 
 - Pages token: `Account / Cloudflare Pages / Edit`
-- DNS token: `Zone / DNS / Edit` + `Zone / Zone / Read`
+- Zone token: `Zone / DNS / Edit` + `Zone / Zone / Read`
 
 Set tokens in `terraform.tfvars`, and do not commit them to the repository.
 
 ## Main Commands
 
-- Plan: `task plan`
-- Apply (dependency order): `task apply`
-- Deploy Pages artifacts: `task deploy:pages`
-- Apply + deploy: `task deploy`
-- Destroy (reverse order): `task destroy`
+- Plan: `task infra:prod:plan`
+- Apply (in dependency order): `task infra:prod:apply`
+- Deploy Pages artifacts: `task infra:prod:deploy:pages`
+- Apply + deploy: `task infra:prod:deploy`
+- Destroy (in reverse order): `task infra:prod:destroy`
 
-At the end of `task apply`, `task sync-dot-env` runs and updates the web/api env files from Terraform outputs.
+At the end of `task infra:prod:apply`, `task infra:prod:sync-dot-env` runs and updates the web/api env files from Terraform outputs.
+
+`00-zone-foundation` is not part of the regular `apply` / `destroy` flow.  
+It manages zone-wide posture and should be applied only when those baseline settings need to change.
 
 ## Apply Order
 
@@ -90,27 +100,22 @@ At the end of `task apply`, `task sync-dot-env` runs and updates the web/api env
 - `aws/31` requires parent domain resolution when creating `auth.<domain>`, so it runs after `cloudflare/21`.
 - `cloudflare/30` publishes the final `api/auth` DNS records using outputs from `aws/30` and `aws/31`.
 
+`cloudflare/00-zone-foundation` is intentionally excluded from this sequence.  
+It has no stack dependencies and is operated separately from the normal application provisioning flow.
+
 ## Notes
 
 - Cross-stage dependencies are handled via `terraform_remote_state`.
 - Avoid parallel execution unless all dependencies are already satisfied.
-- Pages uploads are handled after infra apply by `scripts/cloudflare/deploy-pages.sh`.
+- Pages uploads are handled after `task infra:prod:apply` by `scripts/cloudflare/deploy-pages.sh`.
 
 ## Local Development (Non-Terraform)
 
-For local development, Terraform is not required.  
-Use `docker compose` and Task commands to start the environment.
-
-The local stack uses:
-
-- Keycloak for authentication
-- LocalStack (DynamoDB) for data storage
-
-### Commands
+Local development does not use Terraform.  
+Use `docker compose` and Task commands to start the environment. Authentication is provided by Keycloak, and LocalStack (DynamoDB) is used for storage.
 
 - Start (with initialization): `task infra:local:up`
 - Stop (including volume cleanup): `task infra:local:down`
-- Sync local env files only: `task infra:local:sync-dot-env`
 
 `task infra:local:up` runs the following steps in order:
 
@@ -121,6 +126,6 @@ The local stack uses:
 
 ### Notes
 
-- Email send/receive is not enabled in local development.
-- Reset user passwords from the Keycloak admin console: `http://localhost:8080/admin/`
-- Admin credentials: `admin` / `admin`
+- Email sending and receiving are not used in local development.
+- Reset passwords from the Keycloak admin console: `http://localhost:8080/admin/`
+- Admin credentials are `admin` / `admin`.
