@@ -146,6 +146,7 @@ In practice, the following problems came up all the time:
 
 * jobs failed almost immediately due to CUDA OOM, wrong paths, data errors, and similar issues
 * we did not notice until much later, sometimes days afterward
+* when using the servers as a team, we had to SSH in or ask someone else to figure out which GPU server was actually available
 
 As a result, both compute resources and time were wasted.
 
@@ -224,6 +225,15 @@ That kind of status-only check tends to happen over and over again.
 - `gpu-server-3`
 
 It becomes hard to tell what is running where.
+
+### 👥 It is hard to tell which server is free in team usage
+
+When multiple people share GPU servers, checking which machine is currently available often turns into:
+
+- SSH-ing into each server
+- or asking other team members
+
+just to understand where new work can be scheduled.
 
 Obsern aims to solve this through:
 
@@ -316,10 +326,12 @@ Obsern is centered around the `CLI`, which wraps arbitrary commands and can opti
 - Slack notifications are part of the basic CLI-only flow.
 - The `Web Dashboard` and `API` are optional integrations you add when you want to aggregate and manage job state centrally.
 - Reporting job state from the `CLI` to the `API` requires a host connection token, and that token is only needed when dashboard integration is enabled.
+- In cloud usage, the `API` runs on AWS and the `Web Dashboard` is served from Cloudflare Pages.
+- In addition to serving the Dashboard, Cloudflare handles edge protection for the public surface, including DNS, HTTPS, and WAF / bot mitigation.
 - `DynamoDB` is the main persistence layer and stores not only jobs but also workspace and host data.
-- OIDC JWT validation is handled inside the FastAPI application rather than at API Gateway. This keeps the authentication logic consistent between the production AWS setup and the local development environment.
+- Authentication is integrated with an OIDC provider, and OIDC JWT validation is handled inside the FastAPI application rather than at API Gateway. This keeps the authentication logic consistent not only in cloud usage but also in the local development environment.
 
-### ☁️ Production
+### ☁️ Cloud Usage
 
 <p align="center">
   <img src="./assets/architecture.prod.drawio.svg" alt="Obsern Production Architecture Overview" width="900" />
@@ -329,10 +341,7 @@ Obsern is centered around the `CLI`, which wraps arbitrary commands and can opti
   draw.io source: <a href="./assets/architecture.prod.drawio">assets/architecture.prod.drawio</a>
 </p>
 
-- The API runs on AWS and the Web Dashboard is served from Cloudflare Pages.
-- Authentication is integrated with an OIDC provider, and FastAPI verifies JWTs directly.
-
-### 🧪 Local
+### 🧪 Local Usage
 
 <p align="center">
   <img src="./assets/architecture.local.drawio.svg" alt="Obsern Local Architecture Overview" width="900" />
@@ -342,8 +351,8 @@ Obsern is centered around the `CLI`, which wraps arbitrary commands and can opti
   draw.io source: <a href="./assets/architecture.local.drawio">assets/architecture.local.drawio</a>
 </p>
 
-- In local development, the API, Dashboard, auth provider, and data store run in a development-friendly setup.
-- JWT validation still happens inside FastAPI, matching the production authentication path.
+- In local usage, the API, Dashboard, auth provider, and data store run in a development-friendly setup.
+- As in cloud usage, JWT validation still happens inside FastAPI.
 
 <a id="comparison"></a>
 ## 🆚 Comparison
