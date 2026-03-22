@@ -29,7 +29,7 @@
 
 Obsern is a lightweight tool for tracking long-running jobs.
 
-It is designed to make the following easier to handle from the CLI for processes that run from hours to days.
+It is designed to make the following easier to manage from the CLI for processes that run from hours to days.
 
 - execution status tracking
 - stdout / stderr visibility
@@ -63,7 +63,7 @@ obsern run python train.py
 curl -fsSL https://github.com/kazuki-kanaya/obsern/releases/latest/download/install.sh | sh
 ```
 
-The current installation path assumes a Unix-like environment.
+The current installation flow assumes a Unix-like environment.
 
 <a id="quick-start"></a>
 ## ⚡ Quick Start
@@ -86,7 +86,7 @@ obsern.yaml
 
 ### 2. 🔧 Configure
 
-You need either `host_token` or `slack_webhook_url`.
+You need either a `host_token` or a `slack_webhook_url`.
 
 * You can issue a `host_token` from the dashboard:
   https://app.obsern.dev
@@ -146,7 +146,7 @@ In practice, the following problems came up all the time:
 
 * jobs failed almost immediately due to CUDA OOM, wrong paths, data errors, and similar issues
 * we did not notice until much later, sometimes days afterward
-* when using the servers as a team, we had to SSH in or ask someone else to figure out which GPU server was actually available
+* when the servers were shared by a team, we had to SSH in or ask someone else to figure out which GPU server was actually available
 
 As a result, both compute resources and time were wasted.
 
@@ -157,7 +157,7 @@ Log handling was another pain point.
 When running jobs with `nohup`, logs were written to `nohup.out`.
 Because tools like `tqdm` tend to generate many line updates, the file could grow very large very quickly.
 
-That sometimes led to deleting the logs, only to later realize the failure cause could no longer be traced.
+That sometimes led to deleting the logs, only to later realize that the cause of the failure could no longer be traced.
 
 ---
 
@@ -183,7 +183,7 @@ The more servers there are, the more time it takes, and the harder it becomes to
 
 ---
 
-In other words, doing SSH just to confirm whether a process is alive is inefficient.
+In other words, SSH-ing in just to confirm whether a process is still alive is inefficient.
 
 ---
 
@@ -209,11 +209,12 @@ GPU training jobs can fail almost immediately for reasons like:
 - data errors
 - wrong paths
 
-### 🔍 You SSH only to check status
+### 🔍 You SSH in only to check status
 
 ```bash
 ssh gpu-server
 ps aux | grep python
+nvidia-smi
 ```
 
 That kind of status-only check tends to happen over and over again.
@@ -228,12 +229,7 @@ It becomes hard to tell what is running where.
 
 ### 👥 It is hard to tell which server is free in team usage
 
-When multiple people share GPU servers, checking which machine is currently available often turns into:
-
-- SSH-ing into each server
-- or asking other team members
-
-just to understand where new work can be scheduled.
+When multiple people share GPU servers, checking which machine is currently available often means SSH-ing into each server or asking other team members just to understand where new work can be scheduled.
 
 Obsern aims to solve this through:
 
@@ -275,7 +271,7 @@ Obsern tracks job state with the following statuses:
 
 ### 🖥️ Dashboard
 
-The Web UI can be used to register hosts and inspect job state.
+The web UI can be used to register hosts and inspect job state.
 It is also designed for team usage, including member invitations and permission management.
 
 <p align="center">
@@ -302,12 +298,12 @@ Example notifications (Slack):
   <img src="./assets/slack-failed.png" alt="Slack Failed Notification" width="330" />
 </p>
 
-### 🌍 Local and cloud-friendly
+### 🌍 Local- and cloud-friendly
 
 Obsern is intended to work in environments such as:
 
 - local environments
-- on-premise environments
+- on-premises environments
 - cloud environments
 
 If you want dashboard integration, you need a server endpoint to connect to.
