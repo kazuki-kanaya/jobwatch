@@ -20,6 +20,15 @@ builds:
 
 archives:
   - formats: [tar.gz]
+    files:
+      - src: cli/LICENSE
+        dst: LICENSE
+      - src: cli/THIRD_PARTY_NOTICES.md
+        dst: THIRD_PARTY_NOTICES.md
+      - src: cli/licenses/APACHE-2.0.txt
+        dst: licenses/APACHE-2.0.txt
+      - src: cli/licenses/BSD-3-Clause.txt
+        dst: licenses/BSD-3-Clause.txt
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
