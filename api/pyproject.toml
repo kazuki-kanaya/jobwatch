@@ -11,13 +11,13 @@ dependencies = [
     "mangum>=0.21.0",
     "pydantic-settings>=2.12.0",
     "pyjwt>=2.11.0",
-    "pytest>=9.0.2",
     "uvicorn>=0.40.0",
 ]
 
 [dependency-groups]
 dev = [
     "pyright>=1.1.408",
+    "pytest>=9.0.2",
     "ruff>=0.14.11",
     "ty>=0.0.16",
 ]
