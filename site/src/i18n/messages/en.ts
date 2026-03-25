@@ -43,7 +43,7 @@ export const enMessages = {
     cards: [
       {
         title: "Silent Stops",
-        body: "You miss that a run finished earlier than expected and lose time waiting. On another day, a job dies five minutes after launch, and you only notice the next morning. Alerts prevent this waste.",
+        body: "It stopped midway, but you did not notice until much later. With alerts, you could have acted sooner.",
       },
       {
         title: "Slow Debug Cycles",
