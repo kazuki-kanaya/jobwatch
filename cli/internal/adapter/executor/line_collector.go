@@ -2,59 +2,76 @@ package executor
 
 import (
 	"bytes"
-	"strings"
 	"sync"
 )
 
 type lineCollector struct {
-	tail *tailBuffer
-	buf  bytes.Buffer
-	mu   sync.Mutex
+	tail        *tailBuffer
+	buf         bytes.Buffer
+	mu          sync.Mutex
+	pendingCR   bool
+	dropOnFlush bool
 }
 
 func newLineCollector(tail *tailBuffer) *lineCollector {
-	return &lineCollector{
-		tail: tail,
-	}
+	return &lineCollector{tail: tail}
 }
 
+// Write keeps only newline-finalized output.
+// Standalone CR updates are treated as in-place overwrites, while CRLF is
+// treated as a normal line ending.
 func (c *lineCollector) Write(p []byte) (int, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	if _, err := c.buf.Write(p); err != nil {
-		return 0, err
-	}
-
-	for {
-		data := c.buf.Bytes()
-		newline := bytes.IndexByte(data, '\n')
-		if newline < 0 {
-			break
+	for _, b := range p {
+		if c.pendingCR {
+			if b == '\n' {
+				c.flushLine() // CRLF: treat as a normal newline.
+				continue
+			}
+			// Standalone CR: treat as an in-place overwrite.
+			c.buf.Reset()
+			c.pendingCR = false
+			c.dropOnFlush = true
 		}
-		line := string(data[:newline])
-		line = strings.TrimSuffix(line, "\r")
-		c.tail.Add(line)
 
-		c.buf.Next(newline + 1)
+		switch b {
+		case '\r':
+			c.pendingCR = true
+		case '\n':
+			c.flushLine()
+		default:
+			if err := c.buf.WriteByte(b); err != nil {
+				return 0, err
+			}
+		}
 	}
 	return len(p), nil
 }
 
+// Flush preserves a trailing fragment only when it is a normal unfinished line.
+// Pending CR-based updates are dropped as transient progress output.
 func (c *lineCollector) Flush() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	if c.buf.Len() == 0 {
+	// Drop unfinished CR-based updates, such as partial tqdm progress output.
+	if c.pendingCR || c.dropOnFlush {
+		c.buf.Reset()
+		c.pendingCR = false
+		c.dropOnFlush = false
 		return
 	}
 
-	line := c.buf.String()
-	line = strings.TrimSuffix(line, "\n")
-	line = strings.TrimSuffix(line, "\r")
-	if line != "" {
-		c.tail.Add(line)
-	}
+	c.flushLine()
+}
 
+func (c *lineCollector) flushLine() {
+	if c.buf.Len() > 0 {
+		c.tail.Add(c.buf.String())
+	}
 	c.buf.Reset()
+	c.pendingCR = false
+	c.dropOnFlush = false
 }
