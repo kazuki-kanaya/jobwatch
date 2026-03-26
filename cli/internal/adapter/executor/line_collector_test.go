@@ -61,3 +61,37 @@ func TestLineCollectorFlushesTrailingFragment(t *testing.T) {
 		t.Fatalf("unexpected lines: got %v, want %v", got, want)
 	}
 }
+
+func TestLineCollectorKeepsOnlyNewlineFinalizedCarriageReturnLine(t *testing.T) {
+	t.Parallel()
+
+	tail := mustNewTailBuffer(t, 10)
+	collector := newLineCollector(tail)
+
+	if _, err := collector.Write([]byte("progress 10%\rprogress 20%\n")); err != nil {
+		t.Fatalf("Write: %v", err)
+	}
+
+	want := []string{"progress 20%"}
+	if got := tail.Lines(); !reflect.DeepEqual(got, want) {
+		t.Fatalf("unexpected lines: got %v, want %v", got, want)
+	}
+}
+
+func TestLineCollectorDropsTrailingCarriageReturnFragmentOnFlush(t *testing.T) {
+	t.Parallel()
+
+	tail := mustNewTailBuffer(t, 10)
+	collector := newLineCollector(tail)
+
+	if _, err := collector.Write([]byte("progress 10%\rprogress 20%")); err != nil {
+		t.Fatalf("Write: %v", err)
+	}
+
+	collector.Flush()
+
+	want := []string{}
+	if got := tail.Lines(); !reflect.DeepEqual(got, want) {
+		t.Fatalf("unexpected lines: got %v, want %v", got, want)
+	}
+}
