@@ -55,6 +55,7 @@ obsern run python train.py
 - [🌱 Background](#background)
 - [🎯 What Obsern Solves](#what-obsern-solves)
 - [✨ Key Features](#key-features)
+- [🚫 Non-goals](#non-goals)
 - [🏗️ Architecture](#architecture)
 - [🆚 Comparison](#comparison)
 - [📁 Repository Structure](#repository-structure)
