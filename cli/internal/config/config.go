@@ -17,14 +17,19 @@ type APIConfig struct {
 }
 
 type NotifyConfig struct {
-	TimeZone string       `yaml:"time_zone"`
-	Slack    *SlackConfig `yaml:"slack"`
+	TimeZone string         `yaml:"time_zone"`
+	Slack    *SlackConfig   `yaml:"slack"`
+	Discord  *DiscordConfig `yaml:"discord"`
 }
 
 type SlackConfig struct {
 	WebhookURL string `yaml:"webhook_url"`
 }
 
+type DiscordConfig struct {
+	WebhookURL string `yaml:"webhook_url"`
+}
+
 func (n NotifyConfig) HasAnyProvider() bool {
-	return n.Slack != nil
+	return n.Slack != nil || n.Discord != nil
 }

@@ -36,6 +36,18 @@ func TestValidate(t *testing.T) {
 			},
 		},
 		{
+			name: "discord notify only is valid",
+			cfg: Config{
+				Run: RunConfig{Tags: []string{}, TailLines: 80},
+				Notify: &NotifyConfig{
+					TimeZone: "Asia/Tokyo",
+					Discord: &DiscordConfig{
+						WebhookURL: "https://discord.com/api/webhooks/a/b",
+					},
+				},
+			},
+		},
+		{
 			name: "missing api and notify",
 			cfg: Config{
 				Run: RunConfig{Tags: []string{}, TailLines: 80},
@@ -119,6 +131,28 @@ func TestValidate(t *testing.T) {
 				},
 			},
 			wantErr: "notify.slack.webhook_url must be an absolute URL",
+		},
+		{
+			name: "missing discord webhook",
+			cfg: Config{
+				Run: RunConfig{Tags: []string{}, TailLines: 80},
+				Notify: &NotifyConfig{
+					Discord: &DiscordConfig{},
+				},
+			},
+			wantErr: "notify.discord.webhook_url is required",
+		},
+		{
+			name: "relative discord webhook url",
+			cfg: Config{
+				Run: RunConfig{Tags: []string{}, TailLines: 80},
+				Notify: &NotifyConfig{
+					Discord: &DiscordConfig{
+						WebhookURL: "/hooks/discord",
+					},
+				},
+			},
+			wantErr: "notify.discord.webhook_url must be an absolute URL",
 		},
 	}
 
