@@ -7,13 +7,14 @@ description: よくある問題と対処方法。
 
 次の順に確認してください。
 
-1. `obsern.yaml` に次のどちらかがある
+1. `obsern.yaml` に次のいずれかがある
    - `api.host_token`
    - `notify.slack.webhook_url`
+   - `notify.discord.webhook_url`
 2. 環境変数が正しく展開されている
 3. 実行コマンドが終了している（イベントは終了時に送信）
 
-## Slack/Webhook に届かない
+## Slack / Discord の Webhook に届かない
 
 - `webhook_url` の形式を確認
 - Webhook が有効な状態か確認
@@ -43,6 +44,7 @@ obsern --version
 ```bash
 echo "$OBSERN_HOST_TOKEN"
 echo "$OBSERN_SLACK_WEBHOOK_URL"
+echo "$OBSERN_DISCORD_WEBHOOK_URL"
 ```
 
 空なら再 export してから再実行してください。

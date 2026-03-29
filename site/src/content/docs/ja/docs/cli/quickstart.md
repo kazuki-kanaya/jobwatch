@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-description: 設定を初期化して最初の監視を実行します。
+description: 設定を初期化して最初の監視付き実行を試します。
 ---
 
 この手順で、最短で最初の通知またはダッシュボード反映まで確認できます。
@@ -19,8 +19,9 @@ obsern init
 
 - `api.host_token` と `api.base_url`（ダッシュボード / API 連携）
 - `notify.slack.webhook_url`（Slack 通知）
+- `notify.discord.webhook_url`（Discord 通知）
 
-最小の Slack 設定例:
+最小の通知設定例:
 
 ```yaml
 run:
@@ -29,8 +30,8 @@ run:
 
 notify:
   time_zone: "Asia/Tokyo"
-  slack:
-    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 ```
 
 ## 3. Obsern 経由でコマンド実行
@@ -41,7 +42,7 @@ obsern run sh -c "echo start && sleep 2 && echo done"
 
 ## 4. 結果確認
 
-- Slack 設定時: メッセージが届くことを確認
+- 通知設定時: メッセージが届くことを確認
 - API 設定時: ダッシュボードに実行結果が表示されることを確認
 
 ## 5. 失敗ケースも確認
@@ -50,7 +51,7 @@ obsern run sh -c "echo start && sleep 2 && echo done"
 obsern run sh -c "echo failing && exit 1"
 ```
 
-Slack 設定時は通知が届き、API 設定時は失敗ステータスのジョブとして表示されます。
+通知設定時は失敗通知が届き、API 設定時は失敗ステータスのジョブとして表示されます。
 
 ## 次のステップ
 

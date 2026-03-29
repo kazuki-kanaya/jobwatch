@@ -1,9 +1,9 @@
 ---
 title: Quickstart
-description: Initialize config and run your first monitoring flow.
+description: Initialize config and run your first monitored command.
 ---
 
-This guide gets you from zero to your first dashboard update or Slack notification in just a few steps.
+This guide gets you from zero to your first dashboard update or notification in just a few steps.
 
 ## 1. Initialize Config
 
@@ -19,8 +19,9 @@ Edit `obsern.yaml` and set at least one:
 
 - `api.host_token` and `api.base_url` for dashboard/API delivery
 - `notify.slack.webhook_url` for Slack delivery
+- `notify.discord.webhook_url` for Discord delivery
 
-Minimal Slack example:
+Minimal notification example:
 
 ```yaml
 run:
@@ -29,8 +30,8 @@ run:
 
 notify:
   time_zone: "Asia/Tokyo"
-  slack:
-    webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 ```
 
 ## 3. Run a Command Through Obsern
@@ -41,7 +42,7 @@ obsern run sh -c "echo start && sleep 2 && echo done"
 
 ## 4. Confirm Result
 
-- If Slack is configured, confirm that a message is posted.
+- If a notification provider is configured, confirm that a message is posted.
 - If the API is configured, confirm that the run appears in the dashboard.
 
 ## 5. Try a Failure Case
@@ -50,7 +51,7 @@ obsern run sh -c "echo start && sleep 2 && echo done"
 obsern run sh -c "echo failing && exit 1"
 ```
 
-If Slack is configured, you should receive a failure notification. If the API is configured, the job should appear with a failed status in the dashboard.
+If a notification provider is configured, you should receive a failure notification. If the API is configured, the job should appear with a failed status in the dashboard.
 
 ## Next Step
 

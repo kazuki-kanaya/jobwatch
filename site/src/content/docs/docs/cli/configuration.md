@@ -20,6 +20,8 @@ notify:
   time_zone: "Asia/Tokyo"
   slack:
     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 ```
 
 ## Required Minimum
@@ -28,8 +30,9 @@ Set at least one of the following:
 
 - `api`
 - `notify.slack`
+- `notify.discord`
 
-If both are missing, validation fails and `obsern run` stops.
+If none of them are configured, validation fails and `obsern run` stops.
 
 ## Field Reference
 
@@ -39,6 +42,7 @@ If both are missing, validation fails and `obsern run` stops.
 - `api.base_url`: Absolute API URL used to publish job status.
 - `notify.time_zone`: IANA time zone used when rendering notification timestamps, for example `Asia/Tokyo`.
 - `notify.slack.webhook_url`: Slack Incoming Webhook URL.
+- `notify.discord.webhook_url`: Discord webhook URL.
 
 ## Common Setup Patterns
 
@@ -67,7 +71,20 @@ notify:
     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
-API + Slack:
+Discord only:
+
+```yaml
+run:
+  tags: ["default"]
+  tail_lines: 80
+
+notify:
+  time_zone: "Asia/Tokyo"
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
+```
+
+API + notifications:
 
 ```yaml
 run:
@@ -82,6 +99,8 @@ notify:
   time_zone: "Asia/Tokyo"
   slack:
     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 ```
 
 ## Environment Variables
@@ -91,11 +110,12 @@ Use environment variables for secrets instead of hardcoding them in `obsern.yaml
 ```bash
 export OBSERN_HOST_TOKEN="<your-host-token>"
 export OBSERN_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+export OBSERN_DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
 ```
 
 ## Pre-run Checklist
 
 - `obsern.yaml` exists.
-- Either `api` or `notify.slack` is configured.
+- At least one of `api`, `notify.slack`, or `notify.discord` is configured.
 - `run.tail_lines` is within the range `0` to `200`.
 - Environment variables are available in the same shell session.

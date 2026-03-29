@@ -1,23 +1,27 @@
 ---
 title: Notifications
-description: 通知の設定。
+description: Slack / Discord 通知の設定。
 ---
 
-## 設定例（Slack）
+## 設定例
 
 ```yaml
 notify:
   time_zone: "Asia/Tokyo"
   slack:
     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 ```
 
-`webhook_url` には Incoming Webhook の URL を設定してください。
+`webhook_url` には、それぞれの通知先で発行した Webhook URL を設定してください。
+Slack だけでも、Discord だけでも、両方でも利用できます。
 
 ## 挙動
 
 - ジョブが終了状態になったときに通知が送信されます
-- Slack 通知にはコマンド、タグ、開始/終了時刻、ログ末尾が含まれます
+- Slack / Discord 通知にはコマンド、タグ、開始/終了時刻、ログ末尾が含まれます
 - `notify.time_zone` を設定すると、そのタイムゾーンで時刻を表示します
 
 ## Slack 通知例

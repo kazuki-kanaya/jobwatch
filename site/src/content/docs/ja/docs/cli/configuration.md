@@ -20,16 +20,19 @@ notify:
   time_zone: "Asia/Tokyo"
   slack:
     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 ```
 
 ## 最低限必要な設定
 
-次のどちらかを必ず設定してください。
+次のいずれかを必ず設定してください。
 
 - `api`
 - `notify.slack`
+- `notify.discord`
 
-どちらも未設定の場合、バリデーションエラーになり `obsern run` は停止します。
+すべて未設定の場合、バリデーションエラーになり `obsern run` は停止します。
 
 ## 項目リファレンス
 
@@ -39,6 +42,7 @@ notify:
 - `api.base_url`: ジョブ状態を送信する API の絶対 URL
 - `notify.time_zone`: 通知時刻の表示に使う IANA タイムゾーン。例: `Asia/Tokyo`
 - `notify.slack.webhook_url`: Slack Incoming Webhook の URL
+- `notify.discord.webhook_url`: Discord の Webhook URL
 
 ## よく使う設定パターン
 
@@ -67,7 +71,20 @@ notify:
     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
 ```
 
-API + Slack:
+Discord のみ:
+
+```yaml
+run:
+  tags: ["default"]
+  tail_lines: 80
+
+notify:
+  time_zone: "Asia/Tokyo"
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
+```
+
+API + 通知:
 
 ```yaml
 run:
@@ -82,6 +99,8 @@ notify:
   time_zone: "Asia/Tokyo"
   slack:
     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 ```
 
 ## 環境変数の設定
@@ -91,11 +110,12 @@ notify:
 ```bash
 export OBSERN_HOST_TOKEN="<your-host-token>"
 export OBSERN_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+export OBSERN_DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
 ```
 
 ## 実行前チェック
 
 - `obsern.yaml` が存在する
-- `api` か `notify.slack` のどちらかが設定されている
+- `api`、`notify.slack`、`notify.discord` のいずれかが設定されている
 - `run.tail_lines` が `0` から `200` の範囲にある
 - 同じシェルセッションで環境変数が有効
