@@ -140,10 +140,11 @@ func TestSlackNotifierNotify(t *testing.T) {
 		if gotPayload.Attachments[0].Color != "good" {
 			t.Fatalf("color = %q, want %q", gotPayload.Attachments[0].Color, "good")
 		}
-		assertContains(t, gotPayload.Attachments[0].Text, "*Obsern job finished*")
-		assertContains(t, gotPayload.Attachments[0].Text, "Started: 2026-03-17 10:00:00 JST")
-		assertContains(t, gotPayload.Attachments[0].Text, "Finished: 2026-03-17 10:05:00 JST")
-		assertContains(t, gotPayload.Attachments[0].Text, "Tail:\n```\ndone\n```")
+		assertContains(t, gotPayload.Attachments[0].Text, "*Command*: `python train.py`")
+		assertContains(t, gotPayload.Attachments[0].Text, "*Started*: 2026-03-17 10:00:00 JST")
+		assertContains(t, gotPayload.Attachments[0].Text, "*Finished*: 2026-03-17 10:05:00 JST")
+		assertContains(t, gotPayload.Attachments[0].Text, "*Duration*: 5m0s")
+		assertContains(t, gotPayload.Attachments[0].Text, "*Tail*:\n```\ndone\n```")
 	})
 
 	t.Run("returns webhook error body", func(t *testing.T) {

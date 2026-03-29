@@ -35,12 +35,12 @@ func TestBuildText(t *testing.T) {
 			t.Fatalf("buildText() error = %v", err)
 		}
 
-		assertContains(t, text, "*Obsern job failed*")
-		assertContains(t, text, "Command: `python train.py`")
-		assertContains(t, text, "Tags: ml, nightly")
-		assertContains(t, text, "Started: 2026-03-17 10:00:00 JST")
-		assertContains(t, text, "Finished: 2026-03-17 10:05:00 JST")
-		assertContains(t, text, "Tail:\n```\nline 1\nline 2\n```")
+		assertContains(t, text, "*Command*: `python train.py`")
+		assertContains(t, text, "*Tags*: ml, nightly")
+		assertContains(t, text, "*Started*: 2026-03-17 10:00:00 JST")
+		assertContains(t, text, "*Finished*: 2026-03-17 10:05:00 JST")
+		assertContains(t, text, "*Duration*: 5m0s")
+		assertContains(t, text, "*Tail*:\n```\nline 1\nline 2\n```")
 	})
 
 	t.Run("rejects non terminal job", func(t *testing.T) {
