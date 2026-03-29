@@ -21,16 +21,16 @@ func buildText(j job.Job, loc *time.Location) (string, error) {
 
 	var b strings.Builder
 
-	fmt.Fprintf(&b, "*Obsern job %s*\n", j.Status)
-	fmt.Fprintf(&b, "Command: `%s`\n", j.Command)
+	fmt.Fprintf(&b, "*Command*: `%s`\n", j.Command)
 	if len(j.Tags) > 0 {
-		fmt.Fprintf(&b, "Tags: %s\n", formatTags(j.Tags))
+		fmt.Fprintf(&b, "*Tags*: %s\n", formatTags(j.Tags))
 	}
-	fmt.Fprintf(&b, "Started: %s\n", formatTime(j.StartedAt, loc))
-	fmt.Fprintf(&b, "Finished: %s\n", formatTime(*j.FinishedAt, loc))
+	fmt.Fprintf(&b, "*Started*: %s\n", formatTime(j.StartedAt, loc))
+	fmt.Fprintf(&b, "*Finished*: %s\n", formatTime(*j.FinishedAt, loc))
+	fmt.Fprintf(&b, "*Duration*: %s\n", j.FinishedAt.Sub(j.StartedAt).Round(time.Second))
 
 	if len(j.TailLines) > 0 {
-		b.WriteString("\nTail:\n```\n")
+		b.WriteString("\n*Tail*:\n```\n")
 		b.WriteString(strings.Join(j.TailLines, "\n"))
 		b.WriteString("\n```")
 	}
