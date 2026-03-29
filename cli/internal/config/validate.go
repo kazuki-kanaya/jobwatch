@@ -70,6 +70,15 @@ func validateNotify(cfg NotifyConfig) error {
 			return err
 		}
 	}
+	if cfg.Discord != nil {
+		if strings.TrimSpace(cfg.Discord.WebhookURL) == "" {
+			return fmt.Errorf("notify.discord.webhook_url is required")
+		}
+
+		if err := validateURL("notify.discord.webhook_url", cfg.Discord.WebhookURL); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

@@ -59,17 +59,33 @@ func buildReporter(cfg config.Config) (run.JobReporter, error) {
 }
 
 func buildNotifier(cfg config.Config) (run.Notifier, error) {
-	if cfg.Notify == nil || cfg.Notify.Slack == nil {
-		return notify.NewNoopNotifier(), nil
+	if cfg.Notify == nil {
+		return notify.NewMultiNotifier(), nil
 	}
 
-	notifier, err := notify.NewSlackNotifier(
-		cfg.Notify.Slack.WebhookURL,
-		cfg.Notify.TimeZone,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("create Slack notifier: %w", err)
+	notifiers := make([]notify.Provider, 0, 2)
+
+	if cfg.Notify.Slack != nil {
+		notifier, err := notify.NewSlackNotifier(
+			cfg.Notify.Slack.WebhookURL,
+			cfg.Notify.TimeZone,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("create Slack notifier: %w", err)
+		}
+		notifiers = append(notifiers, notifier)
 	}
 
-	return notifier, nil
+	if cfg.Notify.Discord != nil {
+		notifier, err := notify.NewDiscordNotifier(
+			cfg.Notify.Discord.WebhookURL,
+			cfg.Notify.TimeZone,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("create Discord notifier: %w", err)
+		}
+		notifiers = append(notifiers, notifier)
+	}
+
+	return notify.NewMultiNotifier(notifiers...), nil
 }

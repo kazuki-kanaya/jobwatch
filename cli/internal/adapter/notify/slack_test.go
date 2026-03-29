@@ -118,7 +118,7 @@ func TestSlackNotifierNotify(t *testing.T) {
 				t.Fatalf("Unmarshal() error = %v", err)
 			}
 
-			return slackResponse(http.StatusOK, "ok"), nil
+			return webhookResponse(http.StatusOK, "ok"), nil
 		})
 
 		if err := notifier.Notify(context.Background(), j); err != nil {
@@ -162,7 +162,7 @@ func TestSlackNotifierNotify(t *testing.T) {
 		}
 
 		notifier := newSlackNotifierWithTransport(t, "", func(req *http.Request) (*http.Response, error) {
-			return slackResponse(http.StatusBadRequest, "invalid payload"), nil
+			return webhookResponse(http.StatusBadRequest, "invalid payload"), nil
 		})
 
 		err = notifier.Notify(context.Background(), j)
@@ -187,7 +187,7 @@ func TestSlackNotifierNotify(t *testing.T) {
 		}
 
 		notifier := newSlackNotifierWithTransport(t, "", func(req *http.Request) (*http.Response, error) {
-			return slackResponse(http.StatusInternalServerError, ""), nil
+			return webhookResponse(http.StatusInternalServerError, ""), nil
 		})
 
 		err = notifier.Notify(context.Background(), j)
@@ -241,7 +241,7 @@ func newSlackNotifierWithTransport(t *testing.T, timeZone string, fn func(*http.
 	return notifier
 }
 
-func slackResponse(statusCode int, body string) *http.Response {
+func webhookResponse(statusCode int, body string) *http.Response {
 	return &http.Response{
 		StatusCode: statusCode,
 		Header:     make(http.Header),
