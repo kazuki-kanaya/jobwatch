@@ -24,7 +24,7 @@ jobs:
           cache: true
 
       - name: Set up Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Set up GoReleaser
         uses: goreleaser/goreleaser-action@v7
@@ -59,7 +59,7 @@ jobs:
         run: uv sync --frozen --group dev
 
       - name: Set up Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Task CI
         run: task ci
@@ -91,7 +91,7 @@ jobs:
         run: pnpm install
 
       - name: Set up Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Task CI
         run: task ci
@@ -123,7 +123,7 @@ jobs:
         run: pnpm install
 
       - name: Set up Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Task CI
         run: task ci
@@ -146,7 +146,7 @@ jobs:
         uses: terraform-linters/setup-tflint@v6
 
       - name: Set up Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Task CI
         run: task ci
