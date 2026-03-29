@@ -49,11 +49,11 @@ jobs:
       - name: Export pylock.toml
         run: uv export --format pylock.toml --output-file pylock.toml --no-dev
 
-      - name: Pip Audit
-        uses: pypa/gh-action-pip-audit@v1.1.0
-        with:
-          inputs: ./api/pylock.toml
-          locked: true
+      - name: Install pip-audit
+        run: python -m pip install pip-audit
+
+      - name: Audit locked dependencies
+        run: pip-audit --locked .
 
   web:
     runs-on: ubuntu-latest
