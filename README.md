@@ -105,8 +105,9 @@ Add one of the following to `obsern.yaml`.
 # For dashboard integration
 api:
   host_token: your_token_here
+  base_url: https://api.obsern.dev
 
-# Or, if you only want notifications
+# If you only want notifications, configure Slack, Discord, or both
 notify:
   slack:
     webhook_url: https://hooks.slack.com/services/xxx/yyy/zzz

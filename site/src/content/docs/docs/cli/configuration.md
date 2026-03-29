@@ -32,7 +32,7 @@ Set at least one of the following:
 - `notify.slack`
 - `notify.discord`
 
-If both are missing, validation fails and `obsern run` stops.
+If none of them are configured, validation fails and `obsern run` stops.
 
 ## Field Reference
 

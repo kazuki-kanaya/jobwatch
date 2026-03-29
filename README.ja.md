@@ -105,8 +105,9 @@ obsern.yaml
 # ダッシュボード連携する場合
 api:
   host_token: your_token_here
+  base_url: https://api.obsern.dev
 
-# または、通知のみ使う場合
+# 通知だけ使う場合は Slack / Discord のどちらか、または両方を設定
 notify:
   slack:
     webhook_url: https://hooks.slack.com/services/xxx/yyy/zzz

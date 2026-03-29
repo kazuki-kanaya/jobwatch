@@ -7,7 +7,7 @@ description: よくある問題と対処方法。
 
 次の順に確認してください。
 
-1. `obsern.yaml` に次のどちらかがある
+1. `obsern.yaml` に次のいずれかがある
    - `api.host_token`
    - `notify.slack.webhook_url`
    - `notify.discord.webhook_url`
