@@ -19,5 +19,7 @@ run:
 #   time_zone: "Asia/Tokyo"
 #   slack:
 #     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+#   discord:
+#     webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 `
 }

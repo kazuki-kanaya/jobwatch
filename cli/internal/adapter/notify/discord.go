@@ -36,8 +36,6 @@ func (n *DiscordNotifier) Notify(ctx context.Context, j job.Job) error {
 		return err
 	}
 
-	text = fmt.Sprintf("%s\n\n%s", discordStatusTitle(j.Status), text)
-
 	payload := discordWebhookPayload{
 		Embeds: []discordEmbed{
 			{

@@ -188,12 +188,6 @@ func typeName(value any) string {
 		return "api.NoopReporter"
 	case *api.Reporter:
 		return "*api.Reporter"
-	case notify.NoopNotifier:
-		return "notify.NoopNotifier"
-	case *notify.SlackNotifier:
-		return "*notify.SlackNotifier"
-	case *notify.DiscordNotifier:
-		return "*notify.DiscordNotifier"
 	case notify.MultiNotifier:
 		return "notify.MultiNotifier"
 	default:
