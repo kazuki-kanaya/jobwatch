@@ -117,7 +117,7 @@ func TestDiscordNotifierNotify(t *testing.T) {
 				t.Fatalf("Unmarshal() error = %v", err)
 			}
 
-			return slackResponse(http.StatusNoContent, ""), nil
+			return webhookResponse(http.StatusNoContent, ""), nil
 		})
 
 		if err := notifier.Notify(context.Background(), j); err != nil {
@@ -164,7 +164,7 @@ func TestDiscordNotifierNotify(t *testing.T) {
 		}
 
 		notifier := newDiscordNotifierWithTransport(t, "", func(req *http.Request) (*http.Response, error) {
-			return slackResponse(http.StatusBadRequest, "invalid payload"), nil
+			return webhookResponse(http.StatusBadRequest, "invalid payload"), nil
 		})
 
 		err = notifier.Notify(context.Background(), j)

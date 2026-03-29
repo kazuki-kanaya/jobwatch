@@ -21,9 +21,9 @@ func NewMultiNotifier(notifiers ...Provider) run.Notifier {
 }
 
 func (m MultiNotifier) Notify(ctx context.Context, j job.Job) error {
-	for _, notifier := range m.notifiers {
+	for i, notifier := range m.notifiers {
 		if err := notifier.Notify(ctx, j); err != nil {
-			return fmt.Errorf("notify via provider: %w", err)
+			return fmt.Errorf("notify via provider[%d] (%T): %w", i, notifier, err)
 		}
 	}
 	return nil
