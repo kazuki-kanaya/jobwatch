@@ -83,7 +83,7 @@ func TestBuildNotifier(t *testing.T) {
 		{
 			name:     "uses noop notifier when notify config is absent",
 			cfg:      config.Config{},
-			wantType: "notify.NoopNotifier",
+			wantType: "notify.MultiNotifier",
 		},
 		{
 			name: "uses slack notifier when slack config is present",
@@ -95,7 +95,34 @@ func TestBuildNotifier(t *testing.T) {
 					},
 				},
 			},
-			wantType: "*notify.SlackNotifier",
+			wantType: "notify.MultiNotifier",
+		},
+		{
+			name: "uses discord notifier when discord config is present",
+			cfg: config.Config{
+				Notify: &config.NotifyConfig{
+					TimeZone: "Asia/Tokyo",
+					Discord: &config.DiscordConfig{
+						WebhookURL: "https://discord.com/api/webhooks/test/token",
+					},
+				},
+			},
+			wantType: "notify.MultiNotifier",
+		},
+		{
+			name: "uses multi notifier when both providers are present",
+			cfg: config.Config{
+				Notify: &config.NotifyConfig{
+					TimeZone: "Asia/Tokyo",
+					Slack: &config.SlackConfig{
+						WebhookURL: "https://hooks.slack.com/services/test",
+					},
+					Discord: &config.DiscordConfig{
+						WebhookURL: "https://discord.com/api/webhooks/test/token",
+					},
+				},
+			},
+			wantType: "notify.MultiNotifier",
 		},
 		{
 			name: "returns error for invalid notify config",
@@ -165,6 +192,10 @@ func typeName(value any) string {
 		return "notify.NoopNotifier"
 	case *notify.SlackNotifier:
 		return "*notify.SlackNotifier"
+	case *notify.DiscordNotifier:
+		return "*notify.DiscordNotifier"
+	case notify.MultiNotifier:
+		return "notify.MultiNotifier"
 	default:
 		return ""
 	}

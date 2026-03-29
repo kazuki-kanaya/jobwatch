@@ -14,87 +14,75 @@ import (
 	"github.com/kazuki-kanaya/obsern/cli/internal/domain/job"
 )
 
-type SlackNotifier struct {
+type DiscordNotifier struct {
 	webhookURL string
 	location   *time.Location
 	httpClient *http.Client
 }
 
-type slackWebhookPayload struct {
-	Attachments []slackAttachment `json:"attachments"`
+type discordWebhookPayload struct {
+	Embeds []discordEmbed `json:"embeds"`
 }
 
-type slackAttachment struct {
-	Color string `json:"color"`
-	Text  string `json:"text"`
+type discordEmbed struct {
+	Title       string `json:"title,omitempty"`
+	Description string `json:"description,omitempty"`
+	Color       int    `json:"color,omitempty"`
 }
 
-func slackColor(status job.Status) string {
-	switch status {
-	case job.StatusFinished:
-		return "good"
-	case job.StatusFailed:
-		return "danger"
-	case job.StatusCanceled:
-		return "warning"
-	default:
-		return "#808080"
-	}
-}
-
-func (n *SlackNotifier) Notify(ctx context.Context, j job.Job) error {
+func (n *DiscordNotifier) Notify(ctx context.Context, j job.Job) error {
 	text, err := buildText(j, n.location)
 	if err != nil {
 		return err
 	}
 
-	text = fmt.Sprintf("%s\n\n%s", slackStatusTitle(j.Status), text)
+	text = fmt.Sprintf("%s\n\n%s", discordStatusTitle(j.Status), text)
 
-	payload := slackWebhookPayload{
-		Attachments: []slackAttachment{
+	payload := discordWebhookPayload{
+		Embeds: []discordEmbed{
 			{
-				Color: slackColor(j.Status),
-				Text:  text,
+				Title:       discordStatusTitle(j.Status),
+				Description: text,
+				Color:       discordColor(j.Status),
 			},
 		},
 	}
 
 	body, err := json.Marshal(payload)
 	if err != nil {
-		return fmt.Errorf("marshal slack payload: %w", err)
+		return fmt.Errorf("marshal discord payload: %w", err)
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, n.webhookURL, bytes.NewReader(body))
 	if err != nil {
-		return fmt.Errorf("build slack request: %w", err)
+		return fmt.Errorf("build discord request: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := n.httpClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("send slack request: %w", err)
+		return fmt.Errorf("send discord request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
 		responseBody, err := io.ReadAll(io.LimitReader(resp.Body, 4096))
 		if err != nil {
-			return fmt.Errorf("slack webhook failed with status %d", resp.StatusCode)
+			return fmt.Errorf("discord webhook failed with status %d", resp.StatusCode)
 		}
 
 		message := strings.TrimSpace(string(responseBody))
 		if message == "" {
-			return fmt.Errorf("slack webhook failed with status %d", resp.StatusCode)
+			return fmt.Errorf("discord webhook failed with status %d", resp.StatusCode)
 		}
-		return fmt.Errorf("slack webhook failed with status %d: %s", resp.StatusCode, message)
+		return fmt.Errorf("discord webhook failed with status %d: %s", resp.StatusCode, message)
 	}
 
-	// Drain the response body so the underlying HTTP connection can be reused.
 	io.Copy(io.Discard, resp.Body)
 	return nil
 }
 
-func NewSlackNotifier(webhookURL string, timeZone string) (*SlackNotifier, error) {
+func NewDiscordNotifier(webhookURL string, timeZone string) (*DiscordNotifier, error) {
 	if strings.TrimSpace(webhookURL) == "" {
 		return nil, fmt.Errorf("webhookURL is required")
 	}
@@ -115,24 +103,37 @@ func NewSlackNotifier(webhookURL string, timeZone string) (*SlackNotifier, error
 		loc = loaded
 	}
 
-	return &SlackNotifier{
+	return &DiscordNotifier{
 		webhookURL: webhookURL,
 		location:   loc,
 		httpClient: &http.Client{Timeout: 10 * time.Second},
 	}, nil
 }
 
-func slackStatusTitle(status job.Status) string {
+func discordStatusTitle(status job.Status) string {
 	switch status {
 	case job.StatusFinished:
-		return ":white_check_mark: *SUCCESS*"
+		return "✅ SUCCESS"
 	case job.StatusFailed:
-		return ":x: *FAILED*"
+		return "❌ FAILED"
 	case job.StatusCanceled:
-		return ":warning: *CANCELED*"
+		return "⚠️ CANCELED"
 	default:
-		return ":grey_question: *UNKNOWN*"
+		return "❔ UNKNOWN"
 	}
 }
 
-var _ Provider = (*SlackNotifier)(nil)
+func discordColor(status job.Status) int {
+	switch status {
+	case job.StatusFinished:
+		return 0x22C55E
+	case job.StatusFailed:
+		return 0xEF4444
+	case job.StatusCanceled:
+		return 0xF59E0B
+	default:
+		return 0x6B7280
+	}
+}
+
+var _ Provider = (*DiscordNotifier)(nil)
