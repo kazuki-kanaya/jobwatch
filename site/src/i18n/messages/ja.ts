@@ -59,7 +59,7 @@ export const jaMessages = {
     title: "実行状況を、個人でもチームでも確実に把握。",
     tabs: {
       dashboard: "ダッシュボード",
-      slackAlerts: "Slack通知",
+      slackAlerts: "通知",
     },
     cards: [
       {
@@ -67,8 +67,8 @@ export const jaMessages = {
         body: "既存コマンドを obsern でラップするだけ。SDK導入や計測コードは不要です。",
       },
       {
-        title: "Slackに即時通知",
-        body: "Webhook連携で、失敗や完了、実行ログの通知をSlackのチャンネルへすぐに送れます。",
+        title: "通知をすぐ受け取れる",
+        body: "Webhook連携で、失敗や完了、実行ログの通知を Slack / Discord にすぐ送れます。",
       },
       {
         title: "統合ダッシュボード",

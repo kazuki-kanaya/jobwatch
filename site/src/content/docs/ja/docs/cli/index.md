@@ -9,6 +9,6 @@ description: Obsern CLI の導入と実行方法。
 2. [Quickstart](./quickstart/)
 3. [Configuration](./configuration/)
 4. [CLI Reference](./cli-reference/)
-5. [Notifications (Slack/Webhook)](./notifications/)
+5. [Notifications（Slack / Discord）](./notifications/)
 6. [Troubleshooting](./troubleshooting/)
 7. [FAQ](./faq/)

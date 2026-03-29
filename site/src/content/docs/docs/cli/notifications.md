@@ -1,23 +1,27 @@
 ---
 title: Notifications
-description: Configure notifications.
+description: Configure Slack and Discord notifications.
 ---
 
-## Configuration Example (Slack)
+## Configuration Examples
 
 ```yaml
 notify:
   time_zone: "Asia/Tokyo"
   slack:
     webhook_url: ${OBSERN_SLACK_WEBHOOK_URL}
+
+  discord:
+    webhook_url: ${OBSERN_DISCORD_WEBHOOK_URL}
 ```
 
-Set `webhook_url` to your Slack Incoming Webhook URL.
+Set each `webhook_url` to the webhook URL for the provider you want to use.
+You can configure either one or both.
 
 ## Behavior
 
 - Notifications are sent when a job reaches a terminal state.
-- Slack notifications include the command, tags, start and end times, and trailing log lines.
+- Slack and Discord notifications include the command, tags, start and end times, and trailing log lines.
 - If `notify.time_zone` is set, timestamps are rendered in that time zone.
 
 ## Slack Examples

@@ -59,7 +59,7 @@ export const enMessages = {
     title: "Keep execution status clear for both individuals and teams.",
     tabs: {
       dashboard: "Dashboard",
-      slackAlerts: "Slack Alerts",
+      slackAlerts: "Notifications",
     },
     cards: [
       {
@@ -67,8 +67,8 @@ export const enMessages = {
         body: "Wrap existing commands with obsern. No SDK integration or instrumentation boilerplate required.",
       },
       {
-        title: "Instant Slack Alerts",
-        body: "With webhook integration, failure, completion, and runtime log notifications are sent to your Slack channel right away.",
+        title: "Instant Notifications",
+        body: "With webhook integration, failure, completion, and runtime log notifications can be delivered to Slack or Discord right away.",
       },
       {
         title: "Unified Dashboard",

@@ -86,13 +86,16 @@ obsern.yaml
 
 ### 2. 🔧 Configure
 
-You need either a `host_token` or a `slack_webhook_url`.
+You need either a `host_token` or at least one notification webhook.
 
 * You can issue a `host_token` from the dashboard:
   https://app.obsern.dev
 
 * To create a Slack Incoming Webhook URL:
   https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks
+
+* To create a Discord webhook URL:
+  https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
 
 Add one of the following to `obsern.yaml`.
 
@@ -107,6 +110,8 @@ api:
 notify:
   slack:
     webhook_url: https://hooks.slack.com/services/xxx/yyy/zzz
+  discord:
+    webhook_url: https://discord.com/api/webhooks/xxx/yyy
 ```
 
 ---
@@ -285,9 +290,6 @@ Obsern can notify you when jobs finish or fail.
 Currently:
 
 - Slack
-
-Planned:
-
 - Discord
 
 Example notifications (Slack):
@@ -319,7 +321,7 @@ If notifications are all you need, the CLI alone is enough.
 Obsern is centered around the `CLI`, which wraps arbitrary commands and can optionally be connected to the Dashboard and API when you want centralized visibility.
 
 - The `CLI` uses `obsern run` to wrap arbitrary commands, stream output back to the terminal, keep tail logs, report status, and send notifications.
-- Slack notifications are part of the basic CLI-only flow.
+- Slack and Discord notifications are part of the basic CLI-only flow.
 - The `Web Dashboard` and `API` are optional integrations you add when you want to aggregate and manage job state centrally.
 - Reporting job state from the `CLI` to the `API` requires a host connection token, and that token is only needed when dashboard integration is enabled.
 - In cloud usage, the `API` runs on AWS and the `Web Dashboard` is served from Cloudflare Pages.
@@ -394,10 +396,14 @@ This repository is organized as a monorepo.
 <a id="development-status"></a>
 ## 🚧 Development Status
 
+Recent updates:
+
+- Added Discord notifications
+
 Planned next steps:
 
-- Add Discord notifications
 - Set up a Docker-based local development environment
+- Add more notification targets
 
 If you try the beta, we would appreciate your feedback through GitHub Issues:
 

@@ -10,10 +10,11 @@ Check in this order:
 1. `obsern.yaml` has at least one of:
    - `api.host_token`
    - `notify.slack.webhook_url`
+   - `notify.discord.webhook_url`
 2. Environment variables are expanded correctly.
 3. The command has actually finished. Events are sent when the command ends.
 
-## Slack/Webhook Does Not Receive Messages
+## Slack or Discord Webhook Does Not Receive Messages
 
 - Verify `webhook_url` format.
 - Confirm webhook is still active.
@@ -43,6 +44,7 @@ Verify variables in the same shell before running:
 ```bash
 echo "$OBSERN_HOST_TOKEN"
 echo "$OBSERN_SLACK_WEBHOOK_URL"
+echo "$OBSERN_DISCORD_WEBHOOK_URL"
 ```
 
 If empty, re-export and retry.
