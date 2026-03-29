@@ -36,6 +36,12 @@ It is designed to make the following easier to manage from the CLI for processes
 - dashboard visibility
 - notifications
 
+In particular, Obsern is built around three practical goals:
+
+- no changes to training code just to adopt it
+- no SSH needed just to check whether a long-running job is still healthy
+- one place to understand what is running across multiple servers
+
 No SDK integration is required. Just wrap any command and run it.
 
 ```bash
@@ -316,19 +322,51 @@ If you want dashboard integration, you need a server endpoint to connect to.
 
 If notifications are all you need, the CLI alone is enough.
 
+## 🚫 Non-goals
+
+Obsern is intentionally not trying to cover everything.
+
+- It is not a full experiment tracking platform.
+- It does not require SDK integration into training code.
+- It is not built around heavy always-on agents.
+
+The scope is intentionally narrow: process monitoring and notifications for long-running jobs.
+
 <a id="architecture"></a>
 ## 🏗️ Architecture
 
 Obsern is centered around the `CLI`, which wraps arbitrary commands and can optionally be connected to the Dashboard and API when you want centralized visibility.
 
-- The `CLI` uses `obsern run` to wrap arbitrary commands, stream output back to the terminal, keep tail logs, report status, and send notifications.
-- Slack and Discord notifications are part of the basic CLI-only flow.
-- The `Web Dashboard` and `API` are optional integrations you add when you want to aggregate and manage job state centrally.
-- Reporting job state from the `CLI` to the `API` requires a host connection token, and that token is only needed when dashboard integration is enabled.
-- In cloud usage, the `API` runs on AWS and the `Web Dashboard` is served from Cloudflare Pages.
-- In addition to serving the Dashboard, Cloudflare handles edge protection for the public surface, including DNS, HTTPS, and WAF / bot mitigation.
-- `DynamoDB` is the main persistence layer and stores not only jobs but also workspace and host data.
-- Authentication is integrated with an OIDC provider, and OIDC JWT validation is handled inside the FastAPI application rather than at API Gateway. This keeps the authentication logic consistent not only in cloud usage but also in the local development environment.
+The main reasons for this structure are:
+
+- The `CLI` should be useful on its own so the adoption path stays lightweight.
+- The cloud side leans serverless so small-scale usage can stay within free-tier or low-cost operating ranges more easily.
+- The system is meant to support both the hosted cloud path and self-hosted setups.
+- Authentication logic lives in FastAPI so cloud and local environments behave more consistently.
+
+The main components are:
+
+- `CLI`
+  - `obsern run` wraps arbitrary commands, streams output back to the terminal, keeps tail logs, reports status, and sends notifications.
+  - Slack and Discord notifications are available even without the dashboard/API path.
+
+- `Web Dashboard` / `API`
+  - These are optional integrations for aggregating and managing job state centrally.
+  - Reporting job state from the CLI requires a host connection token, which is only needed when dashboard integration is enabled.
+  - In production, the API runs on AWS, including AWS Lambda, and the dashboard is served from Cloudflare Pages.
+
+- `Documentation` / `Landing Page`
+  - These provide the public entry points for onboarding, setup guidance, and product information.
+  - In production, they are served from Cloudflare Pages.
+
+- `Persistence / Infrastructure`
+  - `DynamoDB` stores jobs, workspaces, and host data.
+  - Cloudflare also handles public-edge concerns such as DNS, HTTPS, and WAF / bot mitigation.
+
+- `Authentication`
+  - Authentication is integrated with an OIDC provider.
+  - JWT validation happens inside the FastAPI application rather than at API Gateway.
+  - This keeps authentication behavior more consistent between cloud usage and local development.
 
 ### ☁️ Cloud Usage
 
@@ -358,12 +396,12 @@ Obsern is centered around the `CLI`, which wraps arbitrary commands and can opti
 
 Obsern focuses on execution monitoring and notifications rather than experiment management.
 
-| Tool | Primary Use |
-| --- | --- |
-| MLflow | Experiment management |
-| TensorBoard | Training metrics visualization |
-| Airflow | Workflow orchestration |
-| Obsern | Job execution monitoring and notifications |
+| Tool | Training Code Changes | Notifications | Cross-Server View | Adoption Friction | Primary Use |
+| --- | --- | --- | --- | --- | --- |
+| MLflow | Often required | △ | △ | Medium | Experiment management |
+| TensorBoard | Required | × | × | Low | Training metrics visualization |
+| Airflow | DAGs required | ○ | ○ | High | Workflow orchestration |
+| Obsern | Not required | ○ | ○ | Low | Long-running job monitoring |
 
 <a id="repository-structure"></a>
 ## 📁 Repository Structure
@@ -375,7 +413,7 @@ This repository is organized as a monorepo.
 - `api/`
   - Backend API.
 - `web/`
-  - Web application.
+  - Web dashboard.
 - `site/`
   - Landing page and documentation site.
 - `infra/`
