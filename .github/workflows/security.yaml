@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version-file: ./cli/go.mod
+          cache-dependency-path: ./cli/go.sum
           cache: true
 
       - name: Govulncheck
@@ -48,11 +49,11 @@ jobs:
       - name: Export pylock.toml
         run: uv export --format pylock.toml --output-file pylock.toml --no-dev
 
-      - name: Pip Audit
-        uses: pypa/gh-action-pip-audit@v1.1.0
-        with:
-          inputs: api
-          locked: true
+      - name: Install pip-audit
+        run: python -m pip install pip-audit
+
+      - name: Audit locked dependencies
+        run: pip-audit --locked .
 
   web:
     runs-on: ubuntu-latest
@@ -66,14 +67,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
         with:
           package_json_file: web/package.json
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "pnpm"
           cache-dependency-path: web/pnpm-lock.yaml
 
@@ -95,14 +96,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
         with:
           package_json_file: site/package.json
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "pnpm"
           cache-dependency-path: site/pnpm-lock.yaml
 
@@ -148,4 +149,4 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@v2.3.1
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@v2.3.5
