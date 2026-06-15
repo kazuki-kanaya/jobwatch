@@ -1,5 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useDeleteJobWorkspacesWorkspaceIdJobsJobIdDelete } from "@/generated/api";
+import {
+  useBulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost,
+  useDeleteJobWorkspacesWorkspaceIdJobsJobIdDelete,
+} from "@/generated/api";
 import { getAuthorizedRequestOptions } from "@/lib/api";
 import { jobQueryKeys } from "./jobQueryKeys";
 
@@ -12,16 +15,25 @@ export const useJobMutations = ({ accessToken, workspaceId }: UseJobMutationsPar
   const queryClient = useQueryClient();
   const request = getAuthorizedRequestOptions(accessToken);
   const deleteMutation = useDeleteJobWorkspacesWorkspaceIdJobsJobIdDelete({ request });
+  const bulkDeleteMutation = useBulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost({ request });
 
   const deleteJob = async (jobId: string) => {
     if (!workspaceId) throw new Error("Workspace is not selected");
 
     await deleteMutation.mutateAsync({ workspaceId, jobId });
-    await queryClient.invalidateQueries({ queryKey: jobQueryKeys.byWorkspace(workspaceId) });
+    await queryClient.invalidateQueries({ queryKey: jobQueryKeys.root });
+  };
+
+  const bulkDeleteJobs = async (jobIds: string[]) => {
+    if (!workspaceId) throw new Error("Workspace is not selected");
+
+    await bulkDeleteMutation.mutateAsync({ workspaceId, data: { job_ids: jobIds } });
+    await queryClient.invalidateQueries({ queryKey: jobQueryKeys.root });
   };
 
   return {
     deleteJob,
-    isDeleting: deleteMutation.isPending,
+    bulkDeleteJobs,
+    isDeleting: deleteMutation.isPending || bulkDeleteMutation.isPending,
   };
 };

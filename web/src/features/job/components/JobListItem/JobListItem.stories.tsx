@@ -20,6 +20,7 @@ const meta = {
       logs: ["Start training: epochs=20"],
     },
     isSelected: true,
+    isBulkSelected: false,
     canManage: true,
     deleteLabel: "Delete",
     hostLabel: "Host",
@@ -28,6 +29,7 @@ const meta = {
     durationLabel: "Duration",
     onSelect: () => {},
     onDelete: () => {},
+    onToggleBulkSelection: () => {},
   },
 } satisfies Meta<typeof JobListItem>;
 
@@ -45,5 +47,11 @@ export const NotSelected: Story = {
 export const ReadOnly: Story = {
   args: {
     canManage: false,
+  },
+};
+
+export const BulkSelected: Story = {
+  args: {
+    isBulkSelected: true,
   },
 };

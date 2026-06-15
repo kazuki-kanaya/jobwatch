@@ -13,6 +13,7 @@ const statusConfig: Record<JobStatusUi, { icon: typeof Clock3; badgeClass: strin
 type JobListItemProps = {
   job: JobItem;
   isSelected: boolean;
+  isBulkSelected: boolean;
   canManage: boolean;
   deleteLabel: string;
   hostLabel: string;
@@ -21,11 +22,13 @@ type JobListItemProps = {
   durationLabel: string;
   onSelect: (jobId: string) => void;
   onDelete: (jobId: string) => void;
+  onToggleBulkSelection: (jobId: string) => void;
 };
 
 export function JobListItem({
   job,
   isSelected,
+  isBulkSelected,
   canManage,
   deleteLabel,
   hostLabel,
@@ -34,6 +37,7 @@ export function JobListItem({
   durationLabel,
   onSelect,
   onDelete,
+  onToggleBulkSelection,
 }: JobListItemProps) {
   const config = statusConfig[job.status];
   const StatusIcon = config.icon;
@@ -48,6 +52,17 @@ export function JobListItem({
       )}
     >
       <div className={cn("flex items-start justify-between gap-3")}>
+        {canManage ? (
+          <div className={cn("pt-1")}>
+            <input
+              type="checkbox"
+              checked={isBulkSelected}
+              onChange={() => onToggleBulkSelection(job.id)}
+              className={cn("size-4 cursor-pointer accent-cyan-400")}
+              aria-label={job.id}
+            />
+          </div>
+        ) : null}
         <button
           type="button"
           onClick={() => onSelect(job.id)}
