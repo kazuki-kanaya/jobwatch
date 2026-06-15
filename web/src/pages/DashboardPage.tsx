@@ -63,7 +63,7 @@ export default function DashboardPage() {
             </div>
           }
           peopleContent={
-            <div className={cn("grid gap-4 xl:grid-cols-[1fr_1fr]")}>
+            <div className={cn("grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]")}>
               <MemberFeature
                 workspaceId={selectedWorkspaceId}
                 currentUser={currentUser}

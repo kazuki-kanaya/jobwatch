@@ -13,13 +13,13 @@ export function InvitationManagementSection({ title, list, dialogs }: Invitation
     <>
       <Card
         className={cn(
-          "relative rounded-3xl border border-slate-700/70 bg-slate-900/80 py-5 shadow-[0_16px_40px_rgba(2,6,23,0.45)]",
+          "relative min-w-0 rounded-3xl border border-slate-700/70 bg-slate-900/80 py-5 shadow-[0_16px_40px_rgba(2,6,23,0.45)]",
         )}
       >
-        <CardHeader className={cn("space-y-5 px-6 pb-4")}>
+        <CardHeader className={cn("min-w-0 space-y-5 px-4 pb-4 sm:px-6")}>
           <CardTitle className={cn("text-2xl font-semibold tracking-tight text-slate-100")}>{title}</CardTitle>
         </CardHeader>
-        <CardContent className={cn("space-y-4 px-6")}>{list}</CardContent>
+        <CardContent className={cn("min-w-0 space-y-4 px-4 sm:px-6")}>{list}</CardContent>
       </Card>
       {dialogs}
     </>
