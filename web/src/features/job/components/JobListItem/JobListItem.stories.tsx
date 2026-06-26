@@ -27,6 +27,7 @@ const meta = {
     statusLabel: "Failed",
     startedAtLabel: "Started At",
     durationLabel: "Duration",
+    selectionLabel: "Select job job-fc2a7a37",
     onSelect: () => {},
     onDelete: () => {},
     onToggleBulkSelection: () => {},

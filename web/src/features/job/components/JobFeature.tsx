@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { toast } from "sonner";
 import { useHostQueries } from "@/features/host";
@@ -23,7 +23,7 @@ type JobFeatureProps = {
   currentUser: CurrentUser | null;
 };
 
-const JOB_PAGE_LIMIT = 5;
+const JOB_PAGE_LIMIT = 10;
 
 type JobFilters = {
   status: JobStatus | "all";
@@ -48,6 +48,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
   const [filters, setFilters] = useState<JobFilters>(defaultFilters);
   const [cursorStack, setCursorStack] = useState<(string | null)[]>([null]);
   const [selectedJobIds, setSelectedJobIds] = useState<Set<string>>(() => new Set());
+  const previousWorkspaceIdRef = useRef(workspaceId);
   const currentCursor = cursorStack[cursorStack.length - 1] ?? null;
   const currentOffset = Number(currentCursor ?? 0);
 
@@ -111,9 +112,9 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
   });
 
   useEffect(() => {
-    if (!workspaceId) {
-      setFilters(defaultFilters);
-    }
+    if (previousWorkspaceIdRef.current === workspaceId) return;
+    previousWorkspaceIdRef.current = workspaceId;
+    setFilters(defaultFilters);
     setCursorStack([null]);
     setSelectedJobIds(new Set());
   }, [workspaceId]);
@@ -206,6 +207,8 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
   const totalCount = jobsQuery.data?.total_count ?? 0;
   const pageStart = totalCount === 0 ? 0 : currentOffset + 1;
   const pageEnd = Math.min(currentOffset + jobs.length, totalCount);
+  const formatCountMessage = (message: string) => message.replace("{count}", String(selectedCount));
+  const formatJobMessage = (message: string, jobId: string) => message.replace("{jobId}", jobId);
 
   useEffect(() => {
     if (!jobsQuery.data || jobs.length > 0 || !currentCursor || jobsQuery.data.total_count === 0) return;
@@ -241,7 +244,8 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
             tag: t("dashboard_tags"),
             tagPlaceholder: t("dashboard_job_tag_placeholder"),
             selectPage: t("dashboard_select_page"),
-            selected: `${selectedCount} ${t("dashboard_jobs_selected")}`,
+            selected: formatCountMessage(t("dashboard_jobs_selected")),
+            selectJob: (jobId) => formatJobMessage(t("dashboard_select_job"), jobId),
             clearSelection: t("dashboard_clear_selection"),
           }}
           pagination={{
@@ -299,7 +303,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
           />
           <JobDeleteDialog
             title={t("dashboard_jobs_bulk_delete_confirm_title")}
-            description={`${selectedCount} ${t("dashboard_jobs_bulk_delete_confirm_description")}`}
+            description={formatCountMessage(t("dashboard_jobs_bulk_delete_confirm_description"))}
             cancelLabel={t("dashboard_cancel")}
             deleteLabel={t("dashboard_delete")}
             isSubmitting={isDeleting}

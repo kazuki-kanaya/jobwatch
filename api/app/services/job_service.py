@@ -1,7 +1,11 @@
 from uuid import uuid4
 
 from app.database.job_repository import JobRepository
-from app.models.exceptions import NotFoundException, PermissionDeniedError
+from app.models.exceptions import (
+    BadRequestException,
+    NotFoundException,
+    PermissionDeniedError,
+)
 from app.models.host import Host
 from app.models.job import Job, JobStatus
 from app.schemas.job import (
@@ -235,7 +239,7 @@ class JobService:
         try:
             return max(0, int(cursor))
         except ValueError as exc:
-            raise NotFoundException("Invalid jobs page cursor") from exc
+            raise BadRequestException("Invalid jobs page cursor") from exc
 
     @staticmethod
     def _to_response(job: Job) -> JobResponse:

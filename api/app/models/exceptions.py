@@ -10,6 +10,12 @@ class NotFoundException(ObsernException):
     pass
 
 
+class BadRequestException(ObsernException):
+    """Raised when a request is malformed."""
+
+    pass
+
+
 class RepositoryException(ObsernException):
     """Raised when a repository operation fails."""
 

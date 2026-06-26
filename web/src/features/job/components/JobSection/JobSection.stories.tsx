@@ -68,6 +68,7 @@ const meta = {
           tagPlaceholder: "Filter by tag",
           selectPage: "Select page",
           selected: "0 selected",
+          selectJob: (jobId) => `Select job ${jobId}`,
           clearSelection: "Clear",
         }}
         pagination={{

@@ -39,6 +39,7 @@ type JobListProps = {
     tagPlaceholder: string;
     selectPage: string;
     selected: string;
+    selectJob: (jobId: string) => string;
     clearSelection: string;
   };
   pagination: {
@@ -156,7 +157,7 @@ export function JobList({
               {filterLabels.selectPage}
             </label>
           ) : null}
-          {selectedCount > 0 ? (
+          {canManage && selectedCount > 0 ? (
             <>
               <span className={cn("text-sm text-slate-300")}>{filterLabels.selected}</span>
               <Button
@@ -269,6 +270,7 @@ export function JobList({
             statusLabel={statusLabels[job.status]}
             startedAtLabel={startedAtLabel}
             durationLabel={durationLabel}
+            selectionLabel={filterLabels.selectJob(job.id)}
             onSelect={onSelectJob}
             onDelete={onDeleteJob}
             onToggleBulkSelection={onToggleJobSelection}

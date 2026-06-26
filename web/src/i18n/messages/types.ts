@@ -34,6 +34,7 @@ export type Messages = {
   dashboard_delete_selected: string;
   dashboard_select_page: string;
   dashboard_jobs_selected: string;
+  dashboard_select_job: string;
   dashboard_clear_selection: string;
   dashboard_previous: string;
   dashboard_next: string;

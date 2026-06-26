@@ -20,6 +20,7 @@ type JobListItemProps = {
   statusLabel: string;
   startedAtLabel: string;
   durationLabel: string;
+  selectionLabel: string;
   onSelect: (jobId: string) => void;
   onDelete: (jobId: string) => void;
   onToggleBulkSelection: (jobId: string) => void;
@@ -35,6 +36,7 @@ export function JobListItem({
   statusLabel,
   startedAtLabel,
   durationLabel,
+  selectionLabel,
   onSelect,
   onDelete,
   onToggleBulkSelection,
@@ -59,7 +61,7 @@ export function JobListItem({
               checked={isBulkSelected}
               onChange={() => onToggleBulkSelection(job.id)}
               className={cn("size-4 cursor-pointer accent-cyan-400")}
-              aria-label={job.id}
+              aria-label={selectionLabel}
             />
           </div>
         ) : null}
