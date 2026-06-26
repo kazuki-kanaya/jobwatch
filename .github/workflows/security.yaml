@@ -122,19 +122,17 @@ jobs:
 
       - name: tfsec (AWS)
         uses: aquasecurity/tfsec-action@v1.0.3
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         with:
           working_directory: infra/envs/prod/aws
           soft_fail: false
+          github_token: ${{ github.token }}
 
       - name: tfsec (Cloudflare)
         uses: aquasecurity/tfsec-action@v1.0.3
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         with:
           working_directory: infra/envs/prod/cloudflare
           soft_fail: false
+          github_token: ${{ github.token }}
 
   gitleaks:
     runs-on: ubuntu-latest
