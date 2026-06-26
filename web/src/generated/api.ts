@@ -87,6 +87,18 @@ export interface InvitationAcceptResponse {
   role: MembershipRole;
 }
 
+export interface JobBulkDeleteRequest {
+  /**
+   * @minItems 1
+   * @maxItems 100
+   */
+  job_ids: string[];
+}
+
+export interface JobBulkDeleteResponse {
+  deleted_count: number;
+}
+
 export interface JobCreateRequest {
   command: string;
   tags?: string[];
@@ -117,6 +129,12 @@ export interface JobResponse {
   tail_lines?: string[];
   started_at: string;
   finished_at?: string | null;
+}
+
+export interface JobListPageResponse {
+  items: JobResponse[];
+  next_cursor?: string | null;
+  total_count: number;
 }
 
 export interface JobUpdateRequest {
@@ -221,6 +239,19 @@ export interface WorkspaceOwnerTransferResponse {
 export interface WorkspaceUpdateRequest {
   name: string;
 }
+
+export type SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetParams = {
+status?: JobStatus | null;
+host_id?: string | null;
+tag?: string | null;
+q?: string | null;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+limit?: number;
+cursor?: string | null;
+};
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -1793,6 +1824,106 @@ export function useListJobsByWorkspaceWorkspacesWorkspaceIdJobsGet<TData = Await
 
 
 /**
+ * Search jobs in a workspace with cursor pagination.
+ * @summary Search Jobs By Workspace
+ */
+export const searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet = (
+    workspaceId: string,
+    params?: SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetParams,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<JobListPageResponse>(
+      {url: `/workspaces/${workspaceId}/jobs/search`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getSearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetQueryKey = (workspaceId: string,
+    params?: SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetParams,) => {
+    return [
+    `/workspaces/${workspaceId}/jobs/search`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getSearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetQueryOptions = <TData = Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError = HTTPValidationError>(workspaceId: string,
+    params?: SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetQueryKey(workspaceId,params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>> = ({ signal }) => searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet(workspaceId,params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(workspaceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetQueryResult = NonNullable<Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>>
+export type SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetQueryError = HTTPValidationError
+
+
+export function useSearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet<TData = Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    params: undefined |  SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>,
+          TError,
+          Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet<TData = Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    params?: SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>,
+          TError,
+          Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof axiosInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet<TData = Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    params?: SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Search Jobs By Workspace
+ */
+
+export function useSearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet<TData = Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError = HTTPValidationError>(
+ workspaceId: string,
+    params?: SearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGet>>, TError, TData>>, request?: SecondParameter<typeof axiosInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSearchJobsByWorkspaceWorkspacesWorkspaceIdJobsSearchGetQueryOptions(workspaceId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+/**
  * List all jobs for a specific host.
  * @summary List Jobs By Host
  */
@@ -2052,6 +2183,72 @@ export const useDeleteJobWorkspacesWorkspaceIdJobsJobIdDelete = <TError = HTTPVa
         TContext
       > => {
       return useMutation(getDeleteJobWorkspacesWorkspaceIdJobsJobIdDeleteMutationOptions(options), queryClient);
+    }
+    
+/**
+ * Delete multiple jobs in a workspace.
+ * @summary Bulk Delete Jobs
+ */
+export const bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost = (
+    workspaceId: string,
+    jobBulkDeleteRequest: JobBulkDeleteRequest,
+ options?: SecondParameter<typeof axiosInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return axiosInstance<JobBulkDeleteResponse>(
+      {url: `/workspaces/${workspaceId}/jobs/bulk-delete`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: jobBulkDeleteRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getBulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePostMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost>>, TError,{workspaceId: string;data: JobBulkDeleteRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost>>, TError,{workspaceId: string;data: JobBulkDeleteRequest}, TContext> => {
+
+const mutationKey = ['bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost>>, {workspaceId: string;data: JobBulkDeleteRequest}> = (props) => {
+          const {workspaceId,data} = props ?? {};
+
+          return  bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost(workspaceId,data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type BulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePostMutationResult = NonNullable<Awaited<ReturnType<typeof bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost>>>
+    export type BulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePostMutationBody = JobBulkDeleteRequest
+    export type BulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePostMutationError = HTTPValidationError
+
+    /**
+ * @summary Bulk Delete Jobs
+ */
+export const useBulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost>>, TError,{workspaceId: string;data: JobBulkDeleteRequest}, TContext>, request?: SecondParameter<typeof axiosInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof bulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePost>>,
+        TError,
+        {workspaceId: string;data: JobBulkDeleteRequest},
+        TContext
+      > => {
+      return useMutation(getBulkDeleteJobsWorkspacesWorkspaceIdJobsBulkDeletePostMutationOptions(options), queryClient);
     }
     
 /**

@@ -62,7 +62,7 @@ export function MemberList({
   }
 
   return (
-    <div className={cn("overflow-hidden rounded-lg border border-slate-700/70 bg-slate-900/35")}>
+    <div className={cn("min-w-0 overflow-hidden rounded-lg border border-slate-700/70 bg-slate-900/35")}>
       <div className={cn("divide-y divide-slate-800/70")}>
         {items.map((member) => (
           <MemberItem

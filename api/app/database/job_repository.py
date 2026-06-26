@@ -43,6 +43,10 @@ class JobRepository:
         sk = DynamoDBKeys.job_sk(job.host_id, job.job_id)
         self._table.delete(pk, sk)
 
+    def delete_many(self, jobs: list[Job]) -> None:
+        items = [self._to_item(job) for job in jobs]
+        self._table.batch_delete(items)
+
     @staticmethod
     def _to_item(job: Job) -> dict[str, Any]:
         pk = DynamoDBKeys.workspace_pk(job.workspace_id)

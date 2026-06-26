@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 
 from app.dependencies.security import (
     get_current_host,
@@ -6,10 +6,14 @@ from app.dependencies.security import (
 )
 from app.dependencies.services import get_job_service
 from app.models.host import Host
+from app.models.job import JobStatus
 from app.models.workspace_membership import MembershipRole, WorkspaceMembership
 from app.schemas.job import (
+    JobBulkDeleteRequest,
+    JobBulkDeleteResponse,
     JobCreateRequest,
     JobCreateResponse,
+    JobListPageResponse,
     JobResponse,
     JobUpdateRequest,
 )
@@ -54,6 +58,32 @@ def list_jobs_by_workspace(
 
 
 @router.get(
+    "/workspaces/{workspace_id}/jobs/search", response_model=JobListPageResponse
+)
+def search_jobs_by_workspace(
+    workspace_id: str,
+    job_status: JobStatus | None = Query(default=None, alias="status"),
+    host_id: str | None = None,
+    tag: str | None = None,
+    q: str | None = None,
+    limit: int = Query(default=20, ge=1, le=100),
+    cursor: str | None = None,
+    job_service: JobService = Depends(get_job_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.VIEWER)),
+) -> JobListPageResponse:
+    """Search jobs in a workspace with cursor pagination."""
+    return job_service.search_jobs_by_workspace(
+        workspace_id,
+        status=job_status,
+        host_id=host_id,
+        tag=tag,
+        q=q,
+        limit=limit,
+        cursor=cursor,
+    )
+
+
+@router.get(
     "/workspaces/{workspace_id}/hosts/{host_id}/jobs", response_model=list[JobResponse]
 )
 def list_jobs_by_host(
@@ -75,6 +105,20 @@ def get_job(
 ) -> JobResponse:
     """Get a single job by ID."""
     return job_service.get_job_in_workspace(workspace_id, job_id)
+
+
+@router.post(
+    "/workspaces/{workspace_id}/jobs/bulk-delete",
+    response_model=JobBulkDeleteResponse,
+)
+def bulk_delete_jobs(
+    workspace_id: str,
+    request: JobBulkDeleteRequest,
+    job_service: JobService = Depends(get_job_service),
+    _: WorkspaceMembership = Depends(require_workspace_role(MembershipRole.EDITOR)),
+) -> JobBulkDeleteResponse:
+    """Delete multiple jobs in a workspace."""
+    return job_service.delete_jobs_in_workspace(workspace_id, request.job_ids)
 
 
 @router.delete(

@@ -31,3 +31,17 @@ class JobResponse(BaseModel):
     tail_lines: list[str] = Field(default_factory=list)
     started_at: datetime
     finished_at: datetime | None = None
+
+
+class JobListPageResponse(BaseModel):
+    items: list[JobResponse]
+    next_cursor: str | None = None
+    total_count: int
+
+
+class JobBulkDeleteRequest(BaseModel):
+    job_ids: list[str] = Field(min_length=1, max_length=100)
+
+
+class JobBulkDeleteResponse(BaseModel):
+    deleted_count: int

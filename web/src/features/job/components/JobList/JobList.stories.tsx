@@ -39,9 +39,11 @@ const meta = {
     jobs: baseJobs,
     state: "ready",
     selectedJobId: "job-fc2a7a37",
+    selectedJobIds: new Set<string>(),
     emptyLabel: "No jobs yet.",
     errorLabel: "Failed to load jobs.",
     deleteLabel: "Delete",
+    deleteSelectedLabel: "Delete selected",
     canManage: true,
     hostLabel: "Host",
     startedAtLabel: "Started At",
@@ -52,8 +54,49 @@ const meta = {
       failed: "Failed",
       canceled: "Canceled",
     },
+    statusFilterLabels: {
+      all: "All",
+      running: "Running",
+      finished: "Completed",
+      failed: "Failed",
+      canceled: "Canceled",
+    },
+    filters: {
+      status: "all",
+      hostId: "all",
+      tag: "",
+      query: "",
+    },
+    hostOptions: [{ id: "host-92cba371", name: "gpu-server-1" }],
+    filterLabels: {
+      status: "Status",
+      host: "Host",
+      allHosts: "All hosts",
+      keyword: "Keyword",
+      keywordPlaceholder: "Search command, job ID, or host ID",
+      tag: "Tags",
+      tagPlaceholder: "Filter by tag",
+      selectPage: "Select page",
+      selected: "0 selected",
+      selectJob: (jobId) => `Select job ${jobId}`,
+      clearSelection: "Clear",
+    },
+    pagination: {
+      pageRangeLabel: "1-2 / 2",
+      previousLabel: "Previous",
+      nextLabel: "Next",
+      canPrevious: false,
+      canNext: false,
+    },
     onSelectJob: () => {},
     onDeleteJob: () => {},
+    onToggleJobSelection: () => {},
+    onToggleCurrentPageSelection: () => {},
+    onClearSelection: () => {},
+    onBulkDelete: () => {},
+    onFiltersChange: () => {},
+    onPreviousPage: () => {},
+    onNextPage: () => {},
   },
 } satisfies Meta<typeof JobList>;
 
@@ -78,5 +121,24 @@ export const EmptyState: Story = {
 export const ErrorState: Story = {
   args: {
     state: "error",
+  },
+};
+
+export const WithSelection: Story = {
+  args: {
+    selectedJobIds: new Set(["job-fc2a7a37"]),
+    filterLabels: {
+      status: "Status",
+      host: "Host",
+      allHosts: "All hosts",
+      keyword: "Keyword",
+      keywordPlaceholder: "Search command, job ID, or host ID",
+      tag: "Tags",
+      tagPlaceholder: "Filter by tag",
+      selectPage: "Select page",
+      selected: "1 selected",
+      selectJob: (jobId) => `Select job ${jobId}`,
+      clearSelection: "Clear",
+    },
   },
 };

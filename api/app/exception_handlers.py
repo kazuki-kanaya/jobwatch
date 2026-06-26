@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 
 from app.models.exceptions import (
     AuthenticationError,
+    BadRequestException,
     ConditionalCheckFailedError,
     NotFoundException,
     PermissionDeniedError,
@@ -12,6 +13,16 @@ from app.models.exceptions import (
 
 
 def register_exception_handlers(app: FastAPI) -> None:
+    @app.exception_handler(BadRequestException)
+    async def handle_bad_request_error(
+        request: Request, exception: BadRequestException
+    ) -> JSONResponse:
+        """Handle malformed request errors with 400 status."""
+        return JSONResponse(
+            status_code=http.HTTPStatus.BAD_REQUEST,
+            content={"detail": str(exception)},
+        )
+
     @app.exception_handler(AuthenticationError)
     async def handle_authentication_error(
         request: Request, exception: AuthenticationError

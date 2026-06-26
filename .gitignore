@@ -3,6 +3,6 @@
 .codex/
 aws-dynamodb/
 skills-lock.json
+.pnpm-store/
 # Added by goreleaser init:
 dist/
-idea.md

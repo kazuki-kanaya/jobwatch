@@ -25,8 +25,8 @@ export function MemberItem({
   onDeleteMember,
 }: MemberItemProps) {
   return (
-    <article className={cn("flex items-center justify-between gap-3 px-4 py-2.5")}>
-      <div className={cn("min-w-0 space-y-0.5")}>
+    <article className={cn("flex min-w-0 items-center justify-between gap-3 px-3 py-2.5 sm:px-4")}>
+      <div className={cn("min-w-0 flex-1 space-y-0.5")}>
         <p className={cn("flex min-w-0 items-center gap-1.5")}>
           <span
             className={cn(
@@ -35,7 +35,7 @@ export function MemberItem({
           >
             <UserRound className={cn("size-2.5")} />
           </span>
-          <span className={cn("truncate text-sm font-semibold text-slate-100")}>{member.userName}</span>
+          <span className={cn("min-w-0 truncate text-sm font-semibold text-slate-100")}>{member.userName}</span>
           <span
             className={cn(
               "inline-flex shrink-0 items-center gap-1 rounded-full border border-cyan-400/45 bg-cyan-500/15 px-2 py-0.5 text-[10px] font-semibold tracking-[0.05em] text-cyan-100 uppercase",
