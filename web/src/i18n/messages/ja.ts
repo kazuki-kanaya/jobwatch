@@ -142,6 +142,8 @@ export const jaMessages = {
   dashboard_snapshot_failed: "失敗",
   dashboard_snapshot_unavailable: "取得失敗",
   dashboard_all: "すべて",
+  dashboard_all_statuses: "すべてのステータス",
+  dashboard_all_hosts: "すべてのホスト",
   invite_title: "ワークスペースに参加",
   invite_subtitle: "招待リンクを承諾してワークスペースに参加します。",
   invite_token_missing: "招待トークンが見つかりません。",

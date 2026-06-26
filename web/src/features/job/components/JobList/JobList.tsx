@@ -33,6 +33,7 @@ type JobListProps = {
   filterLabels: {
     status: string;
     host: string;
+    allHosts: string;
     keyword: string;
     keywordPlaceholder: string;
     tag: string;
@@ -95,7 +96,7 @@ export function JobList({
   const isPagePartiallySelected = !isPageSelected && pageJobIds.some((jobId) => selectedJobIds.has(jobId));
   const controls = (
     <div className={cn("mb-3 space-y-3")}>
-      <div className={cn("grid gap-2 lg:grid-cols-[1fr_1fr_1fr_1.4fr]")}>
+      <div className={cn("grid gap-2 sm:grid-cols-2")}>
         <Select
           value={filters.status}
           onValueChange={(value) => onFiltersChange({ status: value as JobStatus | "all" })}
@@ -117,7 +118,7 @@ export function JobList({
           </SelectTrigger>
           <SelectContent className={cn("border-slate-700 bg-slate-900 text-slate-100")}>
             <SelectItem value="all" className={cn("cursor-pointer")}>
-              {statusFilterLabels.all}
+              {filterLabels.allHosts}
             </SelectItem>
             {hostOptions.map((host) => (
               <SelectItem key={host.id} value={host.id} className={cn("cursor-pointer")}>

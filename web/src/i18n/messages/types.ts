@@ -140,6 +140,8 @@ export type Messages = {
   dashboard_snapshot_failed: string;
   dashboard_snapshot_unavailable: string;
   dashboard_all: string;
+  dashboard_all_statuses: string;
+  dashboard_all_hosts: string;
   invite_title: string;
   invite_subtitle: string;
   invite_token_missing: string;

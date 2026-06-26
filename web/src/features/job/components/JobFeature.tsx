@@ -197,7 +197,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
     canceled: t("status_canceled"),
   };
   const statusFilterLabels: Record<JobStatus | "all", string> = {
-    all: t("dashboard_all"),
+    all: t("dashboard_all_statuses"),
     running: t("status_running"),
     finished: t("status_completed"),
     failed: t("status_failed"),
@@ -239,6 +239,7 @@ export function JobFeature({ workspaceId, currentUser }: JobFeatureProps) {
           filterLabels={{
             status: t("dashboard_status"),
             host: t("dashboard_host"),
+            allHosts: t("dashboard_all_hosts"),
             keyword: t("dashboard_job_keyword"),
             keywordPlaceholder: t("dashboard_job_keyword_placeholder"),
             tag: t("dashboard_tags"),

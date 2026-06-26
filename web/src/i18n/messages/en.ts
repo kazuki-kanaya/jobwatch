@@ -155,6 +155,8 @@ export const enMessages = {
   dashboard_snapshot_failed: "Failed",
   dashboard_snapshot_unavailable: "Snapshot unavailable",
   dashboard_all: "All",
+  dashboard_all_statuses: "All statuses",
+  dashboard_all_hosts: "All hosts",
 
   invite_title: "Join workspace",
   invite_subtitle: "Accept the invitation link to access this workspace.",

@@ -71,6 +71,7 @@ const meta = {
     filterLabels: {
       status: "Status",
       host: "Host",
+      allHosts: "All hosts",
       keyword: "Keyword",
       keywordPlaceholder: "Search command, job ID, or host ID",
       tag: "Tags",
@@ -129,6 +130,7 @@ export const WithSelection: Story = {
     filterLabels: {
       status: "Status",
       host: "Host",
+      allHosts: "All hosts",
       keyword: "Keyword",
       keywordPlaceholder: "Search command, job ID, or host ID",
       tag: "Tags",
