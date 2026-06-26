@@ -16,8 +16,8 @@ variable "bot_fight_mode" {
   default     = true
 }
 
-variable "cloudflare_api_token" {
-  description = "Cloudflare API token"
+variable "cloudflare_zone_api_token" {
+  description = "Cloudflare API token for zone-wide settings"
   type        = string
   sensitive   = true
 }

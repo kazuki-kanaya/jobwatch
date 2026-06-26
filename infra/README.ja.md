@@ -54,13 +54,13 @@ Task は `envs/prod` と `envs/local` に分離し、`infra/Taskfile.yaml` か�
 - `cloudflare_zone_id`（DNS 用）
 - 管理可能な独自ドメイン（必須。例: `example.dev`）
 - API トークン（用途別）
-  - Pages 用トークン（例: `20-pages`, `21-pages-domain-dns-records` の Pages 操作）
-  - Zone 用トークン（例: `00-zone-foundation`, `10-dns-validation`, `21-pages-domain-dns-records`, `30-dns-records-api-auth` の DNS 操作）
+  - `cloudflare_pages_api_token`: Pages 用トークン（`20-pages`, `21-pages-domain-dns-records` の Pages 操作）
+  - `cloudflare_zone_api_token`: Zone 用トークン（`00-zone-foundation`, DNS 検証, Pages ドメイン DNS, API/Auth DNS 操作）
 
 推奨権限:
 
 - Pages 用トークン: `Account / Cloudflare Pages / Edit`
-- Zone 用トークン: `Zone / DNS / Edit` + `Zone / Zone / Read`
+- Zone 用トークン: `Zone / DNS / Edit` + `Zone / Zone / Read` + 管理するゾーン全体設定に必要な権限
 
 トークンは `terraform.tfvars` に設定します（リポジトリへコミットしないこと）。
 

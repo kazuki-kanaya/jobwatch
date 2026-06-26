@@ -15,5 +15,5 @@ provider "cloudflare" {
 
 provider "cloudflare" {
   alias     = "dns"
-  api_token = var.cloudflare_dns_api_token
+  api_token = var.cloudflare_zone_api_token
 }

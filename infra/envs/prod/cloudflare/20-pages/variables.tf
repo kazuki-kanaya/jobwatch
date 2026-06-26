@@ -1,5 +1,5 @@
-variable "cloudflare_api_token" {
-  description = "Cloudflare API token"
+variable "cloudflare_pages_api_token" {
+  description = "Cloudflare API token for Pages project operations"
   type        = string
   sensitive   = true
 }

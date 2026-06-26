@@ -54,13 +54,13 @@ Tasks are split between `envs/prod` and `envs/local`, and composed through `infr
 - `cloudflare_zone_id` (for DNS)
 - A custom domain you control (required, e.g. `example.dev`)
 - API tokens by purpose:
-  - Pages token (for Pages operations in `20-pages` and `21-pages-domain-dns-records`)
-  - Zone token (for `00-zone-foundation`, DNS operations in `10-dns-validation` and `21-pages-domain-dns-records`, and `30-dns-records-api-auth`)
+  - `cloudflare_pages_api_token`: Pages token (for Pages operations in `20-pages` and `21-pages-domain-dns-records`)
+  - `cloudflare_zone_api_token`: Zone token (for `00-zone-foundation`, DNS validation, Pages domain DNS records, and API/auth DNS records)
 
 Recommended permissions:
 
 - Pages token: `Account / Cloudflare Pages / Edit`
-- Zone token: `Zone / DNS / Edit` + `Zone / Zone / Read`
+- Zone token: `Zone / DNS / Edit` + `Zone / Zone / Read`, plus permissions required by the zone-wide settings you manage
 
 Set tokens in `terraform.tfvars`, and do not commit them to the repository.
 

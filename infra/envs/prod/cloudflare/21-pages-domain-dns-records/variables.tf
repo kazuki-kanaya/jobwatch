@@ -1,5 +1,5 @@
-variable "cloudflare_dns_api_token" {
-  description = "Cloudflare API token for DNS record operations"
+variable "cloudflare_zone_api_token" {
+  description = "Cloudflare API token for zone operations"
   type        = string
   sensitive   = true
 }
