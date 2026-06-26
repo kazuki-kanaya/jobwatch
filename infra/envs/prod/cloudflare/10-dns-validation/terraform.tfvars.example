@@ -1,5 +1,5 @@
-cloudflare_api_token = "your-cloudflare-zone-api-token"
-cloudflare_zone_id   = "your-cloudflare-zone-id"
+cloudflare_zone_api_token = "your-cloudflare-zone-api-token"
+cloudflare_zone_id        = "your-cloudflare-zone-id"
 
 terraform_state_bucket  = "obsern-terraform-state-prod"
 terraform_state_region  = "ap-northeast-1"
