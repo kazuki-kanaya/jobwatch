@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "react-oidc-context";
+import { useNavigate } from "react-router";
 import { HeaderBrand } from "@/features/header/components/HeaderBrand/HeaderBrand";
 import { HeaderControls } from "@/features/header/components/HeaderControls/HeaderControls";
 import { HeaderProfileEditDialog } from "@/features/header/components/HeaderProfileEditDialog/HeaderProfileEditDialog";
@@ -20,6 +21,7 @@ type HeaderFeatureProps = {
 
 export function HeaderFeature({ currentUser }: HeaderFeatureProps) {
   const { user, removeUser } = useAuth();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { locale, setLocale, t } = useLocale();
   const { timeZone, setTimeZone, formatDateTime } = useDisplaySettings();
@@ -65,6 +67,7 @@ export function HeaderFeature({ currentUser }: HeaderFeatureProps) {
       }
       controls={
         <HeaderControls
+          billingLabel={t("billing_manage")}
           languageLabel={t("dashboard_language")}
           refreshLabel={t("dashboard_refresh")}
           signOutLabel={t("dashboard_sign_out")}
@@ -87,6 +90,7 @@ export function HeaderFeature({ currentUser }: HeaderFeatureProps) {
           onTimeZoneChange={setTimeZone}
           onRefresh={handleRefresh}
           onSignOut={handleSignOut}
+          onBilling={() => navigate("/billing")}
         />
       }
       profileDialog={

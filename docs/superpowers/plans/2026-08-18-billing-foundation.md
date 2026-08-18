@@ -192,12 +192,23 @@
 
 **Files:**
 - Modify: `web/openapi.json`
+- Modify: `web/src/generated/api.ts`
+- Modify: `web/src/App.tsx`
+- Create: `web/src/pages/BillingPage.tsx`
+- Modify: `web/src/features/header/components/HeaderFeature.tsx`
+- Modify: `web/src/features/header/components/HeaderControls/HeaderControls.tsx`
+- Modify: `web/src/i18n/messages/types.ts`
+- Modify: `web/src/i18n/messages/en.ts`
+- Modify: `web/src/i18n/messages/ja.ts`
+- Modify: `api/.env.example`
 - Modify: `infra/envs/prod/aws/20-core/terraform.tfvars.example`
-- Modify: `README.md` or the existing API/deployment documentation file selected after inspection
+- Modify: `README.md`
+- Modify: `README.ja.md`
 - Create: `api/tests/test_billing_configuration.py`
 
 **Interfaces:**
 - OpenAPI includes all four billing endpoints and the billing response schemas.
+- The authenticated web app exposes `/billing`, links to it from the dashboard header, and redirects users to Stripe-hosted Checkout/Portal URLs.
 - Documentation names every required `OBSERN_` environment variable and the Stripe webhook endpoint.
 
 - [ ] **Step 1: Write failing configuration tests**
@@ -216,13 +227,17 @@
 
   Run: `task openapi` from `api` and inspect that only the intended contract changes are present.
 
-- [ ] **Step 5: Run API formatting, lint, type checks, and tests**
+- [ ] **Step 5: Regenerate the typed web client and add the billing screen**
 
-  Run: `uv run ruff format --check .`, `uv run ruff check .`, `uv run ty check .`, and `uv run pytest -q` from `api`.
+  Run: `pnpm generate:api` from `web`. Use the generated query/mutation hooks in `BillingPage.tsx`, keep card handling on Stripe-hosted pages, and add the authenticated `/billing` route plus a dashboard header link. Display the account plan, workspace usage, and the limits returned by the API.
 
-- [ ] **Step 6: Commit the contract/documentation slice**
+- [ ] **Step 6: Run API/web formatting, lint, type checks, builds, and tests**
 
-  Run: `git add web/openapi.json infra/envs/prod/aws/20-core/terraform.tfvars.example README.md api/tests/test_billing_configuration.py && git commit -m "docs: configure hosted billing"`
+  Run `uv run ruff format --check .`, `uv run ruff check .`, `uv run ty check .`, and `uv run pytest -q` from `api`; run `pnpm exec biome check` on changed web files and `pnpm build` from `web`.
+
+- [ ] **Step 7: Commit the contract/documentation slice**
+
+  Run: `git add api/.env.example web/openapi.json web/src/generated/api.ts web/src/App.tsx web/src/pages/BillingPage.tsx web/src/features/header/components/HeaderFeature.tsx web/src/features/header/components/HeaderControls/HeaderControls.tsx web/src/i18n/messages/types.ts web/src/i18n/messages/en.ts web/src/i18n/messages/ja.ts infra/envs/prod/aws/20-core/terraform.tfvars.example README.md README.ja.md api/tests/test_billing_configuration.py && git commit -m "feat(web): add hosted billing screen"`
 
 ### Task 5: Review and publish a draft PR
 

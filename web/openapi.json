@@ -26,6 +26,105 @@
         }
       }
     },
+    "/billing": {
+      "get": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Get Billing",
+        "operationId": "get_billing_billing_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/billing/checkout": {
+      "post": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Create Checkout",
+        "operationId": "create_checkout_billing_checkout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingSessionResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/billing/portal": {
+      "post": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Create Portal",
+        "operationId": "create_portal_billing_portal_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingSessionResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/webhooks/stripe": {
+      "post": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Receive Stripe Webhook",
+        "operationId": "receive_stripe_webhook_webhooks_stripe_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingWebhookResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces": {
       "post": {
         "tags": [
@@ -1651,6 +1750,123 @@
   },
   "components": {
     "schemas": {
+      "BillingLimitsResponse": {
+        "properties": {
+          "max_workspaces": {
+            "type": "integer",
+            "title": "Max Workspaces"
+          },
+          "max_hosts_per_workspace": {
+            "type": "integer",
+            "title": "Max Hosts Per Workspace"
+          },
+          "max_jobs_per_workspace": {
+            "type": "integer",
+            "title": "Max Jobs Per Workspace"
+          },
+          "max_log_lines_per_job": {
+            "type": "integer",
+            "title": "Max Log Lines Per Job"
+          },
+          "retention_days": {
+            "type": "integer",
+            "title": "Retention Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "max_workspaces",
+          "max_hosts_per_workspace",
+          "max_jobs_per_workspace",
+          "max_log_lines_per_job",
+          "retention_days"
+        ],
+        "title": "BillingLimitsResponse"
+      },
+      "BillingResponse": {
+        "properties": {
+          "plan": {
+            "$ref": "#/components/schemas/Plan"
+          },
+          "subscription_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SubscriptionStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current_period_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Period End"
+          },
+          "cancel_at_period_end": {
+            "type": "boolean",
+            "title": "Cancel At Period End"
+          },
+          "workspace_count": {
+            "type": "integer",
+            "title": "Workspace Count"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/BillingLimitsResponse"
+          },
+          "checkout_available": {
+            "type": "boolean",
+            "title": "Checkout Available"
+          },
+          "portal_available": {
+            "type": "boolean",
+            "title": "Portal Available"
+          }
+        },
+        "type": "object",
+        "required": [
+          "plan",
+          "cancel_at_period_end",
+          "workspace_count",
+          "limits",
+          "checkout_available",
+          "portal_available"
+        ],
+        "title": "BillingResponse"
+      },
+      "BillingSessionResponse": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "BillingSessionResponse"
+      },
+      "BillingWebhookResponse": {
+        "properties": {
+          "received": {
+            "type": "boolean",
+            "title": "Received"
+          }
+        },
+        "type": "object",
+        "required": [
+          "received"
+        ],
+        "title": "BillingWebhookResponse"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -2044,6 +2260,27 @@
           "viewer"
         ],
         "title": "MembershipRole"
+      },
+      "Plan": {
+        "type": "string",
+        "enum": [
+          "free",
+          "pro"
+        ],
+        "title": "Plan"
+      },
+      "SubscriptionStatus": {
+        "type": "string",
+        "enum": [
+          "incomplete",
+          "active",
+          "past_due",
+          "canceled",
+          "unpaid",
+          "incomplete_expired",
+          "trialing"
+        ],
+        "title": "SubscriptionStatus"
       },
       "UserLookupRequest": {
         "properties": {

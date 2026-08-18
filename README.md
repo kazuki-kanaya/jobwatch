@@ -57,6 +57,7 @@ obsern run python train.py
 - [✨ Key Features](#key-features)
 - [🚫 Non-goals](#non-goals)
 - [🏗️ Architecture](#architecture)
+- [💳 Hosted Billing](#hosted-billing)
 - [🆚 Comparison](#comparison)
 - [📁 Repository Structure](#repository-structure)
 - [🛠️ Tech Stack](#tech-stack)
@@ -368,6 +369,24 @@ The main components are:
   - Authentication is integrated with an OIDC provider.
   - JWT validation happens inside the FastAPI application rather than at API Gateway.
   - This keeps authentication behavior more consistent between cloud usage and local development.
+
+<a id="hosted-billing"></a>
+## 💳 Hosted Billing
+
+The hosted dashboard uses Stripe-hosted Checkout and Customer Portal pages. Obsern does not receive or store card details.
+
+For a production deployment, configure these API environment variables:
+
+- `OBSERN_STRIPE_SECRET_KEY`
+- `OBSERN_STRIPE_WEBHOOK_SECRET`
+- `OBSERN_STRIPE_PRO_PRICE_ID`
+- `OBSERN_BILLING_SUCCESS_URL`
+- `OBSERN_BILLING_CANCEL_URL`
+- `OBSERN_BILLING_PORTAL_RETURN_URL`
+
+Register `POST https://api.example.dev/webhooks/stripe` in Stripe and enable `checkout.session.completed` plus subscription lifecycle events. Keep the secret key and webhook secret outside the repository and inject them through the deployment environment or a secret-management workflow.
+
+The current hosted plan is account-based: Free allows one owned workspace and Pro allows three. Existing data is not deleted when an account downgrades.
 
 ### ☁️ Cloud Usage
 

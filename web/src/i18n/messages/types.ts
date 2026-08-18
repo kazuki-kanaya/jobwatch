@@ -158,6 +158,22 @@ export type Messages = {
   status_completed: string;
   status_failed: string;
   status_canceled: string;
+  billing_title: string;
+  billing_subtitle: string;
+  billing_plan: string;
+  billing_free: string;
+  billing_pro: string;
+  billing_workspace_usage: string;
+  billing_upgrade: string;
+  billing_manage: string;
+  billing_back_to_dashboard: string;
+  billing_loading: string;
+  billing_error: string;
+  billing_unavailable: string;
+  billing_hosts_limit: string;
+  billing_jobs_limit: string;
+  billing_log_lines_limit: string;
+  billing_retention_limit: string;
 };
 
 export type MessagesKey = keyof Messages;
