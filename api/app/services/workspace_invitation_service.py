@@ -21,6 +21,7 @@ from app.schemas.invitation import (
     WorkspaceInvitationResponse,
     WorkspaceInvitationsResponse,
 )
+from app.services.entitlement_service import EntitlementService
 from app.utils.datetime import now
 
 
@@ -31,11 +32,13 @@ class WorkspaceInvitationService:
         workspace_repository: WorkspaceRepository,
         workspace_membership_repository: WorkspaceMembershipRepository,
         workspace_invitation_repository: WorkspaceInvitationRepository,
+        entitlement_service: EntitlementService | None = None,
     ) -> None:
         self._settings = settings
         self._workspace_repository = workspace_repository
         self._workspace_membership_repository = workspace_membership_repository
         self._workspace_invitation_repository = workspace_invitation_repository
+        self._entitlement_service = entitlement_service
 
     def create_invitation(
         self,
@@ -113,6 +116,19 @@ class WorkspaceInvitationService:
         if invitation.expires_at < now():
             raise PermissionDeniedError("Invitation has expired")
 
+        membership = self._workspace_membership_repository.get(
+            invitation.workspace_id, current_user.user_id
+        )
+        entitlement = None
+        if (
+            membership is None
+            and invitation.role.value == "owner"
+            and self._entitlement_service
+        ):
+            entitlement = self._entitlement_service.assert_can_create_workspace(
+                current_user.user_id
+            )
+
         try:
             self._workspace_invitation_repository.mark_used(
                 invitation.workspace_id, invitation.invitation_id
@@ -120,16 +136,19 @@ class WorkspaceInvitationService:
         except ConditionalCheckFailedError as e:
             raise PermissionDeniedError("Invitation has already been used") from e
 
-        membership = self._workspace_membership_repository.get(
-            invitation.workspace_id, current_user.user_id
-        )
         if membership is None:
             self._workspace_membership_repository.create(
                 workspace_membership=WorkspaceMembership(
                     workspace_id=invitation.workspace_id,
                     user_id=current_user.user_id,
                     role=invitation.role,
-                )
+                ),
+                expected_owner_count=(
+                    entitlement.workspace_count if entitlement else None
+                ),
+                max_owned_workspaces=(
+                    entitlement.limits.max_workspaces if entitlement else None
+                ),
             )
 
         return InvitationAcceptResponse(

@@ -62,6 +62,7 @@ class BillingService:
         url = self._stripe_gateway.create_checkout_session(
             current_user.user_id,
             account.stripe_customer_id,
+            self._checkout_idempotency_key(account, current_user.user_id),
         )
         return BillingSessionResponse(url=url)
 
@@ -80,6 +81,8 @@ class BillingService:
         if event_type is None:
             return
         event_id = event_id or ""
+        if not event_id:
+            return
         event_object = self._event_object(event)
         user_id = self._webhook_user_id(event_type, event_object)
         if not user_id:
@@ -103,10 +106,16 @@ class BillingService:
         account.last_stripe_event_id = event_id
         account.last_stripe_event_created = event_created
         account.touch()
-        self._billing_repository.upsert(account)
+        self._billing_repository.apply_webhook(account, event_id, event_created)
 
     def _get_account(self, user_id: str) -> BillingAccount:
         return self._billing_repository.get(user_id) or BillingAccount(user_id=user_id)
+
+    @staticmethod
+    def _checkout_idempotency_key(account: BillingAccount, user_id: str) -> str:
+        customer_id = account.stripe_customer_id or "new"
+        subscription_id = account.stripe_subscription_id or "none"
+        return f"checkout:{user_id}:{customer_id}:{subscription_id}"
 
     @staticmethod
     def _event_object(event: dict[str, Any]) -> dict[str, Any]:

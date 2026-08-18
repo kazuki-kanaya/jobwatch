@@ -28,8 +28,9 @@ PR1 exposes the complete plan definition but enforces only the workspace limit. 
 - `POST /billing/checkout` creates a Stripe-hosted subscription Checkout Session for the configured Pro price.
 - `POST /billing/portal` creates a Stripe-hosted Customer Portal Session for an existing Stripe customer.
 - `POST /webhooks/stripe` verifies the raw request signature before processing subscription events.
-- Stripe event handling is safe to retry: repeated events converge to the same billing account state.
-- Subscription state is stored under the user's existing DynamoDB partition as a billing item.
+- Stripe event handling is safe to retry: each event ID is recorded in the user's partition and the event marker plus billing state are committed atomically.
+- Checkout requests use a stable Stripe idempotency key so API retries do not create duplicate Checkout Sessions.
+- Subscription state is stored under the user's existing DynamoDB partition as a billing item. Owned-workspace usage is maintained by a strongly consistent counter and updated in the same DynamoDB transaction as ownership changes.
 
 ## Downgrade behavior
 
@@ -42,4 +43,5 @@ Downgrading never deletes workspaces or data. If an account has more than one wo
 - Stripe customer/subscription identifiers are stored server-side only.
 - Webhook authentication uses Stripe's signature verification against the unmodified request body.
 - Checkout and Portal URLs are returned to the frontend; the API never handles card data.
+- Workspace quota checks are advisory before the write and authoritative inside a conditional DynamoDB transaction; concurrent requests cannot exceed the plan limit.
 - PR1 must not change CLI authentication or job ingestion behavior.

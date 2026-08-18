@@ -15,6 +15,7 @@ class FakeBillingRepository:
     def __init__(self, account: BillingAccount | None = None) -> None:
         self.account = account
         self.upserted: list[BillingAccount] = []
+        self.applied_webhooks: list[tuple[BillingAccount, str, int | None]] = []
 
     def get(self, user_id: str) -> BillingAccount | None:
         return self.account
@@ -23,6 +24,18 @@ class FakeBillingRepository:
         self.account = account
         self.upserted.append(account)
         return account
+
+    def apply_webhook(
+        self, account: BillingAccount, event_id: str, event_created: int | None
+    ) -> bool:
+        if any(
+            existing_event_id == event_id
+            for _, existing_event_id, _ in self.applied_webhooks
+        ):
+            return False
+        self.account = account
+        self.applied_webhooks.append((account, event_id, event_created))
+        return True
 
 
 class FakeEntitlementService:
@@ -39,7 +52,7 @@ class FakeEntitlementService:
 class FakeStripeGateway:
     def __init__(self, event: dict | None = None) -> None:
         self.event = event
-        self.checkout_args: tuple[str, str | None] | None = None
+        self.checkout_args: tuple[str, str | None, str] | None = None
         self.portal_customer_id: str | None = None
 
     @property
@@ -50,8 +63,10 @@ class FakeStripeGateway:
     def portal_available(self) -> bool:
         return True
 
-    def create_checkout_session(self, user_id: str, customer_id: str | None) -> str:
-        self.checkout_args = (user_id, customer_id)
+    def create_checkout_session(
+        self, user_id: str, customer_id: str | None, idempotency_key: str
+    ) -> str:
+        self.checkout_args = (user_id, customer_id, idempotency_key)
         return "https://checkout.stripe.com/session"
 
     def create_portal_session(self, customer_id: str) -> str:
@@ -76,7 +91,11 @@ def test_billing_service_creates_checkout_for_the_current_account() -> None:
     response = service.create_checkout(User(user_id="user-1", name="Researcher"))
 
     assert response.url == "https://checkout.stripe.com/session"
-    assert gateway.checkout_args == ("user-1", "cus_123")
+    assert gateway.checkout_args == (
+        "user-1",
+        "cus_123",
+        "checkout:user-1:cus_123:none",
+    )
 
 
 def test_billing_service_requires_a_customer_for_portal() -> None:
@@ -120,7 +139,7 @@ def test_checkout_webhook_activates_pro_and_is_safe_to_retry() -> None:
     assert repository.account.stripe_customer_id == "cus_123"
     assert repository.account.stripe_subscription_id == "sub_123"
     assert repository.account.last_stripe_event_id == "evt_checkout_1"
-    assert len(repository.upserted) == 1
+    assert len(repository.applied_webhooks) == 1
 
 
 def test_subscription_webhook_updates_status_and_period_end() -> None:

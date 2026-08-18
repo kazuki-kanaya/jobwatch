@@ -13,7 +13,9 @@ class StripeGatewayProtocol(Protocol):
     @property
     def portal_available(self) -> bool: ...
 
-    def create_checkout_session(self, user_id: str, customer_id: str | None) -> str: ...
+    def create_checkout_session(
+        self, user_id: str, customer_id: str | None, idempotency_key: str
+    ) -> str: ...
 
     def create_portal_session(self, customer_id: str) -> str: ...
 
@@ -34,7 +36,9 @@ class StripeGateway:
     def portal_available(self) -> bool:
         return bool(self._settings.stripe_secret_key)
 
-    def create_checkout_session(self, user_id: str, customer_id: str | None) -> str:
+    def create_checkout_session(
+        self, user_id: str, customer_id: str | None, idempotency_key: str
+    ) -> str:
         self._require_checkout_configuration()
         params: dict[str, Any] = {
             "mode": "subscription",
@@ -50,7 +54,7 @@ class StripeGateway:
         if customer_id:
             params["customer"] = customer_id
 
-        session = self._create_checkout_session(params)
+        session = self._create_checkout_session(params, idempotency_key)
         url = session.get("url")
         if not isinstance(url, str) or not url:
             raise BadRequestException("Stripe checkout did not return a URL")
@@ -64,7 +68,7 @@ class StripeGateway:
                 customer=customer_id,
                 return_url=self._settings.billing_portal_return_url,
             )
-        except stripe.error.StripeError as exc:
+        except stripe.StripeError as exc:
             raise BadRequestException(
                 "Stripe portal session could not be created"
             ) from exc
@@ -83,15 +87,20 @@ class StripeGateway:
                 signature,
                 webhook_secret,
             )
-        except (ValueError, stripe.error.SignatureVerificationError) as exc:
+        except (ValueError, stripe.SignatureVerificationError) as exc:
             raise BadRequestException("Invalid Stripe webhook signature") from exc
         return self._to_dict(event)
 
-    def _create_checkout_session(self, params: dict[str, Any]) -> dict[str, Any]:
+    def _create_checkout_session(
+        self, params: dict[str, Any], idempotency_key: str
+    ) -> dict[str, Any]:
         try:
             stripe.api_key = self._settings.stripe_secret_key
-            session = stripe.checkout.Session.create(**params)
-        except stripe.error.StripeError as exc:
+            session = stripe.checkout.Session.create(
+                idempotency_key=idempotency_key,
+                **params,
+            )
+        except stripe.StripeError as exc:
             raise BadRequestException(
                 "Stripe checkout session could not be created"
             ) from exc

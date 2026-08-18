@@ -29,7 +29,9 @@ def test_checkout_gateway_creates_a_pro_subscription_session(monkeypatch) -> Non
 
     monkeypatch.setattr(stripe.checkout.Session, "create", create_session)
 
-    url = StripeGateway(settings()).create_checkout_session("user-1", "cus_123")
+    url = StripeGateway(settings()).create_checkout_session(
+        "user-1", "cus_123", "checkout:user-1:cus_123:none"
+    )
 
     assert url == "https://checkout.stripe.com/cs_test"
     assert calls == [
@@ -42,6 +44,7 @@ def test_checkout_gateway_creates_a_pro_subscription_session(monkeypatch) -> Non
             "client_reference_id": "user-1",
             "metadata": {"user_id": "user-1"},
             "subscription_data": {"metadata": {"user_id": "user-1"}},
+            "idempotency_key": "checkout:user-1:cus_123:none",
         }
     ]
 

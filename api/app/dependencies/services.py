@@ -5,6 +5,7 @@ from app.dependencies.repositories import (
     get_user_repository,
     get_workspace_invitation_repository,
     get_workspace_membership_repository,
+    get_workspace_quota_repository,
     get_workspace_repository,
 )
 from app.dependencies.settings import get_settings
@@ -37,7 +38,12 @@ def get_workspace_service() -> WorkspaceService:
 def get_entitlement_service() -> EntitlementService:
     billing_repository = get_billing_repository()
     workspace_membership_repository = get_workspace_membership_repository()
-    return EntitlementService(billing_repository, workspace_membership_repository)
+    workspace_quota_repository = get_workspace_quota_repository()
+    return EntitlementService(
+        billing_repository,
+        workspace_membership_repository,
+        workspace_quota_repository,
+    )
 
 
 def get_billing_service() -> BillingService:
@@ -78,9 +84,11 @@ def get_workspace_invitation_service() -> WorkspaceInvitationService:
     workspace_repository = get_workspace_repository()
     workspace_membership_repository = get_workspace_membership_repository()
     workspace_invitation_repository = get_workspace_invitation_repository()
+    entitlement_service = get_entitlement_service()
     return WorkspaceInvitationService(
         settings=settings,
         workspace_repository=workspace_repository,
         workspace_membership_repository=workspace_membership_repository,
         workspace_invitation_repository=workspace_invitation_repository,
+        entitlement_service=entitlement_service,
     )
