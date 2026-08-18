@@ -1,6 +1,6 @@
 module github.com/kazuki-kanaya/obsern/cli
 
-go 1.26.4
+go 1.26.6
 
 require (
 	github.com/spf13/cobra v1.10.2
