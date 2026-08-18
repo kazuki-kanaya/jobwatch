@@ -55,6 +55,10 @@ class DynamoDBKeys:
         return "META#USER"
 
     @staticmethod
+    def billing_sk() -> str:
+        return "META#BILLING"
+
+    @staticmethod
     def workspace_membership_sk(user_id: str) -> str:
         return f"META#MEMBERSHIP#{user_id}"
 

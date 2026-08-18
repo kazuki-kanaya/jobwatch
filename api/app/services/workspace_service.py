@@ -17,6 +17,7 @@ from app.schemas.workspace import (
     WorkspaceResponse,
     WorkspaceUpdateRequest,
 )
+from app.services.entitlement_service import EntitlementService
 
 
 class WorkspaceService:
@@ -24,13 +25,16 @@ class WorkspaceService:
         self,
         workspace_repository: WorkspaceRepository,
         workspace_membership_repository: WorkspaceMembershipRepository,
+        entitlement_service: EntitlementService,
     ) -> None:
         self._workspace_repository = workspace_repository
         self._workspace_membership_repository = workspace_membership_repository
+        self._entitlement_service = entitlement_service
 
     def create_workspace(
         self, request: WorkspaceCreateRequest, current_user: User
     ) -> WorkspaceResponse:
+        self._entitlement_service.assert_can_create_workspace(current_user.user_id)
         workspace = Workspace(
             workspace_id=f"workspace-{uuid4().hex[:8]}",
             name=request.name,

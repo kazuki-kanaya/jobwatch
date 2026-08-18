@@ -1,5 +1,6 @@
 from app.database.host_repository import HostRepository
 from app.database.job_repository import JobRepository
+from app.database.billing_repository import BillingRepository
 from app.database.user_repository import UserRepository
 from app.database.workspace_invitation_repository import WorkspaceInvitationRepository
 from app.database.workspace_membership_repository import WorkspaceMembershipRepository
@@ -20,6 +21,11 @@ def get_host_repository() -> HostRepository:
 def get_job_repository() -> JobRepository:
     table = get_dynamodb_table()
     return JobRepository(table)
+
+
+def get_billing_repository() -> BillingRepository:
+    table = get_dynamodb_table()
+    return BillingRepository(table)
 
 
 def get_user_repository() -> UserRepository:

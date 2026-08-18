@@ -34,6 +34,12 @@ class PermissionDeniedError(ObsernException):
     pass
 
 
+class QuotaExceededError(ObsernException):
+    """Raised when a plan quota prevents creating a resource."""
+
+    pass
+
+
 class ConditionalCheckFailedError(ObsernException):
     """Raised when a conditional write check fails."""
 
