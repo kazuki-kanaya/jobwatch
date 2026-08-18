@@ -8,6 +8,8 @@ from app.dependencies.repositories import (
     get_workspace_repository,
 )
 from app.dependencies.settings import get_settings
+from app.integrations.stripe_gateway import StripeGateway
+from app.services.billing_service import BillingService
 from app.services.health_service import HealthService
 from app.services.host_service import HostService
 from app.services.job_service import JobService
@@ -36,6 +38,18 @@ def get_entitlement_service() -> EntitlementService:
     billing_repository = get_billing_repository()
     workspace_membership_repository = get_workspace_membership_repository()
     return EntitlementService(billing_repository, workspace_membership_repository)
+
+
+def get_billing_service() -> BillingService:
+    settings = get_settings()
+    billing_repository = get_billing_repository()
+    entitlement_service = get_entitlement_service()
+    stripe_gateway = StripeGateway(settings)
+    return BillingService(
+        billing_repository,
+        entitlement_service,
+        stripe_gateway,
+    )
 
 
 def get_host_service() -> HostService:

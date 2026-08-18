@@ -20,6 +20,12 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     app_timezone: str = "Asia/Tokyo"
     invitation_expiry_hours: int = 168
+    stripe_secret_key: str | None = None
+    stripe_webhook_secret: str | None = None
+    stripe_pro_price_id: str | None = None
+    billing_success_url: str = "http://localhost:5173/billing?checkout=success"
+    billing_cancel_url: str = "http://localhost:5173/billing?checkout=cancel"
+    billing_portal_return_url: str = "http://localhost:5173/billing"
     cors_allowed_origins: list[str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",

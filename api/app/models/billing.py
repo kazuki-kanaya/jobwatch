@@ -40,6 +40,7 @@ class BillingAccount(TimestampedModel):
     current_period_end: datetime | None = None
     cancel_at_period_end: bool = False
     last_stripe_event_id: str | None = None
+    last_stripe_event_created: int | None = None
 
 
 FREE_PLAN_LIMITS = PlanLimits(
