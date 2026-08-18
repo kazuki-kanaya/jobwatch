@@ -1,6 +1,7 @@
 import logging
 from typing import Any, Iterable, Type, TypeVar
 
+from boto3.dynamodb.types import TypeSerializer
 from botocore.exceptions import ClientError
 from pydantic import BaseModel
 
@@ -53,6 +54,18 @@ class DynamoDBKeys:
     @staticmethod
     def user_sk() -> str:
         return "META#USER"
+
+    @staticmethod
+    def billing_sk() -> str:
+        return "META#BILLING"
+
+    @staticmethod
+    def workspace_quota_sk() -> str:
+        return "META#WORKSPACE_QUOTA"
+
+    @staticmethod
+    def stripe_event_sk(event_id: str) -> str:
+        return f"STRIPE_EVENT#{event_id}"
 
     @staticmethod
     def workspace_membership_sk(user_id: str) -> str:
@@ -112,10 +125,13 @@ class DynamoDBTable:
                 f"Failed to put item: {error_code} - {e.response['Error']['Message']}"
             ) from e
 
-    def get(self, pk: str, sk: str) -> dict | None:
+    def get(self, pk: str, sk: str, *, consistent_read: bool = False) -> dict | None:
         try:
             logger.debug("Getting item: PK=%s, SK=%s", pk, sk)
-            response = self._table.get_item(Key={"PK": pk, "SK": sk})
+            response = self._table.get_item(
+                Key={"PK": pk, "SK": sk},
+                ConsistentRead=consistent_read,
+            )
             item = response.get("Item")
             if item:
                 logger.debug("Found item: PK=%s, SK=%s", pk, sk)
@@ -363,11 +379,45 @@ class DynamoDBTable:
         """Execute a DynamoDB transactional write."""
         client = self._table.meta.client
         table_name = self._table.name
+        serializer = TypeSerializer()
 
-        normalized = []
+        normalized: list[dict] = []
         for transact_item in transact_items:
             operation = next(iter(transact_item))
             body = transact_item[operation]
-            normalized.append({operation: {"TableName": table_name, **body}})
+            normalized_body = {"TableName": table_name, **body}
+            if "Item" in normalized_body:
+                normalized_body["Item"] = {
+                    key: serializer.serialize(value)
+                    for key, value in normalized_body["Item"].items()
+                }
+            if "Key" in normalized_body:
+                normalized_body["Key"] = {
+                    key: serializer.serialize(value)
+                    for key, value in normalized_body["Key"].items()
+                }
+            if "ExpressionAttributeValues" in normalized_body:
+                normalized_body["ExpressionAttributeValues"] = {
+                    key: serializer.serialize(value)
+                    for key, value in normalized_body[
+                        "ExpressionAttributeValues"
+                    ].items()
+                }
+            normalized.append({operation: normalized_body})
 
-        client.transact_write_items(TransactItems=normalized)
+        try:
+            client.transact_write_items(TransactItems=normalized)
+        except ClientError as e:
+            error_code = e.response["Error"]["Code"]
+            if error_code == "TransactionCanceledException":
+                reasons = e.response.get("CancellationReasons", [])
+                if any(
+                    reason.get("Code") == "ConditionalCheckFailed" for reason in reasons
+                ):
+                    raise ConditionalCheckFailedError(
+                        "Transaction condition failed"
+                    ) from e
+            raise RepositoryException(
+                f"Failed to transact write items: {error_code} - "
+                f"{e.response['Error']['Message']}"
+            ) from e

@@ -21,10 +21,16 @@ tasks:
     desc: Run API formatting and lint fixes
     deps: [fmt, lint]
 
+  test:
+    desc: Run API tests
+    cmds:
+      - PYTHONPATH=. uv run pytest -q
+
   ci:
     desc: Run API CI checks
     cmds:
       - task: fix
+      - task: test
       - git diff --exit-code -- .
 
   dev:

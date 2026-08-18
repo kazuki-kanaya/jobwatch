@@ -5,6 +5,7 @@ import type { HeaderLocaleOption, HeaderTimeZone, HeaderTimeZoneOption } from "@
 import { cn } from "@/lib/utils";
 
 type HeaderControlsProps = {
+  billingLabel?: string;
   languageLabel: string;
   refreshLabel: string;
   signOutLabel: string;
@@ -19,12 +20,14 @@ type HeaderControlsProps = {
   onTimeZoneChange: (timeZone: HeaderTimeZone) => void;
   onRefresh: () => Promise<void> | void;
   onSignOut: () => Promise<void> | void;
+  onBilling?: () => void;
 };
 
 const isHeaderTimeZone = (value: string, options: HeaderTimeZoneOption[]): value is HeaderTimeZone =>
   options.some((option) => option.id === value);
 
 export function HeaderControls({
+  billingLabel,
   languageLabel,
   refreshLabel,
   signOutLabel,
@@ -39,9 +42,20 @@ export function HeaderControls({
   onTimeZoneChange,
   onRefresh,
   onSignOut,
+  onBilling,
 }: HeaderControlsProps) {
   return (
     <div className={cn("flex flex-wrap items-center gap-3")}>
+      {billingLabel && onBilling ? (
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onBilling}
+          className={cn("cursor-pointer border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700")}
+        >
+          {billingLabel}
+        </Button>
+      ) : null}
       <div className={cn("flex items-center gap-2 rounded-md border border-slate-600 bg-slate-800 px-2")}>
         <Languages className={cn("size-4 text-slate-300")} />
         <Select value={localeValue} onValueChange={onLocaleChange}>

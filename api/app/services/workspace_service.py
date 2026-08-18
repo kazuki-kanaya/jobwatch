@@ -2,7 +2,12 @@ from uuid import uuid4
 
 from app.database.workspace_membership_repository import WorkspaceMembershipRepository
 from app.database.workspace_repository import WorkspaceRepository
-from app.models.exceptions import NotFoundException, PermissionDeniedError
+from app.models.exceptions import (
+    ConditionalCheckFailedError,
+    NotFoundException,
+    PermissionDeniedError,
+    QuotaExceededError,
+)
 from app.models.user import User
 from app.models.workspace import Workspace
 from app.models.workspace_membership import MembershipRole, WorkspaceMembership
@@ -17,6 +22,7 @@ from app.schemas.workspace import (
     WorkspaceResponse,
     WorkspaceUpdateRequest,
 )
+from app.services.entitlement_service import EntitlementService
 
 
 class WorkspaceService:
@@ -24,13 +30,18 @@ class WorkspaceService:
         self,
         workspace_repository: WorkspaceRepository,
         workspace_membership_repository: WorkspaceMembershipRepository,
+        entitlement_service: EntitlementService,
     ) -> None:
         self._workspace_repository = workspace_repository
         self._workspace_membership_repository = workspace_membership_repository
+        self._entitlement_service = entitlement_service
 
     def create_workspace(
         self, request: WorkspaceCreateRequest, current_user: User
     ) -> WorkspaceResponse:
+        entitlement = self._entitlement_service.assert_can_create_workspace(
+            current_user.user_id
+        )
         workspace = Workspace(
             workspace_id=f"workspace-{uuid4().hex[:8]}",
             name=request.name,
@@ -40,7 +51,17 @@ class WorkspaceService:
             user_id=current_user.user_id,
             role=MembershipRole.OWNER,
         )
-        created = self._workspace_repository.create_with_owner(workspace, membership)
+        try:
+            created = self._workspace_repository.create_with_owner(
+                workspace,
+                membership,
+                expected_owner_count=entitlement.workspace_count,
+                max_owned_workspaces=entitlement.limits.max_workspaces,
+            )
+        except ConditionalCheckFailedError as exc:
+            raise QuotaExceededError(
+                f"Workspace limit reached for the {entitlement.plan.value} plan"
+            ) from exc
         return WorkspaceResponse(
             workspace_id=created.workspace_id,
             name=created.name,
@@ -112,13 +133,22 @@ class WorkspaceService:
             raise NotFoundException(f"Workspace {workspace_id} not found")
         existing = self._workspace_membership_repository.get(workspace_id, user_id)
         if existing is None:
-            existing = self._workspace_membership_repository.create(
-                WorkspaceMembership(
-                    workspace_id=workspace_id,
-                    user_id=user_id,
-                    role=request.role,
-                )
+            membership = WorkspaceMembership(
+                workspace_id=workspace_id,
+                user_id=user_id,
+                role=request.role,
             )
+            if request.role is MembershipRole.OWNER:
+                entitlement = self._entitlement_service.assert_can_create_workspace(
+                    user_id
+                )
+                existing = self._workspace_membership_repository.create(
+                    membership,
+                    expected_owner_count=entitlement.workspace_count,
+                    max_owned_workspaces=entitlement.limits.max_workspaces,
+                )
+            else:
+                existing = self._workspace_membership_repository.create(membership)
         return WorkspaceMemberResponse(
             workspace_id=existing.workspace_id,
             user_id=existing.user_id,
@@ -146,9 +176,27 @@ class WorkspaceService:
         ):
             raise PermissionDeniedError("Owner cannot demote themselves")
         self._assert_owner_not_removed(workspace_id, membership, request.role)
+        previous_role = membership.role
+        entitlement = None
+        if previous_role is not request.role:
+            entitlement = self._entitlement_service.get_for_user(user_id)
+            if (
+                previous_role is not MembershipRole.OWNER
+                and request.role is MembershipRole.OWNER
+            ):
+                entitlement = self._entitlement_service.assert_can_create_workspace(
+                    user_id
+                )
         membership.role = request.role
         membership.touch()
-        updated = self._workspace_membership_repository.update(membership)
+        updated = self._workspace_membership_repository.update(
+            membership,
+            previous_role=previous_role,
+            expected_owner_count=(entitlement.workspace_count if entitlement else None),
+            max_owned_workspaces=(
+                entitlement.limits.max_workspaces if entitlement else None
+            ),
+        )
         return WorkspaceMemberResponse(
             workspace_id=updated.workspace_id,
             user_id=updated.user_id,
@@ -168,7 +216,7 @@ class WorkspaceService:
         if current_user.user_id == user_id and membership.role == MembershipRole.OWNER:
             raise PermissionDeniedError("Owner cannot remove themselves")
         self._assert_owner_not_removed(workspace_id, membership, None)
-        self._workspace_membership_repository.delete(workspace_id, user_id)
+        self._workspace_membership_repository.delete(workspace_id, user_id, membership)
 
     def transfer_owner(
         self,
@@ -197,10 +245,22 @@ class WorkspaceService:
             raise NotFoundException(
                 f"Member {request.new_owner_user_id} not found in workspace {workspace_id}"
             )
+        from_entitlement = self._entitlement_service.get_for_user(current_user.user_id)
+        to_entitlement = self._entitlement_service.get_for_user(
+            request.new_owner_user_id
+        )
+        if new_owner_membership.role is not MembershipRole.OWNER:
+            to_entitlement = self._entitlement_service.assert_can_create_workspace(
+                request.new_owner_user_id
+            )
         self._workspace_membership_repository.transfer_owner(
             workspace_id=workspace_id,
             from_user_id=current_user.user_id,
             to_user_id=request.new_owner_user_id,
+            new_owner_role=new_owner_membership.role,
+            from_owner_count=from_entitlement.workspace_count,
+            to_owner_count=to_entitlement.workspace_count,
+            max_owned_workspaces=to_entitlement.limits.max_workspaces,
         )
 
         return WorkspaceOwnerTransferResponse(

@@ -6,16 +6,18 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "boto3>=1.42.25",
-    "cryptography>=46.0.6",
+    "cryptography>=50.0.0",
     "fastapi>=0.128.0",
     "mangum>=0.21.0",
     "pydantic-settings>=2.14.2",
     "pyjwt>=2.11.0",
+    "stripe>=12.0.0",
     "uvicorn>=0.40.0",
 ]
 
 [dependency-groups]
 dev = [
+    "httpx2>=0.1.0",
     "pyright>=1.1.408",
     "pytest>=9.0.2",
     "ruff>=0.14.11",

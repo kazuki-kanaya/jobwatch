@@ -57,6 +57,7 @@ obsern run python train.py
 - [✨ 主な機能](#主な機能)
 - [🚫 やらないこと](#やらないこと)
 - [🏗️ アーキテクチャ](#アーキテクチャ)
+- [💳 Hosted課金](#hosted課金)
 - [🆚 他ツールとの比較](#他ツールとの比較)
 - [📁 リポジトリ構成](#リポジトリ構成)
 - [🛠️ 技術スタック](#技術スタック)
@@ -375,6 +376,24 @@ Obsern は、`CLI` を中心に任意コマンドをラップ実行し、必要�
   - 認証は OIDC プロバイダと連携します。
   - OIDC の JWT 検証は API Gateway ではなく FastAPI 本体で行います。
   - これにより、クラウド利用時とローカル実行時で認証ロジックを揃えやすくしています。
+
+<a id="hosted課金"></a>
+## 💳 Hosted課金
+
+Hosted Dashboardでは、Stripeが提供するCheckoutとCustomer Portalを利用します。Obsernがカード情報を受け取ったり保存したりすることはありません。
+
+本番APIには次の環境変数を設定します。
+
+- `OBSERN_STRIPE_SECRET_KEY`
+- `OBSERN_STRIPE_WEBHOOK_SECRET`
+- `OBSERN_STRIPE_PRO_PRICE_ID`
+- `OBSERN_BILLING_SUCCESS_URL`
+- `OBSERN_BILLING_CANCEL_URL`
+- `OBSERN_BILLING_PORTAL_RETURN_URL`
+
+Stripe側には `POST https://api.example.dev/webhooks/stripe` をWebhook endpointとして登録し、Checkout完了イベントとsubscription lifecycleイベントを有効にします。Secret keyとWebhook secretはリポジトリへ入れず、デプロイ環境またはSecret管理機構から注入してください。
+
+課金はアカウント単位です。Freeは所有workspace 1つ、Proは3つまで利用できます。ダウングレード時に既存データを自動削除することはありません。
 
 
 ### ☁️ クラウド利用

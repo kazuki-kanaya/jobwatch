@@ -16,6 +16,15 @@ lambda_zip_path = "../../../../../api/build/lambda.zip"
 lambda_environment = {
   OBSERN_AWS_REGION = "ap-northeast-1"
   OBSERN_LOG_LEVEL  = "INFO"
+
+  OBSERN_STRIPE_PRO_PRICE_ID      = "price_replace_me"
+  OBSERN_BILLING_SUCCESS_URL      = "https://app.example.dev/billing?checkout=success"
+  OBSERN_BILLING_CANCEL_URL       = "https://app.example.dev/billing?checkout=cancel"
+  OBSERN_BILLING_PORTAL_RETURN_URL = "https://app.example.dev/billing"
+
+  # Inject these from an uncommitted tfvars file or a secret-management workflow.
+  # OBSERN_STRIPE_SECRET_KEY        = "sk_live_replace_me"
+  # OBSERN_STRIPE_WEBHOOK_SECRET    = "whsec_replace_me"
 }
 
 tags = {

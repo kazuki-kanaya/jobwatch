@@ -8,6 +8,7 @@ from app.models.exceptions import (
     ConditionalCheckFailedError,
     NotFoundException,
     PermissionDeniedError,
+    QuotaExceededError,
     RepositoryException,
 )
 
@@ -51,6 +52,16 @@ def register_exception_handlers(app: FastAPI) -> None:
         """Handle permission denied errors with 403 status."""
         return JSONResponse(
             status_code=http.HTTPStatus.FORBIDDEN,
+            content={"detail": str(exception)},
+        )
+
+    @app.exception_handler(QuotaExceededError)
+    async def handle_quota_exceeded_error(
+        request: Request, exception: QuotaExceededError
+    ) -> JSONResponse:
+        """Handle plan quota errors with 402 status."""
+        return JSONResponse(
+            status_code=http.HTTPStatus.PAYMENT_REQUIRED,
             content={"detail": str(exception)},
         )
 

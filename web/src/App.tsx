@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { AuthGuard } from "@/features/auth";
 import AuthCallbackPage from "@/pages/AuthCallbackPage";
+import BillingPage from "@/pages/BillingPage";
 import DashboardPage from "@/pages/DashboardPage";
 import InvitationAcceptPage from "@/pages/InvitationAcceptPage";
 import NotFoundPage from "@/pages/NotFoundPage";
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route element={<AuthGuard />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/billing" element={<BillingPage />} />
             <Route path="/new/dashboard" element={<Navigate to="/dashboard" replace />} />
             <Route path="/invite" element={<InvitationAcceptPage />} />
           </Route>
